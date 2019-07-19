@@ -6,38 +6,51 @@ import RequestExpirationDate from "components/RequestExpirationDate";
 import Box from "components/base/Box";
 import { withMe } from "components/UserContextProvider";
 import type { User, Request } from "data/types";
-import { hasUserApprovedRequest } from "utils/request";
+import { hasUserApprovedRequest, isUserInCurrentStep } from "utils/request";
 
 type Props = {
   status: string,
   request: ?Request,
+  useRequestStatus?: boolean,
   me: User,
+  size?: "big" | "normal",
 };
+
+// gate has a weird status management
+const APPROVED_LIKE_STATUS = ["SUBMITTED", "ACTIVE"];
 
 class EntityStatus extends PureComponent<Props> {
   render() {
-    const { status, me, request } = this.props;
+    const { status, me, request, size, useRequestStatus } = this.props;
 
     if (!request) {
-      return <Status status={status} />;
+      return <Status status={status} size={size} />;
     }
 
     const isRequestBlocked = request.status === "BLOCKED";
     const shouldDisplayBlockedStatus = isRequestBlocked && status !== "ACTIVE";
 
+    if (useRequestStatus && APPROVED_LIKE_STATUS.includes(request.status)) {
+      return <Status size={size} status="APPROVED" />;
+    }
     if (!request.approvals && !shouldDisplayBlockedStatus) {
-      return <Status status={remapStatus(status, request.target_type)} />;
+      return (
+        <Status size={size} status={remapStatus(status, request.target_type)} />
+      );
     }
     if (shouldDisplayBlockedStatus) {
-      return <Status status="BLOCKED" />;
+      return <Status size={size} status="BLOCKED" />;
     }
 
     const isWaitingForApproval =
-      !hasUserApprovedRequest(request, me) && status !== "ACTIVE";
+      !hasUserApprovedRequest(request, me) &&
+      isUserInCurrentStep(request, me) &&
+      status !== "ACTIVE";
 
     return (
       <Box horizontal flow={10} align="center">
         <Status
+          size={size}
           status={
             isWaitingForApproval
               ? "AWAITING_APPROVAL"

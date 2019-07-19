@@ -65,14 +65,14 @@ class RequestActionButtons extends PureComponent<Props> {
           <Box horizontal align="center" flow={5}>
             <MdTimer />
             <Text small>
-              expires at <DateFormat date={lastRequest.expired_at} />
+              expires on <DateFormat date={lastRequest.expired_at} />
             </Text>
           </Box>
         </Box>
         {userApprovedCurrentStep ? (
           <Box horizontal align="center" justify="center" flow={10}>
             {checkedIcon}
-            <Text bold>You already approved the request.</Text>
+            <Text bold>You already approved this request</Text>
           </Box>
         ) : userInCurrentStep || isUserCreationRequest ? (
           <Box

@@ -41,11 +41,13 @@ export default function Widget(props: Props) {
       width={width}
       style={style}
     >
-      <WidgetHeader
-        title={title}
-        desc={desc}
-        SettingsComponent={SettingsComponent}
-      />
+      {(title || desc) && (
+        <WidgetHeader
+          title={title}
+          desc={desc}
+          SettingsComponent={SettingsComponent}
+        />
+      )}
       {children}
     </WidgetContainer>
   );

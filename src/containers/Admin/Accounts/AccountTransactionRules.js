@@ -16,10 +16,12 @@ const AccountTransactionRules = ({
   account,
   users,
   groups,
+  noTitle,
 }: {
   account: Account,
   users: Connection<User>,
   groups: Connection<Group>,
+  noTitle?: boolean,
 }) =>
   account.tx_approval_steps ? (
     <ApprovalsRules
@@ -27,6 +29,7 @@ const AccountTransactionRules = ({
       users={users.edges.map(u => u.node)}
       groups={groups.edges.map(g => g.node)}
       readOnly
+      noTitle={noTitle}
       onChange={() => {}}
     />
   ) : null;

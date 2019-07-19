@@ -64,6 +64,6 @@ export default connectWidget(AccountsWidget, {
     accountsConnection: SearchAccounts,
   },
   propsToQueryParams: () => ({
-    meta_status: "ACTIVE",
+    meta_status: "APPROVED",
   }),
 });

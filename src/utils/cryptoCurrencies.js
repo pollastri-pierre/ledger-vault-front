@@ -30,7 +30,7 @@ const supported: CryptoCurrencyIds[] = [
   "ethereum_ropsten",
 ];
 
-const notSupportedCoin: CryptoCurrencyIds[] = ["komodo", "bitcoin_cash"];
+const notSupportedCoin: CryptoCurrencyIds[] = ["komodo"];
 
 export const isNotSupportedCoin: CryptoCurrency => boolean = memoize(
   (cur: CryptoCurrency) => notSupportedCoin.indexOf(cur.id) > -1,

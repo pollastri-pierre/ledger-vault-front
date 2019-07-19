@@ -7,6 +7,7 @@ import MUITableCell from "@material-ui/core/TableCell";
 import CounterValue from "components/CounterValue";
 import AccountName from "components/AccountName";
 import EntityStatus from "components/EntityStatus";
+import ApproverRole from "components/ApproverRole";
 import DateFormat from "components/DateFormat";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 
@@ -36,6 +37,8 @@ class AccountBodyCell extends PureComponent<CellProps> {
         return (
           <CurrencyAccountValue account={account} value={account.balance} />
         );
+      case "approver_role":
+        return <ApproverRole account={account} />;
       case "date":
         return <DateFormat date={account.created_on} />;
       default:

@@ -19,6 +19,7 @@ export type VaultHistoryApprovalStep = {
 type VaultHistoryStepType =
   | "CREATED"
   | "ACTIVED"
+  | "BLOCKED"
   | "APPROVED"
   | "ABORTED"
   | "REVOKED"
@@ -90,6 +91,9 @@ function resolveItemType(item) {
 }
 
 function resolveStepType(item): VaultHistoryStepType {
+  if (item.status === "BLOCKED") {
+    return "BLOCKED";
+  }
   if (item.status === "ACTIVE") {
     return "ACTIVED";
   }

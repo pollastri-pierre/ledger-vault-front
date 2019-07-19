@@ -4,12 +4,19 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FaCoins, FaList, FaWrench, FaTicketAlt, FaLink } from "react-icons/fa";
+import {
+  FaCoins,
+  FaWrench,
+  FaTicketAlt,
+  FaLink,
+  FaCheck,
+} from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import EntityStatus from "components/EntityStatus";
 import CounterValue from "components/CounterValue";
+import ApproverRole from "components/ApproverRole";
 import IconSend from "components/icons/Send";
 import { useMe } from "components/UserContextProvider";
 import IconReceive from "components/icons/Receive";
@@ -44,7 +51,7 @@ function AccountQuickInfoWidget(props: Props) {
         <Link to={`${account.id}/send/${account.id}`}>
           <Button
             IconLeft={IconSend}
-            customColor={colors.text}
+            customColor={colors.blue}
             variant="filled"
             size="tiny"
           >
@@ -54,7 +61,7 @@ function AccountQuickInfoWidget(props: Props) {
         <Link to={`${account.id}/receive/${account.id}`}>
           <Button
             IconLeft={IconReceive}
-            customColor={colors.text}
+            customColor={colors.blue}
             variant="filled"
             size="tiny"
           >
@@ -62,9 +69,7 @@ function AccountQuickInfoWidget(props: Props) {
           </Button>
         </Link>
       </Box>
-    ) : (
-      "Quick infos"
-    );
+    ) : null;
 
   return (
     <Widget title={title} grow position="relative">
@@ -121,43 +126,34 @@ function AccountQuickInfoWidget(props: Props) {
             </Label>
             <div>
               <EntityStatus
+                size="big"
+                status={account.status}
                 request={account.last_request}
-                status={
-                  account.last_request
-                    ? account.last_request.status
-                    : account.status
-                }
               />
             </div>
           </InfoSquare>
-          <InfoSquare>
-            <Label align="center" horizontal flow={5}>
-              <FaList />
-              <span>Rules</span>
-            </Label>
-            <Text header select noWrap>
-              {account.tx_approval_steps ? (
-                `${account.tx_approval_steps.length} step${
-                  account.tx_approval_steps.length > 1 ? "s" : ""
-                }`
-              ) : (
-                <Text color={colors.textLight} normal noWrap>
-                  Not set
-                </Text>
-              )}
-            </Text>
-          </InfoSquare>
+          {me.role === "OPERATOR" && (
+            <InfoSquare>
+              <Label align="center" horizontal flow={5}>
+                <FaCheck />
+                <span>Role</span>
+              </Label>
+              <div>
+                <ApproverRole account={account} />
+              </div>
+            </InfoSquare>
+          )}
           {account.contract_address && (
             <>
               <InfoSquare>
-                <Label>contract address</Label>
+                <Label>Smart contract address</Label>
                 <Box horizontal flow={20} align="center">
                   <Copy text={account.contract_address} />
                 </Box>
               </InfoSquare>
               {account.parent && (
                 <InfoSquare>
-                  <Label>Parent account</Label>
+                  <Label>Parent Ethereum account</Label>
                   <Link to={`${account.parent}`}>
                     <Button
                       IconLeft={FaLink}

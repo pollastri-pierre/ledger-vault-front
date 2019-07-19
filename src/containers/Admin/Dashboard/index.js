@@ -8,8 +8,8 @@ import ResponsiveContainer from "components/base/ResponsiveContainer";
 import Box from "components/base/Box";
 import {
   AccountsWidget,
-  ActivityWidget,
   QuorumWidget,
+  AssetsDistributionWidget,
   TotalBalanceWidget,
   RequestsWidget,
 } from "components/widgets";
@@ -25,10 +25,10 @@ function AdminDashboard(props: Props) {
     <ResponsiveContainer style={{ alignItems: "stretch" }}>
       <Box flex={1} flow={20}>
         <RequestsWidget history={history} />
-        <ActivityWidget />
       </Box>
       <Box flex={1} flow={20}>
         <TotalBalanceWidget />
+        <AssetsDistributionWidget nbMax={8} />
         <QuorumWidget history={history} location={location} />
         <AccountsWidget history={history} location={location} />
       </Box>

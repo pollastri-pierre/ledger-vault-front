@@ -33,12 +33,8 @@ type State = {
   interaction: Interaction,
 };
 
-if (
-  (process.env.NODE_ENV === "e2e" && window.FORCE_HARDWARE) ||
-  window.FORCE_APDU_LOGS
-) {
-  listen(log => console.log(`${log.type}: ${log.message ? log.message : ""}`)); // eslint-disable-line no-console
-}
+// always logs apdu for now
+listen(log => console.log(`${log.type}: ${log.message ? log.message : ""}`)); // eslint-disable-line no-console
 
 class DeviceInteraction extends PureComponent<Props, State> {
   state = {
@@ -61,14 +57,17 @@ class DeviceInteraction extends PureComponent<Props, State> {
     } = this.props;
 
     // always checking app version first unless opt-out by the consumer component
-    const interactionsWithCheckVersion = noCheckVersion
-      ? interactions
-      : [checkVersion, ...interactions];
+    const interactionsWithCheckVersion =
+      noCheckVersion || localStorage.getItem("NO_CHECK_VERSION")
+        ? interactions
+        : [checkVersion, ...interactions];
 
     const responses = { ...additionalFields, restlay };
     if (
       window.FORCE_HARDWARE ||
-      (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE)
+      (process.env.NODE_ENV !== "e2e" &&
+        !window.config.SOFTWARE_DEVICE &&
+        localStorage.getItem("SOFTWARE_DEVICE") !== "1")
     ) {
       // $FlowFixMe
       const transport = await LedgerTransportU2F.create();

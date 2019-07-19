@@ -12,6 +12,7 @@ import { RequestsList } from "components/lists";
 import Box from "components/base/Box";
 import {
   hasUserApprovedRequest,
+  isUserInCurrentStep,
   isNotTransaction,
   navigateToRequest,
 } from "utils/request";
@@ -27,40 +28,48 @@ type Props = {
 function RequestsWidget(props: Props) {
   const { data, me } = props;
 
+  const isAdmin = me.role === "ADMIN";
+
   const requests = data.edges
     .map(el => el.node)
-    .filter(me.role === "ADMIN" ? isNotTransaction : Boolean);
+    .filter(isAdmin ? isNotTransaction : Boolean);
 
   const myRequests = requests.filter(
-    request => request.approvals && !hasUserApprovedRequest(request, me),
+    request =>
+      request.approvals &&
+      !hasUserApprovedRequest(request, me) &&
+      isUserInCurrentStep(request, me),
   );
 
   const otherRequests = requests.filter(
-    request => hasUserApprovedRequest(request, me) || !request.approvals,
+    request =>
+      hasUserApprovedRequest(request, me) ||
+      !request.approvals ||
+      !isUserInCurrentStep(request, me),
   );
 
   const handleRequestClick = (request: Request) =>
     navigateToRequest(request, props.history);
 
+  const prefix = isAdmin ? "adminDashboard" : "operatorDashboard";
+  const myRequestsTitle = <Trans i18nKey={`${prefix}:myRequestsTitle`} />;
+  const otherRequestsTitle = <Trans i18nKey={`${prefix}:otherRequestsTitle`} />;
+  const myEmpty = <Trans i18nKey={`${prefix}:myRequestsEmpty`} />;
+  const otherEmpty = <Trans i18nKey={`${prefix}:otherRequestsEmpty`} />;
+
   return (
     <Box flow={20}>
-      <Widget
-        title={<Trans i18nKey="adminDashboard:myRequestsTitle" />}
-        desc={<Trans i18nKey="adminDashboard:myRequestsDesc" />}
-      >
+      <Widget title={myRequestsTitle}>
         <RequestsList
-          emptyState={<Trans i18nKey="adminDashboard:myRequestsEmpty" />}
+          emptyState={myEmpty}
           dataTest="awaiting-approval"
           requests={myRequests}
           onRequestClick={handleRequestClick}
         />
       </Widget>
-      <Widget
-        title={<Trans i18nKey="adminDashboard:otherRequestsTitle" />}
-        desc={<Trans i18nKey="adminDashboard:otherRequestsDesc" />}
-      >
+      <Widget title={otherRequestsTitle}>
         <RequestsList
-          emptyState={<Trans i18nKey="adminDashboard:otherRequestsEmpty" />}
+          emptyState={otherEmpty}
           dataTest="pending-approval"
           requests={otherRequests}
           onRequestClick={handleRequestClick}

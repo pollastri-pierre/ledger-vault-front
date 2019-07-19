@@ -15,6 +15,7 @@ import {
 
 type Props = {
   flow?: number,
+  onClick?: Function,
   horizontal?: number,
   grow?: boolean,
   position?: "absolute" | "relative",

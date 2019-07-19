@@ -27,6 +27,7 @@
   "stepType": {
     "CREATED": "Created",
     "ACTIVED": "Actived",
+    "BLOCKED": "Blocked",
     "APPROVED": "Approved",
     "ABORTED": "Rejected",
     "REVOKED": "Deleted",

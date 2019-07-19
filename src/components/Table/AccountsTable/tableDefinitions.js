@@ -45,3 +45,14 @@ export const accountsTableDefault = [
     },
   },
 ];
+
+export const roleColumn = {
+  header: {
+    label: "Role",
+    align: "right",
+  },
+  body: {
+    prop: "approver_role",
+    align: "right",
+  },
+};
