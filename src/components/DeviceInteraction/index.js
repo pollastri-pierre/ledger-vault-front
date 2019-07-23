@@ -6,7 +6,7 @@ import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion } from "device/interactions/common";
-import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
+import TransportUSB from "@ledgerhq/hw-transport-webusb";
 import type { GateError } from "data/types";
 
 export type Interaction = {
@@ -70,10 +70,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
         localStorage.getItem("SOFTWARE_DEVICE") !== "1")
     ) {
       // $FlowFixMe
-      const transport = await LedgerTransportU2F.create();
-      transport.setScrambleKey("v1+");
-      transport.setUnwrap(true);
-      transport.setExchangeTimeout(360000);
+      const transport = await TransportUSB.create();
       responses.transport = transport;
     }
     for (let i = 0; i < interactionsWithCheckVersion.length; i++) {

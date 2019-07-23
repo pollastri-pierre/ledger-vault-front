@@ -37,7 +37,7 @@ const OrganizationAppRouter = () => (
               <>
                 <Switch>
                   <Route path={`${match.url}/login`} render={LoginComponent} />
-                  <ModalRoute path="*/update-app" component={UpdateApp} />
+                  <Route path="*/update-app" component={UpdateApp} />
                   <Route
                     path={`${match.url}/onboarding`}
                     render={() => (
