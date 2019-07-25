@@ -132,6 +132,7 @@ type AccountCommon = {
   settings: AccountSettings,
   security_scheme: SecurityScheme,
   balance: BigNumber,
+  parent_balance?: BigNumber,
   number_of_approvals: number,
   created_on: Date,
   approvals: Approval[],
