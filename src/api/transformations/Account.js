@@ -13,5 +13,6 @@ export function deserializeAccount(account: Account): Account {
   return {
     ...account,
     balance: BigNumber(account.balance),
+    parent_balance: account.parent_balance && BigNumber(account.parent_balance),
   };
 }

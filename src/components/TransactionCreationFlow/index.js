@@ -47,22 +47,9 @@ const steps = [
     id: "note",
     name: <Trans i18nKey="transactionCreation:steps.note.title" />,
     Step: TransactionCreationNote,
-    requirements: (
-      payload: TransactionCreationPayload<any>,
-      additionalProps,
-    ) => {
+    requirements: (payload: TransactionCreationPayload<any>) => {
       const { bridge, transaction, account } = payload;
       if (!bridge || !transaction || !account) return false;
-      if (account.account_type === "ERC20" && additionalProps) {
-        const parent = additionalProps.accounts.edges
-          .map(e => e.node)
-          .find(a => a.id === account.parent);
-        return bridge.checkValidTransactionSyncSync(
-          account,
-          transaction,
-          parent,
-        );
-      }
       return bridge.checkValidTransactionSyncSync(account, transaction);
     },
   },

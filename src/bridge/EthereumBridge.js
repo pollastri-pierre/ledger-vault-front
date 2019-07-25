@@ -108,14 +108,14 @@ const EthereumBridge: WalletBridge<Transaction> = {
   }),
   EditFees: FeesFieldEthereumKind,
   EditAdvancedOptions,
-  checkValidTransactionSyncSync: (a: Account, t: Transaction, p: ?Account) => {
+  checkValidTransactionSyncSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
     const { estimatedFees } = t;
     if (!estimatedFees) return false;
     if (!estimatedFees.isGreaterThan(0)) return false;
     if (a.account_type === "ERC20") {
-      if (!p) return false;
-      if (estimatedFees.isGreaterThan(p.balance)) return false;
+      if (!a.parent_balance) return false;
+      if (estimatedFees.isGreaterThan(a.parent_balance)) return false;
     } else if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) {
       return false;
     }
