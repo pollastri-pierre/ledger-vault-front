@@ -546,7 +546,7 @@ const syncNextState = (state: Store, action, next = false) => {
       },
       validating_shared_owner: {
         ...state.validating_shared_owner,
-        channels: actionState.challenge || [],
+        channels: actionState.challenges || [],
         admins: actionState.admin_devices || actionState.admin_signatures,
       },
     };
@@ -557,7 +557,7 @@ const syncNextState = (state: Store, action, next = false) => {
       state: actionState.state,
       provisionning: {
         ...state.provisionning,
-        channel: actionState.challenge || [],
+        channel: actionState.challenges || [],
         blobs: actionState.shared_owner_devices,
       },
     };
