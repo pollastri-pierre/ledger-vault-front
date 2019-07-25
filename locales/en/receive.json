@@ -1,6 +1,6 @@
 {
   "selectAccountLabel": "Account",
-  "selectAccount": "Select an account to receive funds on.",
+  "selectAccount": "Select the account for which you want to generate an address.",
   "verify": "Verify on device",
   "verifyAgain": "Verify again",
   "retry": "Retry",
@@ -9,5 +9,5 @@
   "addressRejected_line1": "You've rejected the address on your device.",
   "addressRejected_line2": "Click <0>Retry</0> to try again.",
   "addressVerified_line1": "<0>Success</0>",
-  "addressVerified_line2": "You can copy the address or scan the QR code."
+  "addressVerified_line2": "You can now copy the address."
 }

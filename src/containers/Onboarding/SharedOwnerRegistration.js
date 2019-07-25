@@ -10,7 +10,6 @@ import Modal from "components/base/Modal";
 import { Title, Introduction, NoMembers, AddUser } from "components/Onboarding";
 import { withTranslation, Trans } from "react-i18next";
 import Box from "components/base/Box";
-import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import DialogButton from "components/buttons/DialogButton";
 import { addSharedOwner, getState } from "redux/modules/onboarding";
@@ -92,9 +91,6 @@ class SharedOwnerRegistration extends Component<Props, State> {
             i18nKey="onboarding:so_registration.desc"
             components={<strong>0</strong>}
           />
-          <InfoBox withIcon type="info" style={{ marginTop: 20 }}>
-            {t("onboarding:so_registration.description_strong")}
-          </InfoBox>
         </Introduction>
         {onboarding.registering_shared_owner.sharedOwners.length < 3 && (
           <AddUser onClick={this.onToggleRegisteringModal}>
