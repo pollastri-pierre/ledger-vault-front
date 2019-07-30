@@ -77,12 +77,12 @@ class UserDetailsOverview extends PureComponent<Props> {
         <LineRow label={<Trans i18nKey="userDetails:userID" />}>
           {isPendingRegistration ? (
             <EditableField
-              value={user.user_id || ""}
+              value={(user.user_id && user.user_id.toUpperCase()) || ""}
               onChange={this.updateUserID}
               inputProps={inputPropsUserID}
             />
           ) : (
-            user.user_id
+            user.user_id && user.user_id.toUpperCase()
           )}
         </LineRow>
         {url && (
