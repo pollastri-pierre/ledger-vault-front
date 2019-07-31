@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { useState } from "react";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
@@ -26,10 +26,12 @@ import VaultCentered from "components/VaultCentered";
 import ConnectedBreadcrumb from "components/ConnectedBreadcrumb";
 
 import type { Connection } from "restlay/ConnectionQuery";
+import type { RestlayEnvironment } from "restlay/connectData";
 import getMenuItems from "./getMenuItems";
 
 type Props = {
   me: User,
+  restlay: RestlayEnvironment,
   match: Match,
   location: Location,
   history: MemoryHistory,
@@ -38,13 +40,22 @@ type Props = {
   organization: Organization,
 };
 
-const AppWrapper = ({ me, organization, ...props }: Props) => (
-  <UserContextProvider me={me}>
-    <OrganizationContextProvider value={organization}>
-      <App {...props} />
-    </OrganizationContextProvider>
-  </UserContextProvider>
-);
+const AppWrapper = ({ me, organization, restlay, ...props }: Props) => {
+  const [org, setOrg] = useState(organization);
+  const update = async () => {
+    const newOrg = await restlay.fetchQuery(new OrganizationQuery());
+    setOrg(newOrg);
+  };
+  return (
+    <UserContextProvider me={me}>
+      <OrganizationContextProvider
+        value={{ organization: org, refresh: update }}
+      >
+        <App {...props} />
+      </OrganizationContextProvider>
+    </UserContextProvider>
+  );
+};
 
 const breadcrumbConfig = [
   {
@@ -87,7 +98,7 @@ const breadcrumbConfig = [
 ];
 
 const AppBreadcrumb = withMe(props => {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   return (
     <ConnectedBreadcrumb
       prefix={`/${window.location.pathname.split("/")[1]}`}

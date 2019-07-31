@@ -27,7 +27,8 @@ type Props = {
 function QuorumWidget(props: Props) {
   const { location, history, requestsConnection } = props;
   const requests = requestsConnection.edges.map(e => e.node);
-  const org = useOrganization();
+  const { organization } = useOrganization();
+  const org = organization;
   const quorum = org.quorum || 0;
   const onEdit = () => {
     history.push(`${location.pathname}/admin-rules`);

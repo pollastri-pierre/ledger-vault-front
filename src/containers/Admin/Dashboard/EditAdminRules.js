@@ -26,8 +26,15 @@ type Props = {
 function EditAdminRules(props: Props) {
   const { close, requestsConnection } = props;
   const requests = requestsConnection.edges.map(e => e.node);
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const [quorum, setQuorum] = useState(organization.quorum || 0);
+  const { refresh } = useOrganization();
+
+  const onSuccess = () => {
+    refresh();
+    close();
+  };
+
   const inner = (
     <Box width={500} height={500}>
       <RichModalHeader title="Edit admin rule" Icon={MdEdit} onClose={close} />
@@ -51,7 +58,7 @@ function EditAdminRules(props: Props) {
             interactions={createAndApprove("ORGANIZATION")}
             disabled={quorum === organization.quorum}
             additionalFields={{ type: "UPDATE_QUORUM", data: { quorum } }}
-            onSuccess={close}
+            onSuccess={onSuccess}
             buttonLabel="Edit"
           />
         </Box>

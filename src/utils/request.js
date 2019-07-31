@@ -93,6 +93,16 @@ export function navigateToRequest(request: Request, history: MemoryHistory) {
   }
 }
 
+// FIXME REVOKE_USER is also triggered when revoking an operator which does not affect admin rules
+const ACTION_AFFECTING_ADMIN_RULES = [
+  "REVOKE_USER",
+  "CREATE_ADMIN",
+  "UPDATE_QUORUM",
+];
+export function isRequestAffectingAdminRules(request: Request) {
+  return ACTION_AFFECTING_ADMIN_RULES.includes(request.type);
+}
+
 export function getCurrentStepProgress(request: Request) {
   if (!request) return null;
   if (!request.approvals_steps) return null;
