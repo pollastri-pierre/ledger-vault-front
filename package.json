@@ -75,7 +75,6 @@
     "node-polyglot": "^2.3.1",
     "normalizr-gre": "^3.2.4",
     "prop-types": "^15.6.1",
-    "qrcode-reader": "^1.0.4",
     "qs": "^6.5.2",
     "query-string": "^6.8.2",
     "raf": "^3.4.0",
