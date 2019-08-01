@@ -299,7 +299,7 @@ type TransactionCommon = {
   recipients: string[],
   block_height?: number,
   time?: Date,
-  transaction?: RawTransaction,
+  transaction?: RawTransaction | RawTransactionETH,
   exploreURL: ?string,
   approvals: Approval[],
   tx_hash: ?string,
