@@ -17,7 +17,7 @@ type Props = {
 };
 
 // gate has a weird status management
-const APPROVED_LIKE_STATUS = ["SUBMITTED", "ACTIVE"];
+const APPROVED_LIKE_STATUS = ["SUBMITTED", "ACTIVE", "MIGRATED", "VIEW_ONLY"];
 
 class EntityStatus extends PureComponent<Props> {
   render() {
@@ -28,7 +28,8 @@ class EntityStatus extends PureComponent<Props> {
     }
 
     const isRequestBlocked = request.status === "BLOCKED";
-    const shouldDisplayBlockedStatus = isRequestBlocked && status !== "ACTIVE";
+    const shouldDisplayBlockedStatus =
+      isRequestBlocked && !APPROVED_LIKE_STATUS.includes(status);
 
     if (useRequestStatus && APPROVED_LIKE_STATUS.includes(request.status)) {
       return <Status size={size} status="APPROVED" />;
