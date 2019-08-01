@@ -17,7 +17,7 @@ export type Interaction = {
   action: Object => Promise<*>,
 };
 
-type DeviceError = { statusCode: number };
+export type DeviceError = { statusCode: number };
 type Props = {
   interactions: Interaction[],
   noCheckVersion?: boolean,

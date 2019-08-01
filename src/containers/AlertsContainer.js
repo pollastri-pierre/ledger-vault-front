@@ -9,6 +9,7 @@ import { withRouter } from "react-router";
 import colors, { opacity } from "shared/colors";
 import Alert from "components/utils/Alert";
 import { closeMessage } from "redux/modules/alerts";
+import { DEVICE_REJECT_ERROR_CODE, U2F_TIMEOUT } from "device";
 import { OutOfDateApp } from "utils/errors";
 import Modal, { RichModalHeader } from "components/base/Modal";
 import Box from "components/base/Box";
@@ -16,6 +17,7 @@ import Copy from "components/base/Copy";
 import Text from "components/base/Text";
 import BlockingReasons from "components/BlockingReasons";
 import TranslatedError from "components/TranslatedError";
+import type { DeviceError } from "components/DeviceInteraction";
 
 const mapStateToProps = state => ({
   alerts: state.alerts,
@@ -30,12 +32,13 @@ const errorRed = opacity(colors.grenade, 0.7);
 
 const IconError = p => <FaExclamationCircle {...p} color={errorRed} />;
 
+const STATUS_NO_ERROR = [DEVICE_REJECT_ERROR_CODE, U2F_TIMEOUT];
 export function MessagesContainer(props: {
   alerts: {
     visible: boolean,
     type: string,
     title: string,
-    error?: Error,
+    error?: Error | DeviceError,
     content?: string,
   },
   history: MemoryHistory,
@@ -44,6 +47,14 @@ export function MessagesContainer(props: {
   const { alerts, onClose, history } = props;
   const { error, visible, title, type, content } = alerts;
 
+  // we don't want to display timeout and reject by user as an error
+  if (
+    error &&
+    error.statusCode &&
+    STATUS_NO_ERROR.indexOf(error.statusCode) > -1
+  ) {
+    return null;
+  }
   if (type === "reason") {
     return (
       <Modal isOpened={visible} onClose={onClose}>
