@@ -1,5 +1,5 @@
-// flow-typed signature: 3c4fb34a43990e5147787ecee58f3962
-// flow-typed version: 674bca2997/node-polyglot_v2.x.x/flow_>=v0.25.0
+// flow-typed signature: 1c1ad4ec40585ff34bdb70c957b4ad08
+// flow-typed version: c6154227d1/node-polyglot_v2.x.x/flow_>=v0.104.x
 
 declare module "node-polyglot" {
   declare type onMissingKeyType = (
@@ -13,7 +13,8 @@ declare module "node-polyglot" {
       phrases?: Object,
       locale?: string,
       allowMissing?: boolean,
-      onMissingKey?: onMissingKeyType
+      onMissingKey?: onMissingKeyType,
+      ...
     }): Polyglot,
     extend(phrases: Object): void,
     t(id: string, props?: Object): string,
