@@ -6,7 +6,6 @@ import { MdEdit } from "react-icons/md";
 import { FaArrowRight } from "react-icons/fa";
 
 import colors from "shared/colors";
-import OrganizationQuery from "api/queries/OrganizationQuery";
 import RequestQuery from "api/queries/RequestQuery";
 import connectData from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
@@ -14,22 +13,22 @@ import Status from "components/Status";
 import { RichModalHeader, RichModalFooter } from "components/base/Modal";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
+import { useOrganization } from "components/OrganizationContext";
 import RequestActionButtons from "components/RequestActionButtons";
 import type { Request } from "data/types";
-import type { RestlayEnvironment } from "restlay/connectData";
 
 const arrowRight = <FaArrowRight size={9} color={colors.ocean} />;
 
 function OrganizationDetails({
   request,
   close,
-  restlay,
 }: {
   request: Request,
-  restlay: RestlayEnvironment,
   close: () => void,
 }) {
+  const { refresh } = useOrganization();
   invariant(request.organization, "No organization found!");
+
   const inner = (
     <Box width={500}>
       <RichModalHeader
@@ -50,7 +49,7 @@ function OrganizationDetails({
         <RichModalFooter>
           <RequestActionButtons
             onSuccess={() => {
-              restlay.fetchQuery(new OrganizationQuery());
+              refresh();
               close();
             }}
             entity={{ last_request: request }}

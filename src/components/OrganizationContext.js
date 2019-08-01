@@ -4,7 +4,11 @@ import { createContext, useContext } from "react";
 
 import type { Organization } from "data/types";
 
-const OrganizationContext: React$Context<?Organization> = createContext(null);
+type OrgContextType = {
+  organization: Organization,
+  refresh: () => Promise<*>,
+};
+const OrganizationContext: React$Context<?OrgContextType> = createContext(null);
 
 export const OrganizationContextProvider = OrganizationContext.Provider;
 export const useOrganization = () => {

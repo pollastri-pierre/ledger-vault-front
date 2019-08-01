@@ -55,7 +55,9 @@ export default function backendDecorator(mocks: Mock[]) {
 
     return (
       <RestlayProvider network={mockNetwork}>
-        <OrganizationContextProvider value={organization}>
+        <OrganizationContextProvider
+          value={{ organization, refresh: () => Promise.resolve() }}
+        >
           <UserContextProvider me={me}>{story()}</UserContextProvider>
         </OrganizationContextProvider>
       </RestlayProvider>

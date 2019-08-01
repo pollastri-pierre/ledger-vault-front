@@ -13,6 +13,7 @@ import {
   RichModalTabsContainer,
   RichModalTab,
 } from "components/base/Modal";
+import { useOrganization } from "components/OrganizationContext";
 import Disabled from "components/Disabled";
 import { withMe } from "components/UserContextProvider";
 import Button from "components/base/Button";
@@ -23,6 +24,7 @@ import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 import Box from "components/base/Box";
 import Absolute from "components/base/Absolute";
 import { hasPendingRequest, hasPendingEdit } from "utils/entities";
+import { isRequestAffectingAdminRules } from "utils/request";
 import type { Entity, User } from "data/types";
 
 const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
@@ -72,6 +74,18 @@ function EntityModal<T>(props: Props<T>) {
       additionalFields={additionalFields}
     />
   );
+
+  const { refresh } = useOrganization();
+  const onSuccess = () => {
+    // FIXME technically we should also check if the quorum has been reached
+    if (
+      entity.last_request &&
+      isRequestAffectingAdminRules(entity.last_request)
+    ) {
+      refresh();
+    }
+    onClose();
+  };
 
   const childs = Array.isArray(children) ? children : [children];
 
@@ -136,7 +150,7 @@ function EntityModal<T>(props: Props<T>) {
       {showFooter && (
         <RichModalFooter>
           {hasPendingReq || isLastRequestBlocked ? (
-            <RequestActionButtons onSuccess={onClose} entity={entity} />
+            <RequestActionButtons onSuccess={onSuccess} entity={entity} />
           ) : showRevoke ? (
             revokeButton || null
           ) : (
