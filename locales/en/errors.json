@@ -43,6 +43,10 @@
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"
   },
+  "NetworkTimeoutError": {
+    "description": "The request timed out. Please try again.",
+    "title": "Timeout error"
+  },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"

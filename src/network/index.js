@@ -1,5 +1,6 @@
 // @flow
 import type { DeviceError } from "utils/errors";
+import { NetworkTimeoutError } from "utils/errors";
 import { getLocalStorageToken } from "../redux/modules/auth";
 import fetchF from "./fetchF";
 
@@ -29,6 +30,10 @@ export default function<T>(
   }
   return fetchF(uri, options, fetchParams).then(response => {
     if (response.status < 200 || response.status >= 300) {
+      if (response.status === 504) {
+        return Promise.reject(new NetworkTimeoutError());
+      }
+
       const baseErrorObject = {
         message: "network error",
         status: response.status,
