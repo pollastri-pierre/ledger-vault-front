@@ -6,6 +6,7 @@ import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 
 import type { RestlayEnvironment } from "restlay/connectData";
+import { DEVICE_REJECT_ERROR_CODE } from "device";
 import FreshAddressesQuery from "api/queries/FreshAddressesQuery";
 import type { Account, FreshAddress } from "data/types";
 import { verifyAddressFlow } from "device/interactions/hsmFlows";
@@ -83,9 +84,11 @@ const VerifyFreshAddress = connectData(
       setHasBeenVerified(true);
     };
 
-    const onVerifyError = () => {
+    const onVerifyError = e => {
+      if (e.statusCode && e.statusCode === DEVICE_REJECT_ERROR_CODE) {
+        setHasBeenVerified(false);
+      }
       setVerifying(false);
-      setHasBeenVerified(false);
     };
 
     return (
