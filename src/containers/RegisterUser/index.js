@@ -110,7 +110,7 @@ function RegisterUser(props: Props) {
               <LineRow
                 label={<Trans i18nKey="inviteUser:registration.userID" />}
               >
-                {userInvite.user.user_id}
+                {userInvite.user.user_id.toUpperCase()}
               </LineRow>
               <LineRow
                 label={<Trans i18nKey="inviteUser:registration.workspace" />}
