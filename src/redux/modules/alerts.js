@@ -1,5 +1,6 @@
 // @flow
 import { DATA_FETCHED, DATA_FETCHED_FAIL } from "restlay/dataStore";
+import { NetworkTimeoutError } from "utils/errors";
 import { LOGOUT } from "./auth";
 
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
@@ -71,6 +72,9 @@ export default function reducer(state: Store = initialState, action: Object) {
       }
       if (process.env.NODE_ENV !== "production") {
         console.error(error);
+      }
+      if (error instanceof NetworkTimeoutError) {
+        return { visible: true, type: "error", error };
       }
       if (error.json && error.json.blocking_reasons) {
         return {
