@@ -14,6 +14,16 @@
     "CREATE_ACCOUNT": "Create account",
     "UPDATE_QUORUM": "Edit admin rule"
   },
+  "statusDot": {
+    "EDIT_GROUP": "<0>Edit group</0> request in progress",
+    "EDIT_ACCOUNT": "<0>Edit account</0> request in progress",
+    "MIGRATE_ACCOUNT": "<0>Update account</0> request in progress",
+    "REVOKE_GROUP": "<0>Delete group</0> request in progress",
+    "REVOKE_USER": "<0>Revoke user</0> request in progress",
+    "REVOKE_ACCOUNT": "<0>Archive account</0> request in progress",
+    "REVOKE_TRANSACTION": "<0>Reject transaction</0> request in progress",
+    "UPDATE_QUORUM": "<0>Edit admin rule</0> request in progress"
+  },
   "approve": {
     "CREATE_GROUP": "Approve group creation",
     "EDIT_GROUP": "Approve group edition",
