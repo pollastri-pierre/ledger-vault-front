@@ -379,6 +379,7 @@ export type ERC20Token = {
   signature: string,
   hsm_signature: string,
   hsm_account_parameters: string,
+  disable_countervalue?: boolean,
 };
 
 export type MetaStatus = "APPROVED" | "PENDING" | "ABORTED";

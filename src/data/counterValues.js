@@ -16,9 +16,6 @@ import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import { accountsSelector } from "restlay/dataStore";
 import { setExchangePairsAction } from "redux/modules/exchanges";
 
-// prevent conflicting with currencies
-const erc20CvTickerBlacklist = ["XST"];
-
 const allCurrencies = listCryptoCurrencies(true);
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
@@ -58,7 +55,7 @@ const pairsSelector = createSelector(
             .map(a => {
               const token = getERC20TokenByContractAddress(a.contract_address);
               if (!token) return null;
-              if (erc20CvTickerBlacklist.includes(token.ticker)) return null;
+              if (token.disable_countervalue) return null;
               return {
                 from: { ticker: token.ticker },
                 to: intermediaryCurrency,
