@@ -58,9 +58,9 @@ function main () {
   done
   shift $((OPTIND -1))
 
-  # if [[ "$ONLY_SCENARIO" == "0" ]]; then
-  #   ensure_env_fetched
-  # fi
+  if [[ "$ONLY_SCENARIO" == "0" ]]; then
+    ensure_env_fetched
+  fi
 
   if [[ "$SHOULD_RESET" == "1" ]]; then
     stop_containers
