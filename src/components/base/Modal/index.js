@@ -147,6 +147,7 @@ class Modal extends PureComponent<ModalProps, State> {
               <ModalDialogInner
                 transparent={transparent}
                 onClick={this.swallowClick}
+                data-role="modal-inner"
               >
                 <Box grow>{children}</Box>
               </ModalDialogInner>
