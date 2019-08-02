@@ -150,7 +150,15 @@ class WrappableField extends Component<Props, State> {
       );
 
     return (
-      <Box position="relative" ref={this.ref}>
+      <Box
+        position="relative"
+        ref={this.ref}
+        style={
+          isActive && !isOpened
+            ? { borderBottom: `1px solid ${colors.form.focus}` }
+            : { borderBottom: "1px solid transparent" }
+        }
+      >
         {inner}
         {isOpened && !inPlace && (
           <Menu pos={pos} width={width}>
