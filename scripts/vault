@@ -133,7 +133,7 @@ function sync_containers() {
 function wait_up_gate() {
   printf "\e[34m- waiting for gate... \e[0m"
   while true; do
-    if curl --connect-timeout 0.2 http://localhost:5000/ledger1/_health &>/dev/null ; then
+    if curl --connect-timeout 1 http://localhost:5000/ledger1/_health &>/dev/null ; then
       break
     fi
     printf "."
