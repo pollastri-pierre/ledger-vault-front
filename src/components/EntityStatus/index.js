@@ -1,12 +1,16 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import { Trans } from "react-i18next";
+import Tooltip from "@material-ui/core/Tooltip";
+import styled from "styled-components";
 import Status from "components/Status";
 import RequestExpirationDate from "components/RequestExpirationDate";
 import Box from "components/base/Box";
 import { withMe } from "components/UserContextProvider";
 import type { User, Request } from "data/types";
 import { hasUserApprovedRequest, isUserInCurrentStep } from "utils/request";
+import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 
 type Props = {
   status: string,
@@ -43,12 +47,16 @@ class EntityStatus extends PureComponent<Props> {
       return <Status size={size} status="BLOCKED" />;
     }
 
+    const shouldDisplayDot =
+      request.status === "PENDING_APPROVAL" &&
+      APPROVED_LIKE_STATUS.includes(status);
+
     const isWaitingForApproval =
       !hasUserApprovedRequest(request, me) &&
       isUserInCurrentStep(request, me) &&
       status !== "ACTIVE";
 
-    return (
+    const inner = (
       <Box horizontal flow={10} align="center">
         <Status
           size={size}
@@ -60,9 +68,28 @@ class EntityStatus extends PureComponent<Props> {
               : status
           }
         />
+        {shouldDisplayDot && <Dot />}
         <RequestExpirationDate expirationDate={request.expired_at} />
       </Box>
     );
+
+    if (shouldDisplayDot) {
+      return (
+        <Tooltip
+          title={
+            <Trans
+              i18nKey={`request:statusDot.${request.type}`}
+              components={<b>0</b>}
+            />
+          }
+          placement="top-start"
+        >
+          {inner}
+        </Tooltip>
+      );
+    }
+
+    return inner;
   }
 }
 
@@ -73,6 +100,11 @@ export function remapStatus(status: string, targetType: string) {
   }
   return status;
 }
+
+const Dot = styled(Badge)`
+  min-width: 10px !important;
+  height: 10px;
+`;
 
 export { EntityStatus };
 export default withMe(EntityStatus);
