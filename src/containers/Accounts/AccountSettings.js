@@ -99,7 +99,7 @@ function AccountSettings(props: Props) {
       </LineRow>
       {me.role === "ADMIN" &&
         account.account_type === "Bitcoin" &&
-        account.extended_public_key && (
+        account.xpub && (
           <>
             <LineRow
               label={
