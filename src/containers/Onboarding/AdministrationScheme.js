@@ -6,7 +6,7 @@ import type { Translate } from "data/types";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Title, Introduction } from "components/Onboarding";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
 import ApprovalSlider from "./ApprovalSlider";

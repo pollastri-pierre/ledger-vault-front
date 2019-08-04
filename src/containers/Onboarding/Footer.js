@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-// import DialogButton from "components/buttons/DialogButton";
+// import DialogButton from "components/legacy/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { nextState, previousState } from "redux/modules/onboarding";

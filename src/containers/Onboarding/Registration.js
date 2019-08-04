@@ -5,7 +5,7 @@ import Modal from "components/base/Modal";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Title, Introduction, AddUser, NoMembers } from "components/Onboarding";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import Disabled from "components/Disabled";
 import { addMessage } from "redux/modules/alerts";
 import {

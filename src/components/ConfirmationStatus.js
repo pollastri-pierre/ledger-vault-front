@@ -1,8 +1,9 @@
 // @flow
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Check from "../icons/Check";
-import colors from "../../shared/colors";
+
+import colors from "shared/colors";
+import Check from "./icons/Check";
 
 const styles = {
   text: {

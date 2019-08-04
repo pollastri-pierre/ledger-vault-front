@@ -6,7 +6,7 @@ import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
 import type { Account, TransactionType } from "data/types";
 import TransactionTypeIcon from "components/TransactionTypeIcon";
-import CurrencyAccountValue from "../CurrencyAccountValue";
+import CurrencyAccountValue from "./CurrencyAccountValue";
 
 const styles = {
   base: {

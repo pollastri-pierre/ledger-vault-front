@@ -5,7 +5,7 @@ import colors from "shared/colors";
 import styled from "styled-components";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import Checkbox from "../form/Checkbox";
+import Checkbox from "./form/Checkbox";
 
 const Container = styled(Box)`
   border-bottom: 1px solid ${colors.argile};

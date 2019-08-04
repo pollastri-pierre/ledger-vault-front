@@ -6,7 +6,7 @@ import io from "socket.io-client";
 
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
-import SpinnerCard from "components/spinners/SpinnerCard";
+import SpinnerCard from "components/legacy/SpinnerCard";
 import HelpLink from "components/HelpLink";
 import Logo from "components/Logo";
 import CenteredLayout from "components/base/CenteredLayout";
