@@ -11,6 +11,7 @@ import Select from "components/base/Select";
 import Modal from "components/base/Modal";
 import Text from "components/base/Text";
 import { delay } from "utils/promise";
+import { organization } from "stories/backendDecorator";
 import {
   genUsers,
   genGroups,
@@ -19,6 +20,7 @@ import {
   genRequest,
 } from "data/mock-entities";
 import UserContextProvider from "components/UserContextProvider";
+import { OrganizationContextProvider } from "components/OrganizationContext";
 
 const users = genUsers(20);
 const groups = genGroups(3, { users, status: "ACTIVE" });
@@ -177,46 +179,50 @@ const Inner = ({ story, entity }) => {
 
   return (
     <RestlayProvider network={network}>
-      <UserContextProvider me={users[0]}>
-        <Box
-          horizontal
-          align="center"
-          flow={20}
-          p={20}
-          justify="center"
-          style={{
-            borderRadius: 5,
-            position: "fixed",
-            top: 25,
-            left: 25,
-            background: "white",
-            zIndex: 3,
-          }}
-        >
-          <Box width={200}>
-            <Select
-              options={options}
-              isClearable
-              placeholder="with pending"
-              value={pendingRequest}
-              onChange={onRequest}
-            />
-          </Box>
-          {pendingRequest && (
-            <Box horizontal align="center" onClick={onCheckboxClick}>
-              <Text>approved ?</Text>
-              <Checkbox checked={hasApproved} />
+      <OrganizationContextProvider
+        value={{ organization, refresh: () => Promise.resolve() }}
+      >
+        <UserContextProvider me={users[0]}>
+          <Box
+            horizontal
+            align="center"
+            flow={20}
+            p={20}
+            justify="center"
+            style={{
+              borderRadius: 5,
+              position: "fixed",
+              top: 25,
+              left: 25,
+              background: "white",
+              zIndex: 3,
+            }}
+          >
+            <Box width={200}>
+              <Select
+                options={options}
+                isClearable
+                placeholder="with pending"
+                value={pendingRequest}
+                onChange={onRequest}
+              />
             </Box>
-          )}
-        </Box>
-        <Modal
-          transparent
-          isOpened
-          key={JSON.stringify({ pendingRequest, hasApproved })}
-        >
-          {story()}
-        </Modal>
-      </UserContextProvider>
+            {pendingRequest && (
+              <Box horizontal align="center" onClick={onCheckboxClick}>
+                <Text>approved ?</Text>
+                <Checkbox checked={hasApproved} />
+              </Box>
+            )}
+          </Box>
+          <Modal
+            transparent
+            isOpened
+            key={JSON.stringify({ pendingRequest, hasApproved })}
+          >
+            {story()}
+          </Modal>
+        </UserContextProvider>
+      </OrganizationContextProvider>
     </RestlayProvider>
   );
 };
