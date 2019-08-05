@@ -4,10 +4,10 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { FaHome, FaList, FaUser, FaUsers } from "react-icons/fa";
 
-import RestlayProvider from "restlay/RestlayProvider";
+import backendDecorator from "stories/backendDecorator";
 import { NotifComponent } from "containers/Admin/Dashboard/PendingBadge";
 import VaultLayout from "components/VaultLayout";
-import { AccountsSearch, mockNetwork } from "components/DataSearch/stories";
+import { AccountsSearch } from "components/DataSearch/stories";
 import { BreadcrumbExample } from "components/base/Breadcrumb/stories";
 
 const fakeUser = {
@@ -20,7 +20,9 @@ const mockMatch = {
 
 const PendingBadge = () => <NotifComponent>5</NotifComponent>;
 
-storiesOf("components/base", module).add("VaultLayout", () => <Wrapper />);
+storiesOf("components/base", module)
+  .addDecorator(backendDecorator([]))
+  .add("VaultLayout", () => <Wrapper />);
 
 class Wrapper extends React.Component {
   constructor() {
@@ -80,16 +82,14 @@ class Wrapper extends React.Component {
   render() {
     const { items } = this.state;
     return (
-      <RestlayProvider network={mockNetwork}>
-        <VaultLayout
-          menuItems={items}
-          user={fakeUser}
-          match={mockMatch}
-          BreadcrumbComponent={BreadcrumbExample}
-        >
-          <AccountsSearch />
-        </VaultLayout>
-      </RestlayProvider>
+      <VaultLayout
+        menuItems={items}
+        user={fakeUser}
+        match={mockMatch}
+        BreadcrumbComponent={BreadcrumbExample}
+      >
+        <AccountsSearch />
+      </VaultLayout>
     );
   }
 }

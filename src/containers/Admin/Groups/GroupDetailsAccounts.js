@@ -11,7 +11,7 @@ import CurrencyAccountValue from "components/CurrencyAccountValue";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 import AccountsInGroupQuery from "api/queries/AccountsInGroupQuery";
 import AccountName from "components/AccountName";
-import SpinnerCard from "components/spinners/SpinnerCard";
+import SpinnerCard from "components/legacy/SpinnerCard";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import VaultLink from "components/VaultLink";

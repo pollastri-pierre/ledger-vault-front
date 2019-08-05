@@ -6,13 +6,13 @@ import { DEVICE_REJECT_ERROR_CODE } from "device";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import { generateSeed } from "device/interactions/hsmFlows";
-import SpinnerCard from "components/spinners/SpinnerCard";
+import SpinnerCard from "components/legacy/SpinnerCard";
 import type { Translate } from "data/types";
 import { withTranslation, Trans } from "react-i18next";
 import { connect } from "react-redux";
 import { Title, Introduction } from "components/Onboarding";
 import Fragment from "containers/Onboarding/Fragments";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import {
   toggleDeviceModal,
   addMasterSeedKey,

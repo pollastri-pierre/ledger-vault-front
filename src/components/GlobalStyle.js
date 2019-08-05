@@ -13,8 +13,6 @@ export default createGlobalStyle`
   body {
     font-family: "Open Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-size: 16px;
-
     color: #6f6f6f;
     font-size: 13px;
     line-height: 20px;

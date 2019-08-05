@@ -12,7 +12,7 @@ import Text from "components/base/Text";
 import Validate from "components/icons/Validate";
 import People from "components/icons/thin/People";
 import Lock from "components/icons/thin/Lock";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import Footer from "./Footer";
 
 const ConfirmationGlobal = ({

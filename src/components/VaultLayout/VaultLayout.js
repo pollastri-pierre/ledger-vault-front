@@ -148,6 +148,7 @@ const VaultLayoutFixedContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fafafa;
+  pointer-events: auto;
 `;
 
 export default VaultLayout;

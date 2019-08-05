@@ -11,7 +11,7 @@ import { Title, Introduction, NoMembers, AddUser } from "components/Onboarding";
 import { withTranslation, Trans } from "react-i18next";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import { addSharedOwner, getState } from "redux/modules/onboarding";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import type { Onboarding } from "redux/modules/onboarding";

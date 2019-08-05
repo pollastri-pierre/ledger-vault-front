@@ -9,7 +9,7 @@ import colors from "shared/colors";
 import CounterValue from "components/CounterValue";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import CurrencyAccountValue from "../CurrencyAccountValue";
+import CurrencyAccountValue from "./CurrencyAccountValue";
 
 const styles = {
   flat: {

@@ -1,18 +1,18 @@
 // @flow
 import React, { Component } from "react";
 
-import AccountAbortedActivity from "../Activities/AccountAbortedActivity";
-import AccountQuorumIsReachedActivity from "../Activities/AccountQuorumIsReachedActivity";
-import AccountReceivedApprovalActivity from "../Activities/AccountReceivedApprovalActivity";
-import NewIncomingTransactionActivity from "../Activities/NewIncomingTransactionActivity";
-import TransactionAbortedActivity from "../Activities/TransactionAbortedActivity";
-import Activity from "../legacy/Activity";
-import NewAccountActivity from "../Activities/NewAccountActivity";
-import NewTransactionActivity from "../Activities/NewTransactionActivity";
-import TransactionQuorumIsReachedActivity from "../Activities/TransactionQuorumIsReachedActivity";
-import TransactionReceivedApprovalActivity from "../Activities/TransactionReceivedApprovalActivity";
-import AccountHasBeenActivatedActivity from "../Activities/AccountHasBeenActivatedActivity";
-import AccountSecuritySchemeHasBeenProvidedActivity from "../Activities/AccountSecuritySchemeHasBeenProvidedActivity";
+import AccountAbortedActivity from "./Activities/AccountAbortedActivity";
+import AccountQuorumIsReachedActivity from "./Activities/AccountQuorumIsReachedActivity";
+import AccountReceivedApprovalActivity from "./Activities/AccountReceivedApprovalActivity";
+import NewIncomingTransactionActivity from "./Activities/NewIncomingTransactionActivity";
+import TransactionAbortedActivity from "./Activities/TransactionAbortedActivity";
+import Activity from "./legacy/Activity";
+import NewAccountActivity from "./Activities/NewAccountActivity";
+import NewTransactionActivity from "./Activities/NewTransactionActivity";
+import TransactionQuorumIsReachedActivity from "./Activities/TransactionQuorumIsReachedActivity";
+import TransactionReceivedApprovalActivity from "./Activities/TransactionReceivedApprovalActivity";
+import AccountHasBeenActivatedActivity from "./Activities/AccountHasBeenActivatedActivity";
+import AccountSecuritySchemeHasBeenProvidedActivity from "./Activities/AccountSecuritySchemeHasBeenProvidedActivity";
 
 class ActivityFactory extends Component<*, *> {
   static build(activity: *, match: *) {

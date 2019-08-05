@@ -6,9 +6,9 @@ import { withTranslation, Trans } from "react-i18next";
 import type { Translate } from "data/types";
 import Box from "components/base/Box";
 import { Title, Introduction } from "components/Onboarding";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import { connect } from "react-redux";
-import SpinnerCard from "components/spinners/SpinnerCard";
+import SpinnerCard from "components/legacy/SpinnerCard";
 import Fragment from "containers/Onboarding/Fragments";
 import {
   openWrappingChannel,

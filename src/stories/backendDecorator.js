@@ -21,7 +21,7 @@ function wrapConnection(nodes: Array<any>) {
   };
 }
 
-const organization = {
+export const organization = {
   name: "Legit",
   domain_name: "legit",
   workspace: "legit",

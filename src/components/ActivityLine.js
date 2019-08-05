@@ -6,7 +6,7 @@ import classnames from "classnames";
 import type { ActivityGeneric } from "data/types";
 import colors from "shared/colors";
 
-import ActivityFactory from "../ActivityFactory";
+import ActivityFactory from "./ActivityFactory";
 
 const styles = {
   activity: {
