@@ -54,15 +54,11 @@ function AccountSettings(props: Props) {
     data: u,
   }));
 
-  const onUnitIndexChange = unit => {
-    setSettings(settings => ({
-      ...settings,
-      currency_unit: unit.data,
-    }));
-    const currencyCode = settings.currency_unit.code;
+  const onUnitChange = unit => {
+    setSettings(settings => ({ ...settings, currency_unit: unit.data }));
     const m = new SaveAccountSettingsMutation({
       account,
-      currency_unit: currencyCode,
+      currency_unit: unit.data.code,
     });
     restlay.commitMutation(m);
   };
@@ -85,7 +81,7 @@ function AccountSettings(props: Props) {
             value={current_unit}
             placeholder="unit"
             options={options}
-            onChange={onUnitIndexChange}
+            onChange={onUnitChange}
           />
         </Box>
       </LineRow>
