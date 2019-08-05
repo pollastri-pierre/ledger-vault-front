@@ -71,18 +71,8 @@ function AccountQuickInfoWidget(props: Props) {
       </Box>
     ) : null;
 
-  return (
+  const widget = (
     <Widget title={title} grow position="relative">
-      <Absolute top={30} right={10}>
-        <Tooltip title="Account settings">
-          <SettingsLink
-            to={`${location.pathname}/accounts/details/${account.id}/overview`}
-            className="content-header-button"
-          >
-            <FaWrench />
-          </SettingsLink>
-        </Tooltip>
-      </Absolute>
       <SoftCard grow flow={20} style={{ padding: 0 }}>
         <Box horizontal flexWrap="wrap">
           <InfoSquare>
@@ -173,6 +163,22 @@ function AccountQuickInfoWidget(props: Props) {
         </Box>
       </SoftCard>
     </Widget>
+  );
+
+  return (
+    <div style={{ position: "relative" }}>
+      {widget}
+      <Absolute top={10} right={10}>
+        <Tooltip title="Account settings">
+          <SettingsLink
+            to={`${location.pathname}/accounts/details/${account.id}/overview`}
+            className="content-header-button"
+          >
+            <FaWrench />
+          </SettingsLink>
+        </Tooltip>
+      </Absolute>
+    </div>
   );
 }
 
