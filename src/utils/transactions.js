@@ -6,6 +6,7 @@ import type {
   User,
 } from "data/types";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
+import { isMemberOfFirstApprovalStep } from "utils/users";
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
 
@@ -15,6 +16,7 @@ export const hasPending = (account: Account, transactions: Transaction[]) =>
 
 // transaction creation is not allowed if there is no accounts obviously.
 // If there are accounts, we need at least one account with 0 pending operation and uptodate
+// Operator has to be part of the first step of approval flow
 // We need at leat one account with a balance > 0, and without pending
 export const isCreateTransactionEnabled = (
   accounts: Account[],
@@ -26,6 +28,7 @@ export const isCreateTransactionEnabled = (
       account.status === "ACTIVE" &&
       !hasPending(account, pendingTransactions) &&
       !isAccountOutdated(account) &&
+      isMemberOfFirstApprovalStep(account) &&
       !isAccountBeingUpdated(account),
   );
   return filter.length > 0;
