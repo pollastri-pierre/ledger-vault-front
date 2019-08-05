@@ -88,6 +88,7 @@ const WrappingKeys = ({
                     secure_channel: onboarding.wrapping.channel,
                   }}
                   interactions={generateWrappingKeyFlow}
+                  desc={t(`onboarding:wrapping_key.step${i + 1}`)}
                   label={t("onboarding:wrapping_key.generate")}
                   generated={onboarding.wrapping.blobs.length > i}
                   onSuccess={onSuccess}
