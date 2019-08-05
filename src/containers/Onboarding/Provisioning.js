@@ -104,6 +104,7 @@ const Provisioning = ({
                   secure_channels: onboarding.provisionning.channel,
                 }}
                 interactions={generateSeed}
+                desc={t(`onboarding:master_seed_provisionning.step${i + 1}`)}
                 label={t("onboarding:master_seed_provisionning.generate_seed")}
                 generated={onboarding.provisionning.blobs.length > i}
                 onSuccess={onSuccess}
