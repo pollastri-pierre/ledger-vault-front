@@ -1,4 +1,6 @@
 // @flow
+import React from "react";
+import { Trans } from "react-i18next";
 
 export const accountsTableDefault = [
   {
@@ -48,7 +50,7 @@ export const accountsTableDefault = [
 
 export const roleColumn = {
   header: {
-    label: "Role",
+    label: <Trans i18nKey="accountView:permission" />,
     align: "right",
   },
   body: {

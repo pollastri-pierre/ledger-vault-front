@@ -136,7 +136,7 @@ function AccountQuickInfoWidget(props: Props) {
             <InfoSquare>
               <Label align="center" horizontal flow={5}>
                 <FaCheck />
-                <span>Role</span>
+                <Text i18nKey="accountView:permission" />
               </Label>
               <div>
                 <ApproverRole account={account} />

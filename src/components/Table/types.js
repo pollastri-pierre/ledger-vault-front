@@ -8,7 +8,7 @@ export type TableItem = {
 };
 
 type TableHeader = {
-  label: string,
+  label: React$Node,
   align: "left" | "right",
   sortable?: boolean,
   sortFirst?: "asc" | "desc",
