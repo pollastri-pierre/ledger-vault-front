@@ -18,18 +18,20 @@ export const hasPending = (account: Account, transactions: Transaction[]) =>
 // If there are accounts, we need at least one account with 0 pending operation and uptodate
 // Operator has to be part of the first step of approval flow
 // We need at leat one account with a balance > 0, and without pending
+export const isAccountSpendable = (account: Account) =>
+  account.balance.isGreaterThan(0) &&
+  account.status === "ACTIVE" &&
+  !isAccountOutdated(account) &&
+  isMemberOfFirstApprovalStep(account) &&
+  !isAccountBeingUpdated(account);
+
 export const isCreateTransactionEnabled = (
   accounts: Account[],
   pendingTransactions: Transaction[],
 ) => {
   const filter = accounts.filter(
     account =>
-      account.balance.isGreaterThan(0) &&
-      account.status === "ACTIVE" &&
-      !hasPending(account, pendingTransactions) &&
-      !isAccountOutdated(account) &&
-      isMemberOfFirstApprovalStep(account) &&
-      !isAccountBeingUpdated(account),
+      isAccountSpendable(account) && !hasPending(account, pendingTransactions),
   );
   return filter.length > 0;
 };
