@@ -47,3 +47,10 @@ test("should return false if there are 2 accounts without funds", () => {
   accounts[1].balance = BigNumber(0);
   expect(isCreateTransactionEnabled(accounts, [])).toBe(false);
 });
+
+test("should return false if operator is not in first step of approval flow", () => {
+  const accounts = genAccounts(1, { users }, { status: "ACTIVE" });
+  const transactions = genTransactions(1, { accounts, users });
+  accounts[0].tx_approval_steps = [null, {}];
+  expect(isCreateTransactionEnabled(accounts, transactions)).toBe(false);
+});

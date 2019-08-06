@@ -32,6 +32,7 @@ import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import { isAccountSpendable } from "utils/transactions";
 import Widget from "./Widget";
 
 type Props = {
@@ -53,6 +54,7 @@ function AccountQuickInfoWidget(props: Props) {
             IconLeft={IconSend}
             customColor={colors.blue}
             variant="filled"
+            disabled={!isAccountSpendable(account)}
             size="tiny"
           >
             Send

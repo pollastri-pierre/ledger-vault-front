@@ -54,7 +54,7 @@ function UserDetails(props: Props) {
     />
   );
 
-  const hideAccessTab = ["PENDING_APPROVAL", "PENDING_REGISTRATION"].includes(
+  const showPermissionTab = ["ACTIVE", "ACCESS_SUSPENDED"].includes(
     user.status,
   );
 
@@ -68,7 +68,7 @@ function UserDetails(props: Props) {
       revokeButton={revokeButton}
     >
       <UserDetailsOverview key="overview" user={user} />
-      {user.role === "OPERATOR" && !hideAccessTab && (
+      {user.role === "OPERATOR" && showPermissionTab && (
         <UserDetailsPermissions key="permissions" user={user} />
       )}
       <FetchEntityHistory
