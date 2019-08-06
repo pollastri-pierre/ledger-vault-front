@@ -18,6 +18,7 @@ import StepBall from "./StepBall";
 export type ApprovalsRule = {
   quorum: number,
   users: number[],
+  rawUsers?: User[],
   group_id: number | null,
 };
 

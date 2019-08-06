@@ -87,6 +87,17 @@ export const deserializeApprovalSteps = (
           users: rule.group.is_internal
             ? rule.group.members.map(m => m.id)
             : [],
+
+          // /!\ Hack
+          //
+          // the gate send us the whole users objects, which is good news
+          // in this specific case, because operator can't normally see
+          // them (because of access control). For some reason they are here.
+          //
+          // see https://ledgerhq.atlassian.net/browse/LV-1798
+          // for more infos
+          //
+          rawUsers: rule.group.is_internal ? rule.group.members : [],
         }
       : null,
   );

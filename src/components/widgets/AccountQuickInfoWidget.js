@@ -168,7 +168,7 @@ function AccountQuickInfoWidget(props: Props) {
   return (
     <div style={{ position: "relative" }}>
       {widget}
-      <Absolute top={10} right={10}>
+      <Absolute top={title ? 40 : 10} right={10}>
         <Tooltip title="Account settings">
           <SettingsLink
             to={`${location.pathname}/accounts/details/${account.id}/overview`}

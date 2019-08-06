@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
 import styled from "styled-components";
 import { SortableHandle, SortableElement } from "react-sortable-hoc";
-import { FaGripVertical, FaTrash, FaUserSecret } from "react-icons/fa";
+import { FaGripVertical, FaTrash } from "react-icons/fa";
 
 import type { User, Group } from "data/types";
 
@@ -188,14 +188,9 @@ class ApprovalsRule extends PureComponent<Props, State> {
                     style={{ minHeight: 40 }}
                   >
                     {rule.users.map(u => {
-                      const user = users.find(user => user.id === u);
-                      if (!user)
-                        return (
-                          <Box key={u} horizontal flow={5}>
-                            <FaUserSecret size={16} />
-                            <span>Anonymous</span>
-                          </Box>
-                        );
+                      const allUsers = [...users, ...(rule.rawUsers || [])];
+                      const user = allUsers.find(user => user.id === u);
+                      if (!user) return null;
                       return (
                         <Box
                           key={u}
