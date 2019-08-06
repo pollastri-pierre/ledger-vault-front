@@ -151,13 +151,13 @@ export const openSession = async (
   path: number[],
   pubKey: Buffer,
   attestation: Buffer,
-  scriptHash: number = 0x00,
+  scriptId: number = 0x00,
 ): Promise<*> => {
   const data = await deviceNetwork(ENDPOINTS.OPEN_SESSION, "POST", {
     path: pathArrayToString(path),
     pubKey: pubKey.toString("hex"),
     attestation: attestation.toString("hex"),
-    scriptHash,
+    scriptId,
   });
   return data;
 };
@@ -197,10 +197,9 @@ export const authenticate = async (
     challenge: challenge.toString("hex"),
     application,
     key_handle: keyHandle.toString("hex"),
-    hsm_data: workspace,
+    workspaceName: workspace,
     name: userName,
     role: fromStringRoleToBytes[role.toLowerCase()].toString("hex"),
-    type: psdType.toString("hex"),
   });
 
   // we add a fake status response because traaansport on device does it
