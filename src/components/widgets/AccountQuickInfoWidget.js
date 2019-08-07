@@ -27,6 +27,7 @@ import Absolute from "components/base/Absolute";
 import type { Account } from "data/types";
 import { Label } from "components/base/form";
 import Button from "components/base/Button";
+import Disabled from "components/Disabled";
 import Text from "components/base/Text";
 import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/AccountIcon";
@@ -49,17 +50,18 @@ function AccountQuickInfoWidget(props: Props) {
   const title =
     me.role === "OPERATOR" ? (
       <Box horizontal flow={10}>
-        <Link to={`${account.id}/send/${account.id}`}>
-          <Button
-            IconLeft={IconSend}
-            customColor={colors.blue}
-            variant="filled"
-            disabled={!isAccountSpendable(account)}
-            size="tiny"
-          >
-            Send
-          </Button>
-        </Link>
+        <Disabled disabled={!isAccountSpendable(account)} customOpacity="0.3">
+          <Link to={`${account.id}/send/${account.id}`}>
+            <Button
+              IconLeft={IconSend}
+              customColor={colors.blue}
+              variant="filled"
+              size="tiny"
+            >
+              Send
+            </Button>
+          </Link>
+        </Disabled>
         <Link to={`${account.id}/receive/${account.id}`}>
           <Button
             IconLeft={IconReceive}
