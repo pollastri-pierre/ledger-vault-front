@@ -27,7 +27,9 @@ export const getVisibleAccountsInMenu = (accounts: Account[]): Account[] =>
   accounts.filter(a => VISIBLE_MENU_STATUS.indexOf(a.status) > -1);
 
 export const isAccountBeingUpdated = (account: Account) =>
-  account.status === STATUS_UPDATE_IN_PROGRESS;
+  account.last_request &&
+  account.last_request.type === "EDIT_ACCOUNT" &&
+  account.last_request.status === "PENDING_APPROVAL";
 
 export const hasUserApprovedAccount = (account: Account, user: User) => {
   const approvals = account.approvals.filter(
