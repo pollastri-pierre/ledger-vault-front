@@ -1,6 +1,6 @@
 // @flow
 
-import type { User } from "data/types";
+import type { User, Request } from "data/types";
 
 // TODO: LOL
 type GateHistory = *;
@@ -34,6 +34,7 @@ export type VaultHistoryStep = {
   createdOn: string,
   createdBy: User,
   approvalsSteps?: Array<?VaultHistoryApprovalStep>,
+  blockerRequest?: Request,
 };
 
 export type VaultHistoryItem = {
@@ -51,10 +52,13 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
       type: resolveItemType(gateStepsGroup[0]),
       requestID: resolveRequestID(gateStepsGroup),
       steps: gateStepsGroup.map(gateStep => {
-        const step: VaultHistoryStep = {
+        const step: $Exact<VaultHistoryStep> = {
           type: resolveStepType(gateStep),
           createdBy: gateStep.created_by,
           createdOn: gateStep.created_on,
+          ...(gateStep.blocker_request
+            ? { blockerRequest: gateStep.blocker_request }
+            : {}),
         };
         if (gateStep.approvals_steps) {
           Object.assign(step, {

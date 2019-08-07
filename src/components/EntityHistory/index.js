@@ -208,6 +208,15 @@ const HistoryStep = ({
       <Trans i18nKey={`history:stepType.${step.type}`} />
       {" on "}
       {moment(step.createdOn).format("LLL")}
+      {step.blockerRequest && (
+        <>
+          {" by a "}
+          <b>
+            <Trans i18nKey={`request:type.${step.blockerRequest.type}`} />
+          </b>
+          {" request"}
+        </>
+      )}
     </span>
     {step.approvalsSteps && !!step.approvalsSteps.length && (
       <ApprovalsSteps approvalsSteps={step.approvalsSteps} />
