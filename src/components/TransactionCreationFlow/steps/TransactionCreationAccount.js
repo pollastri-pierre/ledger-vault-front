@@ -10,7 +10,7 @@ import { withMe } from "components/UserContextProvider";
 import Box from "components/base/Box";
 import { Label } from "components/base/form";
 import SelectAccount from "components/SelectAccount";
-import { isMemberOfFirstApprovalStep } from "utils/users";
+import { isAccountSpendable } from "utils/transactions";
 
 import type { Account } from "data/types";
 import type { TransactionCreationStepProps } from "../types";
@@ -54,11 +54,7 @@ const TransactionCreationAccount = (
 
   const filteredAccounts = accounts.edges
     .map(el => el.node)
-    .filter(
-      account =>
-        isMemberOfFirstApprovalStep(account) &&
-        account.balance.isGreaterThan(0),
-    );
+    .filter(isAccountSpendable);
 
   return (
     <Box>
