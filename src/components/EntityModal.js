@@ -98,6 +98,7 @@ function EntityModal<T>(props: Props<T>) {
 
   const hasPendingReq = hasPendingRequest(entity);
   const isPendingEdit = hasPendingEdit(entity);
+  const isEntityBlocked = entity.status === "BLOCKED";
   const isLastRequestBlocked =
     entity.last_request && entity.last_request.status === "BLOCKED";
   const showRevoke =
@@ -149,7 +150,7 @@ function EntityModal<T>(props: Props<T>) {
 
       {showFooter && (
         <RichModalFooter>
-          {hasPendingReq || isLastRequestBlocked ? (
+          {hasPendingReq || isEntityBlocked ? (
             <RequestActionButtons onSuccess={onSuccess} entity={entity} />
           ) : showRevoke ? (
             revokeButton || null

@@ -4,6 +4,7 @@
 
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
+import qs from "query-string";
 import styled from "styled-components";
 import moment from "moment";
 import {
@@ -93,6 +94,7 @@ const approvalIcons = {
 
 function EntityHistory(props: Props) {
   const { history, entityType } = props;
+  const openedRequestID = resolveOpenedRequestID();
 
   if (!history || !history.length) {
     return <Text>No history for this entity</Text>;
@@ -105,7 +107,11 @@ function EntityHistory(props: Props) {
           key={i}
           entityType={entityType}
           item={item}
-          isLast={i === history.length - 1}
+          isInitiallyOpened={
+            openedRequestID === null || history.length === 1
+              ? i === history.length - 1
+              : item.requestID === openedRequestID
+          }
         />
       ))}
     </Box>
@@ -115,14 +121,14 @@ function EntityHistory(props: Props) {
 const HistoryItem = ({
   item,
   entityType,
-  isLast,
+  isInitiallyOpened,
 }: {
   item: VaultHistoryItem,
   entityType: EntityType,
-  isLast: boolean,
+  isInitiallyOpened: boolean,
 }) => {
   const status = getItemStatus(item);
-  const [isCollapsed, setCollapsed] = useState(!isLast);
+  const [isCollapsed, setCollapsed] = useState(!isInitiallyOpened);
   const onToggle = () => setCollapsed(!isCollapsed);
   return (
     <HistoryItemContainer>
@@ -202,6 +208,15 @@ const HistoryStep = ({
       <Trans i18nKey={`history:stepType.${step.type}`} />
       {" on "}
       {moment(step.createdOn).format("LLL")}
+      {step.blockerRequest && (
+        <>
+          {" by a "}
+          <b>
+            <Trans i18nKey={`request:type.${step.blockerRequest.type}`} />
+          </b>
+          {" request"}
+        </>
+      )}
     </span>
     {step.approvalsSteps && !!step.approvalsSteps.length && (
       <ApprovalsSteps approvalsSteps={step.approvalsSteps} />
@@ -355,6 +370,9 @@ function getItemStatus(item: VaultHistoryItem) {
   if (lastStep.type === "ABORTED") {
     return "ABORTED";
   }
+  if (lastStep.type === "BLOCKED") {
+    return "BLOCKED";
+  }
   return "PENDING";
 }
 
@@ -370,6 +388,13 @@ export function FetchEntityHistory({
       {history => <EntityHistory history={history} entityType={entityType} />}
     </Fetch>
   );
+}
+
+function resolveOpenedRequestID() {
+  const search = qs.parse(window.location.search);
+  if (!search) return null;
+  if (!search.requestID) return null;
+  return Number(search.requestID);
 }
 
 export default EntityHistory;

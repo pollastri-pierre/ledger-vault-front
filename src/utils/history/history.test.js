@@ -12,6 +12,7 @@ describe("deserializeHistory", () => {
     expect(res).toEqual([
       {
         type: "CREATE",
+        requestID: 7,
         steps: [
           {
             type: "CREATED",
@@ -44,6 +45,7 @@ describe("deserializeHistory", () => {
       },
       {
         type: "EDIT",
+        requestID: 8,
         steps: [
           {
             type: "EDITED",
@@ -76,6 +78,7 @@ describe("deserializeHistory", () => {
       },
       {
         type: "DELETE",
+        requestID: 9,
         steps: [
           {
             type: "REVOKED",
@@ -114,6 +117,7 @@ describe("deserializeHistory", () => {
     expect(res).toEqual([
       {
         type: "CREATE",
+        requestID: 6,
         steps: [
           {
             type: "CREATED",
@@ -152,6 +156,7 @@ describe("deserializeHistory", () => {
     expect(res).toEqual([
       {
         type: "CREATE",
+        requestID: 4,
         steps: [
           {
             type: "INVITED",
@@ -189,6 +194,7 @@ describe("deserializeHistory", () => {
       },
       {
         type: "DELETE",
+        requestID: 11,
         steps: [
           {
             type: "REVOKED",
