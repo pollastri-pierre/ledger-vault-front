@@ -32,9 +32,17 @@ export const isUserInCurrentStep = (request: Request, me: User) => {
   }
 };
 
-export const getModalTabLink = (request: ?Request, url: string) => {
+export const getModalTabLink = (
+  request: ?Request,
+  url: string,
+  // navigate to history tab and expand the given request
+  expandRequestHistory: boolean = false,
+) => {
   const defaultLink = `${url}/overview`;
   if (!request) return defaultLink;
+  if (expandRequestHistory) {
+    return `${url}/history?requestID=${request.id}`;
+  }
   return isRequestPending(request) && isEditRequest(request)
     ? `${url}/editRequest`
     : defaultLink;

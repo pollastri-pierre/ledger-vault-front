@@ -39,6 +39,7 @@ export type VaultHistoryStep = {
 export type VaultHistoryItem = {
   type: "CREATE" | "EDIT" | "DELETE",
   steps: VaultHistoryStep[],
+  requestID: number,
 };
 
 export type VaultHistory = VaultHistoryItem[];
@@ -48,6 +49,7 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
     if (!gateStepsGroup.length) return null;
     return {
       type: resolveItemType(gateStepsGroup[0]),
+      requestID: resolveRequestID(gateStepsGroup),
       steps: gateStepsGroup.map(gateStep => {
         const step: VaultHistoryStep = {
           type: resolveStepType(gateStep),
@@ -81,6 +83,13 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
       }),
     };
   });
+}
+
+function resolveRequestID(group) {
+  const itemWithApprovals = group.find(i => i.approvals && i.approvals.length);
+  if (!itemWithApprovals) return null;
+  const approval = itemWithApprovals.approvals[0];
+  return approval.request_id;
 }
 
 function resolveItemType(item) {
