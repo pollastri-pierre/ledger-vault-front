@@ -77,7 +77,10 @@ class FiltersCard extends PureComponent<Props> {
       updateQueryParams: this.handleUpdateKey,
     };
 
-    const filters = Children.map(children, c => cloneElement(c, childProps));
+    const filters = Children.map(
+      children,
+      c => c && cloneElement(c, childProps),
+    );
     const hasFilters = hasProps(queryParams);
     const showNbResults = typeof nbResults === "number";
 

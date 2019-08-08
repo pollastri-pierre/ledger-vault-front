@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useMe } from "components/UserContextProvider";
 
 import {
   FiltersCard,
@@ -9,6 +10,8 @@ import {
   FieldCurrency,
   FieldAccountType,
   FieldStatuses,
+  FieldGroup,
+  FieldUser,
 } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 import type { MetaStatus } from "data/types";
@@ -19,6 +22,7 @@ const statuses: MetaStatus[] = [...defaultStatuses, "ABORTED"];
 
 function AccountsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
+  const me = useMe();
   return (
     <FiltersCard title="Find accounts" subtitle="Find accounts" {...props}>
       <FieldStatuses
@@ -28,6 +32,8 @@ function AccountsFilters(props: FieldsGroupProps) {
       />
       <FieldCurrency />
       <FieldAccountType />
+      {me.role === "ADMIN" && <FieldGroup />}
+      {me.role === "ADMIN" && <FieldUser />}
       <FieldText
         title="Account name"
         queryKey="name"

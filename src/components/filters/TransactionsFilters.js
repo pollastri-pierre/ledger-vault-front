@@ -9,7 +9,7 @@ import type { FieldsGroupProps } from "components/filters/types";
 import {
   FiltersCard,
   FieldCurrency,
-  FieldAccounts,
+  FieldAccount,
   FieldDate,
   FieldText,
   FieldSelect,
@@ -35,10 +35,13 @@ const txTypes = [
 ];
 
 export default function TransactionsFilters(props: Props) {
-  const { accounts, ...p } = props;
   const { t } = useTranslation();
   return (
-    <FiltersCard title="Find transactions" subtitle="Find transactions" {...p}>
+    <FiltersCard
+      title="Find transactions"
+      subtitle="Find transactions"
+      {...props}
+    >
       <FieldStatuses
         statuses={statuses}
         placeholder={t("common:transactionStatus")}
@@ -55,7 +58,7 @@ export default function TransactionsFilters(props: Props) {
         width={180}
       />
       <FieldCurrency />
-      <FieldAccounts accounts={accounts} />
+      <FieldAccount />
       <FieldDate />
       <FieldText title="Label" queryKey="label" placeholder="Label" />
     </FiltersCard>
