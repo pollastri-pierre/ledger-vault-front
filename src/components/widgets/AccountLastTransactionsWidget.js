@@ -51,12 +51,14 @@ function AccountLastTransactionsWidget(props: Props) {
   );
 }
 
-export default connectWidget(withRouter(AccountLastTransactionsWidget), {
-  height: 300,
-  queries: {
-    transactions: SearchTransactions,
-  },
-  propsToQueryParams: ({ account }: { account: Account }) => ({
-    account: [account.id],
+export default withRouter(
+  connectWidget(AccountLastTransactionsWidget, {
+    height: 300,
+    queries: {
+      transactions: SearchTransactions,
+    },
+    propsToQueryParams: ({ account }: { account: Account }) => ({
+      account: [account.id],
+    }),
   }),
-});
+);
