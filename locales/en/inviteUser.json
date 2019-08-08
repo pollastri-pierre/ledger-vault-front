@@ -8,7 +8,7 @@
         "generateLink": "Generate link",
         "updateInfo": "Update details"
       },
-      "warningAddAdmin": "Adding an Administrator will change the admin rule of your workspace and block all pending requests. You'll have to recreate them if necessary."
+      "warningAddAdmin": "Adding an Administrator will change the admin rule of your workspace and all pending requests will fail. They must be recreated if necessary."
     },
     "role": {
       "title": "Role",
