@@ -20,7 +20,7 @@ export const defaultStatuses: UserStatus[] = [
   "ACCESS_SUSPENDED",
 ];
 
-const statuses: UserStatus[] = [...defaultStatuses, "REVOKED"];
+const statuses: UserStatus[] = [...defaultStatuses, "REVOKED", "ABORTED"];
 
 export default function UsersFilters(props: FieldsGroupProps) {
   const { ...p } = props;
