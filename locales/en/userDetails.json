@@ -19,6 +19,6 @@
     "title": "Are you sure you want to revoke this user?",
     "confirm": "Yes, revoke user",
     "content": "The user will immediately lose access to the platform.",
-    "contentAdmin": "All pending requests will be blocked."
+    "contentAdmin": "All pending requests will fail."
   }
 }
