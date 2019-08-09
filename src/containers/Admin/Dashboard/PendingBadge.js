@@ -22,7 +22,7 @@ class PendingBadge extends PureComponent<Props> {
       data.edges
         .map(el => el.node)
         .filter(r => r.status !== "PENDING_REGISTRATION")
-        .filter(isNotTransaction);
+        .filter(me.role === "ADMIN" ? isNotTransaction : Boolean);
     // NOTE: temp filter the me-related pending requests until gate gives this
     const myRequests = requests.filter(
       request => !hasUserApprovedRequest(request, me),
