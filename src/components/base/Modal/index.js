@@ -140,7 +140,7 @@ class Modal extends PureComponent<ModalProps, State> {
 
     const modal = (
       <>
-        <Animated.div style={backdropStyle} />
+        <Animated.div data-role="modal-backdrop" style={backdropStyle} />
         <div style={containerStyle} onClick={this.handleClickOnBackdrop}>
           <Animated.div style={bodyWrapperStyle}>
             <ModalDialog>

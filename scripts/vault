@@ -170,6 +170,7 @@ function create_default_scenarios() {
   mkdir -p "$VAULT_WORKSPACE/scenarios"
   echo "$SCENARIO_ONBOARDING" > "$VAULT_WORKSPACE/scenarios/onboarding"
   echo "$SCENARIO_STATE_1" > "$VAULT_WORKSPACE/scenarios/state-1"
+  cp scripts/scenarios/real-world "$VAULT_WORKSPACE/scenarios/real-world"
 }
 
 function list_scenarios() {
@@ -193,11 +194,14 @@ function sync_repo() {
   fi
   cd "$1"
   branch=$(git branch | grep '\*' | cut -d ' ' -f 2)
-  if [[ $branch != "$2" ]]; then
-    git fetch >/dev/null
-    git checkout "$2" >/dev/null
+  # if NO_CHECKOUT is set, skip the git checkout phase
+  if [[ -z "$NO_CHECKOUT" ]]; then
+    if [[ $branch != "$2" ]]; then
+      git fetch >/dev/null
+      git checkout "$2" >/dev/null
+    fi
+    git pull >/dev/null
   fi
-  git pull >/dev/null
   cd "$OLDPWD"
   echo "[OK]"
 }

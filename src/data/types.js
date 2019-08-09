@@ -259,13 +259,14 @@ export type TransactionStatus =
 
 export type UserStatus =
   | "ACTIVE"
+  | "ABORTED"
   | "REVOKED"
   | "PENDING_APPROVAL"
   | "PENDING_REVOCATION"
   | "PENDING_REGISTRATION"
   | "ACCESS_SUSPENDED";
 
-export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED";
+export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED" | "ABORTED";
 
 export type AccountStatus =
   | "ACTIVE"

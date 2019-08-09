@@ -1,0 +1,55 @@
+# DESC With "real world" fake data
+
+# user 11
+python test_user_creation.py --user 3  --username "Laura Parker" --approve
+
+# user 12
+python test_user_creation.py --user 4  --username "Florian Schreiber" --approve
+
+# user 13
+python test_user_creation.py --user 5  --username "Claudia Schmitt" --approve
+
+# user 14
+python test_user_creation.py --user 6  --username "Sean Grey" --approve
+
+# user 15
+python test_user_creation.py --user 9  --username "Andrew Williams" --approve
+
+# user 16
+python test_user_creation.py --user 10 --username "Nicole Watkins" --approve
+
+# group 2
+python test_group_creation.py \
+  --name 'APAC Ops' \
+  --approve \
+  --users 11 \
+  --users 12
+
+# group 3
+python test_group_creation.py \
+  --name 'America Ops' \
+  --approve \
+  --users 13 \
+  --users 14 \
+  --users 16
+
+# bitcoin account
+python test_account_creation.py \
+  --name BlockchainPlanet \
+  --currency bitcoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 2, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [12, 15] },
+    { \"quorum\": 1, \"users\": [11] }
+  ]"
+
+# ethereum account
+python test_account_creation.py \
+  --name "Nakchain ETH" \
+  --currency ethereum \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
