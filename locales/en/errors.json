@@ -24,8 +24,12 @@
     "description": "Please enter a valid address."
   },
   "AmountTooHigh": {
-    "title": "Amount too high",
-    "description": "The amount you entered is too high."
+    "title": "Not enough funds",
+    "description": "You don't have enough funds to create this transaction."
+  },
+  "ERC20FeesExceedParentAccountBalance": {
+    "title": "Not enough funds",
+    "description": "The parent Ethereum account must be credited to pay the confirmation fees of this transaction."
   },
   "AmountExceedMax": {
     "title": "Max amount exceeded",
