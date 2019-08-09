@@ -16,6 +16,7 @@ import {
 import { delay } from "utils/promise";
 
 import RestlayProvider from "restlay/RestlayProvider";
+import UserContextProvider from "components/UserContextProvider";
 
 import SearchTransactionsQuery from "api/queries/SearchTransactions";
 import SearchGroupsQuery from "api/queries/SearchGroups";
@@ -221,19 +222,21 @@ function wrapComponent(ComponentToDecorate, prefix) {
     render() {
       const { queryParams } = this.state;
       return (
-        <RestlayProvider network={mockNetwork}>
-          <Container>
-            <DisplayQueryParams
-              prefix={prefix}
-              queryParams={queryParams}
-              style={styles.displayQueryParams}
-            />
-            <ComponentToDecorate
-              onQueryParamsChange={this.handleChangeQueryParams}
-              onRowClick={action("onRowClick")}
-            />
-          </Container>
-        </RestlayProvider>
+        <UserContextProvider me={users[0]}>
+          <RestlayProvider network={mockNetwork}>
+            <Container>
+              <DisplayQueryParams
+                prefix={prefix}
+                queryParams={queryParams}
+                style={styles.displayQueryParams}
+              />
+              <ComponentToDecorate
+                onQueryParamsChange={this.handleChangeQueryParams}
+                onRowClick={action("onRowClick")}
+              />
+            </Container>
+          </RestlayProvider>
+        </UserContextProvider>
       );
     }
   }

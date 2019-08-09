@@ -27,7 +27,9 @@ export const getVisibleAccountsInMenu = (accounts: Account[]): Account[] =>
   accounts.filter(a => VISIBLE_MENU_STATUS.indexOf(a.status) > -1);
 
 export const isAccountBeingUpdated = (account: Account) =>
-  account.status === STATUS_UPDATE_IN_PROGRESS;
+  account.last_request &&
+  account.last_request.type === "EDIT_ACCOUNT" &&
+  account.last_request.status === "PENDING_APPROVAL";
 
 export const hasUserApprovedAccount = (account: Account, user: User) => {
   const approvals = account.approvals.filter(
@@ -87,6 +89,17 @@ export const deserializeApprovalSteps = (
           users: rule.group.is_internal
             ? rule.group.members.map(m => m.id)
             : [],
+
+          // /!\ Hack
+          //
+          // the gate send us the whole users objects, which is good news
+          // in this specific case, because operator can't normally see
+          // them (because of access control). For some reason they are here.
+          //
+          // see https://ledgerhq.atlassian.net/browse/LV-1798
+          // for more infos
+          //
+          rawUsers: rule.group.is_internal ? rule.group.members : [],
         }
       : null,
   );

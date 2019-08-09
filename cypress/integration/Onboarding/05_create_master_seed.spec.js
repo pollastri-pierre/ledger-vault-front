@@ -47,7 +47,7 @@ context("Create the Master Seed", () => {
             .eq(1)
             .click();
           cy.get("[data-test=error-message-desc]").contains(
-            "Are you sure to use the right device?",
+            "Make sure you're using the right device.",
           );
           cy.get("[data-test=close]").click();
 
@@ -94,15 +94,13 @@ context("Create the Master Seed", () => {
               cy.contains("3 Shared-Owners").should("be.visible");
               cy.contains("3 Wrapping Keys Custodians").should("be.visible");
               cy.contains("3 Administrators").should("be.visible");
-              cy.contains("2/3 admin rule").should("be.visible");
+              cy.contains("2/3 Admin rule").should("be.visible");
 
               cy.request("POST", DEVICE, {
                 device_number: 4,
               }).then(() => {
                 cy.contains("Continue").click();
                 cy.wait(1000);
-                cy.get("input[type=text]").type(orga_name);
-                cy.contains("Continue").click();
                 cy.wait("@get-public-key");
                 cy.wait("@authenticate");
                 cy.wait(1000);

@@ -188,7 +188,8 @@ class ApprovalsRule extends PureComponent<Props, State> {
                     style={{ minHeight: 40 }}
                   >
                     {rule.users.map(u => {
-                      const user = users.find(user => user.id === u);
+                      const allUsers = [...users, ...(rule.rawUsers || [])];
+                      const user = allUsers.find(user => user.id === u);
                       if (!user) return null;
                       return (
                         <Box

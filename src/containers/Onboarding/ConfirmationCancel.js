@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { Title, Introduction } from "components/Onboarding";
 import HelpLink from "components/HelpLink";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";

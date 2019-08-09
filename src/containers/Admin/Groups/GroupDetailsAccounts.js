@@ -11,26 +11,28 @@ import CurrencyAccountValue from "components/CurrencyAccountValue";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 import AccountsInGroupQuery from "api/queries/AccountsInGroupQuery";
 import AccountName from "components/AccountName";
-import SpinnerCard from "components/spinners/SpinnerCard";
+import SpinnerCard from "components/legacy/SpinnerCard";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import VaultLink from "components/VaultLink";
+import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
-  accounts: Account[],
+  accounts: Connection<Account>,
 };
 
 class GroupDetailsAccounts extends PureComponent<Props> {
   render() {
     const { accounts } = this.props;
-    if (accounts.length === 0) {
+    const allAccounts = accounts.edges.map(e => e.node);
+    if (allAccounts.length === 0) {
       return (
         <NoDataPlaceholder title={<Trans i18nKey="group:no_accounts_yet" />} />
       );
     }
     return (
       <Container>
-        {accounts.map(a => (
+        {allAccounts.map(a => (
           <VaultLink key={a.id} to={`/admin/accounts/view/${a.id}`}>
             <AccountButton>
               <Box flow={3}>

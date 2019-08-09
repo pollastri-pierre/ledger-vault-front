@@ -177,7 +177,7 @@ export const RichModalTabsContainer = styled.div`
 `;
 
 export const RichModalTab = styled(({ isActive, dark, ...props }) => (
-  <Link {...props} />
+  <Link data-role="modal-tab" {...props} />
 ))`
   position: relative;
   background: ${p =>

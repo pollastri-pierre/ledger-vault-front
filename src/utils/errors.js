@@ -26,3 +26,7 @@ export const NonEIP55Address = createCustomErrorClass("NonEIP55Address");
 export const UserInvitationAlreadyUsed = createCustomErrorClass(
   "UserInvitationAlreadyUsed",
 );
+
+export const NetworkTimeoutError = createCustomErrorClass(
+  "NetworkTimeoutError",
+);

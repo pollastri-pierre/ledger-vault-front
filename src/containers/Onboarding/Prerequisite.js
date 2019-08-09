@@ -2,7 +2,7 @@
 import React from "react";
 import type { Translate } from "data/types";
 import { withTranslation } from "react-i18next";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
 
 import { withStyles } from "@material-ui/core/styles";

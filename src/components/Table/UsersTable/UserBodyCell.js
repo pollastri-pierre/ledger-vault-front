@@ -26,7 +26,7 @@ class UserBodyCell extends PureComponent<CellProps> {
       case "role":
         return <UserRoleFormatter userRole={user.role} />;
       case "userid":
-        return user.user_id || "";
+        return (user.user_id && user.user_id.toUpperCase()) || "";
       case "status":
         return (
           <EntityStatus

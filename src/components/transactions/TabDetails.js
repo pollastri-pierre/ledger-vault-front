@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import type { Transaction, Account } from "data/types";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
@@ -14,7 +15,7 @@ const TransactionETHDetails = ({
 }: {
   transaction: any, // YEAH ANY WHATEVER we need to destroy this component anyway
 }) => (
-  <Box>
+  <Box align="flex-start">
     <LineRow label="FROM" />
     <Copy text={transaction.sender} />
     <LineRow label="To" />
@@ -27,21 +28,25 @@ class TransactionList<T: *> extends Component<{
   title: string,
   entries: Array<T>,
   dataTest: string,
+  isMinus?: boolean,
 }> {
   render() {
-    const { account, title, entries, dataTest } = this.props;
+    const { account, title, entries, dataTest, isMinus } = this.props;
     return (
       <div>
         <LineRow label={title}>
           <strong data-test={`${dataTest}-currency-unit`}>
             <CurrencyAccountValue
               account={account}
-              value={entries.reduce((s, e) => s + e.value, 0)}
+              value={entries.reduce(
+                (s, e) => (isMinus ? s.minus(e.value) : s.plus(e.value)),
+                BigNumber(0),
+              )}
               alwaysShowSign
             />
           </strong>
         </LineRow>
-        <Box flow={10}>
+        <Box flow={10} align="flex-start">
           {entries.map(e => (
             <div key={e.address}>
               <Copy text={e.address} />
@@ -66,6 +71,7 @@ class TabDetails extends PureComponent<{
 }> {
   render() {
     const { transaction, account } = this.props;
+    // $FlowFixMe
     const { transaction: rawTransaction } = transaction;
     const cryptoCurrency = getCryptoCurrencyById(account.currency);
     if (!rawTransaction) {
@@ -79,13 +85,14 @@ class TabDetails extends PureComponent<{
               title="From"
               dataTest="transaction-details-from"
               account={account}
-              entries={rawTransaction.inputs}
+              entries={rawTransaction.inputs || []}
+              isMinus
             />
             <TransactionList
               title="To"
               dataTest="transaction-details-to"
               account={account}
-              entries={rawTransaction.outputs}
+              entries={rawTransaction.outputs || []}
             />
           </>
         )}

@@ -150,7 +150,15 @@ class WrappableField extends Component<Props, State> {
       );
 
     return (
-      <Box position="relative" ref={this.ref}>
+      <Box
+        position="relative"
+        ref={this.ref}
+        style={
+          isActive && !isOpened
+            ? { borderBottom: `1px solid ${colors.form.focus}` }
+            : { borderBottom: "1px solid transparent" }
+        }
+      >
         {inner}
         {isOpened && !inPlace && (
           <Menu pos={pos} width={width}>
@@ -171,7 +179,7 @@ const InlineLabel = styled(Box).attrs({
 })`
   border: 1px solid;
   user-select: none;
-  max-width: 300px;
+  max-width: 400px;
   min-height: 40px;
   padding: 5px 10px;
 
@@ -226,8 +234,10 @@ const styles = {
   },
 };
 
-export const WrappableFieldLoading = () => (
-  <InlineLabel interactive={false}>Loading...</InlineLabel>
+export const WrappableFieldLoading = ({ width }: { width: number }) => (
+  <InlineLabel interactive={false} style={{ width }}>
+    Loading...
+  </InlineLabel>
 );
 
 export default WrappableField;

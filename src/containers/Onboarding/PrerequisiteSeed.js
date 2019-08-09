@@ -4,7 +4,7 @@ import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
 import { withTranslation } from "react-i18next";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
-import DialogButton from "components/buttons/DialogButton";
+import DialogButton from "components/legacy/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import People from "components/icons/thin/People";
 import Footer from "./Footer";

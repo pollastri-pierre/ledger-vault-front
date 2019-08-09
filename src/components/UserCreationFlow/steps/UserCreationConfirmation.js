@@ -34,7 +34,7 @@ class UserCreationConfirmation extends PureComponent<UserCreationStepProps> {
             <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.userID" />
           }
         >
-          {userID}
+          {userID.toUpperCase()}
         </LineRow>
         {url && (
           <LineRow

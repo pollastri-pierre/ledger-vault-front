@@ -140,13 +140,14 @@ class Modal extends PureComponent<ModalProps, State> {
 
     const modal = (
       <>
-        <Animated.div style={backdropStyle} />
+        <Animated.div data-role="modal-backdrop" style={backdropStyle} />
         <div style={containerStyle} onClick={this.handleClickOnBackdrop}>
           <Animated.div style={bodyWrapperStyle}>
             <ModalDialog>
               <ModalDialogInner
                 transparent={transparent}
                 onClick={this.swallowClick}
+                data-role="modal-inner"
               >
                 <Box grow>{children}</Box>
               </ModalDialogInner>
