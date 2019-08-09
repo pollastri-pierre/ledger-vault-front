@@ -12,14 +12,15 @@ fi
 export ORGANIZATION_API_TOKEN=''
 export WALLET_DAEMON_VERSION=develop-drop2
 export VAULT_API_VERSION=develop-drop2
-export HSM_DRIVER_VERSION=develop-drop2
-export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20190121/process
-export COMPARTMENTS_ENDPOINT=https://hsmsaas.ledger.info/dev/20190121/compartments
+export DEVICE_API_VERSION=develop-hsm2
+export HSM_DRIVER_VERSION=develop-hsm2
+export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20190611/process
+export COMPARTMENTS_ENDPOINT=https://hsmsaas.ledger.info/dev/20190611/compartments
 export VAULT_WORKSPACE=ledger1
 
 cat > .env << EOF
 API_BASE_URL=http://localhost:5000
-APP_VERSION=1.0.17
+APP_VERSION=2.0.0-dev
 NOTIFICATION_URL=http://localhost:3033
 EOF
 
