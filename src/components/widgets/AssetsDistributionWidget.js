@@ -128,6 +128,10 @@ function AssetsDistributionWidget(props: Props) {
     return items;
   };
 
+  const accountsWithBalance = accountsConnection.edges
+    .map(e => e.node)
+    .some(a => a.balance.isGreaterThan(0));
+
   return (
     <Widget title="Assets distribution">
       <Card align="center">
@@ -135,6 +139,8 @@ function AssetsDistributionWidget(props: Props) {
           <Box grow align="center" justify="center">
             <Text color={colors.textLight}>No accounts.</Text>
           </Box>
+        ) : !accountsWithBalance ? (
+          <Text color={colors.textLight}>No balance.</Text>
         ) : (
           <>
             <Box horizontal align="center" flow={40}>

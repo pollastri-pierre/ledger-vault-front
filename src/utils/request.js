@@ -32,9 +32,17 @@ export const isUserInCurrentStep = (request: Request, me: User) => {
   }
 };
 
-export const getModalTabLink = (request: ?Request, url: string) => {
+export const getModalTabLink = (
+  request: ?Request,
+  url: string,
+  // navigate to history tab and expand the given request
+  expandRequestHistory: boolean = false,
+) => {
   const defaultLink = `${url}/overview`;
   if (!request) return defaultLink;
+  if (expandRequestHistory) {
+    return `${url}/history?requestID=${request.id}`;
+  }
   return isRequestPending(request) && isEditRequest(request)
     ? `${url}/editRequest`
     : defaultLink;
@@ -91,6 +99,16 @@ export function navigateToRequest(request: Request, history: MemoryHistory) {
   } else if (request.target_type === "ORGANIZATION") {
     history.push(`dashboard/organization/details/${request.id}`);
   }
+}
+
+// FIXME REVOKE_USER is also triggered when revoking an operator which does not affect admin rules
+const ACTION_AFFECTING_ADMIN_RULES = [
+  "REVOKE_USER",
+  "CREATE_ADMIN",
+  "UPDATE_QUORUM",
+];
+export function isRequestAffectingAdminRules(request: Request) {
+  return ACTION_AFFECTING_ADMIN_RULES.includes(request.type);
 }
 
 export function getCurrentStepProgress(request: Request) {

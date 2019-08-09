@@ -62,10 +62,10 @@ export default function FilterFieldSelect(props: Props) {
           for (const o of options) {
             if (!("value" in o) && "options" in o) {
               for (const subO of o.options) {
-                if (subO.value === s) return subO;
+                if (areSame(subO.value, s)) return subO;
               }
             }
-            if (o.value === s) return o;
+            if (areSame(o.value, s)) return o;
           }
           return null;
         })
@@ -152,4 +152,12 @@ export default function FilterFieldSelect(props: Props) {
       )}
     </WrappableField>
   );
+}
+
+// in many cases we take stuff from url (so: as string) and we compare with
+// numbers (e.g: ids). so this function just compare the string versions
+// if possible
+function areSame(v1: any, v2: any) {
+  if (!v1.toString || !v2.toString) return v1 === v2;
+  return v1.toString() === v2.toString();
 }

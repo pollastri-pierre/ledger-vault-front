@@ -3,6 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 
+import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import DeviceInteraction from "components/DeviceInteraction";
@@ -16,6 +17,7 @@ type Props = {
   loading?: boolean,
   disabled?: boolean,
   label: string,
+  desc: string,
   generated?: boolean,
   onSuccess: Object => void,
   onError: (Error | GateError | { statusCode: number }) => void,
@@ -27,6 +29,7 @@ const Fragment = ({
   loading,
   disabled,
   label,
+  desc,
   generated,
   onSuccess,
   onError,
@@ -36,6 +39,7 @@ const Fragment = ({
 }: Props) => (
   <FragmentContainer disabled={disabled} onClick={generate}>
     <ProfileIcon />
+    <Description>{desc}</Description>
     {!loading && !generated && (
       <FragmentStatus className="fragment">{label}</FragmentStatus>
     )}
@@ -73,4 +77,12 @@ const FragmentContainer = styled(Box).attrs({ align: "center" })`
   color: #27d0e2;
   opacity: ${p => (p.disabled ? "0.3" : "1")};
   pointer-events: ${p => (p.disabled ? "none" : "auto")};
+  cursor: pointer;
+`;
+
+const Description = styled.div`
+  text-align: center;
+  font-size: 13px;
+  color: ${colors.night};
+  margin-bottom: 10px;
 `;

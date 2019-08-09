@@ -52,16 +52,17 @@ context("Register the Administrators", () => {
         cy.wait("@challenge");
         // Should display a error
         cy.wait(1000);
-        // TODO bring back this test once the gate return an error on getChallenge
-        // cy.get("[data-test=error-message-desc]").contains(
-        //   "Device already registered",
-        // );
-        // cy.get("[data-test=close]").click();
+
+        cy.get("[data-test=error-message-desc]").contains(
+          "Administrator already registered with this device",
+        );
+        cy.get("[data-test=close]").click();
+
         // Second Admin
         cy.request("POST", DEVICE, {
           device_number: 5,
         }).then(() => {
-          cy.contains("add administrator").click();
+          cy.get("input[name=username]").clear();
           cy.get("input[name=username]").type("user2");
           cy.get("[data-test=dialog-button]")
             .contains("Continue")
@@ -91,10 +92,6 @@ context("Register the Administrators", () => {
 
             cy.contains("Continue").click();
             cy.wait("@next");
-            cy.contains("more").click();
-            cy.contains("more").click();
-            cy.contains("more").click();
-            cy.contains("less").click();
             cy.contains("Continue").click();
             cy.wait("@next");
           });

@@ -107,6 +107,7 @@ export default function getMenuItems(props: Props) {
         label: <Trans i18nKey="menu:operator.dashboard" />,
         url: `${match.url}/operator/dashboard`,
         Icon: FaHome,
+        NotifComponent: PendingBadge,
       },
       {
         key: "new-transaction",

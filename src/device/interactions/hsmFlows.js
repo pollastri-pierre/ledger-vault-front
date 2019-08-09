@@ -49,11 +49,12 @@ export const postResult: Interaction = {
 export const getAddress: Interaction = {
   needsUserInput: false,
   responseKey: "address_channel",
-  action: ({ accountId, fresh_address, restlay }) =>
+  action: ({ accountId, fresh_address, restlay, u2f_key }) =>
     restlay.fetchQuery(
       new GetAddressQuery({
         accountId,
         derivation_path: fresh_address.derivation_path,
+        pub_key: u2f_key.pubKey,
       }),
     ),
 };
@@ -317,7 +318,6 @@ export const validateOperation = (entity: ?TargetType) => [
 ];
 
 export const validateAdddress = [
-  getU2FPublicKey,
   openSessionVerifyAddress,
   validateDevice("ADDRESS"),
 ];
@@ -364,7 +364,11 @@ export const approveFlow = (entity: TargetType) => [
   postApproval,
   refetchPending,
 ];
-export const verifyAddressFlow = [getAddress, ...validateAdddress];
+export const verifyAddressFlow = [
+  getU2FPublicKey,
+  getAddress,
+  ...validateAdddress,
+];
 export const createAndApprove = (entity: TargetType) => [
   postRequest,
   ...approveFlow(entity),

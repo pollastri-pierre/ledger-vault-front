@@ -27,11 +27,13 @@ import Absolute from "components/base/Absolute";
 import type { Account } from "data/types";
 import { Label } from "components/base/form";
 import Button from "components/base/Button";
+import Disabled from "components/Disabled";
 import Text from "components/base/Text";
 import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import { isAccountSpendable } from "utils/transactions";
 import Widget from "./Widget";
 
 type Props = {
@@ -48,16 +50,18 @@ function AccountQuickInfoWidget(props: Props) {
   const title =
     me.role === "OPERATOR" ? (
       <Box horizontal flow={10}>
-        <Link to={`${account.id}/send/${account.id}`}>
-          <Button
-            IconLeft={IconSend}
-            customColor={colors.blue}
-            variant="filled"
-            size="tiny"
-          >
-            Send
-          </Button>
-        </Link>
+        <Disabled disabled={!isAccountSpendable(account)} customOpacity="0.3">
+          <Link to={`${account.id}/send/${account.id}`}>
+            <Button
+              IconLeft={IconSend}
+              customColor={colors.blue}
+              variant="filled"
+              size="tiny"
+            >
+              Send
+            </Button>
+          </Link>
+        </Disabled>
         <Link to={`${account.id}/receive/${account.id}`}>
           <Button
             IconLeft={IconReceive}
@@ -71,18 +75,8 @@ function AccountQuickInfoWidget(props: Props) {
       </Box>
     ) : null;
 
-  return (
+  const widget = (
     <Widget title={title} grow position="relative">
-      <Absolute top={30} right={10}>
-        <Tooltip title="Account settings">
-          <SettingsLink
-            to={`${location.pathname}/accounts/details/${account.id}/overview`}
-            className="content-header-button"
-          >
-            <FaWrench />
-          </SettingsLink>
-        </Tooltip>
-      </Absolute>
       <SoftCard grow flow={20} style={{ padding: 0 }}>
         <Box horizontal flexWrap="wrap">
           <InfoSquare>
@@ -136,7 +130,7 @@ function AccountQuickInfoWidget(props: Props) {
             <InfoSquare>
               <Label align="center" horizontal flow={5}>
                 <FaCheck />
-                <span>Role</span>
+                <Text i18nKey="accountView:permission" />
               </Label>
               <div>
                 <ApproverRole account={account} />
@@ -173,6 +167,22 @@ function AccountQuickInfoWidget(props: Props) {
         </Box>
       </SoftCard>
     </Widget>
+  );
+
+  return (
+    <div style={{ position: "relative" }}>
+      {widget}
+      <Absolute top={title ? 40 : 10} right={10}>
+        <Tooltip title="Account settings">
+          <SettingsLink
+            to={`${location.pathname}/accounts/details/${account.id}/overview`}
+            className="content-header-button"
+          >
+            <FaWrench />
+          </SettingsLink>
+        </Tooltip>
+      </Absolute>
+    </div>
   );
 }
 

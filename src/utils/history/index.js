@@ -1,6 +1,6 @@
 // @flow
 
-import type { User } from "data/types";
+import type { User, Request } from "data/types";
 
 // TODO: LOL
 type GateHistory = *;
@@ -34,11 +34,13 @@ export type VaultHistoryStep = {
   createdOn: string,
   createdBy: User,
   approvalsSteps?: Array<?VaultHistoryApprovalStep>,
+  blockerRequest?: Request,
 };
 
 export type VaultHistoryItem = {
   type: "CREATE" | "EDIT" | "DELETE",
   steps: VaultHistoryStep[],
+  requestID: number,
 };
 
 export type VaultHistory = VaultHistoryItem[];
@@ -48,11 +50,15 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
     if (!gateStepsGroup.length) return null;
     return {
       type: resolveItemType(gateStepsGroup[0]),
+      requestID: resolveRequestID(gateStepsGroup),
       steps: gateStepsGroup.map(gateStep => {
-        const step: VaultHistoryStep = {
+        const step: $Exact<VaultHistoryStep> = {
           type: resolveStepType(gateStep),
           createdBy: gateStep.created_by,
           createdOn: gateStep.created_on,
+          ...(gateStep.blocker_request
+            ? { blockerRequest: gateStep.blocker_request }
+            : {}),
         };
         if (gateStep.approvals_steps) {
           Object.assign(step, {
@@ -81,6 +87,13 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
       }),
     };
   });
+}
+
+function resolveRequestID(group) {
+  const itemWithApprovals = group.find(i => i.approvals && i.approvals.length);
+  if (!itemWithApprovals) return null;
+  const approval = itemWithApprovals.approvals[0];
+  return approval.request_id;
 }
 
 function resolveItemType(item) {

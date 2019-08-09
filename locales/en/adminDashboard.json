@@ -4,9 +4,9 @@
   "myRequestsEmpty": "No requests to approve",
   "otherRequestsTitle": "Pending requests",
   "otherRequestsEmpty": "No requests to track",
-  "editAdminRules": "Update your organization security scheme",
-  "warningEditAdminRules": "If you edit the quorum, all the pending requests will be blocked",
-  "cantEditAdminRules_revokeAdmin": "You can't edit the admin rule if an Administrator is pending to be revoked.",
-  "cantEditAdminRules_createAdmin": "You can't edit the admin rule if an Administrator is pending to be created.",
-  "cantEditAdminRules_alreadyEdit": "There is already a pending update quorum request"
+  "editAdminRules": "Update your organization's admin rule",
+  "warningEditAdminRules": "If you edit the admin rule, all pending requests will fail",
+  "cantEditAdminRules_revokeAdmin": "You can't edit the admin rule if an Administrator is pending revocation.",
+  "cantEditAdminRules_createAdmin": "You can't edit the admin rule if an Administrator is pending creation.",
+  "cantEditAdminRules_alreadyEdit": "There is already a pending edit admin rule request"
 }

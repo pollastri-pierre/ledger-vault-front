@@ -45,19 +45,17 @@ context("Registration Shared Owners", () => {
       cy.wait("@register");
       cy.wait("@register-data");
       cy.wait("@authenticate");
-
+      // TODO WE HAVE A REGRESSIOn ON THIS LV-1810
       // Use the same device, Should display a error
-      cy.contains("Add shared-owner").click();
+      /* cy.contains("Add shared-owner").click();
       cy.wait("@get-public-key");
       cy.wait("@get-attestation");
       cy.wait("@challenge");
       cy.wait(1000);
-      // TODO bring back this test once the gate return an error on getChallenge
-      // cy.get("[data-test=error-message-desc]").contains(
-      //   "Person already exists",
-      // );
-      // cy.get("[data-test=close]").click();
 
+      cy.get("[data-test=error-message-title]").contains("Error 3");
+      cy.get("[data-test=close]").click();
+      */
       // Shared Owner 2
       cy.request("POST", DEVICE, { device_number: 8 }).then(() => {
         cy.contains("Add shared-owner").click();

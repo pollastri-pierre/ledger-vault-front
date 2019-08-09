@@ -23,11 +23,19 @@ class Users extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
       this.props.history.push(
-        getModalTabLink(request, `tasks/groups/details/${request.target_id}`),
+        getModalTabLink(
+          request,
+          `tasks/groups/details/${request.target_id}`,
+          true,
+        ),
       );
     } else if (request.target_type === "PERSON") {
       this.props.history.push(
-        getModalTabLink(request, `tasks/users/details/${request.target_id}`),
+        getModalTabLink(
+          request,
+          `tasks/users/details/${request.target_id}`,
+          true,
+        ),
       );
     } else if (
       request.target_type === "BITCOIN_ACCOUNT" ||
@@ -35,7 +43,11 @@ class Users extends PureComponent<Props> {
       request.target_type === "ETHEREUM_ACCOUNT"
     ) {
       this.props.history.push(
-        getModalTabLink(request, `tasks/accounts/details/${request.target_id}`),
+        getModalTabLink(
+          request,
+          `tasks/accounts/details/${request.target_id}`,
+          true,
+        ),
       );
     } else if (
       request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
@@ -45,6 +57,7 @@ class Users extends PureComponent<Props> {
         getModalTabLink(
           request,
           `tasks/transactions/details/${request.target_id}`,
+          true,
         ),
       );
     } else if (request.target_type === "ORGANIZATION") {

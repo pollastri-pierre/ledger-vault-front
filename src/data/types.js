@@ -259,13 +259,14 @@ export type TransactionStatus =
 
 export type UserStatus =
   | "ACTIVE"
+  | "ABORTED"
   | "REVOKED"
   | "PENDING_APPROVAL"
   | "PENDING_REVOCATION"
   | "PENDING_REGISTRATION"
   | "ACCESS_SUSPENDED";
 
-export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED";
+export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED" | "ABORTED";
 
 export type AccountStatus =
   | "ACTIVE"
@@ -299,7 +300,7 @@ type TransactionCommon = {
   recipients: string[],
   block_height?: number,
   time?: Date,
-  transaction?: RawTransaction,
+  transaction?: RawTransaction | RawTransactionETH,
   exploreURL: ?string,
   approvals: Approval[],
   tx_hash: ?string,
@@ -379,6 +380,7 @@ export type ERC20Token = {
   signature: string,
   hsm_signature: string,
   hsm_account_parameters: string,
+  disable_countervalue?: boolean,
 };
 
 export type MetaStatus = "APPROVED" | "PENDING" | "ABORTED";

@@ -9,6 +9,7 @@ import Text from "components/base/Text";
 import { GroupsFilters } from "components/filters";
 import SearchGroupsQuery from "api/queries/SearchGroups";
 import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
+import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import DataSearch from "components/DataSearch";
 
 import type { Group } from "data/types";
@@ -17,7 +18,8 @@ type Props = {
   history: MemoryHistory,
 };
 
-const mutationsToListen = [ApproveRequestMutation];
+const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
+
 class AdminGroups extends PureComponent<Props> {
   handleGroupClick = (group: Group) => {
     const { history } = this.props;
