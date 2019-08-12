@@ -171,6 +171,8 @@ function create_default_scenarios() {
   echo "$SCENARIO_ONBOARDING" > "$VAULT_WORKSPACE/scenarios/onboarding"
   echo "$SCENARIO_STATE_1" > "$VAULT_WORKSPACE/scenarios/state-1"
   cp scripts/scenarios/real-world "$VAULT_WORKSPACE/scenarios/real-world"
+  cp scripts/scenarios/lot-of-accounts "$VAULT_WORKSPACE/scenarios/lot-of-accounts"
+  cp scripts/scenarios/unrealistic-lot-of-accounts "$VAULT_WORKSPACE/scenarios/unrealistic-lot-of-accounts"
 }
 
 function list_scenarios() {

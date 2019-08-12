@@ -28,6 +28,7 @@
     "CREATED": "Created",
     "ACTIVED": "Activated",
     "BLOCKED": "Failed",
+    "EXPIRED": "Expired",
     "APPROVED": "Approved",
     "ABORTED": "Rejected",
     "REVOKED": "Deleted",

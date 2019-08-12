@@ -20,6 +20,7 @@ type VaultHistoryStepType =
   | "CREATED"
   | "ACTIVED"
   | "BLOCKED"
+  | "EXPIRED"
   | "APPROVED"
   | "ABORTED"
   | "REVOKED"
@@ -128,6 +129,7 @@ function resolveStepType(item): VaultHistoryStepType {
   if (
     item.status !== "APPROVED" &&
     item.status !== "ABORTED" &&
+    item.status !== "EXPIRED" &&
     item.status !== "SUBMITTED"
   ) {
     // $FlowFixMe

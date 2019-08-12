@@ -1,0 +1,227 @@
+# DESC With lots of accounts
+
+# user 11
+python test_user_creation.py --user 3  --username "Laura Parker" --approve
+
+# user 12
+python test_user_creation.py --user 4  --username "Florian Schreiber" --approve
+
+# user 13
+python test_user_creation.py --user 5  --username "Claudia Schmitt" --approve
+
+# user 14
+python test_user_creation.py --user 6  --username "Sean Grey" --approve
+
+# user 15
+python test_user_creation.py --user 9  --username "Andrew Williams" --approve
+
+# user 16
+python test_user_creation.py --user 10 --username "Nicole Watkins" --approve
+
+# group 2
+python test_group_creation.py \
+  --name 'APAC Ops' \
+  --approve \
+  --users 11 \
+  --users 12
+
+# group 3
+python test_group_creation.py \
+  --name 'America Ops' \
+  --approve \
+  --users 13 \
+  --users 14 \
+  --users 16
+
+# bitcoin account
+python test_account_creation.py \
+  --name BlockchainPlanet \
+  --currency bitcoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 2, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [12, 15] },
+    { \"quorum\": 1, \"users\": [11] }
+  ]"
+
+# Another bitcoin account
+python test_account_creation.py \
+  --name "Nakchain BTC2" \
+  --currency bitcoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# Another bitcoin account
+python test_account_creation.py \
+  --name "Nakchain BTC3" \
+  --currency bitcoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# ethereum account
+python test_account_creation.py \
+  --name "Nakchain ETH" \
+  --currency ethereum \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# 2nd ethereum account
+python test_account_creation.py \
+  --name "Nakchain ETH 2" \
+  --currency ethereum \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# litecoin account
+python test_account_creation.py \
+  --name "Nakchain Litecoin" \
+  --currency litecoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# 2nd litecoin account
+python test_account_creation.py \
+  --name "Nakchain Litecoin 2" \
+  --currency litecoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+
+# vertcoin account
+python test_account_creation.py \
+  --name "Nakchain Vertcoin" \
+  --currency vertcoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# 2nd vertcoin account
+python test_account_creation.py \
+  --name "Nakchain Vertcoin 2" \
+  --currency vertcoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# dashcoin account
+python test_account_creation.py \
+  --name "Nakchain Dash" \
+  --currency dash \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# 2nd dashcoin account
+python test_account_creation.py \
+  --name "Nakchain Dash 2" \
+  --currency dash \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+
+# Viacoin account
+python test_account_creation.py \
+  --name "Nakchain Viacoin" \
+  --currency viacoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# 2nd Viacoin account
+python test_account_creation.py \
+  --name "Nakchain Viacoin 2" \
+  --currency viacoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# Dogecoin account
+python test_account_creation.py \
+  --name "Nakchain Doge" \
+  --currency dogecoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# 2nd Dogecoin account
+python test_account_creation.py \
+  --name "Nakchain Doge 2" \
+  --currency dogecoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# Pivx account
+python test_account_creation.py \
+  --name "Nakchain Pivx" \
+  --currency pivx \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# 2nd pivx account
+python test_account_creation.py \
+  --name "Nakchain Pivx 2" \
+  --currency pivx \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# Bitcoin_cash account
+python test_account_creation.py \
+  --name "Nakchain BTC cash" \
+  --currency bitcoin_cash \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"
+
+# 2n Bitcoin_cash account
+python test_account_creation.py \
+  --name "Nakchain BTC cash2" \
+  --currency bitcoin_cash \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 3 },
+    { \"quorum\": 2, \"users\": [11, 12] }
+  ]"

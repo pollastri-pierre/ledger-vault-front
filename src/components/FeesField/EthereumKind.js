@@ -134,6 +134,12 @@ class FeesFieldEthereumKind extends PureComponent<
     // this is selecting gwei. to be double checked.
     const gasPriceUnit = currency.units[1];
 
+    const erc20FeesExceedParentBalance =
+      account.account_type === "ERC20" &&
+      transaction.estimatedFees &&
+      account.parent_balance &&
+      transaction.estimatedFees.isGreaterThan(account.parent_balance);
+
     return (
       <Box horizontal flow={20}>
         <Box flow={10}>
@@ -172,9 +178,15 @@ class FeesFieldEthereumKind extends PureComponent<
               />
             </Box>
           </Box>
-          <InfoBox type="info">
-            Transaction confirmation will be faster with higher fees
-          </InfoBox>
+          {erc20FeesExceedParentBalance ? (
+            <InfoBox type="error">
+              <Trans i18nKey="errors:ERC20FeesExceedParentAccountBalance.description" />
+            </InfoBox>
+          ) : (
+            <InfoBox type="info">
+              Transaction confirmation will be faster with higher fees
+            </InfoBox>
+          )}
         </Box>
         <Box grow align="flex-end">
           <Label>
