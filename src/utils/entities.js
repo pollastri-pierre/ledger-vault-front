@@ -11,6 +11,7 @@ const STATUS_NOT_PENDING = [
   "SUBMITTED",
   "ABORTED",
   "BLOCKED",
+  "EXPIRED",
 ];
 
 export const hasPendingRequest = (entity: Entity) =>
