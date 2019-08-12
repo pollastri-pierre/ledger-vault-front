@@ -97,7 +97,7 @@ const TransactionCreationAmount = (
           <Label>
             <Trans i18nKey="transactionCreation:steps.amount.amount" />
           </Label>
-          <Box grow>
+          <Box grow horizontal>
             {isERC20 ? (
               <InputAmountNoUnits
                 width={370}
