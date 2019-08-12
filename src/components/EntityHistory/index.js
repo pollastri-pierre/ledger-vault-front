@@ -19,6 +19,7 @@ import {
   FaUserSecret,
   FaCog,
   FaFlagCheckered,
+  FaRegClock,
 } from "react-icons/fa";
 import { MdEdit, MdDelete, MdClear, MdCheck } from "react-icons/md";
 
@@ -54,6 +55,7 @@ const stepIconsByType = {
   CREATED: <FaPlus color={colors.ocean} />,
   ACTIVED: <FaFlagCheckered color={colors.ocean} />,
   BLOCKED: <MdClear color={colors.grenade} />,
+  EXPIRED: <FaRegClock color={colors.grenade} />,
   APPROVED: <FaCheck color={colors.ocean} />,
   ABORTED: <MdClear color={colors.grenade} />,
   REVOKED: <MdClear color={colors.grenade} />,
@@ -367,11 +369,8 @@ function getItemStatus(item: VaultHistoryItem) {
   ) {
     return "APPROVED";
   }
-  if (lastStep.type === "ABORTED") {
-    return "ABORTED";
-  }
-  if (lastStep.type === "BLOCKED") {
-    return "BLOCKED";
+  if (["ABORTED", "BLOCKED", "EXPIRED"].includes(lastStep.type)) {
+    return lastStep.type;
   }
   return "PENDING";
 }
