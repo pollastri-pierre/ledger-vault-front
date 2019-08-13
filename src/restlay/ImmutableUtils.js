@@ -19,7 +19,7 @@ export function merge(
          If the endpoint with less data finishes after an endpoint with full data it can breaks the UI.
       */
       if (old[k] && typeof old[k] === "object") {
-        copy[k] = Object.assign({ ...old[k] }, copy[k]);
+        copy[k] = Object.assign({ ...old[k] }, copy[k]); // eslint-disable-line prefer-object-spread
       }
     } else if (copy) {
       copy[k] = old[k];
