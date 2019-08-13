@@ -24,4 +24,17 @@ describe("Test Edit Admin Rule", function() {
     cy.get("[data-test=approve_button]").click();
     successfull_message();
   });
+
+  it("Approve Edit admin rule", () => {
+    cy.server();
+    route();
+    logout();
+    login(5);
+    cy.url().should("include", "/admin/dashboard");
+    cy.wait(1500);
+    cy.get("[data-test=0]").click();
+    cy.wait(2000);
+    cy.get("[data-test=approve_button]").click();
+    successfull_message();
+  });
 });

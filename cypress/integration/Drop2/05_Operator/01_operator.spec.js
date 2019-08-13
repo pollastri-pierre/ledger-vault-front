@@ -15,17 +15,14 @@ describe("Test on Operator ", function() {
     cy.url().should("include", "/operator/dashboard");
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/operator/accounts");
-    cy.contains("Coinhy.pe1").click();
+    cy.wait(2500);
+    cy.contains("Coinhy.pe").click();
     cy.contains("Balance").should("be.visible");
-    cy.contains("Crypto asset / Index").should("be.visible");
-    cy.contains("Unit").should("be.visible");
-    cy.contains("creation date").should("be.visible");
-    cy.wait(5500);
+    cy.contains("Bitcoin").should("be.visible");
+    cy.contains("Status").should("be.visible");
+    cy.contains("Permission").should("be.visible");
     cy.contains("Last transactions").should("be.visible");
-    cy.contains("Wed 15 May").click();
-    cy.contains("View in explorer").click();
-    cy.get("[data-test=close]").click();
-
+    cy.contains("Transaction rules").should("be.visible");
     cy.get("[data-test=menuItem-transactions]").click();
     cy.url().should("include", "/operator/transactions");
   });

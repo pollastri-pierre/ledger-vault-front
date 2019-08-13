@@ -65,6 +65,12 @@ function main {
   ./node_modules/.bin/cypress run \
     --reporter junit \
     --spec 'cypress/integration/Onboarding/*'
+  ./node_modules/.bin/cypress run \
+    --reporter junit \
+    --spec 'cypress/integration/Drop2/01_Users/*'
+  ./node_modules/.bin/cypress run \
+    --reporter junit \
+    --spec 'cypress/integration/Drop2/02_Groups/*'
 }
 
 function cloneOrPull {
