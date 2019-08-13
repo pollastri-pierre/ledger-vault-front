@@ -11,6 +11,7 @@ export default createGlobalStyle`
   }
 
   body {
+    margin: 0;
     font-family: "Open Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
     color: #6f6f6f;

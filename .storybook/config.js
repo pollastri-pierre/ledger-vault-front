@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import JssProvider from "react-jss/lib/JssProvider";
 import { I18nextProvider } from "react-i18next";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { withKnobs } from "@storybook/addon-knobs";
 import { create as createTheme } from "@storybook/theming";
@@ -47,6 +47,12 @@ const muiTheme = createMuiTheme(theme);
 const req = require.context("../src", true, /.stories.js$/);
 const store = createStore();
 
+const StorybookGlobalStyle = createGlobalStyle`
+  body {
+    padding: 20px;
+  }
+`;
+
 const generateClassName = (a, b) => {
   return `${b.options.classNamePrefix}-${a.key}`;
 };
@@ -74,6 +80,7 @@ addDecorator(withKnobs);
 addDecorator(storyFn => (
   <Fragment>
     <GlobalStyle />
+    <StorybookGlobalStyle />
     {storyFn()}
   </Fragment>
 ));
