@@ -34,18 +34,20 @@ function AccountView(props: Props) {
           {account.account_type === "Ethereum" && (
             <SubAccountsWidget account={account} />
           )}
-          <Container>
-            {account.tx_approval_steps && (
-              <Box flex={1} style={{ margin: 10 }}>
-                <AccountTransactionRulesWidget account={account} />
-              </Box>
-            )}
-            {isBalanceAvailable(account) && (
-              <Box flex={1} style={{ minWidth: 500, margin: 10 }}>
-                <TransactionsGraphWidget account={account} />
-              </Box>
-            )}
-          </Container>
+          <div>
+            <Container>
+              {account.tx_approval_steps && (
+                <Box flex={1} style={{ margin: 10 }}>
+                  <AccountTransactionRulesWidget account={account} />
+                </Box>
+              )}
+              {isBalanceAvailable(account) && (
+                <Box flex={1} style={{ minWidth: 500, margin: 10 }}>
+                  <TransactionsGraphWidget account={account} />
+                </Box>
+              )}
+            </Container>
+          </div>
           <AccountLastTransactionsWidget account={account} />
         </Box>
       </ResponsiveContainer>
@@ -66,5 +68,6 @@ export default connectWidget(AccountView, {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   margin: -10px;
 `;
