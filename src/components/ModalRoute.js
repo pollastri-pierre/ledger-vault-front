@@ -1,8 +1,9 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { withRouter } from "react-router";
 import { Route } from "react-router-dom";
 import Modal from "components/base/Modal";
+import type { MemoryHistory } from "history";
 
 const isEmptyChildren = children => React.Children.count(children) === 0;
 
@@ -32,13 +33,8 @@ class ModalRoute extends Component<{
   render?: *,
   children?: *,
   transparent?: boolean,
+  history: MemoryHistory,
 }> {
-  static contextTypes = {
-    router: PropTypes.shape({
-      history: PropTypes.object.isRequired,
-    }),
-  };
-
   _unmounted: boolean = false;
 
   componentWillUnmount() {
@@ -51,7 +47,7 @@ class ModalRoute extends Component<{
 
   onClose = () => {
     if (this._unmounted) return;
-    const history = this.context.router.history;
+    const { history } = this.props;
     history.push({
       pathname: resolveCloseURL(history, this.lastPath),
       search: this.lastSearch || "",
@@ -63,6 +59,7 @@ class ModalRoute extends Component<{
       component, // eslint-disable-line no-unused-vars
       render, // eslint-disable-line no-unused-vars
       children, // eslint-disable-line no-unused-vars
+      history,
       disableBackdropClick,
       transparent,
       ...rest
@@ -97,7 +94,7 @@ class ModalRoute extends Component<{
 // $FlowFixMe
 ModalRoute.propTypes = Route.propTypes;
 
-export default ModalRoute;
+export default withRouter(ModalRoute);
 
 //
 //                          CLOSING THE MODAL. Vast subject.
