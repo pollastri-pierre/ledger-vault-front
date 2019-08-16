@@ -7,7 +7,7 @@ export default styled.div`
   border-radius: 50%;
   align-items: center;
   font-size: 13px;
-  color: ${colors.lightGrey};
+  color: ${colors.mediumGrey};
   font-weight: bold;
   justify-content: center;
   display: flex;
