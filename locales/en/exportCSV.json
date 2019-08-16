@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "transaction": {
+      "operationType": "Operation type (IN/OUT)",
+      "transactionNumber": "Vault transaction number",
+      "status": "Status",
+      "family": "Currency family",
+      "parentName": "Parent account name",
+      "currency": "Currency",
+      "accountName": "Account name",
+      "amount": "Amount",
+      "fees": "Fees",
+      "gasPrice": "Gas price",
+      "gasLimit": "Gas limit",
+      "totalAmount": "Total amount",
+      "hash": "Transaction hash",
+      "sender": "Sender",
+      "recipient": "Recipient",
+      "label": "Label",
+      "note": "Note"
+    }
+  }
+}
