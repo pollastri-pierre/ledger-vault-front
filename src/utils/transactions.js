@@ -1,10 +1,5 @@
 // @flow
-import type {
-  Transaction,
-  TransactionGetFees,
-  Account,
-  User,
-} from "data/types";
+import type { Transaction, TransactionGetFees, Account } from "data/types";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 import { isMemberOfFirstApprovalStep } from "utils/users";
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
@@ -40,13 +35,6 @@ export const getPendingsTransactions = (
   transactions: Transaction[],
 ): Transaction[] =>
   transactions.filter(transaction => transaction.status === "PENDING_APPROVAL");
-
-export const isMemberOfAccount = (account: Account, me: User) => {
-  const members = account.members.filter(
-    member => member.pub_key === me.pub_key,
-  );
-  return members.length > 0;
-};
 
 export const getFees = async (
   account: Account,
