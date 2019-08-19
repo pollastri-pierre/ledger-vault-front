@@ -22,7 +22,11 @@ class RequestTitle extends PureComponent<Props> {
     if (type.startsWith("CREATE")) {
       return newIcon;
     }
-    if (type.startsWith("EDIT")) {
+    if (
+      type.startsWith("EDIT") ||
+      type.startsWith("UPDATE") ||
+      type.startsWith("MIGRATE")
+    ) {
       return editIcon;
     }
     if (type.startsWith("REVOKE")) {
