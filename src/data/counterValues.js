@@ -2,7 +2,10 @@
 
 import axios from "axios";
 import uniqBy from "lodash/uniqBy";
-import createCounterValues from "@ledgerhq/live-common/lib/countervalues";
+import {
+  implementCountervalues,
+  getCountervalues,
+} from "@ledgerhq/live-common/lib/countervalues";
 import { createSelector } from "reselect";
 import {
   listCryptoCurrencies,
@@ -70,7 +73,7 @@ const pairsSelector = createSelector(
 setNetwork(axios);
 
 // $FlowFixMe
-const CounterValues = createCounterValues({
+implementCountervalues({
   log: (...args) => {
     if (process.env.DEBUG_COUNTERVALUES) {
       console.log("CounterValues:", ...args); // eslint-disable-line no-console
@@ -81,5 +84,7 @@ const CounterValues = createCounterValues({
   pairsSelector,
   setExchangePairsAction,
 });
+
+const CounterValues = getCountervalues();
 
 export default CounterValues;
