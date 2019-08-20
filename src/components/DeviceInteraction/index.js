@@ -1,9 +1,12 @@
 // @flow
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
+import { withRouter } from "react-router";
+import type { MemoryHistory } from "history";
 
 import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
+import { OutOfDateApp } from "utils/errors";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion } from "device/interactions/common";
 import TransportUSB from "@ledgerhq/hw-transport-webusb";
@@ -19,6 +22,7 @@ export type Interaction = {
 
 export type DeviceError = { statusCode: number };
 type Props = {
+  history: MemoryHistory,
   interactions: Interaction[],
   noCheckVersion?: boolean,
   additionalFields: Object,
@@ -54,6 +58,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
       additionalFields,
       noCheckVersion,
       restlay,
+      history,
     } = this.props;
 
     // always checking app version first unless opt-out by the consumer component
@@ -62,7 +67,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
         ? interactions
         : [checkVersion, ...interactions];
 
-    const responses = { ...additionalFields, restlay };
+    const responses = { ...additionalFields, restlay, history };
     if (
       window.FORCE_HARDWARE ||
       (process.env.NODE_ENV !== "e2e" &&
@@ -84,7 +89,11 @@ class DeviceInteraction extends PureComponent<Props, State> {
         ] = await interactionsWithCheckVersion[i].action(responses);
         if (this._unmounted) return;
       } catch (e) {
-        this.props.onError(e);
+        if (e instanceof OutOfDateApp) {
+          history.push("/update-app");
+        } else {
+          this.props.onError(e);
+        }
         return;
       }
     }
@@ -114,4 +123,4 @@ class DeviceInteraction extends PureComponent<Props, State> {
   }
 }
 
-export default connectData(DeviceInteraction);
+export default connectData(withRouter(DeviceInteraction));
