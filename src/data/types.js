@@ -404,7 +404,6 @@ export const RequestActivityTypeDefs = {
   MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
   UPDATE_QUORUM: "UPDATE_QUORUM",
   CREATE_TRANSACTION: "CREATE_TRANSACTION",
-  REVOKE_TRANSACTION: "REVOKE_TRANSACTION",
 };
 
 export type RequestActivityType = $Keys<typeof RequestActivityTypeDefs>;

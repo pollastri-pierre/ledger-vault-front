@@ -1,7 +1,6 @@
 {
   "type": {
     "CREATE_TRANSACTION": "Create transaction",
-    "REVOKE_TRANSACTION": "Reject transaction",
     "CREATE_GROUP": "Create <0>{{extra}}</0> group",
     "EDIT_GROUP": "Edit <0>{{extra}}</0> group",
     "REVOKE_GROUP": "Delete <0>{{extra}}</0> group",
@@ -21,7 +20,6 @@
     "REVOKE_GROUP": "<0>Delete group</0> request in progress",
     "REVOKE_USER": "<0>Revoke user</0> request in progress",
     "REVOKE_ACCOUNT": "<0>Archive account</0> request in progress",
-    "REVOKE_TRANSACTION": "<0>Reject transaction</0> request in progress",
     "UPDATE_QUORUM": "<0>Edit admin rule</0> request in progress"
   },
   "approve": {
@@ -29,7 +27,6 @@
     "EDIT_GROUP": "Approve group edition",
     "EDIT_ACCOUNT": "Approve account edition",
     "REVOKE_GROUP": "Approve group deletion",
-    "REVOKE_TRANSACTION": "Approve transaction rejection",
     "CREATE_ACCOUNT": "Approve account creation",
     "CREATE_OPERATOR": "Approve Operator creation",
     "CREATE_ADMIN": "Approve Administrator creation",
