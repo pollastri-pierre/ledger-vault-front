@@ -1,4 +1,6 @@
 import React from "react";
+import faker from "faker";
+import capitalize from "lodash/capitalize";
 import { storiesOf } from "@storybook/react";
 
 import pageDecorator from "stories/pageDecorator";
@@ -43,7 +45,28 @@ function genAllRequests(status = "PENDING_APPROVAL") {
           type: "APPROVE",
         },
       ],
+      ...getRequestExtra(type),
     });
     return r;
   });
+}
+
+function getRequestExtra(type) {
+  if (["REVOKE_USER", "CREATE_ADMIN", "CREATE_OPERATOR"].includes(type)) {
+    return { user: { username: faker.name.findName() } };
+  }
+  if (["CREATE_GROUP", "EDIT_GROUP", "REVOKE_GROUP"].includes(type)) {
+    return { group: { name: faker.commerce.productName() } };
+  }
+  if (
+    [
+      "CREATE_ACCOUNT",
+      "EDIT_ACCOUNT",
+      "REVOKE_ACCOUNT",
+      "MIGRATE_ACCOUNT",
+    ].includes(type)
+  ) {
+    return { account: { name: capitalize(faker.company.bsAdjective()) } };
+  }
+  return {};
 }

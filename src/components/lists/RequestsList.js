@@ -68,7 +68,7 @@ function RequestCard(props: RequestCardProps) {
         <EntityStatus status={request.status} request={request} />
       </Absolute>
       <Box>
-        <RequestTitle type={request.type} />
+        <RequestTitle request={request} />
         {request.created_by && (
           <Text color={colors.textLight}>
             {"Created by "}

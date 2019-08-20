@@ -1,17 +1,17 @@
 {
   "type": {
-    "CREATE_GROUP": "Create group",
     "CREATE_TRANSACTION": "Create transaction",
-    "EDIT_GROUP": "Edit group",
-    "EDIT_ACCOUNT": "Edit account",
-    "MIGRATE_ACCOUNT": "Update account",
-    "REVOKE_GROUP": "Delete group",
-    "REVOKE_USER": "Revoke user",
-    "REVOKE_ACCOUNT": "Archive account",
     "REVOKE_TRANSACTION": "Reject transaction",
-    "CREATE_ADMIN": "Create Administrator",
-    "CREATE_OPERATOR": "Create Operator",
-    "CREATE_ACCOUNT": "Create account",
+    "CREATE_GROUP": "Create <0>{{extra}}</0> group",
+    "EDIT_GROUP": "Edit <0>{{extra}}</0> group",
+    "REVOKE_GROUP": "Delete <0>{{extra}}</0> group",
+    "REVOKE_USER": "Revoke <0>{{extra}}</0>",
+    "EDIT_ACCOUNT": "Edit <0>{{extra}}</0> account",
+    "MIGRATE_ACCOUNT": "Update <0>{{extra}}</0> account",
+    "REVOKE_ACCOUNT": "Archive <0>{{extra}}</0> account",
+    "CREATE_ADMIN": "Create <0>{{extra}}</0> (Administrator)",
+    "CREATE_OPERATOR": "Create <0>{{extra}}</0> (Operator)",
+    "CREATE_ACCOUNT": "Create <0>{{extra}}</0> account",
     "UPDATE_QUORUM": "Edit admin rule"
   },
   "statusDot": {

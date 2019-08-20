@@ -33,7 +33,7 @@ class RequestBodyCell extends PureComponent<CellProps> {
           />
         );
       case "type":
-        return <RequestTitle type={request.type} />;
+        return <RequestTitle request={request} />;
       case "created_on":
         return <DateFormat date={request.created_on} />;
       default:
