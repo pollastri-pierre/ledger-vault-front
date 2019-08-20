@@ -91,6 +91,11 @@ const theme = {
         },
       },
     },
+    MuiTableCell: {
+      body: {
+        color: "inherit",
+      },
+    },
     MuiMenuItem: {
       root: {
         fontSize: 11,
