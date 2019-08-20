@@ -3,7 +3,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { FaExclamationCircle } from "react-icons/fa";
-
+import { TransportOpenUserCancelled } from "@ledgerhq/errors";
 import colors, { opacity } from "shared/colors";
 import Alert from "components/legacy/Alert";
 import { closeMessage } from "redux/modules/alerts";
@@ -46,9 +46,10 @@ export function MessagesContainer(props: {
 
   // we don't want to display timeout and reject by user as an error
   if (
-    error &&
-    error.statusCode &&
-    STATUS_NO_ERROR.indexOf(error.statusCode) > -1
+    (error &&
+      error.statusCode &&
+      STATUS_NO_ERROR.indexOf(error.statusCode) > -1) ||
+    error instanceof TransportOpenUserCancelled
   ) {
     return null;
   }

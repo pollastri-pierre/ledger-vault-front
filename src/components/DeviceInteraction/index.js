@@ -75,8 +75,14 @@ class DeviceInteraction extends PureComponent<Props, State> {
         localStorage.getItem("SOFTWARE_DEVICE") !== "1")
     ) {
       // $FlowFixMe
-      const transport = await TransportUSB.create();
-      responses.transport = transport;
+      try {
+        const transport = await TransportUSB.create();
+        transport.setExchangeTimeout(360000);
+        responses.transport = transport;
+      } catch (e) {
+        this.props.onError(e);
+        return;
+      }
     }
     for (let i = 0; i < interactionsWithCheckVersion.length; i++) {
       try {
