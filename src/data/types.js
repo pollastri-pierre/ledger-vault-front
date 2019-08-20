@@ -438,6 +438,7 @@ type RequestCommon = {
   type: RequestActivityType,
   account?: RequestAccount,
   user?: RequestUser,
+  transaction?: RequestTransaction,
   group?: RequestGroup,
   quorum?: number,
   organization?: Organization,
@@ -463,6 +464,10 @@ type RequestUser = {
   user_id: string,
   username: string,
   role: UserRole,
+};
+
+type RequestTransaction = {
+  account_id: number,
 };
 
 type RequestGroup = {

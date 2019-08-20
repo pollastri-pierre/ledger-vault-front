@@ -5,16 +5,25 @@ import { storiesOf } from "@storybook/react";
 
 import pageDecorator from "stories/pageDecorator";
 import backendDecorator from "stories/backendDecorator";
-import { genRequest } from "data/mock-entities";
 import { RequestActivityTypeList } from "data/types";
 import { RequestsList } from "components/lists";
 import Box from "components/base/Box";
+import { genAccounts, genUsers, genRequest } from "data/mock-entities";
 
+const users = genUsers(1);
+const accounts = genAccounts(1, { users });
 const requests = genAllRequests();
 const noop = () => {};
 
 storiesOf("entities/Request", module)
-  .addDecorator(backendDecorator([]))
+  .addDecorator(
+    backendDecorator([
+      {
+        url: "/accounts/1",
+        res: () => accounts[0],
+      },
+    ]),
+  )
   .addDecorator(pageDecorator)
   .add("Requests list", () => {
     const firstPack = requests.slice(0, 6);
@@ -67,6 +76,9 @@ function getRequestExtra(type) {
     ].includes(type)
   ) {
     return { account: { name: capitalize(faker.company.bsAdjective()) } };
+  }
+  if (type === "CREATE_TRANSACTION") {
+    return { transaction: { account_id: 1 } };
   }
   return {};
 }

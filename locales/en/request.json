@@ -35,5 +35,8 @@
     "MIGRATE_ACCOUNT": "Approve account update",
     "CREATE_TRANSACTION": "Approve transaction creation"
   },
-  "expire_in": "request expires in {{count}}"
+  "expire_in": "request expires in {{count}}",
+  "extra": {
+    "CREATE_TRANSACTION_ON": "<0>in </0><1><0 /></1><2> account</2>"
+  }
 }
