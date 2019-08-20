@@ -90,7 +90,11 @@ function RequestCard(props: RequestCardProps) {
   );
 }
 
-function TransactionCreationRequestTitle({ request }: { request: Request }) {
+export function TransactionCreationRequestTitle({
+  request,
+}: {
+  request: Request,
+}) {
   const { transaction } = request;
   if (!transaction) return null;
   return (
@@ -98,7 +102,7 @@ function TransactionCreationRequestTitle({ request }: { request: Request }) {
       <MdCreateNewFolder size={16} color={colors.lightGrey} />
       <Box horizontal align="center" flow={5} flexWrap="wrap">
         <span>
-          <Trans i18nKey="request:type.CREATE_TRANSACTION" />
+          <Trans i18nKey="request:richType.CREATE_TRANSACTION" />
         </span>
         <LazyLoadAccountName accountID={transaction.account_id} />
       </Box>

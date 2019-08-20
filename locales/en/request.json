@@ -1,5 +1,20 @@
 {
   "type": {
+    "CREATE_GROUP": "Create group",
+    "CREATE_TRANSACTION": "Create transaction",
+    "EDIT_GROUP": "Edit group",
+    "EDIT_ACCOUNT": "Edit account",
+    "MIGRATE_ACCOUNT": "Update account",
+    "REVOKE_GROUP": "Delete group",
+    "REVOKE_USER": "Revoke user",
+    "REVOKE_ACCOUNT": "Archive account",
+    "REVOKE_TRANSACTION": "Reject transaction",
+    "CREATE_ADMIN": "Create Administrator",
+    "CREATE_OPERATOR": "Create Operator",
+    "CREATE_ACCOUNT": "Create account",
+    "UPDATE_QUORUM": "Edit admin rule"
+  },
+  "richType": {
     "CREATE_TRANSACTION": "Create transaction",
     "CREATE_GROUP": "Create <0>{{extra}}</0> group",
     "EDIT_GROUP": "Edit <0>{{extra}}</0> group",

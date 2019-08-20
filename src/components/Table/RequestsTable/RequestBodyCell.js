@@ -1,10 +1,10 @@
 // @flow
 
 import React, { PureComponent } from "react";
-
 import MUITableCell from "@material-ui/core/TableCell";
 
 import EntityStatus from "components/EntityStatus";
+import { TransactionCreationRequestTitle } from "components/lists/RequestsList";
 import DateFormat from "components/DateFormat";
 import type { Request } from "data/types";
 import RequestTitle from "components/RequestTitle";
@@ -33,7 +33,11 @@ class RequestBodyCell extends PureComponent<CellProps> {
           />
         );
       case "type":
-        return <RequestTitle request={request} />;
+        return request.type === "CREATE_TRANSACTION" ? (
+          <TransactionCreationRequestTitle request={request} />
+        ) : (
+          <RequestTitle request={request} />
+        );
       case "created_on":
         return <DateFormat date={request.created_on} />;
       default:

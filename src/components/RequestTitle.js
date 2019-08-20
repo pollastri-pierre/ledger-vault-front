@@ -26,7 +26,7 @@ function RequestTitle(props: Props) {
       </Box>
       <Text>
         <Trans
-          i18nKey={`request:type.${request.type}`}
+          i18nKey={`request:richType.${request.type}`}
           values={{ extra: getRequestExtra(request) }}
           components={[<strong>extra</strong>]}
         />
