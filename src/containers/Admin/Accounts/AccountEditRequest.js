@@ -30,17 +30,23 @@ class AccountEditRequest extends PureComponent<Props> {
     const { account, groups, users } = this.props;
     const { tx_approval_steps, last_request } = account;
 
-    if (!last_request || !last_request.edit_data) return null;
+    if (!last_request) return null;
 
-    const { edit_data } = last_request;
+    const isAccountMigration = last_request.type === "MIGRATE_ACCOUNT";
+    const editData = last_request.edit_data || null;
 
-    const newRules = resolveRules(
-      edit_data.governance_rules.tx_approval_steps,
-      groups.edges.map(e => e.node),
-      users.edges.map(e => e.node),
-    );
+    const newRules = isAccountMigration
+      ? tx_approval_steps
+      : editData
+      ? resolveRules(
+          editData.governance_rules.tx_approval_steps,
+          groups.edges.map(e => e.node),
+          users.edges.map(e => e.node),
+        )
+      : null;
 
-    const hasNameChanged = edit_data && account.name !== edit_data.name;
+    const oldRules = isAccountMigration ? null : tx_approval_steps;
+    const hasNameChanged = editData && account.name !== editData.name;
 
     return (
       <Box flow={10} horizontal justify="space-between">
@@ -57,7 +63,7 @@ class AccountEditRequest extends PureComponent<Props> {
             </Box>
           )}
           <b>Rules</b>
-          <RulesViewer rules={tx_approval_steps} />
+          <RulesViewer rules={oldRules} />
         </Box>
         <Box bg={opacity(colors.ocean, 0.05)} {...diffBoxProps}>
           <Box mb={20}>
@@ -65,10 +71,10 @@ class AccountEditRequest extends PureComponent<Props> {
               After
             </Text>
           </Box>
-          {hasNameChanged && edit_data && (
+          {hasNameChanged && editData && (
             <Box mb={20}>
               <b>Name</b>
-              <span>{edit_data.name}</span>
+              <span>{editData.name}</span>
             </Box>
           )}
           <b>Rules</b>
