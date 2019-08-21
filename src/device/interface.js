@@ -24,7 +24,7 @@ import {
   registerData as hardRegisterData,
 } from "device/VaultDeviceApp";
 
-const softwareMode = () => {
+export const softwareMode = () => {
   if (window.FORCE_HARDWARE) return false;
   if (localStorage.getItem("SOFTWARE_DEVICE") === "1") return true;
   return window.config.SOFTWARE_DEVICE || process.env.NODE_ENV === "e2e";
