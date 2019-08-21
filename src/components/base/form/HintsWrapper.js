@@ -69,10 +69,11 @@ const HintsContainer = styled.div`
   background: white;
   border: 1px solid ${colors.form.border};
   border-radius: 4px;
-  // box-shadow: ${colors.form.shadow.grey};
+  box-shadow: ${colors.form.shadow.grey};
   animation: 250ms ease ${enter};
   white-space: nowrap;
   pointer-events: auto;
+  text-align: left;
 `;
 
 const HintsWrap = styled.div`

@@ -13,9 +13,7 @@ import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 import UserCreationRole from "./steps/UserCreationRole";
-import UserCreationInfos, {
-  isValidUserIDChar,
-} from "./steps/UserCreationInfos";
+import UserCreationInfos, { isUserIDValid } from "./steps/UserCreationInfos";
 import UserCreationConfirmation from "./steps/UserCreationConfirmation";
 import { processUserInfo } from "./helpers";
 
@@ -55,12 +53,7 @@ const steps = [
     name: <Trans i18nKey="inviteUser:steps.confirmation.title" />,
     Step: UserCreationConfirmation,
     requirements: (payload: UserCreationPayload) => {
-      return (
-        !!payload.username &&
-        !!payload.userID &&
-        payload.userID.length === 16 &&
-        payload.userID.split("").every(isValidUserIDChar)
-      );
+      return !!payload.username && isUserIDValid(payload.userID);
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
       return (
