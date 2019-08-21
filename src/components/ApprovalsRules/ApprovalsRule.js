@@ -236,7 +236,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
             )}
           </Box>
           {!!nbSelected && <NbOfUsers nb={nbSelected} isGroup={!!group} />}
-          {nbSelected === MAX_MEMBERS && (
+          {!readOnly && nbSelected >= MAX_MEMBERS && (
             <Box p={10} pl={40} pt={0}>
               <InfoBox type="warning">
                 <Text i18nKey="group:maxMembers" />
