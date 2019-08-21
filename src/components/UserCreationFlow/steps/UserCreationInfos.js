@@ -15,6 +15,26 @@ type Props = UserCreationStepProps & {
   t: Translate,
 };
 
+export const isValidUserIDChar = (c: string) => {
+  const charCode = c.charCodeAt(0);
+  const isNumber = charCode >= 48 && charCode <= 57;
+  const isUppercaseLetter = charCode >= 65 && charCode <= 90;
+  return isNumber || isUppercaseLetter;
+};
+
+const userIDHints = [
+  {
+    key: "nbCharts",
+    label: "Exactly 16 characters",
+    check: v => v.length === 16,
+  },
+  {
+    key: "alphanum",
+    label: "Contains only numbers and uppercase letters",
+    check: v => v.split("").every(isValidUserIDChar),
+  },
+];
+
 class UserCreationInfo extends PureComponent<Props> {
   handleChangeUsername = (username: string) => {
     const { updatePayload } = this.props;
@@ -23,7 +43,13 @@ class UserCreationInfo extends PureComponent<Props> {
 
   handleChangeUserID = (userID: string) => {
     const { updatePayload } = this.props;
-    updatePayload({ userID });
+    updatePayload({
+      userID: userID
+        .toUpperCase()
+        .split("")
+        .filter(isValidUserIDChar)
+        .join(""),
+    });
   };
 
   render() {
@@ -56,6 +82,7 @@ class UserCreationInfo extends PureComponent<Props> {
               fullWidth
               maxLength={16}
               onlyAscii
+              hints={userIDHints}
             />
           </Box>
         </Box>

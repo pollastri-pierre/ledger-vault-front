@@ -65,8 +65,7 @@ const HintsContainer = styled.div`
   padding: 10px 20px;
   max-width: 200px;
   position: relative;
-  left: 100%;
-  margin-left: 10px;
+  top: 5px;
   background: white;
   border: 1px solid ${colors.form.border};
   border-radius: 4px;
@@ -78,7 +77,7 @@ const HintsContainer = styled.div`
 
 const HintsWrap = styled.div`
   position: absolute;
-  top: 0;
+  top: 100%;
   right: 0;
   pointer-events: none;
 `;
