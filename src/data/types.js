@@ -403,6 +403,7 @@ export const RequestActivityTypeDefs = {
   REVOKE_ACCOUNT: "REVOKE_ACCOUNT",
   MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
   UPDATE_QUORUM: "UPDATE_QUORUM",
+  CREATE_TRANSACTION: "CREATE_TRANSACTION",
 };
 
 export type RequestActivityType = $Keys<typeof RequestActivityTypeDefs>;
@@ -435,7 +436,9 @@ type RequestCommon = {
   url_id?: string,
   target_type: RequestTargetType,
   type: RequestActivityType,
+  account?: RequestAccount,
   user?: RequestUser,
+  transaction?: RequestTransaction,
   group?: RequestGroup,
   quorum?: number,
   organization?: Organization,
@@ -462,7 +465,18 @@ type RequestUser = {
   username: string,
   role: UserRole,
 };
-type RequestGroup = {};
+
+type RequestTransaction = {
+  account_id: number,
+};
+
+type RequestGroup = {
+  name: string,
+};
+
+type RequestAccount = {
+  name: string,
+};
 
 export type FreshAddress = {
   address: string,

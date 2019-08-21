@@ -15,9 +15,10 @@ class AccountName extends Component<{
   // so we can't rely account_type. It's useful to tell the component we are dealing with an erc20 token or
   // with a specific currency so it can pass it to AccountIcon
   currencyId?: string,
+  space?: number,
 }> {
   render() {
-    const { name, account, ...props } = this.props;
+    const { name, account, space, ...props } = this.props;
     let { currencyId } = this.props;
 
     const displayName = name || (account ? account.name : "[no name]");
@@ -31,7 +32,7 @@ class AccountName extends Component<{
       null;
 
     return (
-      <Box horizontal align="center" flow={10} {...props}>
+      <Box horizontal align="center" flow={space || 10} {...props}>
         <AccountIcon token={token} currencyId={currencyId} />
         <Text lineHeight={1} noWrap data-test="name">
           {displayName}
