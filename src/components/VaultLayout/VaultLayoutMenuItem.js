@@ -113,7 +113,10 @@ export default ({
   }
 
   return (
-    <div style={styles.relative} data-test={dataTest}>
+    <div
+      style={{ ...styles.relative, pointerEvents: "all" }}
+      data-test={dataTest}
+    >
       {menuItem}
       {notifComponent}
     </div>
