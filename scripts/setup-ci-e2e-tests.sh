@@ -14,8 +14,8 @@ export WALLET_DAEMON_VERSION=develop-drop2
 export VAULT_API_VERSION=develop-drop2
 export DEVICE_API_VERSION=develop-hsm2
 export HSM_DRIVER_VERSION=develop-hsm2
-export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20190611/process
-export COMPARTMENTS_ENDPOINT=https://hsmsaas.ledger.info/dev/20190611/compartments
+export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20190620/process
+export COMPARTMENTS_ENDPOINT=https://hsmsaas.ledger.info/dev/20190620/compartments
 export VAULT_WORKSPACE=ledger1
 
 cat > .env << EOF
