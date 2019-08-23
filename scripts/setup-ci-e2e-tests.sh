@@ -61,16 +61,12 @@ function main {
   echo "-- server is up!"
   echo "-- launching e2e tests"
 
-  ./node_modules/.bin/cypress install
-  ./node_modules/.bin/cypress run \
-    --reporter junit \
-    --spec 'cypress/integration/Onboarding/*'
-  ./node_modules/.bin/cypress run \
-    --reporter junit \
-    --spec 'cypress/integration/Drop2/01_Users/*'
-  ./node_modules/.bin/cypress run \
-    --reporter junit \
-    --spec 'cypress/integration/Drop2/02_Groups/*'
+  export PATH=./node_modules/.bin:$PATH
+
+  cypress install
+  cypress run --reporter junit --spec 'cypress/integration/Onboarding/*'
+  cypress run --reporter junit --spec 'cypress/integration/Drop2/01_Users/*'
+  cypress run --reporter junit --spec 'cypress/integration/Drop2/02_Groups/*'
 }
 
 function cloneOrPull {
