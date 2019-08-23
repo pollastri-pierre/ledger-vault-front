@@ -1,127 +1,160 @@
 // @flow
-import React, { useState, useReducer } from "react";
-import styled from "styled-components";
+import React, { useReducer, useEffect } from "react";
 import manager from "@ledgerhq/live-common/lib/manager";
-import { DiApple, DiWindows, DiLinux } from "react-icons/di";
-import live_installApp from "@ledgerhq/live-common/lib/hw/installApp";
-import live_uninstallApp from "@ledgerhq/live-common/lib/hw/uninstallApp";
-import TransportUSB from "@ledgerhq/hw-transport-webusb";
+import { Observable } from "rxjs/Observable";
 import TranslatedError from "components/TranslatedError";
-import { withDevicePolling } from "@ledgerhq/live-common/lib/hw/deviceAccess";
-import getDeviceInfo from "@ledgerhq/live-common/lib/hw/getDeviceInfo";
 import VaultCentered from "components/VaultCentered";
-import { from, of, concat, throwError, combineLatest } from "rxjs";
-import { concatMap, tap, delay, catchError, map } from "rxjs/operators";
-
-import { Trans } from "react-i18next";
+import { from, of, concat, throwError } from "rxjs";
+import { concatMap, tap, delay, catchError } from "rxjs/operators";
 import colors from "shared/colors";
-import { urls } from "utils/urls";
+import { setEnv } from "@ledgerhq/live-common/lib/env";
+
+import {
+  withDeviceInfo,
+  installApp,
+  installFirmware,
+} from "device/updateLogic";
+import Logs from "device/Logs";
+import type { Log } from "device/Logs";
+
 import Box from "components/base/Box";
 import Button from "components/base/Button";
 import ProgressBar from "components/base/ProgressBar";
-import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 
 const DEV_MODE = true;
 
-const APP_SETTINGS = {
-  install: {
-    targetId: 0x31010004,
-    perso: "perso_11",
-    delete_key: "blue/2.2.4-ee/vault/app_del_key",
-    firmware: "blue/2.2.4-ee/vault/app_2.0.6",
-    firmware_key: "blue/2.2.4-ee/vault/app_2.0.6_key",
-  },
-  uninstall: {
-    targetId: 0x31010004,
-    perso: "perso_11",
-    delete: "blue/2.1.1-ee/vault3/app_del",
-    delete_key: "blue/2.1.1-ee/vault3/app_del_key",
-  },
-};
-const getTransport = async () => {
-  const transport = await TransportUSB.create();
-  return transport;
-};
+const ALREADY_UP_TO_DATE = "Firmware is already up-to-date.";
 
-export function installApp({ addLog, setStep, subscribeProgress }) {
-  return from(getTransport()).pipe(
-    concatMap(transport =>
-      concat(
-        of(null).pipe(tap(() => console.log("tranport created"))),
-        from(getDeviceInfo(transport)).pipe(
-          concatMap(infos =>
-            concat(
-              of(null).pipe(tap(() => setStep("uninstalling"))),
-              live_uninstallApp(
-                transport,
-                infos.targetId,
-                APP_SETTINGS.uninstall,
-              ),
-              of(null).pipe(tap(() => console.log("uninstall finished"))),
-              live_installApp(
-                transport,
-                infos.targetId,
-                APP_SETTINGS.install,
-              ).pipe(tap(subscribeProgress("install-app-progress"))),
-            ),
+export function installEverything({
+  addLog,
+  setStep,
+  subscribeProgress,
+}: {
+  setStep: string => void,
+  addLog: Object => void,
+  subscribeProgress: string => (e: { progress: number }) => void,
+}): Observable<*> {
+  return concat(
+    installFirmware({ addLog, setStep, subscribeProgress }).pipe(
+      catchError(err => {
+        if (err.message === ALREADY_UP_TO_DATE) {
+          addLog("Firmware is already up-to-date");
+          return of(null);
+        }
+        return throwError(err);
+      }),
+    ),
+    of(delay(2000)).pipe(
+      tap(() => {
+        addLog("Waiting for device to reboot...");
+        addLog("Enter your PIN when asked");
+      }),
+    ),
+    withDeviceInfo
+      .pipe(
+        tap(() => {
+          addLog("Fetching app...");
+        }),
+        concatMap(deviceInfo =>
+          from(
+            manager
+              .getAppsList(deviceInfo, DEV_MODE, () => Promise.resolve([]))
+              .then(results => {
+                if (!results || !results.length) {
+                  throw new Error("No apps found.");
+                }
+                return results[0];
+              }),
           ),
         ),
+      )
+      .pipe(
+        tap(app => {
+          addLog(`Version ${app.firmware} will be installed`);
+        }),
+        concatMap(app =>
+          installApp({ app, addLog, setStep, subscribeProgress }),
+        ),
       ),
-    ),
   );
 }
 
 type Step = "start" | "uninstalling" | "installing" | "finished";
 
+type TypeAction =
+  | "ADD_LOG"
+  | "RESET"
+  | "SET_ERROR"
+  | "SET_STEP"
+  | "SET_PROGRESS";
+
 type State = {
   step: Step,
-  error?: Error,
+  error: ?Error,
   progress: number,
+  logs: Log[],
 };
 
 const initialState: State = {
   step: "start",
   error: null,
+  logs: [],
   progress: 0,
 };
 
-const reducer = (state, { type, payload }) => {
+let logId = 0;
+
+const reducer = (
+  state: State,
+  { type, payload }: { type: TypeAction, payload: any },
+) => {
   switch (type) {
+    case "ADD_LOG": {
+      const log = { id: logId++, date: new Date(), text: payload };
+      return { ...state, logs: [...state.logs, log] };
+    }
+    case "RESET":
+      return initialState;
     case "SET_ERROR":
       return { ...state, error: payload };
     case "SET_STEP":
       return { ...state, step: payload };
     case "SET_PROGRESS":
       return { ...state, progress: payload };
+    default:
+      return state;
   }
 };
 
+const provider = 5;
 const Update = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer<State, Object>(reducer, initialState);
+  const { step, error, progress, logs } = state;
+
+  useEffect(() => {
+    setEnv("FORCE_PROVIDER", provider);
+  });
+
   const subscribeProgress = stepName => e => {
     if (e.progress === 0) {
       setStep(stepName);
     }
-    console.log(e);
     setProgress(e.progress * 100);
   };
 
-  const addLog = msg => {
-    console.log(msg);
-  };
+  const addLog = msg => dispatch({ type: "ADD_LOG", payload: msg });
   const setStep = step => dispatch({ type: "SET_STEP", payload: step });
   const setProgress = progress =>
     dispatch({ type: "SET_PROGRESS", payload: progress });
 
   const setError = err => {
-    console.log(err);
     dispatch({ type: "SET_ERROR", payload: err });
     addLog("An error occured. Stopping.");
   };
 
   const run = () => {
-    const sub = installApp({
+    const sub = installEverything({
       addLog,
       setStep,
       subscribeProgress,
@@ -133,33 +166,46 @@ const Update = () => {
       sub.unsubscribe();
     };
   };
+  const retry = () => {
+    dispatch({ type: "RESET" });
+    run();
+  };
 
   return (
     <VaultCentered>
-      <Box p={20} width={500} flow={20}>
-        <Text large bold>
-          Install latest app
-        </Text>
-        <Text>
-          We detected that your are not running the latest version of the blue
-          vault app. Please update it before using the vault
-        </Text>
-        <Text>
-          Plug your device and enter your pin code and click on install app
-        </Text>
-        {state.error && (
-          <Text color="red">
-            <TranslatedError error={state.error} />
-          </Text>
-        )}
-        {state.step === "start" && (
-          <Button variant="text" type="submit" onClick={run}>
-            install app
+      <Box p={30} flow={20} style={{ background: "white" }}>
+        <Box flow={10}>
+          <Text large bold i18nKey="update:title" />
+          <Text i18nKey="update:info" />
+        </Box>
+        <Text i18nKey="update:plug" />
+        <Logs logs={logs} />
+        {error ? (
+          <>
+            <Text color={colors.grenade}>
+              <TranslatedError error={error} />
+            </Text>
+            <Button onClick={retry}>
+              <Text i18nKey="update:retry" />
+            </Button>
+          </>
+        ) : step === "osu" ||
+          step === "firmware" ||
+          step === "install-app" ||
+          step === "uninstall-app" ? (
+          <ProgressBar indeterminate />
+        ) : step === "osu-progress" ||
+          step === "firmware-progress" ||
+          step === "install-app-progress" ? (
+          <ProgressBar progress={progress} />
+        ) : step === "finished" ? (
+          <Box p={10}>
+            <Text i18nKey="update:success" />
+          </Box>
+        ) : (
+          <Button variant="filled" customColor={colors.blue} onClick={run}>
+            <Text i18nKey="update:update" />
           </Button>
-        )}
-        {state.step === "install-app" && <ProgressBar indeterminate />}
-        {state.step === "install-app-progress" && (
-          <ProgressBar progres={state.progress} />
         )}
       </Box>
     </VaultCentered>

@@ -1,6 +1,8 @@
 {
-  "title": "Update required",
-  "infobox": "The Ledger Vault app and Firmware must be updated. Download and run the Ledger Updater to continue.",
-  "support": "Contact support",
-  "help": "Help"
+  "title": "Update your device",
+  "info": "This will update your firmware and your app version.",
+  "plug": "Plug your device and enter your pin code and click on install app",
+  "update": "Update firmware and app",
+  "retry": "retry",
+  "success": "Install successful. You can safely close the window."
 }
