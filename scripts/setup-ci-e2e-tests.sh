@@ -44,6 +44,7 @@ function main {
   # prepare clean in next step
   echo "export VAULT_COMPARTMENT_ID=$VAULT_COMPARTMENT_ID" >> "$BASH_ENV"
   echo "export COMPARTMENTS_ENDPOINT=$COMPARTMENTS_ENDPOINT" >> "$BASH_ENV"
+  echo "export VAULT_HSM_ENDPOINT=$VAULT_HSM_ENDPOINT" >> "$BASH_ENV"
 
   echo "-- starting the docker images"
   docker-compose up -d
