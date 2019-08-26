@@ -306,7 +306,7 @@ export function create_erc20_account(
   user1,
 ) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(4500);
+  cy.wait(7500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
     .type("{enter}");
@@ -330,7 +330,7 @@ export function create_erc20_account(
 
 export function create_erc20_account_new_eth(erc20, childname, group, user1) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(5500);
+  cy.wait(8500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
     .type("{enter}");
