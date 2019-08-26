@@ -534,6 +534,7 @@ const theme = {
 
 export const styledTheme = {
   space: [],
+  colors,
 };
 
 export const vaultLayoutConfig = {
