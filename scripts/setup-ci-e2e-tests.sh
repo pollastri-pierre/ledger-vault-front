@@ -81,7 +81,7 @@ function cloneOrPull {
 }
 
 function waitForHealthyContainers {
-  MAX_RETRIES=30
+  MAX_RETRIES=60
   while [[ $HEALTHY_CONTAINERS != "$1" ]]; do
     sleep 1
     HEALTHY_CONTAINERS=$(docker ps --format '{{.Status}}' | grep -c '(healthy)$' || echo "0")
@@ -95,7 +95,7 @@ function waitForHealthyContainers {
 }
 
 function waitForE2EServer {
-  MAX_RETRIES=30
+  MAX_RETRIES=60
   while ! curl -k --connect-timeout 1 https://localhost:9000 &>/dev/null ; do
     sleep 1
     MAX_RETRIES=$((MAX_RETRIES - 1))
