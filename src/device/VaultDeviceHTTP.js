@@ -201,6 +201,7 @@ export const authenticate = async (
     name: userName,
     role: fromStringRoleToBytes[role.toLowerCase()].toString("hex"),
     type: psdType.toString("hex"),
+    workspaceName: workspace,
   });
 
   // we add a fake status response because traaansport on device does it
