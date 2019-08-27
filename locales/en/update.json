@@ -1,8 +1,13 @@
 {
-  "title": "Update your device",
-  "info": "This will update your firmware and your app version.",
-  "plug": "Plug your device and enter your pin code and click on install app",
+  "title": "Mandatory updates available!",
+  "info": "A new version of the Ledger Vault app and firmware must be installed on your device before you can connect to your workspace.",
   "update": "Update firmware and app",
   "retry": "retry",
-  "success": "Install successful. You can safely close the window."
+  "success": "Install successful.",
+  "goToLogin": "Login to Vault",
+  "goBack": "Go back",
+  "userSteps": {
+    "step1": "On your device, click the close icon in the top right corner to go back to the <0>Dashboard</0>.",
+    "step2": "On the web app, click <0>Update firmware and app</0>."
+  }
 }

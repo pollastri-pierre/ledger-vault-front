@@ -116,7 +116,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
         if (this._unmounted) return;
       } catch (e) {
         if (e instanceof OutOfDateApp) {
-          history.push("/update-app");
+          history.push(`/update-app?redirectTo=${location.pathname}`);
         } else {
           this.props.onError(e);
         }

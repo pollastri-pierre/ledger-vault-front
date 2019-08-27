@@ -30,3 +30,7 @@ export const UserInvitationAlreadyUsed = createCustomErrorClass(
 export const NetworkTimeoutError = createCustomErrorClass(
   "NetworkTimeoutError",
 );
+
+export const DeviceNotOnDashboard = createCustomErrorClass(
+  "DeviceNotOnDashboard",
+);

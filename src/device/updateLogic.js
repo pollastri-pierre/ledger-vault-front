@@ -2,19 +2,29 @@
 
 import manager from "@ledgerhq/live-common/lib/manager";
 import { Observable } from "rxjs/Observable";
-
 import live_installApp from "@ledgerhq/live-common/lib/hw/installApp";
 import live_uninstallApp from "@ledgerhq/live-common/lib/hw/uninstallApp";
 import firmwareUpdatePrepare from "@ledgerhq/live-common/lib/hw/firmwareUpdate-prepare";
 import firmwareUpdateMain from "@ledgerhq/live-common/lib/hw/firmwareUpdate-main";
-import { withDevicePolling } from "@ledgerhq/live-common/lib/hw/deviceAccess";
+import {
+  withDevicePolling,
+  genericCanRetryOnError,
+} from "@ledgerhq/live-common/lib/hw/deviceAccess";
 import getDeviceInfo from "@ledgerhq/live-common/lib/hw/getDeviceInfo";
-import { concatMap, tap, delay } from "rxjs/operators";
+import { concatMap, tap, delay, catchError } from "rxjs/operators";
 import { from, of, concat, throwError, combineLatest } from "rxjs";
+import type { Step } from "components/UpdateApp";
 
 const ALREADY_UP_TO_DATE = "Firmware is already up-to-date.";
-export const withDeviceInfo: Observable<*> = withDevicePolling("")(transport =>
-  from(getDeviceInfo(transport)),
+export const withDeviceInfo: Observable<*> = withDevicePolling("")(
+  transport => from(getDeviceInfo(transport)),
+  err => {
+    // $FlowFixMe
+    if (err.statusCode === 0x6020) {
+      return false;
+    }
+    return genericCanRetryOnError(err);
+  },
 );
 
 const APP_SETTINGS = {
@@ -34,8 +44,8 @@ export function installApp({
 }: {
   app: Object,
   addLog: Object => void,
-  setStep: string => void,
-  subscribeProgress: string => (e: { progress: number }) => void,
+  setStep: Step => void,
+  subscribeProgress: Step => (e: { progress: number }) => void,
 }): Observable<*> {
   return withDevicePolling("")(
     transport => {
@@ -82,13 +92,23 @@ export function installFirmware({
   subscribeProgress,
 }: {
   addLog: Object => void,
-  setStep: string => void,
-  subscribeProgress: string => (e: { progress: number }) => void,
+  setStep: Step => void,
+  subscribeProgress: Step => (e: { progress: number }) => void,
 }): Observable<*> {
   addLog("Fetching latest firmware...");
   const installSub = withDeviceInfo.pipe(
     concatMap(infos =>
-      combineLatest(of(infos), from(manager.getLatestFirmwareForDevice(infos))),
+      combineLatest(
+        of(infos),
+        from(manager.getLatestFirmwareForDevice(infos)).pipe(
+          catchError(err => {
+            if (err.isAxiosError && err.response.status === 404) {
+              return throwError(new Error("No firmware found."));
+            }
+            return throwError(err);
+          }),
+        ),
+      ),
     ),
     concatMap(([infos, latestFirmware]) => {
       if (!latestFirmware) {
