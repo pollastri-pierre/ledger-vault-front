@@ -46,6 +46,17 @@ export const accountsTableDefault = [
       align: "right",
     },
   },
+  {
+    header: {
+      label: "",
+      align: "right",
+    },
+    body: {
+      prop: "details",
+      align: "center",
+      size: "small",
+    },
+  },
 ];
 
 export const roleColumn = {

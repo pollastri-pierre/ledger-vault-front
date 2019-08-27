@@ -17,4 +17,5 @@ type TableHeader = {
 type TableBody = {
   prop: string,
   align: string,
+  size?: string,
 };
