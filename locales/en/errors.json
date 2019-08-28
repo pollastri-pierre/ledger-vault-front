@@ -23,6 +23,10 @@
     "title": "Invalid address",
     "description": "Please enter a valid address."
   },
+  "AddressShouldNotBeSegwit": {
+    "title": "Address is SegWit",
+    "description": "Segwit addresses aren’t supported."
+  },
   "AmountTooHigh": {
     "title": "Not enough funds",
     "description": "You don't have enough funds to create this transaction."

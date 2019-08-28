@@ -55,13 +55,13 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
         bridge.getTransactionFeeLevel(account, transaction);
       const nonce = ++this.nonce;
       const currency = getCryptoCurrencyById(account.currency);
-      const isValid = await bridge.isRecipientValid(
+      const recipientError = await bridge.getRecipientError(
         restlay,
         currency,
         transaction.recipient,
       );
       if (nonce !== this.nonce) return;
-      if (isValid) {
+      if (!recipientError) {
         try {
           const txGetFees = {
             fees_level: feeLevel || "normal",

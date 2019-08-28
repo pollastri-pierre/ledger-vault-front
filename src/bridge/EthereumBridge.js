@@ -5,7 +5,7 @@ import { BigNumber } from "bignumber.js";
 import type { Account, TransactionCreationNote } from "data/types";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
-import { NonEIP55Address } from "utils/errors";
+import { NonEIP55Address, InvalidAddress } from "utils/errors";
 import type { WalletBridge } from "./types";
 
 // convertion to the BigNumber needed
@@ -30,6 +30,11 @@ const getRecipientWarning = async recipient => {
     return new NonEIP55Address();
   }
   return null;
+};
+
+const getRecipientError = async (restlay, currency, recipient) => {
+  const isValid = await isRecipientValid(restlay, currency, recipient);
+  return isValid ? null : new InvalidAddress();
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -121,7 +126,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
     }
     return true;
   },
-  isRecipientValid,
+  getRecipientError,
   getRecipientWarning,
 };
 
