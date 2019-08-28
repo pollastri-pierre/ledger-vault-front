@@ -3,8 +3,9 @@
 
 # ------
 UPSTREAM=git@github.com:LedgerHQ/crypto-assets.git
-BRANCH=master
-OUTPUT_FILE=src/data/erc20-list.json
+OUTPUT_FILES="master,erc20-list hsm-simu,erc20-list.test"
+OUTPUT_PATH=src/data
+DIR_TO_SCAN=tokens/ethereum/erc20
 # ------
 
 # exit on error
@@ -23,15 +24,23 @@ read -r -d '' LEDGER_COIN << EOM || :
 EOM
 
 function main {
-
   TMP_DIR=$(mktemp -d)
-  DIR_TO_SCAN=tokens/ethereum/erc20
 
   echo "-- cloning from $UPSTREAM"
   git clone "$UPSTREAM" "$TMP_DIR"
-  cd "$TMP_DIR"
-  git checkout "$BRANCH"
-  cd -
+
+
+  for i in $OUTPUT_FILES; do IFS=","; set -- $i;
+    cd "$TMP_DIR"
+    git checkout "$1"
+    cd -
+    fetch_list $TMP_DIR "$OUTPUT_PATH/$2.json";
+  done
+}
+
+function fetch_list {
+  TMP_DIR="$1"
+  OUTPUT_FILE="$2"
 
   echo "-- concatenating all json files of $DIR_TO_SCAN"
   FULL=$(
@@ -54,7 +63,6 @@ function main {
     | tee "$OUTPUT_FILE"
 
   echo "-- saved into $OUTPUT_FILE"
-
 }
 
 function cleanup {
