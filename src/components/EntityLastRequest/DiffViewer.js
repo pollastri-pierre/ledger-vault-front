@@ -15,6 +15,7 @@ const ACCOUNT_TARGET_TYPE = [
   "ERC20_ACCOUNT",
   "BITCOIN_ACCOUNT",
   "ETHEREUM_ACCOUNT",
+  "RIPPLE_ACCOUNT",
 ];
 class DiffViewer extends PureComponent<Props> {
   render() {
