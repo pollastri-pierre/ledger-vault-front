@@ -27,6 +27,8 @@ export default ({
 }: Props) => {
   const { Icon, NotifComponent, dataTest } = item;
 
+  const isLong = isMenuOpened || !isMenuFloating;
+
   const url = item.url
     ? `${item.url}?${item.query ? qs.stringify(item.query) : ""}`
     : null;
@@ -104,7 +106,7 @@ export default ({
     </VaultLayoutMenuItem>
   );
 
-  if (url && (isMenuOpened || !isMenuFloating)) {
+  if (url && isLong) {
     menuItem = (
       <Link style={styles.link} to={url}>
         {menuItem}
@@ -114,7 +116,7 @@ export default ({
 
   return (
     <div
-      style={{ ...styles.relative, pointerEvents: "all" }}
+      style={{ ...styles.relative, pointerEvents: isLong ? "all" : undefined }}
       data-test={dataTest}
     >
       {menuItem}
