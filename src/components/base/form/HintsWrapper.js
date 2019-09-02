@@ -65,20 +65,20 @@ const HintsContainer = styled.div`
   padding: 10px 20px;
   max-width: 200px;
   position: relative;
-  left: 100%;
-  margin-left: 10px;
+  top: 5px;
   background: white;
   border: 1px solid ${colors.form.border};
   border-radius: 4px;
-  // box-shadow: ${colors.form.shadow.grey};
+  box-shadow: ${colors.form.shadow.grey};
   animation: 250ms ease ${enter};
   white-space: nowrap;
   pointer-events: auto;
+  text-align: left;
 `;
 
 const HintsWrap = styled.div`
   position: absolute;
-  top: 0;
+  top: 100%;
   right: 0;
   pointer-events: none;
 `;
