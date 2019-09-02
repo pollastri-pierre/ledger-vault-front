@@ -47,7 +47,7 @@ test("500 concurrent components only trigger one query and don't break", async (
   );
   invariant(restlay, "restlay is defined");
   expect(net.tick()).toBe(3);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toMatchObject([
     ...Array(50).fill("2"),
     ...Array(50).fill("id_max"),
@@ -77,7 +77,7 @@ test("a tree of connectData is fine and if data is cached don't have any issue",
   const n = 10;
   const inst = renderer.create(render(makeTree(n)));
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toMatchObject([
     ...Array(2 ** (n + 1) - 1).fill("doge"),
   ]);
