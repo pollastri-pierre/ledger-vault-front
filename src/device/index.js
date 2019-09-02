@@ -27,7 +27,22 @@ export const fromStringRoleToBytes = {
   operator: Buffer.from([0]),
 };
 
-if (localStorage.getItem("WEB_USB") || window.config.WEB_USB) {
+const USE_TRANSPORT_U2F = localStorage.getItem("U2F");
+
+if (USE_TRANSPORT_U2F) {
+  registerTransportModule({
+    id: "u2f",
+    open: async () => {
+      // $FlowFixMe
+      const t = await LedgerTransportU2F.create();
+      t.setScrambleKey("v1+");
+      t.setUnwrap(true);
+      t.setExchangeTimeout(360000);
+      return t;
+    },
+    disconnect: () => null,
+  });
+} else {
   registerTransportModule({
     id: "webusb",
     open: async () => {
@@ -37,19 +52,6 @@ if (localStorage.getItem("WEB_USB") || window.config.WEB_USB) {
         return Promise.resolve({ close: () => Promise.resolve() });
       }
       const t = await TransportUSB.create();
-      return t;
-    },
-    disconnect: () => null,
-  });
-} else {
-  registerTransportModule({
-    id: "u2f",
-    open: async () => {
-      // $FlowFixMe
-      const t = await LedgerTransportU2F.create();
-      t.setScrambleKey("v1+");
-      t.setUnwrap(true);
-      t.setExchangeTimeout(360000);
       return t;
     },
     disconnect: () => null,
