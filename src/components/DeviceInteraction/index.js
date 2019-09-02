@@ -10,7 +10,7 @@ import {
 
 import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
-import { OutOfDateApp } from "utils/errors";
+import { OutOfDateApp, WebUSBUnsupported, remapError } from "utils/errors";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion, getU2FPublicKey } from "device/interactions/common";
 import { INVALID_DATA, DEVICE_REJECT_ERROR_CODE } from "device";
@@ -115,10 +115,11 @@ class DeviceInteraction extends PureComponent<Props, State> {
         }
         if (this._unmounted) return;
       } catch (e) {
-        if (e instanceof OutOfDateApp) {
+        const err = remapError(e);
+        if (err instanceof OutOfDateApp || err instanceof WebUSBUnsupported) {
           history.push(`/update-app?redirectTo=${location.pathname}`);
         } else {
-          this.props.onError(e);
+          this.props.onError(err);
         }
         return;
       }

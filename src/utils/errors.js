@@ -1,6 +1,7 @@
 // @flow
 import { createCustomErrorClass } from "@ledgerhq/errors/lib/helpers";
 import { StatusCodes } from "@ledgerhq/hw-transport";
+import { CantOpenDevice } from "@ledgerhq/errors";
 
 export const GenericError = createCustomErrorClass("GenericError");
 export const UnknownDomain = createCustomErrorClass("UnknownDomain");
@@ -34,3 +35,24 @@ export const NetworkTimeoutError = createCustomErrorClass(
 export const DeviceNotOnDashboard = createCustomErrorClass(
   "DeviceNotOnDashboard",
 );
+
+export const WebUSBUnsupported = createCustomErrorClass("WebUSBUnsupported");
+
+export function isWebUSBUnsupportedError(e: Error) {
+  return (
+    e instanceof CantOpenDevice &&
+    e.message ===
+      "The interface number provided is not supported by the device in its current configuration."
+  );
+}
+
+export function remapError(err: Error) {
+  // $FlowFixMe
+  if (err.statusCode === 0x6020 || err.statusCode === 0x6701) {
+    return new DeviceNotOnDashboard();
+  }
+  if (isWebUSBUnsupportedError(err)) {
+    return new WebUSBUnsupported();
+  }
+  return err;
+}

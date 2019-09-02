@@ -23,7 +23,11 @@ import {
 import Logs from "device/Logs";
 import type { Log as LogType } from "device/Logs";
 
-import { DeviceNotOnDashboard } from "utils/errors";
+import {
+  WebUSBUnsupported,
+  DeviceNotOnDashboard,
+  remapError,
+} from "utils/errors";
 import TranslatedError from "components/TranslatedError";
 import VaultCentered from "components/VaultCentered";
 import Box from "components/base/Box";
@@ -126,13 +130,6 @@ let logId = 0;
 
 type Action = { type: TypeAction, payload: any };
 
-function remapError(err) {
-  if (err.statusCode === 0x6020 || err.statusCode === 0x6701) {
-    return new DeviceNotOnDashboard();
-  }
-  return err;
-}
-
 const reducer = (state: State, { type, payload }: Action) => {
   switch (type) {
     case "ADD_LOG": {
@@ -142,7 +139,14 @@ const reducer = (state: State, { type, payload }: Action) => {
     case "RESET":
       return initialState;
     case "SET_ERROR":
-      return { ...state, step: "error", error: remapError(payload) };
+      let error = remapError(payload); // eslint-disable-line no-case-declarations
+
+      // let's assume if they have WebUSBUnsupported, it means they are
+      // in the old app, that only have U2F support
+      if (error instanceof WebUSBUnsupported)
+        error = new DeviceNotOnDashboard();
+
+      return { ...state, step: "error", error };
     case "SET_STEP":
       return { ...state, step: payload };
     case "SET_PROGRESS":
