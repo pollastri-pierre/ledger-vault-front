@@ -1,7 +1,6 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { NetworkError } from "network";
 import { FaCheck, FaTrash } from "react-icons/fa";
 
 import Absolute from "components/base/Absolute";
@@ -11,7 +10,11 @@ import { ModalFooterButton, ConfirmModal } from "components/base/Modal";
 
 import colors from "shared/colors";
 import type { GateError } from "data/types";
-import type { Interaction } from "components/DeviceInteraction";
+import type {
+  Interaction,
+  DeviceInteractionError,
+} from "components/DeviceInteraction";
+import type { DeviceError } from "utils/errors";
 
 type Props = {
   interactions: Interaction[],
@@ -20,7 +23,7 @@ type Props = {
   color?: string,
   additionalFields: Object,
   onSuccess: Function,
-  onError?: (Error | GateError | typeof NetworkError) => void,
+  onError?: (DeviceInteractionError, Object) => void,
   disabled?: boolean,
   buttonLabel: React$Node,
 
@@ -35,7 +38,7 @@ type Props = {
 type State = {
   isInProgress: boolean,
   isConfirmModalOpened: boolean,
-  error: Error | GateError | null,
+  error: ?DeviceInteractionError,
 };
 
 class ApproveRequestButton extends PureComponent<Props, State> {
@@ -53,10 +56,10 @@ class ApproveRequestButton extends PureComponent<Props, State> {
     this.setState({ isInProgress: true, isConfirmModalOpened: false });
   };
 
-  onError = (err: Error | GateError) => {
+  onError = (err: Error | GateError | DeviceError, responses: Object) => {
     const { onError } = this.props;
     this.setState({ isInProgress: false, error: err });
-    onError && onError(err);
+    onError && onError(err, responses);
   };
 
   openConfirmModal = () => this.setState({ isConfirmModalOpened: true });

@@ -11,6 +11,7 @@ import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import ApproveRequestButton from "components/ApproveRequestButton";
+import { handleCancelOnDevice } from "utils/request";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
 import { createAndApprove } from "device/interactions/hsmFlows";
@@ -67,6 +68,7 @@ const steps = [
       return (
         <ApproveRequestButton
           interactions={createAndApprove("TRANSACTION")}
+          onError={handleCancelOnDevice(restlay, onClose)}
           onSuccess={async () => {
             try {
               if (payload.account) {

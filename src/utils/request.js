@@ -1,8 +1,29 @@
 // @flow
 
 import type { MemoryHistory } from "history";
+import type { RestlayEnvironment } from "restlay/connectData";
+import AbortRequestMutation from "api/mutations/AbortRequestMutation";
+import type { DeviceInteractionError } from "components/DeviceInteraction";
+import { DEVICE_REJECT_ERROR_CODE } from "device";
 
 import type { Request, User, RequestActivityType } from "data/types";
+
+export const handleCancelOnDevice = (
+  restlay: RestlayEnvironment,
+  cb: Function,
+) => {
+  return (
+    e: DeviceInteractionError,
+    { request_id }: { request_id: string },
+  ) => {
+    if (e.statusCode === DEVICE_REJECT_ERROR_CODE) {
+      restlay.commitMutation(
+        new AbortRequestMutation({ requestID: request_id }),
+      );
+      cb();
+    }
+  };
+};
 
 export const hasUserApprovedRequest = (request: Request, me: User) =>
   request.approvals &&

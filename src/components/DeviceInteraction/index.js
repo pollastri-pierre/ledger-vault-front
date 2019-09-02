@@ -18,13 +18,14 @@ export type Interaction = {
 };
 
 export type DeviceError = { statusCode: number };
+export type DeviceInteractionError = Error | GateError | DeviceError;
 type Props = {
   interactions: Interaction[],
   noCheckVersion?: boolean,
   additionalFields: Object,
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
-  onError: (Error | GateError | DeviceError) => void,
+  onError: (DeviceInteractionError, Object) => void,
   light?: boolean,
 };
 
@@ -87,7 +88,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
         ] = await interactionsWithCheckVersion[i].action(responses);
         if (this._unmounted) return;
       } catch (e) {
-        this.props.onError(e);
+        this.props.onError(e, responses);
         return;
       }
     }

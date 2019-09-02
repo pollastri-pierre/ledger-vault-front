@@ -18,6 +18,7 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
 import ApproveRequestButton from "components/ApproveRequestButton";
+import { handleCancelOnDevice } from "utils/request";
 import {
   isNotSupportedCoin,
   getCurrencyIdFromBlockchainName,
@@ -98,6 +99,7 @@ const steps = [
       return (
         <ApproveRequestButton
           interactions={createAndApprove("ACCOUNT")}
+          onError={handleCancelOnDevice(restlay, onClose)}
           onSuccess={async () => {
             try {
               if (isEditMode && payload.id) {
