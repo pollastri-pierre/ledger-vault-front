@@ -1,27 +1,33 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { FaRegEdit, FaCheck } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import InputField from "components/InputField";
+import Button from "components/base/Button";
+import { InputText } from "components/base/form";
 
 import colors from "shared/colors";
 
 type Props = {
   value: string,
   onChange: string => void,
+  InputComponent?: React$ComponentType<*>,
   inputProps?: Object,
+  getSaveDisabled?: string => boolean,
 };
+
 type State = {
   editMode: boolean,
   localValue: string,
 };
+
 const styles = {
   cursor: {
     cursor: "pointer",
   },
 };
+
 class EditableField extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -53,7 +59,8 @@ class EditableField extends PureComponent<Props, State> {
 
   render() {
     const { editMode, localValue } = this.state;
-    const { value, inputProps } = this.props;
+    const { value, InputComponent, inputProps, getSaveDisabled } = this.props;
+    const Input = InputComponent || InputText;
     return (
       <Box horizontal align="center" flow={10}>
         {!editMode ? (
@@ -67,18 +74,23 @@ class EditableField extends PureComponent<Props, State> {
             />
           </>
         ) : (
-          <InputField
-            value={localValue}
-            onChange={this.handleChange}
-            renderRight={
-              <FaCheck
-                color={colors.green}
-                style={styles.cursor}
-                onClick={this.onConfirm}
-              />
-            }
-            {...inputProps}
-          />
+          <Box horizontal align="center" flow={5}>
+            <Input
+              autoFocus
+              value={localValue}
+              onChange={this.handleChange}
+              {...inputProps}
+            />
+            <Button
+              size="small"
+              type="submit"
+              variant="filled"
+              onClick={this.onConfirm}
+              disabled={getSaveDisabled ? getSaveDisabled(localValue) : false}
+            >
+              Save
+            </Button>
+          </Box>
         )}
       </Box>
     );
