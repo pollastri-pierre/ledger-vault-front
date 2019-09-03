@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import colors from "shared/colors";
 import Text from "components/base/Text";
 
-const API_BASE_URL = "http://localhost:5001";
+const DEVICE_API_URL = "http://localhost:5001";
 
 const styles = {
   root: {
@@ -116,9 +116,9 @@ class MockDevices extends PureComponent {
 
   async componentDidMount() {
     try {
-      const resultCurrent = await fetch(`${API_BASE_URL}/current-device`);
+      const resultCurrent = await fetch(`${DEVICE_API_URL}/current-device`);
       const current = await resultCurrent.json();
-      const resultStore = await fetch(`${API_BASE_URL}/meta/store`);
+      const resultStore = await fetch(`${DEVICE_API_URL}/meta/store`);
       const store = await resultStore.json();
       const { device_id } = current;
       this.setState({
@@ -131,7 +131,7 @@ class MockDevices extends PureComponent {
   }
 
   updateNextApproval(entity, checked) {
-    return fetch(`${API_BASE_URL}/meta/store`, {
+    return fetch(`${DEVICE_API_URL}/meta/store`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -146,7 +146,7 @@ class MockDevices extends PureComponent {
 
   switchDevice = async id => {
     try {
-      await fetch(`${API_BASE_URL}/switch-device`, {
+      await fetch(`${DEVICE_API_URL}/switch-device`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
