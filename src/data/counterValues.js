@@ -54,7 +54,7 @@ const pairsSelector = createSelector(
       .concat(
         uniqBy(
           accounts
-            .filter(a => a.account_type === "ERC20")
+            .filter(a => a.account_type === "Erc20")
             .map(a => {
               const token = getERC20TokenByContractAddress(a.contract_address);
               if (!token) return null;

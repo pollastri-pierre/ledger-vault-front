@@ -143,7 +143,7 @@ function getGateAccountType(payload: AccountCreationPayload) {
   const { currency, erc20token } = payload;
 
   if (erc20token) {
-    return "ERC20";
+    return "Erc20";
   }
 
   if (!currency) {
@@ -246,7 +246,7 @@ export const deserialize: Account => AccountCreationPayload = account => {
         : null,
     parentAccount: account.parent ? { id: account.parent } : null,
     erc20token:
-      account.account_type === "ERC20"
+      account.account_type === "Erc20"
         ? getERC20TokenByContractAddress(account.contract_address) || null
         : null,
   };

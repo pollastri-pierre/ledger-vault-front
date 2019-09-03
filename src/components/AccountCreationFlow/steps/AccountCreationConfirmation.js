@@ -32,7 +32,7 @@ export default (props: AccountCreationStepProps) => {
             >
               <AccountName
                 account={{
-                  account_type: "ERC20",
+                  account_type: "Erc20",
                   contract_address: erc20token.contract_address,
                 }}
                 name={payload.name}

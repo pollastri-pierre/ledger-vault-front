@@ -42,7 +42,7 @@ const mapStateToProps = (state, props) => {
   let total = BigNumber(0);
   const countervalues = accounts.reduce((result, account) => {
     const from = resolveFrom(account);
-    const isERC20 = account.account_type === "ERC20";
+    const isERC20 = account.account_type === "Erc20";
     if (from && account.balance.isGreaterThan(0)) {
       const countervalue = counterValues.calculateWithIntermediarySelector(
         state,
@@ -60,7 +60,7 @@ const mapStateToProps = (state, props) => {
       // we don't have CV for erc20 yet, but the day we have them
       // we want to group them in one single entry because we have
       // only 1 color to represent them
-      const currencyIndex = isERC20 ? "ERC20" : account.currency;
+      const currencyIndex = isERC20 ? "Erc20" : account.currency;
       if (!result[currencyIndex]) {
         result[currencyIndex] = {
           value: BigNumber(0),
@@ -171,7 +171,7 @@ export default connectWidget(
 );
 
 function resolveFrom(account: Account) {
-  if (account.account_type === "ERC20") {
+  if (account.account_type === "Erc20") {
     const token = getERC20TokenByContractAddress(account.contract_address);
     if (!token) return null;
     return token;

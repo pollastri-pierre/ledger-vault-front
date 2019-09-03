@@ -114,7 +114,7 @@ export type Approval = {
   type: "APPROVE" | "ABORT",
 };
 
-export type AccountType = "Ethereum" | "Bitcoin" | "ERC20";
+export type AccountType = "Ethereum" | "Bitcoin" | "Erc20";
 
 type ExtendedPubKey = {
   public_key: string,

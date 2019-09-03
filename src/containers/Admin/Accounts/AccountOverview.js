@@ -45,7 +45,7 @@ const Rows = ({ account }: { account: Account }) => {
           <CurrencyAccountValue account={account} value={account.balance} />
         </LineRow>
       )}
-      {account.account_type === "ERC20" && account.parent && (
+      {account.account_type === "Erc20" && account.parent && (
         <>
           <LineRow
             label={<Trans i18nKey="accountView:summary.token_address" />}

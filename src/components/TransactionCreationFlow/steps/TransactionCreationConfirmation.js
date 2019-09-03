@@ -16,7 +16,7 @@ export default (props: TransactionCreationStepProps<any>) => {
   const { payload } = props;
   const { transaction, account, bridge } = payload;
   invariant(transaction && account && bridge, "Invalid transaction");
-  const isERC20 = account.account_type === "ERC20";
+  const isERC20 = account.account_type === "Erc20";
   const fees = bridge.getFees(account, transaction);
   const totalSpent = bridge.getTotalSpent(account, transaction);
   return (
