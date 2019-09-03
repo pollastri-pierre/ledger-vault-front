@@ -135,7 +135,7 @@ class FeesFieldEthereumKind extends PureComponent<
     const gasPriceUnit = currency.units[1];
 
     const erc20FeesExceedParentBalance =
-      account.account_type === "ERC20" &&
+      account.account_type === "Erc20" &&
       transaction.estimatedFees &&
       account.parent_balance &&
       transaction.estimatedFees.isGreaterThan(account.parent_balance);

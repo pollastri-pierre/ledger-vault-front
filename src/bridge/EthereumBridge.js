@@ -71,7 +71,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
 
   getTotalSpent: (a, t) => {
     const fees = t.estimatedFees || BigNumber(0);
-    if (a.account_type === "ERC20") {
+    if (a.account_type === "Erc20") {
       return t.amount;
     }
     return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(fees);
@@ -113,7 +113,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
     const { estimatedFees } = t;
     if (!estimatedFees) return false;
     if (!estimatedFees.isGreaterThan(0)) return false;
-    if (a.account_type === "ERC20") {
+    if (a.account_type === "Erc20") {
       if (!a.parent_balance) return false;
       if (estimatedFees.isGreaterThan(a.parent_balance)) return false;
     } else if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) {

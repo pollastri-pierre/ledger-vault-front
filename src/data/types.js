@@ -114,7 +114,7 @@ export type Approval = {
   type: "APPROVE" | "ABORT",
 };
 
-export type AccountType = "Ethereum" | "Bitcoin" | "ERC20";
+export type AccountType = "Ethereum" | "Bitcoin" | "Erc20";
 
 type ExtendedPubKey = {
   public_key: string,
@@ -179,6 +179,7 @@ type GroupCommon = {
   last_request?: Request,
   status: string, // TODO create UNION type when different status are known
   is_internal: boolean,
+  is_under_edit: boolean,
 };
 
 export type GroupEntity = GroupCommon & {

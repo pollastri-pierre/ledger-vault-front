@@ -27,6 +27,7 @@ export type Interaction = {
 };
 
 export type DeviceError = { statusCode: number };
+export type DeviceInteractionError = Error | GateError | DeviceError;
 type Props = {
   history: MemoryHistory,
   interactions: Interaction[],
@@ -34,7 +35,7 @@ type Props = {
   additionalFields: Object,
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
-  onError: (Error | GateError | DeviceError) => void,
+  onError: (DeviceInteractionError, Object) => void,
   light?: boolean,
 };
 
@@ -119,7 +120,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
         if (err instanceof OutOfDateApp || err instanceof WebUSBUnsupported) {
           history.push(`/update-app?redirectTo=${location.pathname}`);
         } else {
-          this.props.onError(err);
+          this.props.onError(err, responses);
         }
         return;
       }

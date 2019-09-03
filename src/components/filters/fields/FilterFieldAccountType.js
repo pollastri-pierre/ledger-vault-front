@@ -14,7 +14,7 @@ type AccountTypeOption = {
 const options: AccountTypeOption[] = [
   { value: "Ethereum", label: "Ethereum" },
   { value: "Bitcoin", label: "Bitcoin" },
-  { value: "ERC20", label: "ERC20" },
+  { value: "Erc20", label: "Erc20" },
 ];
 
 const FilterFieldAccountType = (props: FieldProps) => (

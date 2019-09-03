@@ -5,7 +5,8 @@
   "balance": "Balance",
   "permission": "Permission",
   "countervalue": "Countervalue",
-  "erc20NoCountervalue": "There is no countervalue available for this ERC20 token",
+  "erc20NoCountervalue": "Countervalue not available for this token",
+  "erc20DisabledCountervalue": "Countervalue disabled for this token",
   "erc20_children": "Children ERC20 token accounts",
   "last_op": {
     "address": "address",

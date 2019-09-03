@@ -19,12 +19,12 @@ test("reloading boolean gets injected by default during a transition", async () 
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   expect(inst.toJSON()).toBe(null);
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("id_max_false");
   inst.update(render(<Animal animalId="id_doge" />));
   expect(inst.toJSON()).toBe("id_max_true");
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("id_doge_false");
   inst.unmount();
 });
