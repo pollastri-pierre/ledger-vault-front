@@ -33,8 +33,8 @@ const styles = {
     display: "flex",
   },
   device: {
-    width: 50,
-    height: 70,
+    width: 58,
+    height: 74,
     color: "white",
     fontWeight: "bold",
     display: "flex",
@@ -105,6 +105,7 @@ class MockDevices extends PureComponent {
     deviceId: null,
     autoLogout: false,
     collapseMock: true,
+    rejectNextAction: false,
     showOnboarding: false,
     forceHardware: false,
   };
@@ -115,15 +116,32 @@ class MockDevices extends PureComponent {
 
   async componentDidMount() {
     try {
-      const result = await fetch(`${API_BASE_URL}/current-device`);
-      const current = await result.json();
+      const resultCurrent = await fetch(`${API_BASE_URL}/current-device`);
+      const current = await resultCurrent.json();
+      const resultStore = await fetch(`${API_BASE_URL}/meta/store`);
+      const store = await resultStore.json();
       const { device_id } = current;
       this.setState({
         deviceId: device_id,
+        rejectNextAction: store.approvals.User !== true,
       });
     } catch (e) {
       console.warn(e);
     }
+  }
+
+  updateNextApproval(entity, checked) {
+    return fetch(`${API_BASE_URL}/meta/store`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        approvals: {
+          [entity]: checked,
+        },
+      }),
+    });
   }
 
   switchDevice = async id => {
@@ -148,6 +166,23 @@ class MockDevices extends PureComponent {
     this.setState(state => ({ collapseMock: !state.collapseMock }));
   };
 
+  rejectNextActionToggle = async () => {
+    await Promise.all(
+      [
+        "AccountAddress",
+        "OperatorGroup",
+        "Partition",
+        "Account",
+        "Transaction",
+        "User",
+      ].map(entity =>
+        this.updateNextApproval(entity, this.state.rejectNextAction),
+      ),
+    );
+
+    this.setState(state => ({ rejectNextAction: !state.rejectNextAction }));
+  };
+
   onboardingToggle = () => {
     this.setState(state => ({ showOnboarding: !state.showOnboarding }));
   };
@@ -163,6 +198,7 @@ class MockDevices extends PureComponent {
       autoLogout,
       collapseMock,
       showOnboarding,
+      rejectNextAction,
       forceHardware,
     } = this.state;
     return (
@@ -188,6 +224,16 @@ class MockDevices extends PureComponent {
                   onChange={this.onboardingToggle}
                   checked={showOnboarding}
                   label="show onboarding"
+                />
+              </div>
+              <div style={styles.rowContainer}>
+                <Text small uppercase style={styles.autoLogout}>
+                  Reject next action
+                </Text>
+                <Switch
+                  onChange={this.rejectNextActionToggle}
+                  checked={rejectNextAction}
+                  label="reject next action"
                 />
               </div>
               <div style={styles.rowContainer}>
