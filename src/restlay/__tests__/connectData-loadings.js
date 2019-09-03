@@ -19,7 +19,7 @@ test("RenderLoading gets rendered before network success", async () => {
   const inst = renderer.create(render(<Animals />));
   expect(inst.toJSON()).toBe("LOADING...");
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe(null);
   inst.unmount();
 });

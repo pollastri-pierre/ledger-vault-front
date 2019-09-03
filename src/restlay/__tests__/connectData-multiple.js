@@ -21,7 +21,7 @@ test("it is possible to query multiple queries", async () => {
   const inst = renderer.create(render(<All animalId="id_doge" />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(2);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("doge_2");
   inst.unmount();
 });
@@ -47,10 +47,10 @@ test("it is possible to chain 2 connectData", async () => {
   const inst = renderer.create(render(<All animalId="id_doge" />));
   expect(inst.toJSON()).toBe(null);
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   // NB we don't optim this case so we need to tick twice
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("doge_2");
   inst.unmount();
 });

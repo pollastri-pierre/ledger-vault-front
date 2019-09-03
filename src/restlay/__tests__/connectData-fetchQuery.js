@@ -34,15 +34,21 @@ test("restlay.fetchQuery can be used to fetch arbitrary queries", async () => {
     },
   );
   const inst = renderer.create(render(<Root />));
-  await flushPromises();
+  await renderer.act(flushPromises);
   invariant(fetchQuery, "fetchQuery was loaded");
   const p = fetchQuery(new AnimalQuery({ animalId: "id_doge" }));
   net.tick();
-  const res = await p;
+  let res;
+  await renderer.act(async () => {
+    res = await p;
+  });
   expect(res).toMatchObject({ id: "id_doge", name: "doge", age: 5 });
   const p2 = fetchQuery(new AnimalQuery({ animalId: "id_max" }));
   net.tick();
-  const res2 = await p2;
+  let res2;
+  await renderer.act(async () => {
+    res2 = await p2;
+  });
   expect(res2).toMatchObject({ id: "id_max", name: "max", age: 14 });
   inst.unmount();
 });
@@ -67,7 +73,7 @@ test("restlay.fetchQuery from A (no dep) triggers a refresh of B (if depends on 
   );
   invariant(restlay, "restlay is defined");
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toMatchObject({
     children: ["2"],
   });
@@ -80,14 +86,14 @@ test("restlay.fetchQuery from A (no dep) triggers a refresh of B (if depends on 
     }),
   );
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   // the mutation don't automatically reload the list so UI is still showing 2
   expect(inst.toJSON()).toMatchObject({
     children: ["2"],
   });
   restlay.fetchQuery(new AnimalsQuery());
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   // after fetching from Foo sibling, Animals list is now 3
   expect(inst.toJSON()).toMatchObject({
     children: ["3"],

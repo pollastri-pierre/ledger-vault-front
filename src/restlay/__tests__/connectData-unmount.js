@@ -51,7 +51,7 @@ test("forceFetch & unmount", async () => {
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   invariant(forceFetch, "forceFetch was loaded");
   forceFetch();
   inst.unmount();
@@ -78,7 +78,7 @@ test("fetchQuery & unmount", async () => {
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   invariant(fetchQuery, "fetchQuery was loaded");
   fetchQuery(new AnimalQuery({ animalId: "id_doge" }));
   inst.unmount();
