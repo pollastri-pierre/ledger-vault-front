@@ -28,7 +28,7 @@ class CurrencyAccountValue extends Component<{
   render() {
     const { account, value, type, disableERC20, ...rest } = this.props;
     let unitValue;
-    const isERC20 = account.account_type === "ERC20";
+    const isERC20 = account.account_type === "Erc20";
     if (isERC20 && !disableERC20) {
       const token = getERC20TokenByContractAddress(account.contract_address);
       unitValue = { value, unit: getCurrencyLikeUnit(token) };

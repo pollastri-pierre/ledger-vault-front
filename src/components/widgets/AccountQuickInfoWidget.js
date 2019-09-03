@@ -103,7 +103,7 @@ function AccountQuickInfoWidget(props: Props) {
                   value={account.balance}
                   fromAccount={account}
                   renderNA={
-                    account.account_type === "ERC20" ? (
+                    account.account_type === "Erc20" ? (
                       <Text>
                         <Trans i18nKey="accountView:erc20NoCountervalue" />
                       </Text>
@@ -208,11 +208,11 @@ const InfoSquare = styled(Box).attrs({
 
 function getIcon(account: Account) {
   const token =
-    account.account_type === "ERC20"
+    account.account_type === "Erc20"
       ? getERC20TokenByContractAddress(account.contract_address)
       : null;
   const currency =
-    account.account_type === "ERC20"
+    account.account_type === "Erc20"
       ? null
       : getCryptoCurrencyById(account.currency);
   return (
@@ -224,7 +224,7 @@ function getIcon(account: Account) {
 }
 
 function getDisplayName(account: Account) {
-  if (account.account_type === "ERC20") {
+  if (account.account_type === "Erc20") {
     const token = getERC20TokenByContractAddress(account.contract_address);
     if (!token) return "Unknown token";
     return token.name;

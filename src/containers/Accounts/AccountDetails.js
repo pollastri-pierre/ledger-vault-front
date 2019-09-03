@@ -53,7 +53,7 @@ function AccountDetails(props: Props) {
           entityType="account"
         />
       )}
-      {account.status === "ACTIVE" && account.account_type !== "ERC20" && (
+      {account.status === "ACTIVE" && account.account_type !== "Erc20" && (
         <AccountSettings key="settings" account={account} />
       )}
     </EntityModal>

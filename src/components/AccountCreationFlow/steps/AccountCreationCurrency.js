@@ -67,7 +67,7 @@ const getAvailableParentsAccounts = (
   const parentsIdsOfSameTokenAccounts = allAccounts.edges
     .filter(
       el =>
-        el.node.account_type === "ERC20" &&
+        el.node.account_type === "Erc20" &&
         // $FlowFixMe flow failed to see that we are sure that erc20token is not null nor undefined
         el.node.contract_address === erc20token.contract_address,
     )

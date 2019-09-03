@@ -156,7 +156,7 @@ function serializePayload(payload: TransactionCreationPayload<*>) {
     });
   }
 
-  if (account.account_type === "Ethereum" || account.account_type === "ERC20") {
+  if (account.account_type === "Ethereum" || account.account_type === "Erc20") {
     Object.assign(tx, {
       gas_price: transaction.gasPrice.toFixed(),
       gas_limit: transaction.gasLimit.toFixed(),
