@@ -48,38 +48,37 @@ yarn dev
 # special case for E2E testing (software devices + no organization prefill)
 yarn starte2e
 ```
+
 ## Global, config, localstorage variables used in the app
+
 ### Globals
 
-| Key        | Default value           | Description         |
-| ------------- |:-------------:| :-----:|
-| FORCE_HARDWARE     | 0 | If set to 1, force using hardware device|
+| Key            | Default value |               Description                |
+| -------------- | :-----------: | :--------------------------------------: |
+| FORCE_HARDWARE |       0       | If set to 1, force using hardware device |
 
 ### Localstorage
 
-| Key        | Default value           | Description  |
-| ------------- |:-------------:| :-----:|
-| NO_CHECK_VERSION      |  | indicates if the app version was checked  |
-| locale      | en      |   language determination |
-| token | null     |    string value used for the auth purposes |
+| Key              | Default value |                                  Description                                   |
+| ---------------- | :-----------: | :----------------------------------------------------------------------------: |
+| NO_CHECK_VERSION |               | Prevent the comparison between the device version and the expected app version |
+| locale           |      en       |                              Forwarded to i18next                              |
+| token            |     null      |               Will fill the X-Ledger-Auth header for Gate calls                |
 
 ### Window config
 
-| Key        | Default value           | Description  |
-| ------------- |:-------------:| :-----:|
-| SOFTWARE_DEVICE      | 0 | If set to 1, software device is used |
-| APP_VERSION      |  `1.0.17`     |   self explanatory |
-| API_BASE_URL | `http://localhost:5000`      |   self explanatory   |
+| Key             |      Default value      |                                                   Description                                                    |
+| --------------- | :---------------------: | :--------------------------------------------------------------------------------------------------------------: |
+| SOFTWARE_DEVICE |            0            |                                       If set to 1, software device is used                                       |
+| APP_VERSION     |        `1.0.17`         | Represent the expected Blue device app version. If the versions differs, user will be prompted to update his app |
+| API_BASE_URL    | `http://localhost:5000` |                                                  Gate endpoint                                                   |
 
 ### env
 
-| Key        | Default value           | Description  |
-| ------------- |:-------------:| :-----:|
-| NODE_ENV     |  |  |
-| NOTIFICATION_PATH      | `/notification/socket.io`      |   self explanatory  |
-| NOTIFICATION_URL | `/`      |    self explanatory |
-| ORGANIZATION_NAME | `''`      |    self explanatory |
-| DEBUG_COUNTERVALUES | `shrug`      |     |
-| MOCK_SEED | 1234      |    self explanatory |
-
-
+| Key                 |       Default value       |                                        Description                                        |
+| ------------------- | :-----------------------: | :---------------------------------------------------------------------------------------: |
+| NODE_ENV            |       `development`       | Can be `production`, `development`, `e2e`, `test`. It is set at the build time by webpack |
+| NOTIFICATION_PATH   | `/notification/socket.io` |                             Path for the notification server                              |
+| NOTIFICATION_URL    |            `/`            |                           Endpoint for the notification server                            |
+| ORGANIZATION_NAME   |           `''`            |                   Used to pre-fill the organization name in login page                    |
+| DEBUG_COUNTERVALUES |          `null`           |                      If set, enable logging in countervalues service                      |
