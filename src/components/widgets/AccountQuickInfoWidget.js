@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -104,9 +103,7 @@ function AccountQuickInfoWidget(props: Props) {
                   fromAccount={account}
                   renderNA={
                     account.account_type === "Erc20" ? (
-                      <Text>
-                        <Trans i18nKey="accountView:erc20NoCountervalue" />
-                      </Text>
+                      <ERC20CountervalueUnavailable account={account} />
                     ) : null
                   }
                 />
@@ -148,7 +145,7 @@ function AccountQuickInfoWidget(props: Props) {
               {account.parent && (
                 <InfoSquare>
                   <Label>Parent Ethereum account</Label>
-                  <Link to={`${account.parent}`}>
+                  <Link to={account.parent.toString()}>
                     <Button
                       IconLeft={FaLink}
                       customColor={colors.text}
@@ -233,5 +230,14 @@ function getDisplayName(account: Account) {
   if (!currency) return "Unknown currency";
   return currency.name;
 }
+
+const ERC20CountervalueUnavailable = ({ account }: { account: Account }) => {
+  const token = getERC20TokenByContractAddress(account.contract_address);
+  if (!token) return null;
+  if (token.disable_countervalue) {
+    return <Text i18nKey="accountView:erc20DisabledCountervalue" />;
+  }
+  return <Text i18nKey="accountView:erc20NoCountervalue" />;
+};
 
 export default AccountQuickInfoWidget;
