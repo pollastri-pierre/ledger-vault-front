@@ -27,6 +27,9 @@ function AccountDetails(props: Props) {
   const { close, account, me, pendingTransactions } = props;
 
   const hasPendingTransactions = pendingTransactions.edges.length > 0;
+  const hasPendingEditGroup =
+    account.tx_approval_steps &&
+    account.tx_approval_steps.some(s => s.group.is_under_edit);
 
   return (
     <EntityModal
@@ -36,7 +39,7 @@ function AccountDetails(props: Props) {
       title={account.name}
       onClose={close}
       editURL={`/accounts/edit/${account.id}`}
-      disableEdit={hasPendingTransactions}
+      disableEdit={hasPendingTransactions || hasPendingEditGroup}
     >
       <AccountOverview
         key="overview"
