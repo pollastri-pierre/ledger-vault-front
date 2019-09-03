@@ -12,7 +12,10 @@ import AccountRow from "./AccountRow";
 
 import { Table, TableHeader } from "../TableBase";
 import TableScroll from "../TableScroll";
-import { accountsTableDefault, roleColumn } from "./tableDefinitions";
+import {
+  accountsTableDefault,
+  accountsIsOperatorTableDefault,
+} from "./tableDefinitions";
 import type { TableDefinition } from "../types";
 
 type Props = {
@@ -37,7 +40,7 @@ class AccountsTable extends PureComponent<Props, State> {
     this.state = {
       tableDefinition:
         props.customTableDef || isOperator
-          ? [...accountsTableDefault, roleColumn]
+          ? accountsIsOperatorTableDefault
           : accountsTableDefault,
     };
   }
