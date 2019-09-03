@@ -82,10 +82,13 @@ function main () {
     done
   fi
 
-  notify-send \
-    -u critical \
-    -i ~/dotfiles/assets/rick.png \
-    "Finished 👌" "Vault ready to go! 🚀"
+  notifyReady
+}
+
+function notifyReady() {
+  [[ $(uname) == "Linux" ]]  && notify-send -u critical -i ~/dotfiles/assets/rick.png "Finished 👌" "Vault ready to go! 🚀"
+  [[ $(uname) == "Darwin" ]]  && osascript -e 'display notification "Vault ready to go!"'
+  return 0
 }
 
 function run_scenario() {
