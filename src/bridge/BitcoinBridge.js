@@ -39,8 +39,7 @@ const getRecipientError = async (restlay, currency, recipient) => {
   const isValid = await isRecipientValid(restlay, currency, recipient);
   if (!isValid) return new InvalidAddress();
 
-  // weak way to check segwitness!
-  const isSegwit = recipient.startsWith("3");
+  const isSegwit = isAddressSegwit(currency, recipient);
 
   return isSegwit ? new AddressShouldNotBeSegwit() : null;
 };
@@ -119,5 +118,12 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   },
   getRecipientError,
 };
+
+function isAddressSegwit(currency, recipient) {
+  if (currency.id === "bitcoin" || currency.id === "bitcoin_testnet") {
+    return recipient.startsWith("3") || recipient.startsWith("bc1");
+  }
+  return false;
+}
 
 export default BitcoinBridge;
