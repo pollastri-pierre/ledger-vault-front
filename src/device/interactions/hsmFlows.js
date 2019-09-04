@@ -19,7 +19,6 @@ import {
   validateVaultOperation,
 } from "device/interface";
 import {
-  getU2FPublicKey,
   getAttestation,
   getConfidentialityPublicKey,
   getValidationPublicKey,
@@ -155,6 +154,7 @@ const onboardingRegisterDevice: Interaction = {
 
 const onboardingRegisterData: Interaction = {
   responseKey: "register_data",
+  device: true,
   action: ({ transport, u2f_key, onboardingRegisterChallenge }) => {
     // either the channel is in a map indexed by public key ( onboarding ) or directly in registerChallenge ( register operator )
     const register_challenge =
@@ -200,7 +200,6 @@ const onboardingPostResult: Interaction = {
 };
 
 export const registerUserFlow = [
-  getU2FPublicKey,
   getValidationPublicKey,
   getConfidentialityPublicKey,
   getAttestation,
@@ -211,7 +210,6 @@ export const registerUserFlow = [
   postResult,
 ];
 export const onboardingRegisterFlow = [
-  getU2FPublicKey,
   getValidationPublicKey,
   getConfidentialityPublicKey,
   getAttestation,
@@ -312,7 +310,6 @@ const validateDevice = (entity: ?TargetType): Interaction => ({
 });
 
 export const validateOperation = (entity: ?TargetType) => [
-  getU2FPublicKey,
   openSessionValidate,
   validateDevice(entity),
 ];
@@ -364,18 +361,13 @@ export const approveFlow = (entity: TargetType) => [
   postApproval,
   refetchPending,
 ];
-export const verifyAddressFlow = [
-  getU2FPublicKey,
-  getAddress,
-  ...validateAdddress,
-];
+export const verifyAddressFlow = [getAddress, ...validateAdddress];
 export const createAndApprove = (entity: TargetType) => [
   postRequest,
   ...approveFlow(entity),
 ];
 
 export const generateSeed = [
-  getU2FPublicKey,
   openSessionValidate,
   validateDevice(),
   generateFragmentSeed,

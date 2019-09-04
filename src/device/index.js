@@ -1,4 +1,10 @@
 // @flow
+import TransportUSB from "@ledgerhq/hw-transport-webusb";
+import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
+import { registerTransportModule } from "@ledgerhq/live-common/lib/hw";
+
+import { softwareMode } from "device/interface";
+
 export const CURRENT_APP_NAME = "Vault";
 export const U2F_PATH = [0x80564c54, 0x80553246];
 export const CONFIDENTIALITY_PATH = [0x80564c54, 0x80434e46];
@@ -20,3 +26,34 @@ export const fromStringRoleToBytes = {
   admin: Buffer.from([1]),
   operator: Buffer.from([0]),
 };
+
+const USE_TRANSPORT_U2F = localStorage.getItem("U2F");
+
+if (USE_TRANSPORT_U2F) {
+  registerTransportModule({
+    id: "u2f",
+    open: async () => {
+      // $FlowFixMe
+      const t = await LedgerTransportU2F.create();
+      t.setScrambleKey("v1+");
+      t.setUnwrap(true);
+      t.setExchangeTimeout(360000);
+      return t;
+    },
+    disconnect: () => null,
+  });
+} else {
+  registerTransportModule({
+    id: "webusb",
+    open: async () => {
+      // prevent the native webusb modal from opening
+      if (softwareMode()) {
+        // $FlowFixMe obv it's not a Promise<Transport<T>>
+        return Promise.resolve({ close: () => Promise.resolve() });
+      }
+      const t = await TransportUSB.create();
+      return t;
+    },
+    disconnect: () => null,
+  });
+}
