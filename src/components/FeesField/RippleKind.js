@@ -50,13 +50,13 @@ function FeesFieldRippleKind(props: Props) {
       setFeesStatus("fetching");
       try {
         // check recipient
-        const isRecipientValid = await bridge.isRecipientValid(
+        const recipientError = await bridge.getRecipientError(
           restlay,
           currency,
           transaction.recipient,
         );
         if (unsubscribed) return;
-        if (!isRecipientValid) {
+        if (recipientError) {
           setFeesStatus("idle");
           return;
         }

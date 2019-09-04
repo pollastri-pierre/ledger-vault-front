@@ -4,6 +4,7 @@ import { BigNumber } from "bignumber.js";
 import type { Account, TransactionCreationNote } from "data/types";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import FeesFieldRippleKind from "components/FeesField/RippleKind";
+import { InvalidAddress } from "utils/errors";
 import type { WalletBridge } from "./types";
 
 export type Transaction = {|
@@ -23,6 +24,11 @@ const isRecipientValid = async (restlay, currency, recipient) => {
   } catch (err) {
     return false;
   }
+};
+
+const getRecipientError = async (restlay, currency, recipient) => {
+  const isValid = await isRecipientValid(restlay, currency, recipient);
+  return isValid ? null : new InvalidAddress();
 };
 
 const getFees = (a, t) => t.estimatedFees || BigNumber(0);
@@ -76,7 +82,7 @@ const RippleBridge: WalletBridge<Transaction> = {
     return true;
   },
 
-  isRecipientValid,
+  getRecipientError,
 };
 
 export default RippleBridge;
