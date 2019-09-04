@@ -71,13 +71,13 @@ class FeesFieldEthereumKind extends PureComponent<
     const currency = getCryptoCurrencyById(account.currency);
 
     try {
-      const isRecipientValid = await bridge.isRecipientValid(
+      const recipientError = await bridge.getRecipientError(
         restlay,
         currency,
         transaction.recipient,
       );
       if (this._unmounted) return;
-      if (!isRecipientValid) return;
+      if (recipientError) return;
 
       const txGetFees = {
         amount: transaction.amount,

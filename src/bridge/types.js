@@ -49,15 +49,15 @@ export interface WalletBridge<Transaction> {
     feeLevel: Speed,
   ) => Transaction;
   getRecipientWarning?: (recipient: string) => Promise<?Error>;
-  EditFees?: *; // React$ComponentType<EditProps<Transaction>>;
-
-  EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
-
-  isRecipientValid(
+  getRecipientError: (
     restlay: RestlayEnvironment,
     currency: *,
     recipient: string,
-  ): Promise<boolean>;
+  ) => Promise<?Error>;
+
+  EditFees?: *; // React$ComponentType<EditProps<Transaction>>;
+
+  EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
 
   checkValidTransactionSyncSync(
     account: Account,

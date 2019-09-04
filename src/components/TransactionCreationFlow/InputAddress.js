@@ -7,9 +7,6 @@ import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { InputText } from "components/base/form";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import { InvalidAddress } from "utils/errors";
-
-const invalidAddress = new InvalidAddress();
 
 type Props<Transaction> = {
   restlay: RestlayEnvironment,
@@ -20,12 +17,12 @@ type Props<Transaction> = {
 };
 
 type State = {
-  isValid: boolean,
+  recipientError: ?Error,
   recipientWarning: ?Error,
 };
 
 const initialState = {
-  isValid: true,
+  recipientError: null,
   recipientWarning: null,
 };
 
@@ -65,7 +62,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
     const recipient = bridge.getTransactionRecipient(account, transaction);
     const nonce = ++this._nonce;
     if (recipient) {
-      const isValid = await bridge.isRecipientValid(
+      const recipientError = await bridge.getRecipientError(
         restlay,
         currency,
         recipient,
@@ -75,7 +72,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
         : null;
 
       if (nonce !== this._nonce || this._unmounted) return;
-      this.setState({ isValid, recipientWarning });
+      this.setState({ recipientError, recipientWarning });
     } else {
       if (nonce !== this._nonce || this._unmounted) return;
       this.setState(initialState);
@@ -97,13 +94,13 @@ class SendAddress extends PureComponent<Props<*>, State> {
       onChangeTransaction: _onChangeTransaction,
       ...props
     } = this.props;
-    const { isValid, recipientWarning } = this.state;
+    const { recipientError, recipientWarning } = this.state;
     return (
       <InputText
         id="address"
         onChange={this.onChange}
         value={bridge.getTransactionRecipient(account, transaction)}
-        errors={isValid ? null : [invalidAddress]}
+        errors={recipientError ? [recipientError] : null}
         warnings={recipientWarning ? [recipientWarning] : null}
         {...props}
       />
