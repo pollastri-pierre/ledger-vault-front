@@ -54,8 +54,7 @@ const DeviceIcon = ({ needsUserInput }: { needsUserInput: ?boolean }) => (
 const Dash = styled(Box)`
   width: 10px;
   height: 2px;
-  background: ${p => (p.done ? colors.green : "#777")};
-  opacity: ${p => (p.done || p.active ? 1 : 0.1)};
+  background: ${p => (p.done ? colors.green : "#eae9e9")};
 `;
 
 const bounce = keyframes`
@@ -107,25 +106,16 @@ type PropsDash = {
 };
 
 type StateDash = {
-  intervalId: ?IntervalID,
   deviceReady: ?boolean,
-  dashActive: number,
 };
 class DashContainer extends PureComponent<PropsDash, StateDash> {
   state = {
-    intervalId: null,
     deviceReady: false,
-    dashActive: 0,
   };
 
   static defaultProps = {
     number: 3,
   };
-
-  componentDidMount() {
-    const intervalId = setInterval(() => this.update(), 200);
-    this.setState({ intervalId });
-  }
 
   static getDerivedStateFromProps(props, state) {
     const { currentStep } = props;
@@ -135,43 +125,12 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
     };
   }
 
-  componentDidUpdate() {
-    const { intervalId, deviceReady } = this.state;
-    const { error } = this.props;
-    if ((deviceReady || error) && intervalId) {
-      clearInterval(intervalId);
-    }
-  }
-
-  componentWillUnmount() {
-    const { intervalId } = this.state;
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-  }
-
-  update() {
-    const { number } = this.props;
-    const { dashActive } = this.state;
-    const newActive = dashActive === number + 1 ? 0 : dashActive + 1;
-    this.setState({
-      dashActive: newActive,
-    });
-  }
-
   renderDashes = () => {
     const { number, currentStep } = this.props;
-    const { dashActive } = this.state;
 
     const rows = [];
     for (let i = 0; i < number; i++) {
-      rows.push(
-        <Dash
-          active={dashActive === i}
-          done={currentStep && i < currentStep}
-          key={i}
-        />,
-      );
+      rows.push(<Dash done={currentStep && i < currentStep} key={i} />);
     }
     return rows;
   };
