@@ -87,6 +87,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     ...t,
     recipient,
     estimatedFees: null,
+    estimatedMaxAmount: null,
   }),
 
   getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
@@ -107,7 +108,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     note,
   }),
   EditFees: FeesBitcoinKind,
-  checkValidTransactionSyncSync: (a: Account, t: Transaction) => {
+  checkValidTransactionSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
     if (!t.estimatedFees) return false;
     if (!t.estimatedFees.isGreaterThan(0)) return false;

@@ -59,7 +59,7 @@ export interface WalletBridge<Transaction> {
 
   EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
 
-  checkValidTransactionSyncSync(
+  checkValidTransactionSync(
     account: Account,
     transaction: Transaction,
     parentAccount: ?Account,

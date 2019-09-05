@@ -61,17 +61,20 @@ class SendAddress extends PureComponent<Props<*>, State> {
     const currency = getCryptoCurrencyById(account.currency);
     const recipient = bridge.getTransactionRecipient(account, transaction);
     const nonce = ++this._nonce;
+
     if (recipient) {
       const recipientError = await bridge.getRecipientError(
         restlay,
         currency,
         recipient,
       );
+      if (nonce !== this._nonce || this._unmounted) return;
+
       const recipientWarning = bridge.getRecipientWarning
         ? await bridge.getRecipientWarning(recipient)
         : null;
-
       if (nonce !== this._nonce || this._unmounted) return;
+
       this.setState({ recipientError, recipientWarning });
     } else {
       if (nonce !== this._nonce || this._unmounted) return;
