@@ -9,7 +9,7 @@ export type TableItem = {
 
 type TableHeader = {
   label: React$Node,
-  align: "left" | "right",
+  align: "left" | "right" | "center",
   sortable?: boolean,
   sortFirst?: "asc" | "desc",
 };
