@@ -34,10 +34,12 @@ function AccountTableSubmenu(props: Props) {
 
   function handleOverview(e) {
     preventRowClick(e);
+    setAnchorEl(null);
     history.push(`accounts/details/${account.id}/overview`);
   }
   function handleEdit(e) {
     preventRowClick(e);
+    setAnchorEl(null);
     history.push(`${location.pathname}/accounts/edit/${account.id}`);
   }
   function handleCloseMenu(e) {
@@ -76,6 +78,7 @@ export default withRouter(AccountTableSubmenu);
 
 const StyledMenuItem = styled(MenuItem)`
   && {
+    font-size: 13px;
     &:hover {
       color: ${p => p.theme.colors.blue};
     }
