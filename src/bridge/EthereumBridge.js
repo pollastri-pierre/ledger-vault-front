@@ -113,7 +113,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
   }),
   EditFees: FeesFieldEthereumKind,
   EditAdvancedOptions,
-  checkValidTransactionSyncSync: (a: Account, t: Transaction) => {
+  checkValidTransactionSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
     const { estimatedFees } = t;
     if (!estimatedFees) return false;

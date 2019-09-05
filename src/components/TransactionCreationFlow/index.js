@@ -51,7 +51,7 @@ const steps = [
     requirements: (payload: TransactionCreationPayload<any>) => {
       const { bridge, transaction, account } = payload;
       if (!bridge || !transaction || !account) return false;
-      return bridge.checkValidTransactionSyncSync(account, transaction);
+      return bridge.checkValidTransactionSync(account, transaction);
     },
   },
   {
