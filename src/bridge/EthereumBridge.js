@@ -102,6 +102,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
   ) => ({
     ...t,
     recipient,
+    estimatedFees: null,
   }),
 
   getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
