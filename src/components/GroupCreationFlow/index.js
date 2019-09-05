@@ -20,7 +20,6 @@ import { FaUsers } from "react-icons/fa";
 import type { Group } from "data/types";
 
 import GroupCreationInfos from "./GroupCreationInfos";
-import GroupCreationMembers from "./GroupCreationMembers";
 import GroupCreationConfirmation from "./GroupCreationConfirmation";
 import { hasEditOccured, onlyDescriptionChanged } from "./utils";
 import type { GroupCreationPayload } from "./types";
@@ -38,16 +37,11 @@ const steps = [
     Step: GroupCreationInfos,
   },
   {
-    id: "chooseMembers",
-    name: <Trans i18nKey="group:create.members" />,
-    Step: GroupCreationMembers,
-    requirements: (payload: GroupCreationPayload) => payload.name !== "",
-  },
-  {
     id: "confirm",
     name: <Trans i18nKey="group:create.confirmation" />,
     Step: GroupCreationConfirmation,
-    requirements: (payload: GroupCreationPayload) => payload.members.length > 0,
+    requirements: (payload: GroupCreationPayload) =>
+      payload.name !== "" && payload.members.length > 0,
     Cta: ({
       payload,
       onClose,

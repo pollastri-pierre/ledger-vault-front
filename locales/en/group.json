@@ -16,7 +16,7 @@
     "name": "Name",
     "infos": "Details",
     "name_placeholder": "Group name",
-    "desc_placeholder": "Group description",
+    "desc_placeholder": "Group description (optional)",
     "description": "description",
     "members": "members",
     "nb_members": "Members",
