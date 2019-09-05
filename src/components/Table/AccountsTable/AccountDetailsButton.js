@@ -3,8 +3,12 @@
 import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router";
+import { Trans } from "react-i18next";
 import type { MemoryHistory } from "history";
-import { FaWrench } from "react-icons/fa";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+
+import { FaEllipsisV } from "react-icons/fa";
 
 import type { Account } from "data/types";
 
@@ -13,21 +17,70 @@ type Props = {
   history: MemoryHistory,
 };
 
-function AccountDetailsButton(props: Props) {
+function preventRowClick(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function AccountTableSubmenu(props: Props) {
   const { account, history } = props;
-  const onClick = e => {
-    // prevent click on row
-    e.preventDefault();
-    e.stopPropagation();
-    // navigate to details
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  function handleClick(e) {
+    preventRowClick(e);
+    setAnchorEl(e.currentTarget);
+  }
+
+  function handleOverview(e) {
+    preventRowClick(e);
     history.push(`accounts/details/${account.id}/overview`);
-  };
+  }
+  function handleEdit(e) {
+    preventRowClick(e);
+    history.push(`${location.pathname}/accounts/edit/${account.id}`);
+  }
+  function handleCloseMenu(e) {
+    preventRowClick(e);
+    setAnchorEl(null);
+  }
+
   return (
-    <Btn onClick={onClick}>
-      <FaWrench />
-    </Btn>
+    <div>
+      <Btn
+        aria-controls={account.id}
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        <FaEllipsisV />
+      </Btn>
+      <Menu
+        id={account.id}
+        anchorEl={anchorEl}
+        disableAutoFocusItem
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        <StyledMenuItem onClick={handleOverview}>
+          <Trans i18nKey="accountDetails:tableSubmenu.overview" />
+        </StyledMenuItem>
+        <StyledMenuItem onClick={handleEdit}>
+          <Trans i18nKey="accountDetails:tableSubmenu.edit" />
+        </StyledMenuItem>
+      </Menu>
+    </div>
   );
 }
+
+export default withRouter(AccountTableSubmenu);
+
+const StyledMenuItem = styled(MenuItem)`
+  && {
+    &:hover {
+      color: ${p => p.theme.colors.blue};
+    }
+  }
+`;
 
 const Btn = styled.div`
   height: 40px;
@@ -36,10 +89,7 @@ const Btn = styled.div`
   align-items: center;
   justify-content: center;
   color: ${p => p.theme.colors.mediumGrey};
-
   &:hover {
     color: ${p => p.theme.colors.shark};
   }
 `;
-
-export default withRouter(AccountDetailsButton);

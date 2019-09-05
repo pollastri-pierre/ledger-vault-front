@@ -48,8 +48,8 @@ export const accountsTableDefault = [
   },
   {
     header: {
-      label: "Details",
-      align: "right",
+      label: "More",
+      align: "center",
     },
     body: {
       prop: "details",
@@ -115,8 +115,8 @@ export const accountsIsOperatorTableDefault = [
   },
   {
     header: {
-      label: "Details",
-      align: "right",
+      label: "More",
+      align: "center",
     },
     body: {
       prop: "details",
