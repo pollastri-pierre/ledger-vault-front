@@ -10,7 +10,12 @@ import {
 
 import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
-import { OutOfDateApp, WebUSBUnsupported, remapError } from "utils/errors";
+import {
+  OutOfDateApp,
+  WebUSBUnsupported,
+  WebUSBClickRequired,
+  remapError,
+} from "utils/errors";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion, getU2FPublicKey } from "device/interactions/common";
 import { INVALID_DATA, DEVICE_REJECT_ERROR_CODE } from "device";
@@ -42,6 +47,7 @@ type Props = {
 type State = {
   currentStep: number,
   interaction: Interaction,
+  requireClick: boolean,
 };
 
 // always logs apdu for now
@@ -53,6 +59,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
   state = {
     currentStep: 0,
     interaction: this.props.interactions[0],
+    requireClick: false,
   };
 
   _unmounted = false;
@@ -119,6 +126,8 @@ class DeviceInteraction extends PureComponent<Props, State> {
         const err = remapError(e);
         if (err instanceof OutOfDateApp || err instanceof WebUSBUnsupported) {
           history.push(`/update-app?redirectTo=${location.pathname}`);
+        } else if (err instanceof WebUSBClickRequired) {
+          this.setState({ requireClick: true });
         } else {
           this.props.onError(err, responses);
         }
@@ -139,13 +148,21 @@ class DeviceInteraction extends PureComponent<Props, State> {
 
   render() {
     const { interactions, light } = this.props;
-    const { currentStep, interaction } = this.state;
+    const { currentStep, interaction, requireClick } = this.state;
+
+    const onReClick = () => {
+      this.setState({ requireClick: false });
+      this.runInteractions();
+    };
+
     return (
       <DeviceInteractionAnimation
         light={light}
         interaction={interaction}
         numberSteps={interactions.length}
         currentStep={currentStep}
+        shouldReconnectWebUSB={requireClick}
+        onWebUSBReconnect={onReClick}
       />
     );
   }

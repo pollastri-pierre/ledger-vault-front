@@ -40,12 +40,23 @@ export const DeviceNotOnDashboard = createCustomErrorClass(
 );
 
 export const WebUSBUnsupported = createCustomErrorClass("WebUSBUnsupported");
+export const WebUSBClickRequired = createCustomErrorClass(
+  "WebUSBClickRequired",
+);
 
-export function isWebUSBUnsupportedError(e: Error) {
+function isWebUSBUnsupportedError(e: Error) {
   return (
     e instanceof CantOpenDevice &&
     e.message ===
       "The interface number provided is not supported by the device in its current configuration."
+  );
+}
+
+function isWebUSBClickRequired(e: Error) {
+  return (
+    e instanceof CantOpenDevice &&
+    e.message ===
+      "Must be handling a user gesture to show a permission request."
   );
 }
 
@@ -56,6 +67,9 @@ export function remapError(err: Error) {
   }
   if (isWebUSBUnsupportedError(err)) {
     return new WebUSBUnsupported();
+  }
+  if (isWebUSBClickRequired(err)) {
+    return new WebUSBClickRequired();
   }
   return err;
 }

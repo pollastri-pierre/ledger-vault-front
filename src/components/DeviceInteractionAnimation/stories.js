@@ -62,5 +62,15 @@ storiesOf("components", module).add("DeviceInteractionAnimation", () => (
         error
       />
     </Box>
+    <Box align="flex-start">
+      <Text>WebUSB needs reconnect</Text>
+      <Device
+        numberSteps={5}
+        currentStep={1}
+        interaction={serverInteraction}
+        shouldReconnectWebUSB
+        onWebUSBReconnect={() => {}}
+      />
+    </Box>
   </Box>
 ));
