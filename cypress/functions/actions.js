@@ -246,8 +246,6 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.wait(2000);
   cy.get("[data-test=group_name]").type(groupName);
   cy.get("[data-test=group_description]").type(description);
-  cy.contains("Next").click();
-  cy.wait(1500);
   cy.get("#input_groups_users")
     .type(user1, { force: true })
     .type("{enter}");
