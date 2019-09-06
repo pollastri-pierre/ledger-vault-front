@@ -23,8 +23,6 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.wait(2000);
     cy.get("[data-test=group_name]").type("America Ops");
     cy.get("[data-test=group_description]").type("Key accounts Ops by cypress");
-    cy.contains("Next").click();
-    cy.wait(1500);
     cy.get("#input_groups_users")
       .type("Anna", { force: true })
       .type("{enter}");
@@ -89,8 +87,6 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("[data-test=group_description]").type(
       "Key accounts Ops group by cypress",
     );
-    cy.contains("Next").click();
-    cy.wait(2500);
     cy.get("#input_groups_users")
       .type("Laura", { force: true })
       .type("{enter}");

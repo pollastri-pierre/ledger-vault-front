@@ -1,24 +1,32 @@
 // @flow
 
 import React from "react";
-import { withTranslation } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 
 import Box from "components/base/Box";
 import { InputText, Label } from "components/base/form";
+import SelectGroupsUsers from "components/SelectGroupsUsers";
+import InfoBox from "components/base/InfoBox";
 
-import type { Translate } from "data/types";
+import type { Translate, User } from "data/types";
 import type { GroupCreationStepProps } from "./types";
 
 type Props = GroupCreationStepProps & {
   t: Translate,
 };
 
-const GroupCreationInfos = (props: Props) => {
-  const { payload, updatePayload, t } = props;
+export const MAX_MEMBERS = 20;
 
+const GroupCreationInfos = (props: Props) => {
+  const { payload, updatePayload, operators, t } = props;
+
+  const listOperators = operators.edges.map(e => e.node);
   const handleChangeName = (name: string) => updatePayload({ name });
   const handleChangeDesc = (description: string) =>
     updatePayload({ description });
+
+  const handleChangeMembers = (data: { members: User[] }) =>
+    updatePayload({ members: data.members });
 
   return (
     <Box flow={20}>
@@ -43,6 +51,25 @@ const GroupCreationInfos = (props: Props) => {
           onChange={handleChangeDesc}
           placeholder={t("group:create.desc_placeholder")}
         />
+      </Box>
+      <Box justify="space-between" grow>
+        <Box>
+          <Label>
+            <Trans i18nKey="group:membersTitle" />
+          </Label>
+          <SelectGroupsUsers
+            openMenuOnFocus
+            members={listOperators}
+            value={{ members: payload.members, group: [] }}
+            onChange={handleChangeMembers}
+            hasReachMaxLength={payload.members.length === MAX_MEMBERS}
+          />
+        </Box>
+        {payload.members.length === MAX_MEMBERS && (
+          <InfoBox withIcon type="info">
+            <Trans i18nKey="group:maxMembers" />
+          </InfoBox>
+        )}
       </Box>
     </Box>
   );

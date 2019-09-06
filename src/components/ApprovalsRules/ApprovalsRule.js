@@ -20,7 +20,7 @@ import SelectGroupsUsers, {
 } from "components/SelectGroupsUsers";
 import HiddenRule from "components/ApprovalsRules/HiddenRule";
 import { isRequestPending } from "utils/request";
-import { MAX_MEMBERS } from "components/GroupCreationFlow/GroupCreationMembers";
+import { MAX_MEMBERS } from "components/GroupCreationFlow/GroupCreationInfos";
 
 import type {
   ApprovalsRule as ApprovalsRuleType,
