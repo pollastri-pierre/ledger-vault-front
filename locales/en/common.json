@@ -29,7 +29,7 @@
   "type": "Type",
   "requestActivity": "Request type",
   "clickToEdit": "Click to edit",
-  "plug_device": "Please connect your device and open the vault application.",
+  "plug_device": "Please connect your device and open the Vault application.",
   "approve_device": "Verify the information on your device",
   "role": {
     "ADMIN": "Administrator",

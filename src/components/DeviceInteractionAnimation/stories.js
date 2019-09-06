@@ -11,7 +11,7 @@ const deviceInteraction = {
   needsUserInput: false,
   device: true,
   responseKey: "u2f_key",
-  tooltip: <Text small i18nKey="common:plug_device" />,
+  tooltip: <Text i18nKey="common:plug_device" />,
   action: async () => {
     await delay(1000);
     return Promise.resolve();
@@ -21,7 +21,7 @@ const deviceInteractionInteractive = {
   needsUserInput: true,
   device: true,
   responseKey: "authenticate",
-  tooltip: <Text small i18nKey="common:approve_device" />,
+  tooltip: <Text i18nKey="common:approve_device" />,
   action: async () => {
     await delay(1000);
     return Promise.resolve();
