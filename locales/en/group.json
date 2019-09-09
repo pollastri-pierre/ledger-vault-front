@@ -9,6 +9,9 @@
     "by": "Created by",
     "users": "users"
   },
+  "groupTable": {
+    "remainingMembers": " and {{nb}} other"
+  },
   "delete": "Delete group",
   "create": {
     "title": "New group",
