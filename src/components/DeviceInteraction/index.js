@@ -7,15 +7,14 @@ import {
   withDevicePolling,
   genericCanRetryOnError,
 } from "@ledgerhq/live-common/lib/hw/deviceAccess";
+import {
+  TransportWebUSBGestureRequired,
+  TransportInterfaceNotAvailable,
+} from "@ledgerhq/errors";
 
 import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
-import {
-  OutOfDateApp,
-  WebUSBUnsupported,
-  WebUSBClickRequired,
-  remapError,
-} from "utils/errors";
+import { OutOfDateApp, remapError } from "utils/errors";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion, getU2FPublicKey } from "device/interactions/common";
 import { INVALID_DATA, DEVICE_REJECT_ERROR_CODE } from "device";
@@ -124,9 +123,12 @@ class DeviceInteraction extends PureComponent<Props, State> {
         if (this._unmounted) return;
       } catch (e) {
         const err = remapError(e);
-        if (err instanceof OutOfDateApp || err instanceof WebUSBUnsupported) {
+        if (
+          err instanceof OutOfDateApp ||
+          err instanceof TransportInterfaceNotAvailable
+        ) {
           history.push(`/update-app?redirectTo=${location.pathname}`);
-        } else if (err instanceof WebUSBClickRequired) {
+        } else if (err instanceof TransportWebUSBGestureRequired) {
           this.setState({ requireClick: true });
         } else {
           this.props.onError(err, responses);

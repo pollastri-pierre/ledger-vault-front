@@ -63,10 +63,6 @@
     "title": "User denied manager",
     "description": "Please allow Ledger manager on your device"
   },
-  "WebUSBUnsupported": {
-    "title": "WebUSB not supported",
-    "description": "Current device state does not support WebUSB"
-  },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"
