@@ -399,6 +399,14 @@ export function provide_viewonly_rule(name, groups, user1) {
   cy.wait(3500);
 }
 
+export function approve_tx() {
+  cy.url().should("include", "/operator/dashboard");
+  cy.get("[data-test=awaiting-approval]").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(4500);
+  successfull_message();
+}
+
 export function revoke_users(name) {
   cy.get("[data-test=menuItem-users]").click();
   cy.url().should("include", "/admin/users");
