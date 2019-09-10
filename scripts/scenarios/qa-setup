@@ -1,0 +1,128 @@
+# DESC With "qa-setup" fake data
+
+# user 11
+python test_user_creation.py --user 3  --username "Anna Wagner" --approve
+
+# user 12
+python test_user_creation.py --user 4  --username "Aidan Fisher" --approve
+
+# user 13
+python test_user_creation.py --user 5  --username "Thomas Lebron" --approve
+
+# user 14
+python test_user_creation.py --user 6  --username "James Lepic" --approve
+
+# user 15
+python test_user_creation.py --user 9  --username "Laura Parker" --approve
+
+# user 16
+python test_user_creation.py --user 10 --username "Sally Wilson" --approve
+
+# user 17
+python test_user_creation.py --user 11 --username "Claudia Schmitt" --approve
+
+# user 18
+python test_user_creation.py --user 12 --username "Allison Stowe" --approve
+
+# user 19
+python test_user_creation.py --user 13 --username "Tyler Flynn" --approve
+
+# user 20
+python test_user_creation.py --user 14 --username "Charles Burnell" --approve
+
+
+
+# group 1
+python test_group_creation.py \
+  --name 'APAC' \
+  --approve \
+  --users 11 \
+  --users 12 \
+  --users 13
+
+# group 2
+python test_group_creation.py \
+  --name 'America Ops' \
+  --approve \
+  --users 11 \
+  --users 12 \
+  --users 13 \
+  --users 14 \
+  --users 15 \
+  --users 16 \
+  --users 17 \
+  --users 18 \
+  --users 19 \
+  --users 20
+
+
+# group 3
+python test_group_creation.py \
+  --name 'New EMEA' \
+  --approve \
+  --users 14 \
+  --users 15 \
+  --users 16
+
+# group 4
+python test_group_creation.py \
+  --name 'Key accounts Op' \
+  --approve \
+  --users 15 \
+  --users 20 \
+  --users 17 \
+  --users 18 \
+  --users 19
+
+# group 5
+python test_group_creation.py \
+  --name 'South Africa' \
+  --approve \
+  --users 11 \
+  --users 15 \
+  --users 20
+
+
+# bitcoin account
+python test_account_creation.py \
+  --name "Coinhy.pe" \
+  --currency bitcoin \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 2, \"group_id\": 2 },
+    { \"quorum\": 1, \"group_id\": 4 }
+  ]"
+
+
+# bitcoin tesnet account
+python test_account_creation.py \
+    --name "Amanda Wong" \
+    --currency bitcoin_testnet \
+    --approve \
+    --tx-approval-steps "[
+      { \"quorum\": 3, \"group_id\": 3 },
+      { \"quorum\": 1, \"group_id\": 5 }
+    ]"
+
+# ethereum account
+python test_account_creation.py \
+  --name "Syscoin2" \
+  --currency ethereum \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 5 },
+    { \"quorum\": 2, \"group_id\": 3 }
+  ]"
+
+
+# 2 ethereum account
+python test_account_creation.py \
+  --name "Syscoin" \
+  --currency ethereum \
+  --approve \
+  --tx-approval-steps "[
+    { \"quorum\": 1, \"group_id\": 5 },
+    { \"quorum\": 1, \"group_id\": 2 },
+    { \"quorum\": 1, \"group_id\": 4 },
+    { \"quorum\": 2, \"group_id\": 3 }
+  ]"

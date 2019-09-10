@@ -36,14 +36,14 @@ export default (props: TransactionCreationStepProps<any>) => {
         <LineRow
           label={<Trans i18nKey="transactionCreation:steps.note.noteTitle" />}
         >
-          {transaction.note.title}
+          <span data-test="note_title">{transaction.note.title}</span>
         </LineRow>
       )}
       {transaction.note.content && (
         <LineRow
           label={<Trans i18nKey="transactionCreation:steps.note.noteContent" />}
         >
-          {transaction.note.content}
+          <span data-test="note_comments">{transaction.note.content}</span>
         </LineRow>
       )}
       <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>

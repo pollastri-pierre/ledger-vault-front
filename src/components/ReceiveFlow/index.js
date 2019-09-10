@@ -100,6 +100,7 @@ const VerifyFreshAddress = connectData(
               onClick={() => setVerifying(true)}
               type="submit"
               variant="filled"
+              data-test="verifyaddress"
               IconLeft={hasBeenVerified === false ? IconRetry : IconBlue}
               disabled={isVerifying}
             >

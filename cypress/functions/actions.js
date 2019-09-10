@@ -245,7 +245,6 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.get("[data-test=buttonCreate]").click();
   cy.wait(2000);
   cy.get("[data-test=group_name]").type(groupName);
-  cy.get("[data-test=group_description]").type(description);
   cy.get("#input_groups_users")
     .type(user1, { force: true })
     .type("{enter}");
@@ -255,6 +254,8 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.get("#input_groups_users")
     .type(user3, { force: true })
     .type("{enter}");
+  cy.get("[data-test=group_description]").type(description);
+
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
   cy.wait(2500);
@@ -397,6 +398,14 @@ export function provide_viewonly_rule(name, groups, user1) {
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
   cy.wait(3500);
+}
+
+export function approve_tx() {
+  cy.url().should("include", "/operator/dashboard");
+  cy.get("[data-test=awaiting-approval]").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(4500);
+  successfull_message();
 }
 
 export function revoke_users(name) {
