@@ -18,7 +18,9 @@ export default function GroupMembersCell(props: GroupMembersCellProps) {
   let content = memberSubset.map(u => u.username).join(", ");
 
   if (remainingMembers) {
-    content += t("group:groupTable.remainingMembers", { nb: remainingMembers });
+    content += t("group:groupTable.remainingMembers", {
+      count: remainingMembers,
+    });
   }
 
   return members.length > 0 ? (
