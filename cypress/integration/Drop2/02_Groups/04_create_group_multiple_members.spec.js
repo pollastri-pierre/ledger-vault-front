@@ -21,7 +21,6 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.url().should("include", "/admin/groups");
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(2000);
-    cy.get("[data-test=group_name]").type("America Ops");
     cy.get("[data-test=group_description]").type("Key accounts Ops by cypress");
     cy.get("#input_groups_users")
       .type("Anna", { force: true })
@@ -53,7 +52,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("#input_groups_users")
       .type("Charles", { force: true })
       .type("{enter}");
-    cy.contains("members").click({ force: true });
+    cy.get("[data-test=group_name]").type("America Ops");
     cy.contains("Next").click();
     cy.get("[data-test=approve_button]").click();
     cy.wait(2500);
@@ -66,10 +65,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     logout();
     login(5);
     cy.url().should("include", "/admin/dashboard");
-    cy.get("[data-test=menuItem-groups]").click();
-    cy.url().should("include", "/admin/groups");
-    cy.wait(3500);
-    cy.contains("America Ops").click();
+    cy.get("[data-test=0]").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
@@ -83,7 +79,6 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.url().should("include", "/admin/groups");
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(1500);
-    cy.get("[data-test=group_name]").type("Key accounts Ops");
     cy.get("[data-test=group_description]").type(
       "Key accounts Ops group by cypress",
     );
@@ -102,6 +97,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("#input_groups_users")
       .type("Charles", { force: true })
       .type("{enter}");
+    cy.get("[data-test=group_name]").type("Key accounts Ops");
     cy.contains("Next").click();
     cy.get("[data-test=approve_button]").click();
     cy.wait(2500);
@@ -114,13 +110,9 @@ describe("Test Case for Create Groups with multiple member", function() {
     logout();
     login(5);
     cy.url().should("include", "/admin/dashboard");
-    cy.get("[data-test=menuItem-groups]").click();
-    cy.url().should("include", "/admin/groups");
-    cy.wait(4500);
-    cy.contains("Key accounts Ops").click();
+    cy.get("[data-test=0]").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
-    cy.get("[data-test=close]").click();
   });
 });
