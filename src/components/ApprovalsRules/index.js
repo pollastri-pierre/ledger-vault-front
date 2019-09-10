@@ -95,6 +95,7 @@ class ApprovalsRules extends PureComponent<Props> {
       <Rule
         key={i}
         index={i}
+        ruleIndex={i}
         rule={rule}
         users={users}
         groups={groups}

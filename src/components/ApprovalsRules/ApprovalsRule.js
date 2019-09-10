@@ -34,7 +34,9 @@ type Props = {
   onRemove: () => void,
   parentSelectedIds: ApprovalsSelectedIds,
   users: User[],
-  index: number,
+  // used by react-sortable-hoc (and swallowed by it)
+  index: number, // eslint-disable-line react/no-unused-prop-types
+  ruleIndex: number,
   groups: Group[],
   readOnly?: boolean,
   t: string => string,
@@ -101,7 +103,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
       groups,
       onRemove,
       parentSelectedIds,
-      index,
+      ruleIndex,
       readOnly,
       t,
     } = this.props;
@@ -110,8 +112,8 @@ class ApprovalsRule extends PureComponent<Props, State> {
         <div style={styles.paddedBotForDrag}>
           <RuleContainer>
             <Box horizontal position="relative" align="flex-start">
-              <StepBallComponent number={index + 1} />
-              <HiddenRule stepNumber={index + 1} />
+              <StepBallComponent number={ruleIndex + 1} />
+              <HiddenRule stepNumber={ruleIndex + 1} />
             </Box>
           </RuleContainer>
         </div>
@@ -142,9 +144,9 @@ class ApprovalsRule extends PureComponent<Props, State> {
     return (
       <div style={styles.paddedBotForDrag}>
         <RuleContainer isInvalid={isInvalid}>
-          <StepBallComponent number={index + 1} />
+          <StepBallComponent number={ruleIndex + 1} />
           <div style={{ padding: 10, paddingLeft: 15 }}>
-            {index === 0 ? (
+            {ruleIndex === 0 ? (
               <Trans
                 i18nKey="approvalsRules:creator_role"
                 components={<strong>0</strong>}
