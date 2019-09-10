@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import counterValues from "data/counterValues";
 import { Switch, Route } from "react-router";
 import AlertsContainer from "components/legacy/AlertsContainer";
-import UpdateApp from "components/UpdateApp";
+import UpdateApp from "components/UpdateApp/LinksToUpdater";
 import MockDevices from "components/MockDevices";
 import GlobalStyle from "components/GlobalStyle";
 import Welcome from "./Welcome";

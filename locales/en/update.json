@@ -6,6 +6,7 @@
   "success": "Install successful.",
   "goToLogin": "Login to Vault",
   "goBack": "Go back",
+  "infobox": "Your application is not up to date. Download our ledger-update software so you can update your app and your firmware. Contact support if needed.",
   "userSteps": {
     "step1": "On your device, click the close icon in the top right corner to go back to the <0>Dashboard</0>.",
     "step2": "On the web app, click <0>Update firmware and app</0>."
