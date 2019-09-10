@@ -9,6 +9,8 @@ import Spinner from "components/base/Spinner";
 import { FaMobileAlt, FaServer } from "react-icons/fa";
 import type { Interaction } from "components/DeviceInteraction";
 
+import WebUSBClickFallback from "./WebUSBClickFallback";
+
 export type CurrentActionType = "device" | "server";
 
 type Props = {
@@ -17,6 +19,8 @@ type Props = {
   currentStep: ?number,
   error?: boolean,
   light?: boolean,
+  shouldReconnectWebUSB: boolean,
+  onWebUSBReconnect: () => void,
 };
 
 const computerIcon = <MdComputer size={20} />;
@@ -38,6 +42,14 @@ const Container = styled(Box).attrs({
   background: ${p => (p.light ? "white" : "#f5f5f5")};
   border: 1px solid #e9e9e9;
   color: #555;
+`;
+
+const FallbackContainer = styled(Box).attrs({
+  align: "center",
+  justify: "center",
+})`
+  position: relative;
+  height: 60px;
 `;
 
 const DeviceIcon = ({ needsUserInput }: { needsUserInput: ?boolean }) => (
@@ -170,10 +182,29 @@ const RightIcon = ({ type }: { type: CurrentActionType }) =>
 
 class DeviceInteractionAnimation extends PureComponent<Props> {
   render() {
-    const { numberSteps, interaction, currentStep, error, light } = this.props;
+    const {
+      numberSteps,
+      interaction,
+      currentStep,
+      error,
+      light,
+      shouldReconnectWebUSB,
+      onWebUSBReconnect,
+    } = this.props;
 
     const { needsUserInput, tooltip } = interaction;
     const currentActionType = interaction.device ? "device" : "server";
+
+    if (shouldReconnectWebUSB) {
+      return (
+        <FallbackContainer>
+          <WebUSBClickFallback onClick={onWebUSBReconnect} />
+          <Tooltip right>
+            <Text>Please click again to pair the device</Text>
+          </Tooltip>
+        </FallbackContainer>
+      );
+    }
 
     return (
       <Container error={error} light={light}>
@@ -186,7 +217,7 @@ class DeviceInteractionAnimation extends PureComponent<Props> {
         <RightIcon type={currentActionType} />
         {(needsUserInput || currentStep === 0) && (
           <Tooltip right>
-            {tooltip || <Text small i18nKey="common:approve_device" />}
+            {tooltip || <Text i18nKey="common:approve_device" />}
           </Tooltip>
         )}
       </Container>

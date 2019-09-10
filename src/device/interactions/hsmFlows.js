@@ -298,9 +298,7 @@ const validateDevice = (entity: ?TargetType): Interaction => ({
   device: true,
   needsUserInput: true,
   responseKey: "validate_device",
-  tooltip: entity ? (
-    <Text small i18nKey={`deviceInteractions:${entity}`} />
-  ) : null,
+  tooltip: entity ? <Text i18nKey={`deviceInteractions:${entity}`} /> : null,
   action: ({ transport, channel_blob }) =>
     validateVaultOperation()(
       transport,
