@@ -10,7 +10,8 @@
     "users": "users"
   },
   "groupTable": {
-    "remainingMembers": " and {{nb}} other"
+    "remainingMembers": " and {{count}} other member",
+    "remainingMembers_plural": " and {{count}} other members"
   },
   "delete": "Delete group",
   "create": {
