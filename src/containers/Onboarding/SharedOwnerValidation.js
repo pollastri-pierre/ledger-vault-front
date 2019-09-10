@@ -24,6 +24,7 @@ import {
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import { Title, Introduction } from "components/Onboarding";
+import colors from "shared/colors";
 import Footer from "./Footer";
 
 type Props = {
@@ -127,7 +128,7 @@ const SharedOwnerValidation = ({
                       </span>
                     )}
                   </SigninButton>
-                  <Text small color="#767676">
+                  <Text small color={colors.steel}>
                     {onboarding.validating_shared_owner.admins.length}{" "}
                     {t("onboarding:master_seed_signin.signed_in")},{" "}
                     {onboarding.quorum -
@@ -195,13 +196,13 @@ const SigninButton = styled(Box).attrs({
   cursor: ${p => (p.disabled ? "default" : "pointer")};
   font-size: 11px;
   text-transform: uppercase;
-  color: #27d0e2;
+  color: ${colors.ocean};
   fontweight: 600;
 `;
 
 const Sep = styled.div`
   width: 220px;
   height: 1;
-  background: #eeeeee;
+  background: ${colors.argile};
   margin: 20px 0 20px 0;
 `;

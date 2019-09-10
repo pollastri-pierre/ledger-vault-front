@@ -20,8 +20,8 @@ const blue = {
     marginBottom: 5,
   },
   inner: {
-    border: "1px solid #cccccc",
-    background: "#fbfbfb",
+    border: `1px solid ${colors.legacyGrey}`,
+    background: colors.legacyLightGrey4,
     height: "100%",
   },
   red: {
@@ -124,13 +124,19 @@ const Requirements = ({
       </RequirementUnit>
     </div>
     <div className={classes.row}>
-      <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
+      <RequirementUnit
+        icon={<People color={colors.legacyGrey} style={{ height: 25 }} />}
+      >
         {t("onboarding:wkey_custodians")}
       </RequirementUnit>
-      <RequirementUnit icon={<People style={{ height: 25 }} color="#cccccc" />}>
+      <RequirementUnit
+        icon={<People style={{ height: 25 }} color={colors.legacyGrey} />}
+      >
         {t("onboarding:team_members")}
       </RequirementUnit>
-      <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
+      <RequirementUnit
+        icon={<People color={colors.legacyGrey} style={{ height: 25 }} />}
+      >
         {t("onboarding:shared_owners")}
       </RequirementUnit>
     </div>

@@ -3,6 +3,8 @@ import React from "react";
 import Box from "components/base/Box";
 import moment from "moment";
 
+import colors from "shared/colors";
+
 export type Log = {
   id: number,
   date: Date,
@@ -13,7 +15,7 @@ export default ({ logs }: { logs: Log[] }) =>
     <Box p={10} style={styles.container}>
       {logs.map(log => (
         <div key={log.id}>
-          <span style={{ color: "#0ce4bf", userSelect: "none" }}>
+          <span style={{ color: colors.legacyGreen, userSelect: "none" }}>
             {`${moment(log.date).format("HH:mm:ss")} `}
           </span>
           {log.text}
@@ -24,8 +26,8 @@ export default ({ logs }: { logs: Log[] }) =>
 
 const styles = {
   container: {
-    background: "#444",
-    color: "white",
+    background: colors.legacyDarkGrey4,
+    color: colors.white,
     borderRadius: 4,
     overflow: "auto",
     lineHeight: "16px",

@@ -9,6 +9,8 @@ import { FaCopy } from "react-icons/fa";
 
 import Text from "components/base/Text";
 
+import colors from "shared/colors";
+
 type Props = {
   text: string,
   children?: React$Node,
@@ -59,8 +61,8 @@ const textStyles = {
 
 const Container = styled.div`
   display: flex;
-  background: #fafafa;
-  border: 1px solid #f0f0f0;
+  background: ${colors.form.bg};
+  border: 1px solid ${colors.legacyLightGrey1};
   border-radius: 4px;
   padding: 2px;
   cursor: text;
@@ -74,14 +76,14 @@ const IconContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 2px;
-  color: hsl(0, 0%, 60%);
+  color: ${colors.spinner};
   transition: 100ms ease background-color;
   &:hover {
-    background: hsl(0, 0%, 95%);
-    color: hsl(0, 0%, 40%);
+    background: ${colors.legacyLightGrey10};
+    color: ${colors.legacyDarkGrey5};
   }
   &:active {
-    background: hsl(0, 0%, 90%);
-    color: hsl(0, 0%, 40%);
+    background: ${colors.legacyLightGrey9};
+    color: ${colors.legacyDarkGrey5};
   }
 `;

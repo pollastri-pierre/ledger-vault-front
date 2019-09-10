@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 
+import colors from "shared/colors";
+
 const styles = {
   root: {
     fontSize: 11,
@@ -51,7 +53,7 @@ class MenuLinkOnboarding extends Component<{
     return (
       <MenuItem
         style={{
-          color: color || "#27d0e2", // default FIXME from theme
+          color: color || colors.ocean,
         }}
         button
         disabled={!selected}
@@ -59,7 +61,7 @@ class MenuLinkOnboarding extends Component<{
         selected={selected}
         classes={{ root: rootCSS, selected: classes.selected }}
       >
-        <span style={{ color: "#767676" }}>{children}</span>
+        <span style={{ color: colors.steel }}>{children}</span>
       </MenuItem>
     );
   }

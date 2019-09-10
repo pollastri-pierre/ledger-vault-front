@@ -66,8 +66,10 @@ export default (props: UserCreationStepProps) => {
 const Choice = styled(({ isActive, ...p }) => <ButtonBase {...p} />)`
   && {
     display: block;
-    background: ${p => (p.isActive ? opacity(colors.ocean, 0.05) : "white")};
-    border: 2px solid ${p => (p.isActive ? opacity(colors.ocean, 0.4) : "#eee")};
+    background: ${p =>
+      p.isActive ? opacity(colors.ocean, 0.05) : colors.white};
+    border: 2px solid
+      ${p => (p.isActive ? opacity(colors.ocean, 0.4) : colors.argile)};
     width: 210px;
     height: 210px;
     padding: 20px;

@@ -185,10 +185,14 @@ const InlineLabel = styled(Box).attrs({
 
   border-radius: 2px;
   border-color: ${p =>
-    p.isOpened ? "#f0f0f0" : p.isActive ? "transparent" : "transparent"};
-  border-bottom-color: ${p => (p.isOpened ? "white" : "")};
+    p.isOpened
+      ? colors.legacyLightGrey1
+      : p.isActive
+      ? "transparent"
+      : "transparent"};
+  border-bottom-color: ${p => (p.isOpened ? colors.white : "")};
   z-index: ${p => (p.isOpened ? 30 : 0)};
-  background-color: ${p => (p.isOpened ? "white" : "#fafafa")};
+  background-color: ${p => (p.isOpened ? colors.white : colors.form.bg)};
   transition: 100ms linear background-color;
   pointer-events: ${p => (p.interactive === false ? "none" : "auto")};
   opacity: ${p => (p.interactive === false ? 0.7 : 1)};
@@ -202,7 +206,7 @@ const InlineLabel = styled(Box).attrs({
   }
 
   &:active {
-    background-color: #efefef;
+    background-color: ${colors.legacyLightGrey2};
   }
 `;
 
@@ -216,12 +220,12 @@ const Menu = styled(Box).attrs({
   left: ${p => (p.pos === "left" ? 0 : "auto")};
   right: ${p => (p.pos === "right" ? 0 : "auto")};
   width: ${p => p.width}px;
-  background: white;
-  border: 1px solid #f0f0f0;
+  background: ${colors.white};
+  border: 1px solid ${colors.legacyLightGrey1};
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
-  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.07);
+  box-shadow: 0 3px 3px 0 ${colors.legacyTranslucentGrey1};
   z-index: 20;
 `;
 

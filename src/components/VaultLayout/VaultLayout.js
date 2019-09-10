@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import type { Match } from "react-router-dom";
 import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
+import colors from "shared/colors";
 
 import type { User } from "data/types";
 import { vaultLayoutConfig } from "styles/theme";
@@ -147,7 +148,7 @@ const VaultLayoutFixedContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-  background-color: #fafafa;
+  background-color: ${colors.form.bg};
   pointer-events: auto;
 `;
 

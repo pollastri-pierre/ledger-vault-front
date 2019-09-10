@@ -168,7 +168,7 @@ const VaultLayoutMenuItem = styled.div`
       (!isIcon || !isMenuFloating) && isActive
         ? opacity(colors.blue, 0.05)
         : "inherit";
-    const color = isActive ? colors.blue : "#777";
+    const color = isActive ? colors.blue : colors.legacyLightGrey3;
 
     return `
       color: ${color};
@@ -177,12 +177,12 @@ const VaultLayoutMenuItem = styled.div`
       pointer-events: ${isInteractive ? "auto" : "none"};
 
       &:hover {
-        color: ${isActive ? colors.blue : "#333"};
+        color: ${isActive ? colors.blue : colors.legacyDarkGrey1};
         cursor: pointer;
       }
 
       &:active {
-        background-color: ${isIcon ? "inherit" : "rgba(0, 0, 0, 0.02)"};
+        background-color: ${isIcon ? "inherit" : colors.legacyTranslucentGrey2};
       }
     `;
   }}
@@ -205,7 +205,7 @@ const VaultLayoutIconContainer = styled.div`
   }
   &:active {
     background-color: ${p =>
-      p.isMenuOpened ? "inherit" : "rgba(0, 0, 0, 0.02)"};
+      p.isMenuOpened ? "inherit" : colors.legacyTranslucentGrey2};
   }
 `;
 

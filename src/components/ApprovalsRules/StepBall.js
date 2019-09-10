@@ -11,6 +11,6 @@ export default styled.div`
   font-weight: bold;
   justify-content: center;
   display: flex;
-  border: 3px solid #eee;
-  background: white;
+  border: 3px solid ${colors.argile};
+  background: ${colors.white};
 `;

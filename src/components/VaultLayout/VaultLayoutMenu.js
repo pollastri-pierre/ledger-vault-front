@@ -74,9 +74,9 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
 const styles = {
   whiteBackground: {
     pointerEvents: "auto",
-    background: "white",
-    boxShadow: "-3px 2px 5px 0 rgba(0, 0, 0, 0.2)",
-    borderRight: "1px solid #f0f0f0",
+    background: colors.white,
+    boxShadow: `-3px 2px 5px 0 ${colors.legacyTranslucentGrey2}`,
+    borderRight: `1px solid ${colors.legacyLightGrey1}`,
     position: "fixed",
     top: 0,
     left: -20,
@@ -115,7 +115,7 @@ const VaultLayoutMenuToggle = styled.div`
   width: 100px;
   height: 40px;
   border-radius: 40px;
-  background: white;
+  background: ${colors.white};
   cursor: pointer;
   padding-right: 15px;
 

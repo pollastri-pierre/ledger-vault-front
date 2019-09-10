@@ -107,7 +107,7 @@ const Container = styled.div`
 
   &:hover {
     cursor: pointer;
-    color: #444;
+    color: ${colors.legacyDarkGrey4};
   }
 
   > * + * {

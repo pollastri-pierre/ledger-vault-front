@@ -7,8 +7,10 @@ import { Title, Introduction, SubTitle } from "components/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import People from "components/icons/thin/People";
-import Footer from "./Footer";
 
+import colors from "shared/colors";
+
+import Footer from "./Footer";
 import { RequirementUnit, BlueDevice } from "./Requirements";
 
 const styles = {
@@ -25,7 +27,7 @@ const styles = {
       position: "absolute",
       width: 1,
       height: 80,
-      background: "#eeeeee",
+      background: colors.argile,
       left: -39,
       top: 30,
     },
@@ -54,13 +56,13 @@ const PrerequisiteSeed = ({
         <div className={classes.flexcolumn}>
           <div className={classes.row}>
             <RequirementUnit
-              icon={<People color="#cccccc" style={{ height: 25 }} />}
+              icon={<People color={colors.legacyGrey} style={{ height: 25 }} />}
               style={{ width: 76 }}
             >
               <div>{t("onboarding:shared_owners")}</div>
             </RequirementUnit>
             <RequirementUnit
-              icon={<People style={{ height: 25 }} color="#cccccc" />}
+              icon={<People style={{ height: 25 }} color={colors.legacyGrey} />}
             >
               {t("onboarding:team_members")}
             </RequirementUnit>

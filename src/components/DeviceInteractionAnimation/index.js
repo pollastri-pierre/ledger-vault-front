@@ -39,9 +39,9 @@ const Container = styled(Box).attrs({
   border-radius: 5px;
   opacity: ${p => (p.error ? "0.5" : "1")};
   position: relative;
-  background: ${p => (p.light ? "white" : "#f5f5f5")};
-  border: 1px solid #e9e9e9;
-  color: #555;
+  background: ${p => (p.light ? colors.white : colors.legacyLightGrey5)};
+  border: 1px solid ${colors.form.border};
+  color: ${colors.legacyDarkGrey3};
 `;
 
 const FallbackContainer = styled(Box).attrs({
@@ -66,7 +66,7 @@ const DeviceIcon = ({ needsUserInput }: { needsUserInput: ?boolean }) => (
 const Dash = styled(Box)`
   width: 10px;
   height: 2px;
-  background: ${p => (p.done ? colors.green : "#eae9e9")};
+  background: ${p => (p.done ? colors.green : colors.legacyLightGrey6)};
 `;
 
 const bounce = keyframes`
@@ -85,13 +85,13 @@ const Tooltip = styled(Box)`
   -webkit-font-smoothing: antialiased;
   animation: ${bounce} 1000ms cubic-bezier(0.61, 0.22, 0.42, 0.77) infinite;
   background: ${colors.night};
-  color: white;
+  color: ${colors.white};
   user-select: none;
   border-radius: 5px;
   top: 100%;
   left: 8px;
   z-index: 1;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px 0 ${colors.legacyTranslucentGrey5};
   font-weight: bold;
   text-align: center;
   padding: 12px;
@@ -107,7 +107,7 @@ const Tooltip = styled(Box)`
     height: 0;
     border-style: solid;
     border-width: 0 6px 6px 6px;
-    border-color: transparent transparent #1d2028 transparent;
+    border-color: transparent transparent ${colors.night} transparent;
   }
 `;
 

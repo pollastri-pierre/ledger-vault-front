@@ -30,7 +30,7 @@ const StyledBreadcrumb = styled.div`
   text-decoration: none;
   align-items: center;
   position: relative;
-  background: #f3fbff;
+  background: ${colors.legacyLightBlue3};
   padding: 5px 5px 5px 20px;
   line-height: 20px;
   font-size: 11px;
@@ -81,7 +81,7 @@ const StyledBreadcrumb = styled.div`
     content: "";
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-left: 15px solid #f3fbff;
+    border-left: 15px solid ${colors.legacyLightBlue3};
     position: absolute;
     right: -15px;
     top: 0;
@@ -91,7 +91,7 @@ const StyledBreadcrumb = styled.div`
     content: "";
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-left: 15px solid #fff;
+    border-left: 15px solid ${colors.white};
     position: absolute;
     left: 0;
     top: 0;

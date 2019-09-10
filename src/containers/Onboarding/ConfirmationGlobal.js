@@ -30,7 +30,7 @@ const ConfirmationGlobal = ({
     <Title>{t("onboarding:confirmation.title")}</Title>
     <Box flow={40}>
       <Box align="center" flow={20}>
-        <Validate color="#27d0e2" style={{ strokeWidth: 4 }} />
+        <Validate color={colors.ocean} style={{ strokeWidth: 4 }} />
         <Text bold i18nKey="onboarding:confirmation.description" />
         <Text i18nKey="onboarding:confirmation.members_can_signin" />
       </Box>
@@ -106,5 +106,5 @@ const Sep = styled.div`
   width: 170px;
   margin: auto;
   height: 1px;
-  background: #eeeeee;
+  background: ${colors.argile};
 `;

@@ -32,9 +32,9 @@ const styles = {
     marginBottom: 20,
   },
   careful: {
-    background: "#ea2e492b",
+    background: colors.legacyTranslucentGrenade,
     fontSize: 13,
-    color: "#b14656",
+    color: colors.legacyGrenade,
     lineHeight: 1.54,
     padding: 20,
     paddingLeft: 52,
@@ -74,7 +74,10 @@ const Backup = ({
       <Step number="2" icon={<Cryptosteel style={{ height: 31, width: 32 }} />}>
         {t("onboarding:backup.step2")}
       </Step>
-      <Step number="3" icon={<Trash color="#cccccc" style={{ height: 28 }} />}>
+      <Step
+        number="3"
+        icon={<Trash color={colors.legacyGrey} style={{ height: 28 }} />}
+      >
         {t("onboarding:backup.step3")}
       </Step>
     </div>

@@ -180,7 +180,7 @@ const AddButtonComponent = styled(Button).attrs({
     padding: 10px;
     min-height: 0;
     font-size: 11px;
-    background-color: rgba(39, 208, 226, 0.04);
+    background-color: ${colors.legacyLightBlue2};
 
     svg {
       margin-right: 5px;
@@ -194,7 +194,7 @@ const Bar = styled.div`
   bottom: -10px;
   left: 15px;
   width: 4px;
-  background: #eee;
+  background: ${colors.argile};
   transform: translateX(-2px);
 `;
 
@@ -202,7 +202,7 @@ const StepBallLabel = styled.div`
   position: absolute;
   left: 0px;
   bottom: ${p => (p.bot ? "0px" : p.botter ? "-40px" : "unset")};
-  color: #aaa;
+  color: ${colors.textLight};
   user-select: none;
 
   // sounds hacky. but does the job, used to place the label.

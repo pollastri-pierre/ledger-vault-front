@@ -276,10 +276,10 @@ const RuleContainer = styled(Box).attrs({
 })`
   position: relative;
   border: 1px solid;
-  border-color: ${p => (p.isInvalid ? colors.blue_orange : " #eee")}
+  border-color: ${p => (p.isInvalid ? colors.blue_orange : colors.argile)}
   border-radius: 3px;
   user-select: none;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px 0 ${colors.legacyTranslucentGrey4};
 `;
 
 const Grip = SortableHandle(styled(Box).attrs({
@@ -290,7 +290,7 @@ const Grip = SortableHandle(styled(Box).attrs({
   height: 60px;
   width: 40px;
   cursor: ns-resize;
-  color: #eee;
+  color: ${colors.argile};
   transition: 50ms linear color;
 `);
 
@@ -310,7 +310,7 @@ const RemoveContainer = styled(Box).attrs({
   justify: "center",
 })`
   position: absolute;
-  color: #ccc;
+  color: ${colors.legacyGrey};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -322,17 +322,17 @@ const RemoveContainer = styled(Box).attrs({
   transform: translateY(-50%);
 
   &:hover {
-    color: #aaa;
+    color: ${colors.textLight};
   }
 
   &:active {
-    color: #888;
+    color: ${colors.legacyDarkGrey2};
   }
 `;
 
 const NbOfUsers = ({ nb, isGroup }: { nb: number, isGroup: boolean }) => (
   <Box style={styles.nbOfUsers} p={10} pt={0}>
-    <Text small color="#aaa">
+    <Text small color={colors.textLight}>
       <Trans
         i18nKey={
           isGroup
@@ -371,7 +371,7 @@ const approvalsFrom = (
     <Text
       lineHeight={0}
       small
-      color="#555"
+      color={colors.legacyDarkGrey3}
       i18nKey="approvalsRules:approvalsFrom"
     />
   </Box>

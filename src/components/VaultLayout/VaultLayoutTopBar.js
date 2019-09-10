@@ -50,7 +50,7 @@ const VaultLayoutTopBar = styled.div`
   padding: 0 20px;
   height: ${vaultLayoutConfig.TOP_BAR_HEIGHT}px;
   background: white;
-  box-shadow: 0 -2px 5px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -2px 5px 0 ${colors.legacyTranslucentGrey2};
 `;
 
 const VaultLayoutTopBarRight = styled.div`
@@ -64,7 +64,7 @@ const VaultLayoutTopBarRight = styled.div`
 
 const TopBarActionComponent = styled.div`
   cursor: pointer;
-  color: #ccc;
+  color: ${colors.legacyGrey};
   display: flex;
   align-items: center;
 
@@ -72,7 +72,7 @@ const TopBarActionComponent = styled.div`
   padding-right: ${p => (p.link ? "0" : "10px")};
 
   &:hover {
-    color: #aaa;
+    color: ${colors.textLight};
   }
 
   &:active {

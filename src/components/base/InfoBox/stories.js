@@ -10,6 +10,8 @@ import { action } from "@storybook/addon-actions";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 
+import colors from "shared/colors";
+
 storiesOf("components", module).add("InfoBox", () => {
   const withIcon = boolean("withIcon", true);
   const types = ["info", "warning", "error", "success"];
@@ -57,7 +59,7 @@ const Wrapper = ({ type, withFooter, ...props }) => (
         fontWeight: "bold",
         fontSize: 12,
         marginBottom: 10,
-        color: "#777",
+        color: colors.legacyLightGrey3,
       }}
     >
       {type}

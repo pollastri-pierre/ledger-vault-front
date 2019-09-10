@@ -249,10 +249,10 @@ export const RichModalHeader = <T, P>({
 }: RichModalHeaderProps<T, P>) => (
   <>
     {onClose && <ModalClose onClick={onClose} />}
-    <Box bg="#f5f5f5" style={styles.header} p={40} flow={10}>
+    <Box bg={colors.legacyLightGrey5} style={styles.header} p={40} flow={10}>
       <Box horizontal align="center" flow={10}>
-        <Icon size={24} color="#ddd" />
-        <Text large color="#aaa">
+        <Icon size={24} color={colors.legacyLightGrey7} />
+        <Text large color={colors.textLight}>
           {title}
         </Text>
       </Box>
@@ -291,11 +291,16 @@ const StepName = styled(Box).attrs({
   flow: 5,
 })`
   font-weight: ${p => (p.isActive ? "bold" : "normal")};
-  color: ${p => (p.isActive ? "#555" : p.isDisabled ? "#999" : "#777")};
+  color: ${p =>
+    p.isActive
+      ? colors.legacyDarkGrey3
+      : p.isDisabled
+      ? colors.lead
+      : colors.legacyLightGrey3};
   pointer-events: ${p => (p.isDisabled ? "none" : "auto")};
   &:hover {
     cursor: pointer;
-    color: #555;
+    color: ${colors.legacyDarkGrey3};
   }
 `;
 

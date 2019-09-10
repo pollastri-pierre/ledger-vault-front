@@ -14,17 +14,17 @@ const common = {
   fontFamily: "inherit",
   fontSize: "11px",
   lineHeight: "1.82",
-  boxShadow: "0 10px 10px 0 rgba(0, 0, 0, 0.04)",
+  boxShadow: `0 10px 10px 0 ${colors.legacyTranslucentGrey5}`,
 };
 const error = {
   root: {
-    background: "#ea2e49",
+    background: colors.grenade,
     ...common,
   },
 };
 const success = {
   root: {
-    background: "#27d0e2",
+    background: colors.ocean,
     ...common,
   },
 };

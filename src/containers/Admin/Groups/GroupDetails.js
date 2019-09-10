@@ -96,15 +96,16 @@ export const TabName = styled(Box).attrs({
   flow: 5,
   p: 12,
 })`
-  background: ${p => (p.isActive ? "white" : "inherit")};
+  background: ${p => (p.isActive ? colors.white : "inherit")};
   border-top-right-radius: 2px;
   border-top-left-radius: 2px;
-  box-shadow: ${p => (p.isActive ? "2px -2px 3px #eceaea" : "none")};
+  box-shadow: ${p =>
+    p.isActive ? `2px -2px 3px ${colors.legacyLightGrey11}` : "none"};
   font-weight: ${p => (p.isActive ? "bold" : "normal")};
   opacity: ${p => (p.isActive ? "1" : "0.5")};
   &:hover {
     cursor: pointer;
     opacity: 1;
-    color: #555;
+    color: ${colors.legacyDarkGrey3};
   }
 `;

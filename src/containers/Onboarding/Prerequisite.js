@@ -7,6 +7,7 @@ import { Title, Introduction, SubTitle } from "components/Onboarding";
 
 import { withStyles } from "@material-ui/core/styles";
 import People from "components/icons/thin/People";
+import colors from "shared/colors";
 import { RequirementUnit, BlueDevice } from "./Requirements";
 import Footer from "./Footer";
 
@@ -24,7 +25,7 @@ const styles = {
       position: "absolute",
       width: 1,
       height: 80,
-      background: "#eeeeee",
+      background: colors.argile,
       left: -26,
       top: 30,
     },
@@ -50,7 +51,7 @@ const Prerequisite = ({
         <SubTitle>{t("onboarding:required")}</SubTitle>
         <div className={classes.flexcolumn}>
           <RequirementUnit
-            icon={<People color="#cccccc" style={{ height: 29 }} />}
+            icon={<People color={colors.legacyGrey} style={{ height: 29 }} />}
           >
             <div style={{ width: 93 }}>{t("onboarding:team_members")}</div>
           </RequirementUnit>
