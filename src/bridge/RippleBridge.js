@@ -54,6 +54,7 @@ const RippleBridge: WalletBridge<Transaction> = {
   editTransactionAmount: (a: Account, t: Transaction, amount: BigNumber) => ({
     ...t,
     amount,
+    estimatedFees: null,
   }),
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
@@ -62,7 +63,7 @@ const RippleBridge: WalletBridge<Transaction> = {
     a: Account,
     t: Transaction,
     recipient: string,
-  ) => ({ ...t, recipient }),
+  ) => ({ ...t, recipient, estimatedFees: null }),
 
   getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
 

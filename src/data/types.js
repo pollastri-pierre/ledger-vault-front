@@ -170,12 +170,19 @@ export type TransactionRecipientIsValid = {
 };
 
 export type TransactionGetFees = {
-  amount: BigNumber,
-  recipient: string,
+  amount?: BigNumber,
+  recipient?: string,
   fees_level?: string,
   gas_limit?: ?BigNumber,
   gas_price?: ?BigNumber,
   max_amount?: ?BigNumber,
+  memo?: [],
+  send_to?: [
+    {
+      address: string,
+      amount: string,
+    },
+  ],
 };
 
 export type AccountEntity = AccountCommon & {
@@ -451,7 +458,7 @@ export type RequestTargetType =
   | "ERC20_ACCOUNT"
   | "BITCOIN_LIKE_TRANSACTION"
   | "ETHEREUM_LIKE_TRANSACTION"
-  | "RIPPLE_LIKE_TRANSACTION"
+  | "RIPPLE_TRANSACTION"
   | "PERSON"
   | "ORGANIZATION";
 

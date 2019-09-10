@@ -38,16 +38,15 @@ function FeesFieldRippleKind(props: Props) {
   const effectDeps = [
     account,
     currency,
-    onChangeTransaction,
     restlay,
     bridge,
     transaction.recipient,
+    transaction.amount,
   ];
 
   useEffect(() => {
     let unsubscribed = false;
     const effect = async () => {
-      setFeesStatus("fetching");
       try {
         // check recipient
         const recipientError = await bridge.getRecipientError(
@@ -61,19 +60,33 @@ function FeesFieldRippleKind(props: Props) {
           return;
         }
 
+        if (transaction.amount.isEqualTo(0)) return;
+
+        setFeesStatus("fetching");
+
         // fetch fees
         const payload = {
-          amount: transaction.amount,
-          recipient: transaction.recipient,
+          memos: [],
+          send_to: [
+            {
+              address: transaction.recipient,
+              amount: transaction.amount.toFixed(),
+            },
+          ],
         };
+
         const estimatedFees = await getFees(account, payload, restlay);
         if (unsubscribed) return;
 
         // update tx
-        onChangeTransaction({ ...transaction, estimatedFees });
+        onChangeTransaction({
+          ...transaction,
+          estimatedFees: estimatedFees.fees,
+        });
 
         setFeesStatus("idle");
       } catch (err) {
+        console.error(err);
         setFeesStatus("error");
       }
     };
@@ -86,6 +99,11 @@ function FeesFieldRippleKind(props: Props) {
   const onFeesChange = estimatedFees => {
     onChangeTransaction({ ...transaction, estimatedFees });
   };
+
+  const shouldDisplayFees =
+    feesStatus === "fetching" ||
+    transaction.estimatedFees ||
+    feesStatus === "error";
 
   return (
     <Box horizontal flow={20}>
@@ -103,30 +121,34 @@ function FeesFieldRippleKind(props: Props) {
         />
       </Box>
 
-      <Box grow align="flex-end">
-        <Label>
-          <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
-        </Label>
-        <Text small uppercase>
-          {transaction.estimatedFees ? (
-            <>
-              <CurrencyAccountValue
-                account={account}
-                value={transaction.estimatedFees}
-                disableERC20
-              />
-              {" ("}
-              <CounterValue
-                value={transaction.estimatedFees}
-                from={account.currency}
-              />
-              {")"}
-            </>
-          ) : (
-            <Spinner />
-          )}
-        </Text>
-      </Box>
+      {shouldDisplayFees && (
+        <Box grow align="flex-end">
+          <Label>
+            <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
+          </Label>
+          <Text small uppercase>
+            {feesStatus === "fetching" ? (
+              <Spinner />
+            ) : transaction.estimatedFees ? (
+              <>
+                <CurrencyAccountValue
+                  account={account}
+                  value={transaction.estimatedFees}
+                  disableERC20
+                />
+                {" ("}
+                <CounterValue
+                  value={transaction.estimatedFees}
+                  from={account.currency}
+                />
+                {")"}
+              </>
+            ) : (
+              "error"
+            )}
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 }
