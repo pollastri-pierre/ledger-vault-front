@@ -67,7 +67,9 @@ function GroupDetails(props: Props) {
         operators={operators}
         close={close}
       />
-      <GroupDetailsAccounts key="accounts" group={group} />
+      {group.status !== "PENDING" && (
+        <GroupDetailsAccounts key="accounts" group={group} />
+      )}
       <FetchEntityHistory
         key="history"
         url={`/groups/${group.id}/history`}
