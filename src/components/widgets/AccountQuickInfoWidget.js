@@ -26,6 +26,7 @@ import Absolute from "components/base/Absolute";
 import type { Account } from "data/types";
 import { Label } from "components/base/form";
 import Button from "components/base/Button";
+import SyncButton from "components/SyncButton";
 import Disabled from "components/Disabled";
 import Text from "components/base/Text";
 import { SoftCard } from "components/base/Card";
@@ -75,7 +76,12 @@ function AccountQuickInfoWidget(props: Props) {
     ) : null;
 
   const widget = (
-    <Widget title={title} grow position="relative">
+    <Widget
+      title={title}
+      titleRight={<SyncButton account={account} />}
+      grow
+      position="relative"
+    >
       <SoftCard grow flow={20} style={{ padding: 0 }}>
         <Box horizontal flexWrap="wrap">
           <InfoSquare>
@@ -169,7 +175,7 @@ function AccountQuickInfoWidget(props: Props) {
   return (
     <div style={{ position: "relative" }}>
       {widget}
-      <Absolute top={title ? 40 : 10} right={10}>
+      <Absolute top={40} right={10}>
         <Tooltip title="Account settings">
           <SettingsLink
             to={`${location.pathname}/accounts/details/${account.id}/overview`}
