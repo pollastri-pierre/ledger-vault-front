@@ -23,7 +23,6 @@ type Props = {
   user: User,
   onLogout: () => void,
   match: Match,
-  BreadcrumbComponent: React$ComponentType<*>,
 };
 
 type State = {
@@ -99,14 +98,7 @@ class VaultLayout extends Component<Props, State> {
   };
 
   render() {
-    const {
-      children,
-      menuItems,
-      user,
-      onLogout,
-      match,
-      BreadcrumbComponent,
-    } = this.props;
+    const { children, menuItems, user, onLogout, match } = this.props;
     const { isMenuOpened, isMenuFloating, globalAnimation } = this.state;
 
     return (
@@ -125,7 +117,6 @@ class VaultLayout extends Component<Props, State> {
           user={user}
           onLogout={onLogout}
           globalAnimation={globalAnimation}
-          BreadcrumbComponent={BreadcrumbComponent}
         />
         <VaultLayoutMainView isMenuOpened={isMenuOpened}>
           {children}

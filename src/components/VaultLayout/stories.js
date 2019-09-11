@@ -8,7 +8,6 @@ import backendDecorator from "stories/backendDecorator";
 import { NotifComponent } from "containers/Admin/Dashboard/PendingBadge";
 import VaultLayout from "components/VaultLayout";
 import { AccountsSearch } from "components/DataSearch/stories";
-import { BreadcrumbExample } from "components/base/Breadcrumb/stories";
 
 const fakeUser = {
   username: "User1",
@@ -82,12 +81,7 @@ class Wrapper extends React.Component {
   render() {
     const { items } = this.state;
     return (
-      <VaultLayout
-        menuItems={items}
-        user={fakeUser}
-        match={mockMatch}
-        BreadcrumbComponent={BreadcrumbExample}
-      >
+      <VaultLayout menuItems={items} user={fakeUser} match={mockMatch}>
         <AccountsSearch />
       </VaultLayout>
     );
