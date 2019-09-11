@@ -1,6 +1,6 @@
 {
   "admin": {
-    "dashboard": "Dashboard",
+    "dashboard": "Home",
     "tasks": "All requests",
     "groups": "Groups",
     "users": "Users",
@@ -8,7 +8,7 @@
     "transactions": "Transactions"
   },
   "operator": {
-    "dashboard": "Dashboard",
+    "dashboard": "Home",
     "pending": "Awaiting approval",
     "send": "Send",
     "receive": "Receive",

@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
 import { FaQuestionCircle, FaPowerOff } from "react-icons/fa";
 
@@ -13,24 +12,13 @@ import { vaultLayoutConfig } from "styles/theme";
 import { urlByRole } from "components/HelpLink";
 
 type Props = {
-  globalAnimation: Animated.Value,
   user: User,
   onLogout: () => void,
-  BreadcrumbComponent: React$ComponentType<*>,
 };
 
-export default ({
-  globalAnimation,
-  user,
-  onLogout,
-  BreadcrumbComponent,
-}: Props) => {
-  const contentStyle = getContentStyle(globalAnimation);
+export default ({ user, onLogout }: Props) => {
   return (
     <VaultLayoutTopBar>
-      <Animated.div style={contentStyle}>
-        <BreadcrumbComponent />
-      </Animated.div>
       <VaultLayoutTopBarRight>
         <Box horizontal align="center" px={20}>
           <Text small>{user.username}</Text>
@@ -113,23 +101,3 @@ const TopBarAction = ({
     </TopBarActionComponent>
   );
 };
-
-function getContentStyle(globalAnimation: Animated.Value) {
-  return {
-    position: "relative",
-    zIndex: 1,
-    transform: [
-      {
-        translateX: globalAnimation.interpolate({
-          inputRange: [0, 1, 2],
-          outputRange: [
-            vaultLayoutConfig.MENU_WIDTH,
-            vaultLayoutConfig.COLLAPSED_MENU_WIDTH,
-            vaultLayoutConfig.COLLAPSED_MENU_WIDTH,
-          ],
-          clamp: true,
-        }),
-      },
-    ],
-  };
-}

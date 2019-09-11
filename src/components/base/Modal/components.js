@@ -26,17 +26,6 @@ export const ModalDialogInner = styled(Box)`
   box-shadow: ${p => (p.transparent ? "none" : boxShadow)};
 `;
 
-export const ModalBreadcrumb = styled(Box).attrs({
-  bg: colors.legacyLightGrey5,
-  pb: 100,
-  width: 100,
-  p: 20,
-})`
-  user-select: none;
-  flex-shrink: 0;
-  font-size: 11px;
-`;
-
 export const ModalFooter = styled(Box).attrs(p => ({
   position: "absolute",
   horizontal: true,

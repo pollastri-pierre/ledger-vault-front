@@ -17,13 +17,9 @@ import Card from "components/base/Card";
 import CheckMigration from "components/CheckMigration";
 import Box from "components/base/Box";
 import UserContextProvider, { withMe } from "components/UserContextProvider";
-import {
-  OrganizationContextProvider,
-  useOrganization,
-} from "components/OrganizationContext";
+import { OrganizationContextProvider } from "components/OrganizationContext";
 import VaultLayout from "components/VaultLayout";
 import VaultCentered from "components/VaultCentered";
-import ConnectedBreadcrumb from "components/ConnectedBreadcrumb";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -57,57 +53,6 @@ const AppWrapper = ({ me, organization, restlay, ...props }: Props) => {
   );
 };
 
-const breadcrumbConfig = [
-  {
-    path: "",
-    render: p => p.organization.name,
-    children: [
-      { path: "/:role/dashboard*", render: "Dashboard", exact: true },
-      { path: "/:role/tasks*", render: "All requests", exact: true },
-      { path: "/:role/groups*", render: "Groups", exact: true },
-      { path: "/:role/users*", render: "Users", exact: true },
-      {
-        path: "/:role/accounts",
-        render: "Accounts",
-        children: [
-          {
-            path: "/:role/accounts/view/:id",
-            render: ({ match, accounts }) => {
-              const account = accounts.edges.find(
-                i => i.node.id.toString() === match.params.id,
-              );
-              return account ? account.node.name : match.params.id;
-            },
-          },
-        ],
-      },
-      {
-        path: "/:role/transactions",
-        render: "Transactions",
-        children: [
-          {
-            path: "/:role/transactions/receive",
-            render: "Receive",
-            exact: true,
-          },
-          { path: "/:role/transactions/send", render: "Send", exact: true },
-        ],
-      },
-    ],
-  },
-];
-
-const AppBreadcrumb = withMe(props => {
-  const { organization } = useOrganization();
-  return (
-    <ConnectedBreadcrumb
-      prefix={`/${window.location.pathname.split("/")[1]}`}
-      config={breadcrumbConfig}
-      additionalProps={{ organization, ...props }}
-    />
-  );
-});
-
 const App = withMe((props: Props & { me: User }) => {
   const {
     match,
@@ -138,7 +83,6 @@ const App = withMe((props: Props & { me: User }) => {
         user={me}
         onLogout={handleLogout}
         match={match}
-        BreadcrumbComponent={() => <AppBreadcrumb accounts={accounts} />}
       >
         {me.role === "ADMIN" && <CheckMigration />}
         <Content match={match} />
