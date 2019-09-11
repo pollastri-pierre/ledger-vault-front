@@ -14,7 +14,7 @@ const common = {
   fontFamily: "inherit",
   fontSize: "11px",
   lineHeight: "1.82",
-  boxShadow: `0 10px 10px 0 ${colors.legacyTranslucentGrey5}`,
+  boxShadow: `0 10px 10px 0 ${colors.legacyTranslucentGrey7}`,
 };
 const error = {
   root: {

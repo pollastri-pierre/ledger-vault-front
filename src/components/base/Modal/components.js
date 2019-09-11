@@ -184,7 +184,7 @@ export const RichModalTab = styled(({ isActive, dark, ...props }) => (
     p.isActive
       ? colors.white
       : p.dark
-      ? colors.legacyTranslucentGrey2
+      ? colors.legacyTranslucentGrey8
       : "unset"};
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -199,7 +199,7 @@ export const RichModalTab = styled(({ isActive, dark, ...props }) => (
         ? colors.white
         : p.dark
         ? colors.legacyTranslucentGrey6
-        : colors.legacyTranslucentGrey2};
+        : colors.legacyTranslucentGrey8};
   }
 
   &:active {

@@ -182,7 +182,7 @@ const VaultLayoutMenuItem = styled.div`
       }
 
       &:active {
-        background-color: ${isIcon ? "inherit" : colors.legacyTranslucentGrey2};
+        background-color: ${isIcon ? "inherit" : colors.legacyTranslucentGrey8};
       }
     `;
   }}
@@ -205,7 +205,7 @@ const VaultLayoutIconContainer = styled.div`
   }
   &:active {
     background-color: ${p =>
-      p.isMenuOpened ? "inherit" : colors.legacyTranslucentGrey2};
+      p.isMenuOpened ? "inherit" : colors.legacyTranslucentGrey8};
   }
 `;
 
