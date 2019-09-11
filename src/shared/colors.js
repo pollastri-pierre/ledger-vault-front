@@ -86,6 +86,7 @@ const colors = {
   legacyTranslucentGrey5: "rgba(0, 0, 0, 0.3)",
   legacyTranslucentGrey6: "rgba(0, 0, 0, 0.03)",
   legacyTranslucentGrey7: "rgba(0, 0, 0, 0.04)",
+  legacyTranslucentGrey8: "rgba(0, 0, 0, 0.02)",
   legacyTranslucentGrenade: "#ea2e492b",
   legacyGrenade: "#b14656",
   legacyViolet: "#777799",
