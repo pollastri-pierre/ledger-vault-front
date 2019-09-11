@@ -40,5 +40,6 @@
   "view_only_provide_rules": "provide transaction rules",
   "view_only_warning": "This account is view-only. Transactions cannot be created before you provide transaction rules.",
   "updated_provide_rule": "Provide transaction rules",
-  "updated_provide_rule_subtext": "You must define the transaction rules of this account before you can create new transactions"
+  "updated_provide_rule_subtext": "You must define the transaction rules of this account before you can create new transactions",
+  "backButton": "All accounts"
 }
