@@ -109,6 +109,7 @@ class VaultLayout extends Component<Props, State> {
           isFloating={isMenuFloating}
           onToggle={this.toggleMenu}
           globalAnimation={globalAnimation}
+          match={match}
         >
           menu
         </VaultLayoutMenu>

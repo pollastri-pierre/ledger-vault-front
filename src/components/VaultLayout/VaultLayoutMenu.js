@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 import colors from "shared/colors";
+import VaultLink from "components/VaultLink";
 import VaultLogo from "components/icons/Logo";
 import { vaultLayoutConfig } from "styles/theme";
 import { VaultLayoutMenuItem } from "./index";
@@ -48,7 +49,11 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
 
         <Animated.div style={headerStyle}>
           <VaultLayoutMenuHeader isOpened={isOpened} isFloating={isFloating}>
-            <VaultLogo width={120} />
+            <VaultLayoutLogo>
+              <VaultLink to="/dashboard" withRole>
+                <VaultLogo width={120} />
+              </VaultLink>
+            </VaultLayoutLogo>
           </VaultLayoutMenuHeader>
         </Animated.div>
         <VaultLayoutMenuBody>
@@ -90,6 +95,9 @@ const styles = {
   },
 };
 
+const VaultLayoutLogo = styled.div`
+  pointer-events: auto;
+`;
 const VaultLayoutMenu = styled.div`
   position: absolute;
   z-index: 3;
