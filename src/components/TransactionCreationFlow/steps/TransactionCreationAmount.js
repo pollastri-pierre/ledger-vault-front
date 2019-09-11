@@ -29,7 +29,7 @@ const TransactionCreationAmount = (
   invariant(transaction, "transaction has not been created yet");
   invariant(bridge, "bridge has not been created yet");
 
-  const { EditFees } = bridge;
+  const { EditFees, ExtraFields } = bridge;
   const isERC20 = account.account_type === "Erc20";
   const currency = getCryptoCurrencyById(account.currency);
 
@@ -120,6 +120,14 @@ const TransactionCreationAmount = (
       </Box>
       {EditFees && (
         <EditFees
+          account={account}
+          transaction={transaction}
+          onChangeTransaction={onChangeTransaction}
+          bridge={bridge}
+        />
+      )}
+      {ExtraFields && (
+        <ExtraFields
           account={account}
           transaction={transaction}
           onChangeTransaction={onChangeTransaction}

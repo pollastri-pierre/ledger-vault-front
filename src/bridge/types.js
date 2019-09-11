@@ -60,6 +60,8 @@ export interface WalletBridge<Transaction> {
 
   EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
 
+  ExtraFields?: React$ComponentType<EditProps<Transaction>>;
+
   checkValidTransactionSync(
     account: Account,
     transaction: Transaction,

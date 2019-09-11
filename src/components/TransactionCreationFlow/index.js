@@ -168,6 +168,7 @@ function serializePayload(payload: TransactionCreationPayload<*>) {
   if (account.account_type === "Ripple") {
     Object.assign(tx, {
       memos: [],
+      destination_tag: transaction.destinationTag,
       send_to: [
         {
           address: transaction.recipient,

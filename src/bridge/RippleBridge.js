@@ -5,7 +5,11 @@ import { InvalidAddressBecauseDestinationIsAlsoSource } from "@ledgerhq/errors";
 import type { Account, TransactionCreationNote } from "data/types";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import FeesFieldRippleKind from "components/FeesField/RippleKind";
+import ExtraFieldRippleKind, {
+  hints as destinationTagHints,
+} from "components/ExtraFields/RippleKind";
 import { InvalidAddress } from "utils/errors";
+import { evalHints } from "components/base/form/HintsWrapper";
 import type { WalletBridge } from "./types";
 
 export type Transaction = {|
@@ -13,6 +17,7 @@ export type Transaction = {|
   amount: BigNumber,
   note: TransactionCreationNote,
   estimatedFees: ?BigNumber,
+  destinationTag: string,
 |};
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -42,6 +47,7 @@ const RippleBridge: WalletBridge<Transaction> = {
     amount: BigNumber(0),
     recipient: "",
     estimatedFees: null,
+    destinationTag: "",
     note: {
       title: "",
       content: "",
@@ -78,12 +84,19 @@ const RippleBridge: WalletBridge<Transaction> = {
   }),
 
   EditFees: FeesFieldRippleKind,
+  ExtraFields: ExtraFieldRippleKind,
 
   checkValidTransactionSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
     const { estimatedFees } = t;
     if (!estimatedFees) return false;
     if (!estimatedFees.isGreaterThan(0)) return false;
+    if (
+      evalHints(destinationTagHints, t.destinationTag).some(
+        h => h.status === "invalid",
+      )
+    )
+      return false;
     return true;
   },
 
