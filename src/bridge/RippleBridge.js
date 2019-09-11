@@ -1,5 +1,6 @@
 // @flow
 import { BigNumber } from "bignumber.js";
+import { InvalidAddressBecauseDestinationIsAlsoSource } from "@ledgerhq/errors";
 
 import type { Account, TransactionCreationNote } from "data/types";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
@@ -26,7 +27,10 @@ const isRecipientValid = async (restlay, currency, recipient) => {
   }
 };
 
-const getRecipientError = async (restlay, currency, recipient) => {
+const getRecipientError = async (restlay, currency, recipient, account) => {
+  if (account && recipient === account.address) {
+    return new InvalidAddressBecauseDestinationIsAlsoSource();
+  }
   const isValid = await isRecipientValid(restlay, currency, recipient);
   return isValid ? null : new InvalidAddress();
 };

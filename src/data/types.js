@@ -138,6 +138,8 @@ export type TxApprovalStep = { quorum: number, group: $Shape<Group> };
 type AccountCommon = {
   id: number,
   account_type: AccountType,
+  // for xrp...
+  address?: string,
   contract_address: string,
   parent?: number,
   name: string,

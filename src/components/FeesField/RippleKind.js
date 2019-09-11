@@ -53,6 +53,7 @@ function FeesFieldRippleKind(props: Props) {
           restlay,
           currency,
           transaction.recipient,
+          account,
         );
         if (unsubscribed) return;
         if (recipientError) {
