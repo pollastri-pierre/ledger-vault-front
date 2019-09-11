@@ -15,6 +15,7 @@ type WidgetSettingsProps = {};
 
 type Props = {
   title: React$Node,
+  titleRight?: React$Node,
   desc?: React$Node,
   children: React$Node,
   SettingsComponent?: React$ComponentType<WidgetSettingsProps>,
@@ -29,6 +30,7 @@ export default function Widget(props: Props) {
     desc,
     children,
     SettingsComponent,
+    titleRight,
     height,
     width,
     style,
@@ -41,9 +43,10 @@ export default function Widget(props: Props) {
       width={width}
       style={style}
     >
-      {(title || desc) && (
+      {(title || desc || titleRight) && (
         <WidgetHeader
           title={title}
+          titleRight={titleRight}
           desc={desc}
           SettingsComponent={SettingsComponent}
         />
@@ -143,10 +146,12 @@ const widgetContainerHover = `
 
 const WidgetHeader = ({
   title,
+  titleRight,
   desc,
   SettingsComponent,
 }: {
   title?: React$Node,
+  titleRight?: React$Node,
   desc?: React$Node,
   SettingsComponent?: React$ComponentType<*>,
 }) => {
@@ -162,6 +167,7 @@ const WidgetHeader = ({
           </Text>
         )}
       </div>
+      <div>{titleRight}</div>
       {!!SettingsComponent && (
         <Absolute top={-5} right={-5}>
           <SettingsButton>
@@ -178,7 +184,6 @@ const StyledWidgetHeader = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding-right: 40px;
 `;
 
 export function connectWidget(
