@@ -39,6 +39,10 @@
     "title": "Max amount exceeded",
     "description": "The amount entered exceeds the limit of 100 UTXOs. Decrease the amount to a maximum of: {{max}}"
   },
+  "RippleAmountExceedMinBalance": {
+    "title": "Not enough balance",
+    "description": "You can't have less than 20 XRP in your account"
+  },
   "NonEIP55Address": {
     "title": "Auto-verification unavailable",
     "description": "Auto-verification not available: This address isn't EIP-55 compliant. Verify it carefully before creating the transaction."

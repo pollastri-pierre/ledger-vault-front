@@ -20,6 +20,8 @@ export type Transaction = {|
   destinationTag: string,
 |};
 
+export const MIN_RIPPLE_BALANCE = 20 * 10 ** 6;
+
 const isRecipientValid = async (restlay, currency, recipient) => {
   if (!recipient) return false;
   try {
@@ -96,6 +98,9 @@ const RippleBridge: WalletBridge<Transaction> = {
         h => h.status === "invalid",
       )
     )
+      return false;
+    const totalSpent = RippleBridge.getTotalSpent(a, t);
+    if (totalSpent.isGreaterThan(a.balance.minus(MIN_RIPPLE_BALANCE)))
       return false;
     return true;
   },
