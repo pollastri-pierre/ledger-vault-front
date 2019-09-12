@@ -6,7 +6,7 @@ import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Copy from "components/base/Copy";
 import AccountName from "components/AccountName";
 import Box from "components/base/Box";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import colors from "shared/colors";
 import InfoBox from "components/base/InfoBox";
 import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
@@ -15,6 +15,8 @@ import { isBalanceAvailable } from "utils/accounts";
 import type { Account } from "data/types";
 
 const iconDown = <FaChevronDown size={12} color={colors.lightGrey} />;
+const iconUp = <FaChevronUp size={12} color={colors.lightGrey} />;
+
 const AccountOverview = ({
   account,
   hasPendingTransactions,
@@ -34,7 +36,9 @@ const AccountOverview = ({
 
 const Rows = ({ account }: { account: Account }) => {
   const [isRuleVisible, setRule] = useState(false);
-  const setRuleVisible = () => setRule(true);
+  const toggleRuleVisible = () => {
+    return setRule(!isRuleVisible);
+  };
   return (
     <div>
       <LineRow label={<Trans i18nKey="accountDetails:name" />}>
@@ -59,10 +63,10 @@ const Rows = ({ account }: { account: Account }) => {
           </LineRow>
         </>
       )}
-      {account.tx_approval_steps && !isRuleVisible && (
+      {account.tx_approval_steps && (
         <LineRow label={<Trans i18nKey="entityModal:tabs.transactionRules" />}>
           <Box
-            onClick={setRuleVisible}
+            onClick={toggleRuleVisible}
             horizontal
             flow={10}
             align="center"
@@ -75,17 +79,12 @@ const Rows = ({ account }: { account: Account }) => {
                 values={{ count: account.tx_approval_steps.length }}
               />
             </div>
-            {iconDown}
+            {isRuleVisible ? iconUp : iconDown}
           </Box>
         </LineRow>
       )}
       {account.tx_approval_steps && isRuleVisible && (
-        <LineRow
-          label={<Trans i18nKey="entityModal:tabs.transactionRules" />}
-          vertical
-        >
-          <AccountTransactionRules account={account} noTitle />
-        </LineRow>
+        <AccountTransactionRules account={account} noTitle />
       )}
     </div>
   );
