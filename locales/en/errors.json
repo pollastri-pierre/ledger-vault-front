@@ -41,7 +41,7 @@
   },
   "RippleAmountExceedMinBalance": {
     "title": "Not enough balance",
-    "description": "You can't have less than 20 XRP in your account"
+    "description": "Please enter a lower amount. Your remaining balance can’t be below XRP 20."
   },
   "NonEIP55Address": {
     "title": "Auto-verification unavailable",
