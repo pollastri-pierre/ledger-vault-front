@@ -286,6 +286,7 @@ type TransactionCommon = {
   created_by: User,
   currency_family: string,
   confirmations: number,
+  min_confirmations: number,
   tx_hash: ?string,
   created_on: Date,
   price?: Price,
