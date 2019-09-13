@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import { InputText } from "components/base/form";
 
 import colors from "shared/colors";

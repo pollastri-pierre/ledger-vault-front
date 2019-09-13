@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FaPlus } from "react-icons/fa";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import Absolute from "components/base/Absolute";
 
 const Icon = () => <FaPlus size={12} />;

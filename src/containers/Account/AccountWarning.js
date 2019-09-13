@@ -9,7 +9,7 @@ import { isAccountOutdated } from "utils/accounts";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import type { Account } from "data/types";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import colors, { opacity, darken } from "shared/colors";
 
 type Props = {

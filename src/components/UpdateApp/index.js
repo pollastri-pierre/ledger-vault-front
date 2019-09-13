@@ -29,7 +29,7 @@ import TranslatedError from "components/TranslatedError";
 import VaultCentered from "components/VaultCentered";
 import Box from "components/base/Box";
 import Card from "components/base/Card";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import ProgressBar from "components/base/ProgressBar";
 import Text from "components/base/Text";
 

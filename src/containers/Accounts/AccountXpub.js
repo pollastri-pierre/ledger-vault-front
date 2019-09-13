@@ -6,7 +6,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import colors, { darken } from "shared/colors";
 import Box from "components/base/Box";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
 import type { Account } from "data/types";
