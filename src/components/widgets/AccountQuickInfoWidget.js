@@ -25,7 +25,7 @@ import Copy from "components/base/Copy";
 import Absolute from "components/base/Absolute";
 import type { Account } from "data/types";
 import { Label } from "components/base/form";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import SyncButton from "components/SyncButton";
 import Disabled from "components/Disabled";
 import Text from "components/base/Text";

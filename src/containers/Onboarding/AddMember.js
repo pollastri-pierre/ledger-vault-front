@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import InputField from "components/InputField";
 import colors from "shared/colors";

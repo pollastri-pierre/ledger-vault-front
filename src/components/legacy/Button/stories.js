@@ -7,7 +7,7 @@ import { MdCreateNewFolder } from "react-icons/md";
 import { boolean, text } from "@storybook/addon-knobs";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import VaultButton from "components/base/Button";
+import VaultButton from "components/legacy/Button";
 
 const asyncAction = async () => delay(2000);
 

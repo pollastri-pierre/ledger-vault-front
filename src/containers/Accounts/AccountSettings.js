@@ -10,7 +10,7 @@ import { withMe } from "components/UserContextProvider";
 import connectData from "restlay/connectData";
 import LineRow from "components/LineRow";
 import Modal from "components/base/Modal";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { currencyExchangeSelector } from "redux/modules/exchanges";

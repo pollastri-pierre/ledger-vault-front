@@ -16,7 +16,7 @@ import {
 import { useOrganization } from "components/OrganizationContext";
 import Disabled from "components/Disabled";
 import { withMe } from "components/UserContextProvider";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import GrowingCard from "components/base/GrowingCard";
 import EntityLastRequest from "components/EntityLastRequest";
 import RequestActionButtons from "components/RequestActionButtons";

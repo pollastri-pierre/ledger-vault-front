@@ -13,7 +13,7 @@ import type { Request } from "data/types";
 import { useOrganization } from "components/OrganizationContext";
 import CircleProgress from "components/base/CircleProgress";
 import Card from "components/base/Card";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import Absolute from "components/base/Absolute";
 import Text from "components/base/Text";
 import Widget, { connectWidget } from "./Widget";
