@@ -27,9 +27,10 @@ export const fromStringRoleToBytes = {
   operator: Buffer.from([0]),
 };
 
-const USE_TRANSPORT_U2F = localStorage.getItem("U2F");
+const USE_TRANSPORT_U2F = true; // localStorage.getItem("U2F");
+const FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB");
 
-if (USE_TRANSPORT_U2F) {
+if (USE_TRANSPORT_U2F && !FORCE_WEB_USB) {
   registerTransportModule({
     id: "u2f",
     open: async () => {
