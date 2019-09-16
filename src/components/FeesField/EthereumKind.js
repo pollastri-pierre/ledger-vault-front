@@ -9,8 +9,10 @@ import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
+import colors from "shared/colors";
 
 import Spinner from "components/base/Spinner";
+import TranslatedError from "components/TriggerErrorNotification";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import connectData from "restlay/connectData";
@@ -33,6 +35,7 @@ type Status = "idle" | "fetching";
 
 type State = {
   status: Status,
+  error: Error | null,
 };
 
 class FeesFieldEthereumKind extends PureComponent<
@@ -71,13 +74,13 @@ class FeesFieldEthereumKind extends PureComponent<
     const currency = getCryptoCurrencyById(account.currency);
 
     try {
-      const isRecipientValid = await bridge.isRecipientValid(
+      const recipientError = await bridge.getRecipientError(
         restlay,
         currency,
         transaction.recipient,
       );
       if (this._unmounted) return;
-      if (!isRecipientValid) return;
+      if (recipientError) return;
 
       const txGetFees = {
         amount: transaction.amount,
@@ -97,6 +100,7 @@ class FeesFieldEthereumKind extends PureComponent<
       });
     } catch (err) {
       console.log(err); // eslint-disable-line no-console
+      this.setState({ error: err });
       onChangeTransaction({
         ...transaction,
         estimatedFees: BigNumber(0),
@@ -110,6 +114,7 @@ class FeesFieldEthereumKind extends PureComponent<
 
   state = {
     status: "idle",
+    error: null,
   };
 
   createMutation = field => (value: string) => {
@@ -127,18 +132,22 @@ class FeesFieldEthereumKind extends PureComponent<
 
   render() {
     const { transaction, account } = this.props;
-    const { status } = this.state;
-
+    const { status, error } = this.state;
     const currency = getCryptoCurrencyById(account.currency);
 
     // this is selecting gwei. to be double checked.
     const gasPriceUnit = currency.units[1];
 
     const erc20FeesExceedParentBalance =
-      account.account_type === "ERC20" &&
+      account.account_type === "Erc20" &&
       transaction.estimatedFees &&
       account.parent_balance &&
       transaction.estimatedFees.isGreaterThan(account.parent_balance);
+    const shouldDisplayFeesField = !!(
+      status === "fetching" ||
+      transaction.estimatedFees ||
+      error
+    );
 
     return (
       <Box horizontal flow={20}>
@@ -188,13 +197,19 @@ class FeesFieldEthereumKind extends PureComponent<
             </InfoBox>
           )}
         </Box>
-        <Box grow align="flex-end">
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
-          </Label>
-          <Text small uppercase>
-            {transaction.estimatedFees ? (
-              <>
+        {shouldDisplayFeesField && (
+          <Box grow align="flex-end">
+            <Label>
+              <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
+            </Label>
+            {error ? (
+              <Text color={colors.grenade}>
+                <TranslatedError field="description" error={error} />
+              </Text>
+            ) : status === "fetching" ? (
+              <Spinner />
+            ) : (
+              <Text small uppercase>
                 <CurrencyAccountValue
                   account={account}
                   value={transaction.estimatedFees}
@@ -206,12 +221,10 @@ class FeesFieldEthereumKind extends PureComponent<
                   from={account.currency}
                 />
                 {")"}
-              </>
-            ) : (
-              <Spinner />
+              </Text>
             )}
-          </Text>
-        </Box>
+          </Box>
+        )}
       </Box>
     );
   }

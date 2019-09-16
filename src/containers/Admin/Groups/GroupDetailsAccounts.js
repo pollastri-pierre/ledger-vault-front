@@ -17,6 +17,8 @@ import Box from "components/base/Box";
 import VaultLink from "components/VaultLink";
 import type { Connection } from "restlay/ConnectionQuery";
 
+import colors from "shared/colors";
+
 type Props = {
   accounts: Connection<Account>,
 };
@@ -51,7 +53,7 @@ class GroupDetailsAccounts extends PureComponent<Props> {
 
 const AccountButton = styled(ButtonBase)`
   && {
-    border: 1px solid #f0f0f0;
+    border: 1px solid ${colors.legacyLightGrey1};
     border-radius: 4px;
     padding: 15px;
   }

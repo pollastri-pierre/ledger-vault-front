@@ -37,6 +37,7 @@ export default (props: TransactionCreationStepProps<any>) => {
         <InputText
           autoFocus
           placeholder="Title"
+          data-test="title_tx"
           value={transaction.note.title}
           onChange={handleChangeTitle}
         />
@@ -47,6 +48,7 @@ export default (props: TransactionCreationStepProps<any>) => {
         </Label>
         <InputText
           placeholder="Content"
+          data-test="description_tx"
           value={transaction.note.content}
           onChange={handleChangeContent}
         />

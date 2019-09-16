@@ -14,6 +14,7 @@ import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import Spinner from "components/base/Spinner";
+import TranslatedError from "components/TranslatedError";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
@@ -24,6 +25,13 @@ import { getFees } from "utils/transactions";
 
 import FeeSelect from "./FeeSelect";
 
+type Status = "idle" | "fetching";
+
+type State = {
+  status: Status,
+  error: Error | null,
+};
+
 type Props<BridgeTransaction> = {
   account: Account,
   onChangeTransaction: BridgeTransaction => void,
@@ -32,10 +40,15 @@ type Props<BridgeTransaction> = {
   bridge: WalletBridge<BridgeTransaction>,
 };
 
-class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
+class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
   nonce = 0;
 
-  async componentDidUpdate(prevProps: Props<*>) {
+  state = {
+    status: "idle",
+    error: null,
+  };
+
+  async fetchFees() {
     const {
       account,
       transaction,
@@ -43,48 +56,59 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
       onChangeTransaction,
       bridge,
     } = this.props;
+
+    this.setState({ error: null });
+    if (transaction.amount.isEqualTo(0)) return null;
+    const feeLevel =
+      bridge.getTransactionFeeLevel &&
+      bridge.getTransactionFeeLevel(account, transaction);
+    const nonce = ++this.nonce;
+    const currency = getCryptoCurrencyById(account.currency);
+    const recipientError = await bridge.getRecipientError(
+      restlay,
+      currency,
+      transaction.recipient,
+    );
+    if (nonce !== this.nonce) return;
+    if (!recipientError) {
+      this.setState({ status: "fetching" });
+      try {
+        const txGetFees = {
+          fees_level: feeLevel || "normal",
+          amount: transaction.amount,
+          recipient: transaction.recipient || "",
+        };
+        const estimatedFees = await getFees(account, txGetFees, restlay);
+        if (nonce !== this.nonce) return;
+        onChangeTransaction({
+          ...transaction,
+          estimatedFees: estimatedFees.fees,
+          estimatedMaxAmount: estimatedFees.max_amount,
+        });
+      } catch (err) {
+        console.error(err); // eslint-disable-line no-console
+        this.setState({ error: err });
+        if (nonce !== this.nonce) return;
+        onChangeTransaction({
+          ...transaction,
+          estimatedFees: null,
+          estimatedMaxAmount: null,
+        });
+      } finally {
+        this.setState({ status: "idle" });
+      }
+    }
+  }
+
+  async componentDidUpdate(prevProps: Props<*>) {
+    const { transaction } = this.props;
     const feesInvalidated =
       transaction.recipient !== prevProps.transaction.recipient ||
       !transaction.amount.isEqualTo(prevProps.transaction.amount) ||
       transaction.feeLevel !== prevProps.transaction.feeLevel;
 
     if (feesInvalidated) {
-      if (transaction.amount.isEqualTo(0)) return null;
-      const feeLevel =
-        bridge.getTransactionFeeLevel &&
-        bridge.getTransactionFeeLevel(account, transaction);
-      const nonce = ++this.nonce;
-      const currency = getCryptoCurrencyById(account.currency);
-      const isValid = await bridge.isRecipientValid(
-        restlay,
-        currency,
-        transaction.recipient,
-      );
-      if (nonce !== this.nonce) return;
-      if (isValid) {
-        try {
-          const txGetFees = {
-            fees_level: feeLevel || "normal",
-            amount: transaction.amount,
-            recipient: transaction.recipient || "",
-          };
-          const estimatedFees = await getFees(account, txGetFees, restlay);
-          if (nonce !== this.nonce) return;
-          onChangeTransaction({
-            ...transaction,
-            estimatedFees: estimatedFees.fees,
-            estimatedMaxAmount: estimatedFees.max_amount,
-          });
-        } catch (err) {
-          console.error(err); // eslint-disable-line no-console
-          if (nonce !== this.nonce) return;
-          onChangeTransaction({
-            ...transaction,
-            estimatedFees: null,
-            estimatedMaxAmount: null,
-          });
-        }
-      }
+      await this.fetchFees();
     }
   }
 
@@ -98,10 +122,15 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
 
   render() {
     const { account, transaction, bridge } = this.props;
+    const { status, error } = this.state;
     const feeLevel =
       bridge.getTransactionFeeLevel &&
       bridge.getTransactionFeeLevel(account, transaction);
-
+    const shouldDisplayFeesField = !!(
+      status === "fetching" ||
+      transaction.estimatedFees ||
+      error
+    );
     return (
       <Box horizontal flow={20}>
         <Box width={370} noShrink>
@@ -128,13 +157,19 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
             </InfoBox>
           </Box>
         </Box>
-        <Box grow align="flex-end">
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
-          </Label>
-          <Text small uppercase>
-            {transaction.estimatedFees ? (
-              <>
+        {shouldDisplayFeesField && (
+          <Box grow align="flex-end">
+            <Label>
+              <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
+            </Label>
+            {error ? (
+              <Text color={colors.grenade}>
+                <TranslatedError field="description" error={error} />
+              </Text>
+            ) : status === "fetching" ? (
+              <Spinner />
+            ) : (
+              <Text small uppercase>
                 <CurrencyAccountValue
                   account={account}
                   value={BigNumber(transaction.estimatedFees)}
@@ -147,12 +182,10 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
                   />
                   )
                 </span>
-              </>
-            ) : (
-              <Spinner />
+              </Text>
             )}
-          </Text>
-        </Box>
+          </Box>
+        )}
       </Box>
     );
   }

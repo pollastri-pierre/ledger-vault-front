@@ -10,17 +10,17 @@ import cx from "classnames";
 const careful = {
   base: {
     padding: 10,
-    background: "#27d0e280",
+    background: colors.legacyLightBlue,
     marginTop: 20,
     alignItems: "center",
     fontWeight: "bold",
-    color: "#18909c",
+    color: colors.legacyBlue,
     borderRadius: 4,
     display: "flex",
   },
   icon: {
     width: 20,
-    color: "white",
+    color: colors.white,
     height: 20,
     borderRadius: "50%",
     textAlign: "center",
@@ -38,7 +38,7 @@ export const Careful = withStyles(careful)(({ children, classes }) => (
 
 const addUser = {
   base: {
-    color: "#27d0e2",
+    color: colors.ocean,
     textDecoration: "none",
     textTransform: "uppercase",
     fontSize: 11,
@@ -97,7 +97,7 @@ export const NoMembers = withStyles(noMembers)(
   }) => (
     <div className={classes.base}>
       <People
-        color="#cccccc"
+        color={colors.legacyGrey}
         style={{
           height: 29,
           display: "block",
@@ -124,7 +124,7 @@ const listItem = {
     "&:after": {
       height: 1,
       width: "100%",
-      backgroundColor: "#eeeeee",
+      backgroundColor: colors.argile,
       position: "absolute",
       content: '""',
       bottom: 0,
@@ -140,7 +140,7 @@ const listItem = {
       textTransform: "uppercase",
       fontSize: 12,
       fontWeight: 600,
-      color: "#27d0e2",
+      color: colors.ocean,
     },
   },
   number: {
@@ -152,22 +152,22 @@ const listItem = {
 const step = {
   base: {
     fontSize: 13,
-    color: "#767676",
+    color: colors.steel,
     padding: "15px 0 15px 0",
-    borderBottom: "1px solid #eeeeee",
+    borderBottom: `1px solid ${colors.argile}`,
     "&:last-child": {
       border: 0,
     },
   },
   active: {
     // fontSize: 16,
-    color: "black",
+    color: colors.black,
     "&:before": {
       content: '""',
       width: 6,
       height: 6,
       borderRadius: "50%",
-      background: "#27d0e2",
+      background: colors.ocean,
       display: "inline-block",
       marginRight: 10,
       verticalAlign: "middle",
@@ -183,7 +183,7 @@ const profile = {
 export const ProfileIcon = withStyles(profile)(
   ({ classes }: { classes: { [$Keys<typeof profile>]: string } }) => (
     <div style={{ marginBottom: 10 }}>
-      <Profile color="#cccccc" className={classes.base} />
+      <Profile color={colors.legacyGrey} className={classes.base} />
     </div>
   ),
 );
@@ -321,7 +321,7 @@ export const ToContinue = withStyles(toContinue)(
 
 export const Awaiting = withStyles({
   base: {
-    color: "#767676",
+    color: colors.steel,
     fontWeight: 600,
     fontSize: 11,
     textTransform: "uppercase",

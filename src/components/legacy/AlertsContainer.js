@@ -3,9 +3,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { FaExclamationCircle } from "react-icons/fa";
-import type { MemoryHistory } from "history";
-import { withRouter } from "react-router";
-
+import { TransportOpenUserCancelled } from "@ledgerhq/errors";
 import colors, { opacity } from "shared/colors";
 import Alert from "components/legacy/Alert";
 import { closeMessage } from "redux/modules/alerts";
@@ -41,17 +39,17 @@ export function MessagesContainer(props: {
     error?: Error | DeviceError,
     content?: string,
   },
-  history: MemoryHistory,
   onClose: Function,
 }) {
-  const { alerts, onClose, history } = props;
+  const { alerts, onClose } = props;
   const { error, visible, title, type, content } = alerts;
 
   // we don't want to display timeout and reject by user as an error
   if (
-    error &&
-    error.statusCode &&
-    STATUS_NO_ERROR.indexOf(error.statusCode) > -1
+    (error &&
+      error.statusCode &&
+      STATUS_NO_ERROR.indexOf(error.statusCode) > -1) ||
+    error instanceof TransportOpenUserCancelled
   ) {
     return null;
   }
@@ -63,7 +61,6 @@ export function MessagesContainer(props: {
     );
   }
   if (error instanceof OutOfDateApp) {
-    history.push(`update-app`);
     return false;
   }
 
@@ -121,4 +118,4 @@ const styles = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(MessagesContainer));
+)(MessagesContainer);

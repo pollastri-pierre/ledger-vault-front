@@ -7,7 +7,7 @@ import {
 
 describe("Approve User as Operator and Admin with the second Admin", function() {
   beforeEach(function() {
-    login(5);
+    login(6);
   });
 
   afterEach(function() {

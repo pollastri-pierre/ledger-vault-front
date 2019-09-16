@@ -114,7 +114,7 @@ export type Approval = {
   type: "APPROVE" | "ABORT",
 };
 
-export type AccountType = "Ethereum" | "Bitcoin" | "ERC20";
+export type AccountType = "Ethereum" | "Bitcoin" | "Erc20";
 
 type ExtendedPubKey = {
   public_key: string,
@@ -137,7 +137,6 @@ type AccountCommon = {
   created_on: Date,
   approvals: Approval[],
   fresh_addresses: *,
-  hsm_operations?: Object,
   is_hsm_coin_app_updated: boolean,
   index: number,
   status: string,
@@ -179,6 +178,7 @@ type GroupCommon = {
   last_request?: Request,
   status: string, // TODO create UNION type when different status are known
   is_internal: boolean,
+  is_under_edit: boolean,
 };
 
 export type GroupEntity = GroupCommon & {
@@ -251,41 +251,53 @@ export type RawTransactionETH = {
 
 export type TransactionType = "SEND" | "RECEIVE";
 
-export type TransactionStatus =
-  | "SUBMITTED"
-  | "ABORTED"
-  | "PENDING_APPROVAL"
-  | "BLOCKED";
+export const TransactionStatusMap = {
+  SUBMITTED: "SUBMITTED",
+  ABORTED: "ABORTED",
+  PENDING_APPROVAL: "PENDING_APPROVAL",
+  BLOCKED: "BLOCKED",
+};
+export type TransactionStatus = $Keys<typeof TransactionStatusMap>;
 
-export type UserStatus =
-  | "ACTIVE"
-  | "ABORTED"
-  | "REVOKED"
-  | "PENDING_APPROVAL"
-  | "PENDING_REVOCATION"
-  | "PENDING_REGISTRATION"
-  | "ACCESS_SUSPENDED";
+export const UserStatusMap = {
+  ACTIVE: "ACTIVE",
+  ABORTED: "ABORTED",
+  REVOKED: "REVOKED",
+  PENDING_APPROVAL: "PENDING_APPROVAL",
+  PENDING_REVOCATION: "PENDING_REVOCATION",
+  PENDING_REGISTRATION: "PENDING_REGISTRATION",
+  ACCESS_SUSPENDED: "ACCESS_SUSPENDED",
+};
+export type UserStatus = $Keys<typeof UserStatusMap>;
 
-export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED" | "ABORTED";
+export const GroupStatusMap = {
+  PENDING: "PENDING",
+  ACTIVE: "ACTIVE",
+  REVOKED: "REVOKED",
+  ABORTED: "ABORTED",
+};
+export type GroupStatus = $Keys<typeof GroupStatusMap>;
 
-export type AccountStatus =
-  | "ACTIVE"
-  | "VIEW_ONLY"
-  | "REVOKED"
-  | "MIGRATED"
-  | "VIEW_ONLY"
-  | "HSM_COIN_UPDATED"
-  | "PENDING"
-  | "PENDING_UPDATE"
-  | "PENDING_VIEW_ONLY"
-  | "PENDING_CREATION_APPROVAL"
-  | "PENDING_MIGRATED";
+export const AccountStatusMap = {
+  ACTIVE: "ACTIVE",
+  VIEW_ONLY: "VIEW_ONLY",
+  REVOKED: "REVOKED",
+  MIGRATED: "MIGRATED",
+  HSM_COIN_UPDATED: "HSM_COIN_UPDATED",
+  PENDING: "PENDING",
+  PENDING_UPDATE: "PENDING_UPDATE",
+  PENDING_VIEW_ONLY: "PENDING_VIEW_ONLY",
+  PENDING_CREATION_APPROVAL: "PENDING_CREATION_APPROVAL",
+  PENDING_MIGRATED: "PENDING_MIGRATED",
+};
+export type AccountStatus = $Keys<typeof AccountStatusMap>;
 
 type TransactionCommon = {
   id: number,
   created_by: User,
   currency_family: string,
   confirmations: number,
+  min_confirmations: number,
   tx_hash: ?string,
   created_on: Date,
   price?: Price,
@@ -305,7 +317,6 @@ type TransactionCommon = {
   approvals: Approval[],
   tx_hash: ?string,
   status: TransactionStatus,
-  hsm_operations?: Object,
   error?: Object,
   last_request?: Request,
   gas_price?: BigNumber,
@@ -383,13 +394,20 @@ export type ERC20Token = {
   disable_countervalue?: boolean,
 };
 
-export type MetaStatus = "APPROVED" | "PENDING" | "ABORTED";
+export const MetaStatusMap = {
+  APPROVED: "APPROVED",
+  PENDING: "PENDING",
+  ABORTED: "ABORTED",
+};
+export type MetaStatus = $Keys<typeof MetaStatusMap>;
 
-export type RequestStatus =
-  | "ABORTED"
-  | "PENDING_APPROVAL"
-  | "PENDING_REGISTRATION"
-  | "APPROVED";
+export const RequestStatusMap = {
+  ABORTED: "ABORTED",
+  PENDING_APPROVAL: "PENDING_APPROVAL",
+  PENDING_REGISTRATION: "PENDING_REGISTRATION",
+  APPROVED: "APPROVED",
+};
+export type RequestStatus = $Keys<typeof RequestStatusMap>;
 
 export const RequestActivityTypeDefs = {
   CREATE_GROUP: "CREATE_GROUP",
@@ -403,6 +421,7 @@ export const RequestActivityTypeDefs = {
   REVOKE_ACCOUNT: "REVOKE_ACCOUNT",
   MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
   UPDATE_QUORUM: "UPDATE_QUORUM",
+  CREATE_TRANSACTION: "CREATE_TRANSACTION",
 };
 
 export type RequestActivityType = $Keys<typeof RequestActivityTypeDefs>;
@@ -435,7 +454,9 @@ type RequestCommon = {
   url_id?: string,
   target_type: RequestTargetType,
   type: RequestActivityType,
+  account?: RequestAccount,
   user?: RequestUser,
+  transaction?: RequestTransaction,
   group?: RequestGroup,
   quorum?: number,
   organization?: Organization,
@@ -462,7 +483,18 @@ type RequestUser = {
   username: string,
   role: UserRole,
 };
-type RequestGroup = {};
+
+type RequestTransaction = {
+  account_id: number,
+};
+
+type RequestGroup = {
+  name: string,
+};
+
+type RequestAccount = {
+  name: string,
+};
 
 export type FreshAddress = {
   address: string,

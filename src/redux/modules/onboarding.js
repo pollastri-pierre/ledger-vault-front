@@ -166,11 +166,10 @@ export const getState: Function = () => async (dispatch: Dispatch<*>) => {
 };
 
 const handleError = (error: Object): Function => (dispatch: Dispatch<*>) => {
-  if (error.json && error.json.name === "WRONG_ONBOARDING_STEP_EXCEPTION") {
-    dispatch(getState());
-  } else if (error.json && error.json.message) {
+  if (error.json && error.json.message) {
     dispatch(addMessage("Error", error.json.message, "error"));
   }
+  dispatch(getState());
 };
 
 export const nextState = (data: any) => async (

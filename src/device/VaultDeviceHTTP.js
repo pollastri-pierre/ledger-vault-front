@@ -11,6 +11,7 @@ export const ENDPOINTS = {
   VALIDATE_VAULT_OPERATION: "/validate-vault-operation",
   GENERATE_KEY_FRAGMENTS: "/generate-key-fragments",
   REGISTER_DATA: "/u2f-register-data",
+  GET_CURRENT_DEVICE: "/current-device",
 };
 
 const pathArrayToString = (path: number[]): string =>
@@ -151,13 +152,13 @@ export const openSession = async (
   path: number[],
   pubKey: Buffer,
   attestation: Buffer,
-  scriptHash: number = 0x00,
+  scriptId: number = 0x00,
 ): Promise<*> => {
   const data = await deviceNetwork(ENDPOINTS.OPEN_SESSION, "POST", {
     path: pathArrayToString(path),
     pubKey: pubKey.toString("hex"),
     attestation: attestation.toString("hex"),
-    scriptHash,
+    scriptId,
   });
   return data;
 };
@@ -179,6 +180,16 @@ export const getPublicKey = async (
     signature: Buffer.from(data.attestation, "hex"),
   };
 };
+export const getCurrentDevice = async () => {
+  const data = await deviceNetwork(
+    ENDPOINTS.GET_CURRENT_DEVICE,
+    "GET",
+    null,
+    true,
+  );
+  return data.device_id;
+};
+
 export const authenticate = async (
   transport: *,
   challenge: Buffer,
@@ -197,10 +208,10 @@ export const authenticate = async (
     challenge: challenge.toString("hex"),
     application,
     key_handle: keyHandle.toString("hex"),
-    hsm_data: workspace,
     name: userName,
     role: fromStringRoleToBytes[role.toLowerCase()].toString("hex"),
     type: psdType.toString("hex"),
+    workspaceName: workspace,
   });
 
   // we add a fake status response because traaansport on device does it

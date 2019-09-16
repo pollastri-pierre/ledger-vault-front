@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import colors from "shared/colors";
 import { Title, Step, Awaiting } from "../../components/Onboarding";
 import Plug from "../../components/icons/thin/Plug";
 import DialogButton from "../../components/legacy/DialogButton";
@@ -47,7 +48,7 @@ const StepDeviceGeneric = ({
 }) => (
   <div className={classes.base}>
     <div className={classes.title}>
-      <Plug color="#eeeeee" style={{ height: 28, marginBottom: 10 }} />
+      <Plug color={colors.argile} style={{ height: 28, marginBottom: 10 }} />
       <Title>{title}</Title>
     </div>
     <div>

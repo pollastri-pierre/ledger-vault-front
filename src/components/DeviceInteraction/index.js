@@ -1,12 +1,25 @@
 // @flow
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
+import { withRouter } from "react-router";
+import type { MemoryHistory } from "history";
+import {
+  withDevicePolling,
+  genericCanRetryOnError,
+} from "@ledgerhq/live-common/lib/hw/deviceAccess";
+import {
+  TransportWebUSBGestureRequired,
+  TransportInterfaceNotAvailable,
+} from "@ledgerhq/errors";
 
 import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
+import { OutOfDateApp, remapError } from "utils/errors";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
-import { checkVersion } from "device/interactions/common";
-import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
+import { checkVersion, getU2FPublicKey } from "device/interactions/common";
+import { INVALID_DATA, DEVICE_REJECT_ERROR_CODE } from "device";
+import { softwareMode } from "device/interface";
+import { from } from "rxjs";
 import type { GateError } from "data/types";
 
 export type Interaction = {
@@ -18,28 +31,34 @@ export type Interaction = {
 };
 
 export type DeviceError = { statusCode: number };
+export type DeviceInteractionError = Error | GateError | DeviceError;
 type Props = {
+  history: MemoryHistory,
   interactions: Interaction[],
   noCheckVersion?: boolean,
   additionalFields: Object,
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
-  onError: (Error | GateError | DeviceError) => void,
+  onError: (DeviceInteractionError, Object) => void,
   light?: boolean,
 };
 
 type State = {
   currentStep: number,
   interaction: Interaction,
+  requireClick: boolean,
 };
 
 // always logs apdu for now
 listen(log => console.log(`${log.type}: ${log.message ? log.message : ""}`)); // eslint-disable-line no-console
 
+const DO_NOT_RETRY = [INVALID_DATA, DEVICE_REJECT_ERROR_CODE];
+
 class DeviceInteraction extends PureComponent<Props, State> {
   state = {
     currentStep: 0,
     interaction: this.props.interactions[0],
+    requireClick: false,
   };
 
   _unmounted = false;
@@ -48,46 +67,72 @@ class DeviceInteraction extends PureComponent<Props, State> {
     additionalFields: {},
   };
 
+  shouldRetry = e => {
+    if (e instanceof OutOfDateApp) return false;
+    if (softwareMode()) return false;
+    // $FlowFixMe
+    return DO_NOT_RETRY.indexOf(e.statusCode) === -1;
+  };
+
   runInteractions = async () => {
     const {
       interactions,
       additionalFields,
       noCheckVersion,
       restlay,
+      history,
     } = this.props;
 
     // always checking app version first unless opt-out by the consumer component
+    // always ask for u2f_pubkey to be sure user has opened vault app
     const interactionsWithCheckVersion =
       noCheckVersion || localStorage.getItem("NO_CHECK_VERSION")
-        ? interactions
-        : [checkVersion, ...interactions];
+        ? [getU2FPublicKey, ...interactions]
+        : [getU2FPublicKey, checkVersion, ...interactions];
 
     const responses = { ...additionalFields, restlay };
-    if (
-      window.FORCE_HARDWARE ||
-      (process.env.NODE_ENV !== "e2e" &&
-        !window.config.SOFTWARE_DEVICE &&
-        localStorage.getItem("SOFTWARE_DEVICE") !== "1")
-    ) {
-      // $FlowFixMe
-      const transport = await LedgerTransportU2F.create();
-      transport.setScrambleKey("v1+");
-      transport.setUnwrap(true);
-      transport.setExchangeTimeout(360000);
-      responses.transport = transport;
-    }
+
     for (let i = 0; i < interactionsWithCheckVersion.length; i++) {
       try {
         this.setState({
           currentStep: i,
           interaction: interactionsWithCheckVersion[i],
         });
-        responses[
-          interactionsWithCheckVersion[i].responseKey
-        ] = await interactionsWithCheckVersion[i].action(responses);
+        if (interactionsWithCheckVersion[i].device) {
+          const ensureAppVault = withDevicePolling("")(
+            transport =>
+              from(
+                interactionsWithCheckVersion[i].action({
+                  ...responses,
+                  transport,
+                }),
+              ),
+            e =>
+              !this._unmounted &&
+              this.shouldRetry(e) &&
+              genericCanRetryOnError(e),
+          );
+          responses[
+            interactionsWithCheckVersion[i].responseKey
+          ] = await ensureAppVault.toPromise();
+        } else {
+          responses[
+            interactionsWithCheckVersion[i].responseKey
+          ] = await interactionsWithCheckVersion[i].action(responses);
+        }
         if (this._unmounted) return;
       } catch (e) {
-        this.props.onError(e);
+        const err = remapError(e);
+        if (
+          err instanceof OutOfDateApp ||
+          err instanceof TransportInterfaceNotAvailable
+        ) {
+          history.push(`/update-app?redirectTo=${location.pathname}`);
+        } else if (err instanceof TransportWebUSBGestureRequired) {
+          this.setState({ requireClick: true });
+        } else {
+          this.props.onError(err, responses);
+        }
         return;
       }
     }
@@ -105,16 +150,24 @@ class DeviceInteraction extends PureComponent<Props, State> {
 
   render() {
     const { interactions, light } = this.props;
-    const { currentStep, interaction } = this.state;
+    const { currentStep, interaction, requireClick } = this.state;
+
+    const onReClick = () => {
+      this.setState({ requireClick: false });
+      this.runInteractions();
+    };
+
     return (
       <DeviceInteractionAnimation
         light={light}
         interaction={interaction}
         numberSteps={interactions.length}
         currentStep={currentStep}
+        shouldReconnectWebUSB={requireClick}
+        onWebUSBReconnect={onReClick}
       />
     );
   }
 }
 
-export default connectData(DeviceInteraction);
+export default connectData(withRouter(DeviceInteraction));

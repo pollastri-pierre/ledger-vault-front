@@ -20,6 +20,9 @@ export type DeviceError = {
 
 // send errors
 export const InvalidAddress = createCustomErrorClass("InvalidAddress");
+export const AddressShouldNotBeSegwit = createCustomErrorClass(
+  "AddressShouldNotBeSegwit",
+);
 export const AmountTooHigh = createCustomErrorClass("AmountTooHigh");
 export const AmountExceedMax = createCustomErrorClass("AmountExceedMax");
 export const NonEIP55Address = createCustomErrorClass("NonEIP55Address");
@@ -30,3 +33,15 @@ export const UserInvitationAlreadyUsed = createCustomErrorClass(
 export const NetworkTimeoutError = createCustomErrorClass(
   "NetworkTimeoutError",
 );
+
+export const DeviceNotOnDashboard = createCustomErrorClass(
+  "DeviceNotOnDashboard",
+);
+
+export function remapError(err: Error) {
+  // $FlowFixMe
+  if (err.statusCode === 0x6020 || err.statusCode === 0x6701) {
+    return new DeviceNotOnDashboard();
+  }
+  return err;
+}

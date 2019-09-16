@@ -21,17 +21,21 @@ const styles = {
 class ConfirmationStatus extends Component<*> {
   props: {
     nbConfirmations: number,
+    threshold: number,
     classes: Object,
   };
 
   render() {
-    const { nbConfirmations, classes } = this.props;
+    const { nbConfirmations, threshold, classes } = this.props;
 
     if (nbConfirmations > 0) {
       return (
         <span className={classes.isConfirmed}>
           <Check color={colors.green} size={11} />
-          <span className={classes.text}>Confirmed ({nbConfirmations})</span>
+          <span className={classes.text}>
+            Confirmed (
+            {nbConfirmations >= threshold ? `${threshold}+` : nbConfirmations})
+          </span>
         </span>
       );
     }

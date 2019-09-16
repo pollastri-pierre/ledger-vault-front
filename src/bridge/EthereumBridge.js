@@ -5,7 +5,7 @@ import { BigNumber } from "bignumber.js";
 import type { Account, TransactionCreationNote } from "data/types";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
-import { NonEIP55Address } from "utils/errors";
+import { NonEIP55Address, InvalidAddress } from "utils/errors";
 import type { WalletBridge } from "./types";
 
 // convertion to the BigNumber needed
@@ -30,6 +30,11 @@ const getRecipientWarning = async recipient => {
     return new NonEIP55Address();
   }
   return null;
+};
+
+const getRecipientError = async (restlay, currency, recipient) => {
+  const isValid = await isRecipientValid(restlay, currency, recipient);
+  return isValid ? null : new InvalidAddress();
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -71,7 +76,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
 
   getTotalSpent: (a, t) => {
     const fees = t.estimatedFees || BigNumber(0);
-    if (a.account_type === "ERC20") {
+    if (a.account_type === "Erc20") {
       return t.amount;
     }
     return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(fees);
@@ -97,6 +102,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
   ) => ({
     ...t,
     recipient,
+    estimatedFees: null,
   }),
 
   getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
@@ -108,12 +114,12 @@ const EthereumBridge: WalletBridge<Transaction> = {
   }),
   EditFees: FeesFieldEthereumKind,
   EditAdvancedOptions,
-  checkValidTransactionSyncSync: (a: Account, t: Transaction) => {
+  checkValidTransactionSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
     const { estimatedFees } = t;
     if (!estimatedFees) return false;
     if (!estimatedFees.isGreaterThan(0)) return false;
-    if (a.account_type === "ERC20") {
+    if (a.account_type === "Erc20") {
       if (!a.parent_balance) return false;
       if (estimatedFees.isGreaterThan(a.parent_balance)) return false;
     } else if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) {
@@ -121,7 +127,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
     }
     return true;
   },
-  isRecipientValid,
+  getRecipientError,
   getRecipientWarning,
 };
 

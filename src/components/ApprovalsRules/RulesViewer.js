@@ -66,7 +66,7 @@ const GroupOrUsers = ({ group }: { group: Group }) =>
   );
 
 const ListUsers = ({ users }: { users: User[] }) => (
-  <Box horizontal align="center" flexWrap="wrap" justify="flex-end">
+  <Box horizontal align="center" flexWrap="wrap">
     {users.map(m => (
       <Box key={m.id} style={{ marginRight: 8 }}>
         <MemberName member={m} />

@@ -17,7 +17,7 @@ const MenuContainer = styled(Box).attrs({
 })`
   &:after {
       content: "",
-      background: #eeeeee,
+      background: ${colors.argile},
       width: 1,
       height: 436,
       display: block,

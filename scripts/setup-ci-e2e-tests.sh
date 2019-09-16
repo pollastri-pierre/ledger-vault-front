@@ -14,8 +14,8 @@ export WALLET_DAEMON_VERSION=develop-drop2
 export VAULT_API_VERSION=develop-drop2
 export DEVICE_API_VERSION=develop-hsm2
 export HSM_DRIVER_VERSION=develop-hsm2
-export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20190611/process
-export COMPARTMENTS_ENDPOINT=https://hsmsaas.ledger.info/dev/20190611/compartments
+export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20190620/process
+export COMPARTMENTS_ENDPOINT=https://hsmsaas.ledger.info/dev/20190620/compartments
 export VAULT_WORKSPACE=ledger1
 
 cat > .env << EOF
@@ -46,7 +46,8 @@ function main {
   echo "export COMPARTMENTS_ENDPOINT=$COMPARTMENTS_ENDPOINT" >> "$BASH_ENV"
 
   echo "-- starting the docker images"
-  docker-compose up -d
+  echo "the hsm endpoint is $VAULT_HSM_ENDPOINT"
+  VAULT_HSM_ENDPOINT=$VAULT_HSM_ENDPOINT docker-compose up -d
 
   echo "-- waiting for healthyness"
   waitForHealthyContainers 9
@@ -61,10 +62,12 @@ function main {
   echo "-- server is up!"
   echo "-- launching e2e tests"
 
-  ./node_modules/.bin/cypress install
-  ./node_modules/.bin/cypress run \
-    --reporter junit \
-    --spec 'cypress/integration/Onboarding/*'
+  export PATH=./node_modules/.bin:$PATH
+
+  cypress install
+  cypress run --reporter junit --spec 'cypress/integration/Onboarding/*'
+  cypress run --reporter junit --spec 'cypress/integration/Drop2/01_Users/*'
+  cypress run --reporter junit --spec 'cypress/integration/Drop2/02_Groups/*'
 }
 
 function cloneOrPull {
@@ -78,7 +81,7 @@ function cloneOrPull {
 }
 
 function waitForHealthyContainers {
-  MAX_RETRIES=30
+  MAX_RETRIES=60
   while [[ $HEALTHY_CONTAINERS != "$1" ]]; do
     sleep 1
     HEALTHY_CONTAINERS=$(docker ps --format '{{.Status}}' | grep -c '(healthy)$' || echo "0")
@@ -92,7 +95,7 @@ function waitForHealthyContainers {
 }
 
 function waitForE2EServer {
-  MAX_RETRIES=30
+  MAX_RETRIES=60
   while ! curl -k --connect-timeout 1 https://localhost:9000 &>/dev/null ; do
     sleep 1
     MAX_RETRIES=$((MAX_RETRIES - 1))

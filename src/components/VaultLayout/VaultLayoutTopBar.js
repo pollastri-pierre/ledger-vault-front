@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
 import { FaQuestionCircle, FaPowerOff } from "react-icons/fa";
 
@@ -13,24 +12,13 @@ import { vaultLayoutConfig } from "styles/theme";
 import { urlByRole } from "components/HelpLink";
 
 type Props = {
-  globalAnimation: Animated.Value,
   user: User,
   onLogout: () => void,
-  BreadcrumbComponent: React$ComponentType<*>,
 };
 
-export default ({
-  globalAnimation,
-  user,
-  onLogout,
-  BreadcrumbComponent,
-}: Props) => {
-  const contentStyle = getContentStyle(globalAnimation);
+export default ({ user, onLogout }: Props) => {
   return (
     <VaultLayoutTopBar>
-      <Animated.div style={contentStyle}>
-        <BreadcrumbComponent />
-      </Animated.div>
       <VaultLayoutTopBarRight>
         <Box horizontal align="center" px={20}>
           <Text small>{user.username}</Text>
@@ -50,7 +38,7 @@ const VaultLayoutTopBar = styled.div`
   padding: 0 20px;
   height: ${vaultLayoutConfig.TOP_BAR_HEIGHT}px;
   background: white;
-  box-shadow: 0 -2px 5px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -2px 5px 0 ${colors.legacyTranslucentGrey2};
 `;
 
 const VaultLayoutTopBarRight = styled.div`
@@ -64,7 +52,7 @@ const VaultLayoutTopBarRight = styled.div`
 
 const TopBarActionComponent = styled.div`
   cursor: pointer;
-  color: #ccc;
+  color: ${colors.legacyGrey};
   display: flex;
   align-items: center;
 
@@ -72,7 +60,7 @@ const TopBarActionComponent = styled.div`
   padding-right: ${p => (p.link ? "0" : "10px")};
 
   &:hover {
-    color: #aaa;
+    color: ${colors.textLight};
   }
 
   &:active {
@@ -113,23 +101,3 @@ const TopBarAction = ({
     </TopBarActionComponent>
   );
 };
-
-function getContentStyle(globalAnimation: Animated.Value) {
-  return {
-    position: "relative",
-    zIndex: 1,
-    transform: [
-      {
-        translateX: globalAnimation.interpolate({
-          inputRange: [0, 1, 2],
-          outputRange: [
-            vaultLayoutConfig.MENU_WIDTH,
-            vaultLayoutConfig.COLLAPSED_MENU_WIDTH,
-            vaultLayoutConfig.COLLAPSED_MENU_WIDTH,
-          ],
-          clamp: true,
-        }),
-      },
-    ],
-  };
-}

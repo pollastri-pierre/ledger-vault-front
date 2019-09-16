@@ -14,6 +14,20 @@
     "CREATE_ACCOUNT": "Create account",
     "UPDATE_QUORUM": "Edit admin rule"
   },
+  "richType": {
+    "CREATE_TRANSACTION": "Create transaction",
+    "CREATE_GROUP": "Create <0>{{extra}}</0> group",
+    "EDIT_GROUP": "Edit <0>{{extra}}</0> group",
+    "REVOKE_GROUP": "Delete <0>{{extra}}</0> group",
+    "REVOKE_USER": "Revoke <0>{{extra}}</0>",
+    "EDIT_ACCOUNT": "Edit <0>{{extra}}</0> account",
+    "MIGRATE_ACCOUNT": "Update <0>{{extra}}</0> account",
+    "REVOKE_ACCOUNT": "Archive <0>{{extra}}</0> account",
+    "CREATE_ADMIN": "Create <0>{{extra}}</0> (Administrator)",
+    "CREATE_OPERATOR": "Create <0>{{extra}}</0> (Operator)",
+    "CREATE_ACCOUNT": "Create <0>{{extra}}</0> account",
+    "UPDATE_QUORUM": "Edit admin rule"
+  },
   "statusDot": {
     "EDIT_GROUP": "<0>Edit group</0> request in progress",
     "EDIT_ACCOUNT": "<0>Edit account</0> request in progress",
@@ -21,7 +35,6 @@
     "REVOKE_GROUP": "<0>Delete group</0> request in progress",
     "REVOKE_USER": "<0>Revoke user</0> request in progress",
     "REVOKE_ACCOUNT": "<0>Archive account</0> request in progress",
-    "REVOKE_TRANSACTION": "<0>Reject transaction</0> request in progress",
     "UPDATE_QUORUM": "<0>Edit admin rule</0> request in progress"
   },
   "approve": {
@@ -29,7 +42,6 @@
     "EDIT_GROUP": "Approve group edition",
     "EDIT_ACCOUNT": "Approve account edition",
     "REVOKE_GROUP": "Approve group deletion",
-    "REVOKE_TRANSACTION": "Approve transaction rejection",
     "CREATE_ACCOUNT": "Approve account creation",
     "CREATE_OPERATOR": "Approve Operator creation",
     "CREATE_ADMIN": "Approve Administrator creation",
@@ -38,5 +50,8 @@
     "MIGRATE_ACCOUNT": "Approve account update",
     "CREATE_TRANSACTION": "Approve transaction creation"
   },
-  "expire_in": "request expires in {{count}}"
+  "expire_in": "request expires in {{count}}",
+  "extra": {
+    "CREATE_TRANSACTION_ON": "<0>in </0><1><0 /></1><2> account</2>"
+  }
 }

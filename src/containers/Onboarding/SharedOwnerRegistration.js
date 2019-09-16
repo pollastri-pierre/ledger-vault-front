@@ -15,6 +15,7 @@ import DialogButton from "components/legacy/DialogButton";
 import { addSharedOwner, getState } from "redux/modules/onboarding";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import type { Onboarding } from "redux/modules/onboarding";
+import colors from "shared/colors";
 import Footer from "./Footer";
 
 type Props = {
@@ -109,7 +110,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
               key={i} // eslint-disable-line react/no-array-index-key
               style={{
                 lineHeight: "45px",
-                borderBottom: "1px solid #eeeeee",
+                borderBottom: `1px solid ${colors.argile}`,
                 fontSize: 11,
                 textTransform: "uppercase",
               }}
@@ -118,7 +119,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
                 style={{
                   width: 10,
                   height: 10,
-                  background: "#27d0e2",
+                  background: colors.ocean,
                   display: "inline-block",
                   marginRight: 10,
                   borderRadius: "50%",

@@ -2,6 +2,7 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import { createAndApprove } from "device/interactions/hsmFlows";
 import UsersQuery from "api/queries/UsersQuery";
@@ -11,6 +12,7 @@ import GroupQuery from "api/queries/GroupQuery";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import UpdateDescriptionButton from "components/GroupCreationFlow/UpdateDescriptionButton";
+import { handleCancelOnDevice } from "utils/request";
 
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
@@ -18,7 +20,6 @@ import { FaUsers } from "react-icons/fa";
 import type { Group } from "data/types";
 
 import GroupCreationInfos from "./GroupCreationInfos";
-import GroupCreationMembers from "./GroupCreationMembers";
 import GroupCreationConfirmation from "./GroupCreationConfirmation";
 import { hasEditOccured, onlyDescriptionChanged } from "./utils";
 import type { GroupCreationPayload } from "./types";
@@ -36,26 +37,23 @@ const steps = [
     Step: GroupCreationInfos,
   },
   {
-    id: "chooseMembers",
-    name: <Trans i18nKey="group:create.members" />,
-    Step: GroupCreationMembers,
-    requirements: (payload: GroupCreationPayload) => payload.name !== "",
-  },
-  {
     id: "confirm",
     name: <Trans i18nKey="group:create.confirmation" />,
     Step: GroupCreationConfirmation,
-    requirements: (payload: GroupCreationPayload) => payload.members.length > 0,
+    requirements: (payload: GroupCreationPayload) =>
+      payload.name !== "" && payload.members.length > 0,
     Cta: ({
       payload,
       onClose,
       isEditMode,
       initialPayload,
+      restlay,
     }: {
       payload: GroupCreationPayload,
       initialPayload: GroupCreationPayload,
       onClose: Function,
       isEditMode?: boolean,
+      restlay: RestlayEnvironment,
     }) => {
       // if only description changed
       if (onlyDescriptionChanged(payload, initialPayload)) {
@@ -70,6 +68,7 @@ const steps = [
               ? [editDescriptionMutation, ...createAndApprove("GROUP")]
               : createAndApprove("GROUP")
           }
+          onError={handleCancelOnDevice(restlay, onClose)}
           onSuccess={() => {
             onClose();
           }}

@@ -13,28 +13,17 @@ export const ModalDialog = styled(Box)`
   min-height: 200px;
 `;
 
-export const boxShadow = `0px 11px 15px -7px rgba(0, 0, 0, 0.04),
-    0px 24px 38px 3px rgba(0, 0, 0, 0.04), 0px 9px 46px 8px rgba(0, 0, 0, 0.04)`;
+export const boxShadow = `0px 11px 15px -7px ${colors.legacyTranslucentGrey7},
+    0px 24px 38px 3px ${colors.legacyTranslucentGrey7}, 0px 9px 46px 8px ${colors.legacyTranslucentGrey7}`;
 
 export const ModalDialogInner = styled(Box)`
-  background: ${p => (p.transparent ? "transparent" : "white")};
+  background: ${p => (p.transparent ? "transparent" : colors.white)};
   position: relative;
   margin-bottom: 40px;
   margin-top: 40px;
   border-radius: 4px;
   flex-shrink: 0;
   box-shadow: ${p => (p.transparent ? "none" : boxShadow)};
-`;
-
-export const ModalBreadcrumb = styled(Box).attrs({
-  bg: "#f5f5f5",
-  pb: 100,
-  width: 100,
-  p: 20,
-})`
-  user-select: none;
-  flex-shrink: 0;
-  font-size: 11px;
 `;
 
 export const ModalFooter = styled(Box).attrs(p => ({
@@ -119,9 +108,9 @@ export const ModalClose = ({ onClick }: { onClick?: () => void }) => (
 const RichModalHeaderContainer = styled.div`
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  background: #f5f5f5;
+  background: ${colors.legacyLightGrey5};
   padding: 40px;
-  color: #aaa;
+  color: ${colors.textLight};
 `;
 
 const RichModalHeaderButt = styled.div`
@@ -143,7 +132,7 @@ export const RichModalHeader = ({
   <RichModalHeaderContainer>
     <ModalClose onClick={onClose} />
     <Box horizontal flow={10} align="center">
-      <Icon size={24} color="#ddd" />
+      <Icon size={24} color={colors.legacyLightGrey7} />
       <Text large>{title}</Text>
     </Box>
     {children && (
@@ -162,7 +151,7 @@ export const RichModalFooter = styled.div`
   padding: 0 20px;
   // border-top: 1px solid #f0f0f0;
   box-shadow: hsla(0, 0%, 10%, 0.1) 0 4px 6px -4px inset;
-  background: #fafafa;
+  background: ${colors.form.bg};
   min-height: 90px;
   display: flex;
   align-items: flex-end;
@@ -181,7 +170,11 @@ export const RichModalTab = styled(({ isActive, dark, ...props }) => (
 ))`
   position: relative;
   background: ${p =>
-    p.isActive ? "white" : p.dark ? "rgba(0, 0, 0, 0.02)" : "unset"};
+    p.isActive
+      ? colors.white
+      : p.dark
+      ? colors.legacyTranslucentGrey8
+      : "unset"};
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   padding: 10px;
@@ -192,14 +185,14 @@ export const RichModalTab = styled(({ isActive, dark, ...props }) => (
     cursor: pointer;
     background: ${p =>
       p.isActive
-        ? "white"
+        ? colors.white
         : p.dark
-        ? "rgba(0, 0, 0, 0.03)"
-        : "rgba(0, 0, 0, 0.02)"};
+        ? colors.legacyTranslucentGrey6
+        : colors.legacyTranslucentGrey8};
   }
 
   &:active {
     transition: 100ms linear background-color;
-    background: rgba(0, 0, 0, 0.05);
+    background: ${colors.legacyTranslucentGrey4};
   }
 `;

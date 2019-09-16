@@ -25,7 +25,7 @@ test("restlay.commitMutation returns a promise of the expected result", async ()
     }),
   );
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(p).toBeInstanceOf(Promise);
   const res = await p;
   expect(res).toMatchObject({ name: "foo", age: 42 });
@@ -48,12 +48,12 @@ test("restlay.commitMutation correctly redraw with new data", async () => {
   );
   const inst = renderer.create(render(<Animals />));
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("last=doge_5");
   invariant(rlay, "restlay is defined");
   const p = rlay.commitMutation(new IncrementAgesMutation());
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(p).toBeInstanceOf(Promise);
   const res = await p;
   expect(res.length).toBe(2);

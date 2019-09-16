@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 import colors from "shared/colors";
+import VaultLink from "components/VaultLink";
 import VaultLogo from "components/icons/Logo";
 import { vaultLayoutConfig } from "styles/theme";
 import { VaultLayoutMenuItem } from "./index";
@@ -48,7 +49,11 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
 
         <Animated.div style={headerStyle}>
           <VaultLayoutMenuHeader isOpened={isOpened} isFloating={isFloating}>
-            <VaultLogo width={120} />
+            <VaultLayoutLogo>
+              <VaultLink to="/dashboard" withRole>
+                <VaultLogo width={120} />
+              </VaultLink>
+            </VaultLayoutLogo>
           </VaultLayoutMenuHeader>
         </Animated.div>
         <VaultLayoutMenuBody>
@@ -73,10 +78,10 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
 
 const styles = {
   whiteBackground: {
-    pointerEvents: "none",
-    background: "white",
-    boxShadow: "-3px 2px 5px 0 rgba(0, 0, 0, 0.2)",
-    borderRight: "1px solid #f0f0f0",
+    pointerEvents: "auto",
+    background: colors.white,
+    boxShadow: `-3px 2px 5px 0 ${colors.legacyTranslucentGrey2}`,
+    borderRight: `1px solid ${colors.legacyLightGrey1}`,
     position: "fixed",
     top: 0,
     left: -20,
@@ -90,6 +95,9 @@ const styles = {
   },
 };
 
+const VaultLayoutLogo = styled.div`
+  pointer-events: auto;
+`;
 const VaultLayoutMenu = styled.div`
   position: absolute;
   z-index: 3;
@@ -115,7 +123,7 @@ const VaultLayoutMenuToggle = styled.div`
   width: 100px;
   height: 40px;
   border-radius: 40px;
-  background: white;
+  background: ${colors.white};
   cursor: pointer;
   padding-right: 15px;
 

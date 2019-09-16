@@ -7,6 +7,10 @@ import LineRow from "components/LineRow";
 import EditableField from "components/EditableField";
 import Box from "components/base/Box";
 import Copy from "components/base/Copy";
+import {
+  InputUserID,
+  isUserIDValid,
+} from "components/UserCreationFlow/steps/UserCreationInfos";
 import UserRoleFormatter from "components/UserRoleFormatter";
 
 import { updateUserInfo } from "components/UserCreationFlow/helpers";
@@ -20,10 +24,6 @@ type Props = {
 
 const inputPropsUsername = {
   maxLength: 19,
-  onlyAscii: true,
-};
-const inputPropsUserID = {
-  maxLength: 16,
   onlyAscii: true,
 };
 
@@ -74,12 +74,17 @@ class UserDetailsOverview extends PureComponent<Props> {
         <LineRow label={<Trans i18nKey="userDetails:role" />}>
           <UserRoleFormatter userRole={user.role} />
         </LineRow>
-        <LineRow label={<Trans i18nKey="userDetails:userID" />}>
+        <LineRow
+          label={<Trans i18nKey="userDetails:userID" />}
+          noOverflowHidden
+        >
           {isPendingRegistration ? (
             <EditableField
               value={(user.user_id && user.user_id.toUpperCase()) || ""}
               onChange={this.updateUserID}
-              inputProps={inputPropsUserID}
+              InputComponent={InputUserID}
+              inputProps={{ width: 300 }}
+              getSaveDisabled={v => !isUserIDValid(v)}
             />
           ) : (
             user.user_id && user.user_id.toUpperCase()

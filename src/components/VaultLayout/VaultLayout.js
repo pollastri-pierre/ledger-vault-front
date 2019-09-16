@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import type { Match } from "react-router-dom";
 import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
+import colors from "shared/colors";
 
 import type { User } from "data/types";
 import { vaultLayoutConfig } from "styles/theme";
@@ -22,7 +23,6 @@ type Props = {
   user: User,
   onLogout: () => void,
   match: Match,
-  BreadcrumbComponent: React$ComponentType<*>,
 };
 
 type State = {
@@ -98,14 +98,7 @@ class VaultLayout extends Component<Props, State> {
   };
 
   render() {
-    const {
-      children,
-      menuItems,
-      user,
-      onLogout,
-      match,
-      BreadcrumbComponent,
-    } = this.props;
+    const { children, menuItems, user, onLogout, match } = this.props;
     const { isMenuOpened, isMenuFloating, globalAnimation } = this.state;
 
     return (
@@ -124,7 +117,6 @@ class VaultLayout extends Component<Props, State> {
           user={user}
           onLogout={onLogout}
           globalAnimation={globalAnimation}
-          BreadcrumbComponent={BreadcrumbComponent}
         />
         <VaultLayoutMainView isMenuOpened={isMenuOpened}>
           {children}
@@ -147,7 +139,7 @@ const VaultLayoutFixedContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-  background-color: #fafafa;
+  background-color: ${colors.form.bg};
   pointer-events: auto;
 `;
 

@@ -9,6 +9,8 @@ import Spinner from "components/base/Spinner";
 import { FaMobileAlt, FaServer } from "react-icons/fa";
 import type { Interaction } from "components/DeviceInteraction";
 
+import WebUSBClickFallback from "./WebUSBClickFallback";
+
 export type CurrentActionType = "device" | "server";
 
 type Props = {
@@ -17,6 +19,8 @@ type Props = {
   currentStep: ?number,
   error?: boolean,
   light?: boolean,
+  shouldReconnectWebUSB: boolean,
+  onWebUSBReconnect: () => void,
 };
 
 const computerIcon = <MdComputer size={20} />;
@@ -35,9 +39,17 @@ const Container = styled(Box).attrs({
   border-radius: 5px;
   opacity: ${p => (p.error ? "0.5" : "1")};
   position: relative;
-  background: ${p => (p.light ? "white" : "#f5f5f5")};
-  border: 1px solid #e9e9e9;
-  color: #555;
+  background: ${p => (p.light ? colors.white : colors.legacyLightGrey5)};
+  border: 1px solid ${colors.form.border};
+  color: ${colors.legacyDarkGrey3};
+`;
+
+const FallbackContainer = styled(Box).attrs({
+  align: "center",
+  justify: "center",
+})`
+  position: relative;
+  height: 60px;
 `;
 
 const DeviceIcon = ({ needsUserInput }: { needsUserInput: ?boolean }) => (
@@ -54,8 +66,7 @@ const DeviceIcon = ({ needsUserInput }: { needsUserInput: ?boolean }) => (
 const Dash = styled(Box)`
   width: 10px;
   height: 2px;
-  background: ${p => (p.done ? colors.green : "#777")};
-  opacity: ${p => (p.done || p.active ? 1 : 0.1)};
+  background: ${p => (p.done ? colors.green : colors.legacyLightGrey6)};
 `;
 
 const bounce = keyframes`
@@ -74,13 +85,13 @@ const Tooltip = styled(Box)`
   -webkit-font-smoothing: antialiased;
   animation: ${bounce} 1000ms cubic-bezier(0.61, 0.22, 0.42, 0.77) infinite;
   background: ${colors.night};
-  color: white;
+  color: ${colors.white};
   user-select: none;
   border-radius: 5px;
   top: 100%;
   left: 8px;
   z-index: 1;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px 0 ${colors.legacyTranslucentGrey5};
   font-weight: bold;
   text-align: center;
   padding: 12px;
@@ -96,7 +107,7 @@ const Tooltip = styled(Box)`
     height: 0;
     border-style: solid;
     border-width: 0 6px 6px 6px;
-    border-color: transparent transparent #1d2028 transparent;
+    border-color: transparent transparent ${colors.night} transparent;
   }
 `;
 
@@ -107,25 +118,16 @@ type PropsDash = {
 };
 
 type StateDash = {
-  intervalId: ?IntervalID,
   deviceReady: ?boolean,
-  dashActive: number,
 };
 class DashContainer extends PureComponent<PropsDash, StateDash> {
   state = {
-    intervalId: null,
     deviceReady: false,
-    dashActive: 0,
   };
 
   static defaultProps = {
     number: 3,
   };
-
-  componentDidMount() {
-    const intervalId = setInterval(() => this.update(), 200);
-    this.setState({ intervalId });
-  }
 
   static getDerivedStateFromProps(props, state) {
     const { currentStep } = props;
@@ -135,43 +137,12 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
     };
   }
 
-  componentDidUpdate() {
-    const { intervalId, deviceReady } = this.state;
-    const { error } = this.props;
-    if ((deviceReady || error) && intervalId) {
-      clearInterval(intervalId);
-    }
-  }
-
-  componentWillUnmount() {
-    const { intervalId } = this.state;
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-  }
-
-  update() {
-    const { number } = this.props;
-    const { dashActive } = this.state;
-    const newActive = dashActive === number + 1 ? 0 : dashActive + 1;
-    this.setState({
-      dashActive: newActive,
-    });
-  }
-
   renderDashes = () => {
     const { number, currentStep } = this.props;
-    const { dashActive } = this.state;
 
     const rows = [];
     for (let i = 0; i < number; i++) {
-      rows.push(
-        <Dash
-          active={dashActive === i}
-          done={currentStep && i < currentStep}
-          key={i}
-        />,
-      );
+      rows.push(<Dash done={currentStep && i < currentStep} key={i} />);
     }
     return rows;
   };
@@ -211,10 +182,29 @@ const RightIcon = ({ type }: { type: CurrentActionType }) =>
 
 class DeviceInteractionAnimation extends PureComponent<Props> {
   render() {
-    const { numberSteps, interaction, currentStep, error, light } = this.props;
+    const {
+      numberSteps,
+      interaction,
+      currentStep,
+      error,
+      light,
+      shouldReconnectWebUSB,
+      onWebUSBReconnect,
+    } = this.props;
 
     const { needsUserInput, tooltip } = interaction;
     const currentActionType = interaction.device ? "device" : "server";
+
+    if (shouldReconnectWebUSB) {
+      return (
+        <FallbackContainer>
+          <WebUSBClickFallback onClick={onWebUSBReconnect} />
+          <Tooltip right>
+            <Text>Please click again to pair the device</Text>
+          </Tooltip>
+        </FallbackContainer>
+      );
+    }
 
     return (
       <Container error={error} light={light}>
@@ -227,7 +217,7 @@ class DeviceInteractionAnimation extends PureComponent<Props> {
         <RightIcon type={currentActionType} />
         {(needsUserInput || currentStep === 0) && (
           <Tooltip right>
-            {tooltip || <Text small i18nKey="common:approve_device" />}
+            {tooltip || <Text i18nKey="common:approve_device" />}
           </Tooltip>
         )}
       </Container>

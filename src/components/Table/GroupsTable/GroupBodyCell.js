@@ -7,6 +7,7 @@ import MUITableCell from "@material-ui/core/TableCell";
 import EntityStatus from "components/EntityStatus";
 
 import type { Group } from "data/types";
+import GroupMembersCell from "./GroupMembersCell";
 import type { TableItem } from "../types";
 
 type CellProps = {
@@ -20,7 +21,7 @@ class GroupBodyCell extends PureComponent<CellProps> {
       case "name":
         return <div>{group.name}</div>;
       case "members":
-        return <div>{group.members && group.members.length}</div>;
+        return <GroupMembersCell members={group.members || []} />;
       case "status":
         return (
           <EntityStatus status={group.status} request={group.last_request} />

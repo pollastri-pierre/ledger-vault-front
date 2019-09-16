@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -26,7 +25,8 @@ import Copy from "components/base/Copy";
 import Absolute from "components/base/Absolute";
 import type { Account } from "data/types";
 import { Label } from "components/base/form";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
+import SyncButton from "components/SyncButton";
 import Disabled from "components/Disabled";
 import Text from "components/base/Text";
 import { SoftCard } from "components/base/Card";
@@ -76,7 +76,12 @@ function AccountQuickInfoWidget(props: Props) {
     ) : null;
 
   const widget = (
-    <Widget title={title} grow position="relative">
+    <Widget
+      title={title}
+      titleRight={<SyncButton account={account} />}
+      grow
+      position="relative"
+    >
       <SoftCard grow flow={20} style={{ padding: 0 }}>
         <Box horizontal flexWrap="wrap">
           <InfoSquare>
@@ -103,10 +108,8 @@ function AccountQuickInfoWidget(props: Props) {
                   value={account.balance}
                   fromAccount={account}
                   renderNA={
-                    account.account_type === "ERC20" ? (
-                      <Text>
-                        <Trans i18nKey="accountView:erc20NoCountervalue" />
-                      </Text>
+                    account.account_type === "Erc20" ? (
+                      <ERC20CountervalueUnavailable account={account} />
                     ) : null
                   }
                 />
@@ -148,7 +151,7 @@ function AccountQuickInfoWidget(props: Props) {
               {account.parent && (
                 <InfoSquare>
                   <Label>Parent Ethereum account</Label>
-                  <Link to={`${account.parent}`}>
+                  <Link to={account.parent.toString()}>
                     <Button
                       IconLeft={FaLink}
                       customColor={colors.text}
@@ -172,7 +175,7 @@ function AccountQuickInfoWidget(props: Props) {
   return (
     <div style={{ position: "relative" }}>
       {widget}
-      <Absolute top={title ? 40 : 10} right={10}>
+      <Absolute top={40} right={10}>
         <Tooltip title="Account settings">
           <SettingsLink
             to={`${location.pathname}/accounts/details/${account.id}/overview`}
@@ -208,11 +211,11 @@ const InfoSquare = styled(Box).attrs({
 
 function getIcon(account: Account) {
   const token =
-    account.account_type === "ERC20"
+    account.account_type === "Erc20"
       ? getERC20TokenByContractAddress(account.contract_address)
       : null;
   const currency =
-    account.account_type === "ERC20"
+    account.account_type === "Erc20"
       ? null
       : getCryptoCurrencyById(account.currency);
   return (
@@ -224,7 +227,7 @@ function getIcon(account: Account) {
 }
 
 function getDisplayName(account: Account) {
-  if (account.account_type === "ERC20") {
+  if (account.account_type === "Erc20") {
     const token = getERC20TokenByContractAddress(account.contract_address);
     if (!token) return "Unknown token";
     return token.name;
@@ -233,5 +236,14 @@ function getDisplayName(account: Account) {
   if (!currency) return "Unknown currency";
   return currency.name;
 }
+
+const ERC20CountervalueUnavailable = ({ account }: { account: Account }) => {
+  const token = getERC20TokenByContractAddress(account.contract_address);
+  if (!token) return null;
+  if (token.disable_countervalue) {
+    return <Text i18nKey="accountView:erc20DisabledCountervalue" />;
+  }
+  return <Text i18nKey="accountView:erc20NoCountervalue" />;
+};
 
 export default AccountQuickInfoWidget;

@@ -28,7 +28,7 @@ export const getU2FChallenge: Interaction = {
 export const u2fAuthenticate: Interaction = {
   needsUserInput: true,
   device: true,
-  tooltip: <Text small i18nKey="deviceInteractions:u2f_authenticate" />,
+  tooltip: <Text i18nKey="deviceInteractions:u2f_authenticate" />,
   responseKey: "u2f_authenticate",
   action: ({
     transport,

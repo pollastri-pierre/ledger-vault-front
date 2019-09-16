@@ -21,7 +21,7 @@ type Props = {
 
 const Container = styled(Box).attrs({})`
   border-radius: 4px;
-  color: #555;
+  color: ${colors.legacyDarkGrey3};
   align-items: ${p => (p.alignCenter ? "center" : "default")};
   justify-content: ${p => (p.alignCenter ? "center" : "default")};
   & a {
@@ -61,7 +61,7 @@ const FooterContainer = styled(Box).attrs({
       ? opacity(colors.blue_orange, 0.1)
       : p.type === "error"
       ? opacity(colors.grenade, 0.05)
-      : "white"};
+      : colors.white};
 `;
 
 const IconContainer = styled(Box).attrs({
@@ -80,7 +80,7 @@ const IconContainer = styled(Box).attrs({
       ? opacity(colors.green, 0.6)
       : p.type === "error"
       ? opacity(colors.grenade, 0.6)
-      : "white"};
+      : colors.white};
 `;
 class InfoBox extends PureComponent<Props> {
   renderIcon = () => {

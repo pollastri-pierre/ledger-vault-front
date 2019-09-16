@@ -9,7 +9,7 @@ import colors from "shared/colors";
 import Card from "components/base/Card";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import { AccountsList } from "components/lists";
 import SearchAccounts from "api/queries/SearchAccounts";
 import type { Account } from "data/types";

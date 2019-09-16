@@ -69,7 +69,7 @@ function TotalBalanceWidget(props: Props) {
 }
 
 function resolveFrom(account: Account) {
-  if (account.account_type === "ERC20") {
+  if (account.account_type === "Erc20") {
     const token = getERC20TokenByContractAddress(account.contract_address);
     if (!token) return null;
     return { ticker: token.ticker };

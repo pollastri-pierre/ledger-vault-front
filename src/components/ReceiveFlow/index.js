@@ -12,7 +12,7 @@ import type { Account, FreshAddress } from "data/types";
 import { verifyAddressFlow } from "device/interactions/hsmFlows";
 import colors from "shared/colors";
 import { RichModalHeader } from "components/base/Modal";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import Copy from "components/base/Copy";
 import { Label } from "components/base/form";
 import SelectAccount from "components/SelectAccount";
@@ -100,6 +100,7 @@ const VerifyFreshAddress = connectData(
               onClick={() => setVerifying(true)}
               type="submit"
               variant="filled"
+              data-test="verifyaddress"
               IconLeft={hasBeenVerified === false ? IconRetry : IconBlue}
               disabled={isVerifying}
             >

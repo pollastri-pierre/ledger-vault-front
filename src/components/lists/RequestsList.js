@@ -1,10 +1,15 @@
 // @flow
 
 import React from "react";
+import { Trans } from "react-i18next";
 import moment from "moment";
 import styled from "styled-components";
 import { FaHourglassHalf } from "react-icons/fa";
+import { MdCreateNewFolder } from "react-icons/md";
 
+import AccountQuery from "api/queries/AccountQuery";
+import connectData from "restlay/connectData";
+import AccountName from "components/AccountName";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import Absolute from "components/base/Absolute";
@@ -13,7 +18,7 @@ import EntityStatus from "components/EntityStatus";
 import RequestTitle from "components/RequestTitle";
 import colors from "shared/colors";
 import { getCurrentStepProgress } from "utils/request";
-import type { Request } from "data/types";
+import type { Request, Account } from "data/types";
 
 import { List, ListEmpty, ListItem } from "./List";
 
@@ -68,7 +73,11 @@ function RequestCard(props: RequestCardProps) {
         <EntityStatus status={request.status} request={request} />
       </Absolute>
       <Box>
-        <RequestTitle type={request.type} />
+        {request.type === "CREATE_TRANSACTION" ? (
+          <TransactionCreationRequestTitle request={request} />
+        ) : (
+          <RequestTitle request={request} />
+        )}
         {request.created_by && (
           <Text color={colors.textLight}>
             {"Created by "}
@@ -80,6 +89,50 @@ function RequestCard(props: RequestCardProps) {
     </RequestCardContainer>
   );
 }
+
+export function TransactionCreationRequestTitle({
+  request,
+}: {
+  request: Request,
+}) {
+  const { transaction } = request;
+  if (!transaction) return null;
+  return (
+    <Box horizontal align="center" flow={5}>
+      <MdCreateNewFolder size={16} color={colors.lightGrey} />
+      <Box horizontal align="center" flow={5} flexWrap="wrap">
+        <span>
+          <Trans i18nKey="request:richType.CREATE_TRANSACTION" />
+        </span>
+        <LazyLoadAccountName accountID={transaction.account_id} />
+      </Box>
+    </Box>
+  );
+}
+
+const LazyLoadAccountName = connectData(
+  ({ account }: { account: Account }) => (
+    <Box horizontal align="center" flow={5}>
+      <Trans
+        i18nKey="request:extra.CREATE_TRANSACTION_ON"
+        components={[
+          <span />,
+          <strong>
+            <AccountName space={5} account={account} />
+          </strong>,
+          <span />,
+        ]}
+      />
+    </Box>
+  ),
+  {
+    queries: {
+      account: AccountQuery,
+    },
+    propsToQueryParams: ({ accountID }) => ({ accountId: accountID }),
+    RenderLoading: () => <span style={{ color: colors.mediumGrey }}>...</span>,
+  },
+);
 
 const RequestCardContainer = styled(ListItem)`
   display: flex;

@@ -28,7 +28,7 @@ test.only("connection query works with initial query", async () => {
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("hasNextPage=true C_w_0:w_0|C_w_1:w_1|C_w_2:w_2");
   inst.unmount();
 });
@@ -60,7 +60,7 @@ test("connection query pagination can be pulled once", async () => {
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(1);
   expect(inst.toJSON()).toBe("hasNextPage=true C_w_0:w_0|C_w_1:w_1");
   invariant(rlay, "restlay available");
@@ -70,7 +70,7 @@ test("connection query pagination can be pulled once", async () => {
   expect(inst.toJSON()).toBe("hasNextPage=true C_w_0:w_0|C_w_1:w_1");
   expect(renders).toBe(1);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(2);
   expect(inst.toJSON()).toBe(
     "hasNextPage=true C_w_0:w_0|C_w_1:w_1|C_w_2:w_2|C_w_3:w_3|C_w_4:w_4",
@@ -103,7 +103,7 @@ test("connection query pagination can be pulled many times", async () => {
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(1);
   invariant(rlay, "restlay available");
   for (let i = 1; i < 100; i++) {
@@ -112,7 +112,7 @@ test("connection query pagination can be pulled many times", async () => {
       world: rlay.getVariables().world + 10,
     });
     expect(net.tick()).toBe(1);
-    await flushPromises();
+    await renderer.act(flushPromises);
   }
   expect(renders).toBe(100);
   expect(inst.toJSON()).toBe("false 1000");
@@ -120,7 +120,7 @@ test("connection query pagination can be pulled many times", async () => {
     world: rlay.getVariables().world + 10,
   });
   expect(net.tick()).toBe(0);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("false 1000");
   expect(renders).toBe(100);
   inst.unmount();
@@ -153,7 +153,7 @@ test("connection query pages size can be reduced and result of a slice without e
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(1);
   expect(inst.toJSON()).toBe(
     "hasNextPage=true C_w_0:w_0|C_w_1:w_1|C_w_2:w_2|C_w_3:w_3|C_w_4:w_4",
@@ -163,7 +163,7 @@ test("connection query pages size can be reduced and result of a slice without e
     world: 2,
   });
   expect(net.tick()).toBe(0);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(2);
   expect(inst.toJSON()).toBe("hasNextPage=true C_w_0:w_0|C_w_1:w_1");
   inst.unmount();
@@ -188,12 +188,12 @@ test("connection query pagination, triggering many times don't trigger many redr
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(1);
   invariant(rlay, "restlay available");
   rlay.setVariables({ world: 2 });
   expect(net.tick()).toBe(0);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(1);
   expect(inst.toJSON()).toBe("2");
   rlay.setVariables({ world: 50 });
@@ -202,7 +202,7 @@ test("connection query pagination, triggering many times don't trigger many redr
   rlay.setVariables({ world: 50 });
   rlay.setVariables({ world: 50 });
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("50");
   expect(renders).toBe(2);
   rlay.setVariables({ world: 10 });
@@ -210,7 +210,7 @@ test("connection query pagination, triggering many times don't trigger many redr
   rlay.setVariables({ world: 10 });
   rlay.setVariables({ world: 10 });
   expect(net.tick()).toBe(0);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("10");
   expect(renders).toBe(3);
   inst.unmount();
@@ -235,18 +235,18 @@ test("when paginating a lot, server is allowed to return less result that reques
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(1);
   invariant(rlay, "restlay available");
   rlay.setVariables({ world: 2 });
   expect(net.tick()).toBe(0);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(renders).toBe(1);
   expect(inst.toJSON()).toBe("2");
   rlay.setVariables({ world: 1000 });
   for (let i = 0; i < 10; i++) {
     expect(net.tick()).toBe(1);
-    await flushPromises();
+    await renderer.act(flushPromises);
   }
   expect(net.tick()).toBe(0);
   expect(inst.toJSON()).toBe("1000");
@@ -271,26 +271,26 @@ test("unmounting a connection query will starts over", async () => {
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("30");
   inst.update(render(null));
   expect(inst.toJSON()).toBe(null);
   inst.update(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("30");
   invariant(rlay, "restlay available");
   rlay.setVariables({ world: 50 });
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("50");
   inst.update(render(null));
   expect(inst.toJSON()).toBe(null);
   inst.update(render(<World />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("30");
   inst.unmount();
 });

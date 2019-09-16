@@ -13,7 +13,7 @@ const styles = {
   container: {
     height: 250,
     color: colors.steel,
-    background: "#fafafa",
+    background: colors.form.bg,
     borderRadius: 2,
   },
   image: {

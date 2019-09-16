@@ -1,5 +1,6 @@
 [ignore]
 <PROJECT_ROOT>/node_modules/@ledgerhq/live-common/lib/helpers/currencies/localeUtility.js.flow
+<PROJECT_ROOT>/node_modules/@ledgerhq/hw-transport-webusb/lib/webusb.js.flow
 .*/core-js/.*
 
 [untyped]
@@ -11,6 +12,7 @@
 flow-typed
 flow-defs
 node_modules/jss/flow-typed
+node_modules/@ledgerhq/hw-transport-webusb/flow
 ./webpack-flow.js
 
 

@@ -4,7 +4,7 @@ import React, { Component, createRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import styled from "styled-components";
 
-import colors from "shared/colors";
+import colors, { opacity } from "shared/colors";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -27,6 +27,7 @@ type State = {
 
 const MENU_WIDTH = 400;
 const GUTTER = 50;
+const ACTIVE_COLOR = opacity(colors.blue, 0.1);
 
 class WrappableField extends Component<Props, State> {
   static defaultProps = {
@@ -148,16 +149,14 @@ class WrappableField extends Component<Props, State> {
           </div>
         </InlineLabel>
       );
-
+    const borderColor = isActive && !isOpened ? ACTIVE_COLOR : colors.argile;
     return (
       <Box
         position="relative"
+        borderRadius={5}
+        bg={isActive && !isOpened ? ACTIVE_COLOR : colors.white}
         ref={this.ref}
-        style={
-          isActive && !isOpened
-            ? { borderBottom: `1px solid ${colors.form.focus}` }
-            : { borderBottom: "1px solid transparent" }
-        }
+        style={{ border: `1px solid ${borderColor}` }}
       >
         {inner}
         {isOpened && !inPlace && (
@@ -185,10 +184,13 @@ const InlineLabel = styled(Box).attrs({
 
   border-radius: 2px;
   border-color: ${p =>
-    p.isOpened ? "#f0f0f0" : p.isActive ? "transparent" : "transparent"};
-  border-bottom-color: ${p => (p.isOpened ? "white" : "")};
+    p.isOpened
+      ? colors.legacyLightGrey1
+      : p.isActive
+      ? "transparent"
+      : "transparent"};
+  border-bottom-color: ${p => (p.isOpened ? colors.white : "")};
   z-index: ${p => (p.isOpened ? 30 : 0)};
-  background-color: ${p => (p.isOpened ? "white" : "#fafafa")};
   transition: 100ms linear background-color;
   pointer-events: ${p => (p.interactive === false ? "none" : "auto")};
   opacity: ${p => (p.interactive === false ? 0.7 : 1)};
@@ -202,7 +204,7 @@ const InlineLabel = styled(Box).attrs({
   }
 
   &:active {
-    background-color: #efefef;
+    background-color: ${colors.legacyLightGrey2};
   }
 `;
 
@@ -216,12 +218,12 @@ const Menu = styled(Box).attrs({
   left: ${p => (p.pos === "left" ? 0 : "auto")};
   right: ${p => (p.pos === "right" ? 0 : "auto")};
   width: ${p => p.width}px;
-  background: white;
-  border: 1px solid #f0f0f0;
+  background: ${colors.white};
+  border: 1px solid ${colors.legacyLightGrey1};
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
-  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.07);
+  box-shadow: 0 3px 3px 0 ${colors.legacyTranslucentGrey1};
   z-index: 20;
 `;
 

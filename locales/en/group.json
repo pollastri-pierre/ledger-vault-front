@@ -9,6 +9,10 @@
     "by": "Created by",
     "users": "users"
   },
+  "groupTable": {
+    "remainingMembers": " and {{count}} other member",
+    "remainingMembers_plural": " and {{count}} other members"
+  },
   "delete": "Delete group",
   "create": {
     "title": "New group",
@@ -16,7 +20,7 @@
     "name": "Name",
     "infos": "Details",
     "name_placeholder": "Group name",
-    "desc_placeholder": "Group description",
+    "desc_placeholder": "Group description (optional)",
     "description": "description",
     "members": "members",
     "nb_members": "Members",

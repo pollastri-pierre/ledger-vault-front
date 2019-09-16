@@ -20,7 +20,7 @@ export const getU2FPublicKey: Interaction = {
   needsUserInput: false,
   device: true,
   responseKey: "u2f_key",
-  tooltip: <Text small i18nKey="common:plug_device" />,
+  tooltip: <Text i18nKey="common:plug_device" />,
   action: ({ transport }) => getPublicKey()(transport, U2F_PATH, false),
 };
 
@@ -28,10 +28,12 @@ export const checkVersion: Interaction = {
   needsUserInput: false,
   device: true,
   responseKey: "get_version",
-  tooltip: <Text small i18nKey="common:plug_device" />,
+  tooltip: <Text i18nKey="common:plug_device" />,
   action: ({ transport }) => {
     const promise = new Promise((resolve, reject) => {
       getVersion()(transport).then(version => {
+        console.log(`Blue app version is ${version.appVersion}`); // eslint-disable-line no-console
+        console.log(`Config app version is ${window.config.APP_VERSION}`); // eslint-disable-line no-console
         if (version.appVersion !== window.config.APP_VERSION) {
           reject(new OutOfDateApp());
         } else {

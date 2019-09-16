@@ -16,7 +16,7 @@ export default (props: TransactionCreationStepProps<any>) => {
   const { payload } = props;
   const { transaction, account, bridge } = payload;
   invariant(transaction && account && bridge, "Invalid transaction");
-  const isERC20 = account.account_type === "ERC20";
+  const isERC20 = account.account_type === "Erc20";
   const fees = bridge.getFees(account, transaction);
   const totalSpent = bridge.getTotalSpent(account, transaction);
   return (
@@ -36,14 +36,14 @@ export default (props: TransactionCreationStepProps<any>) => {
         <LineRow
           label={<Trans i18nKey="transactionCreation:steps.note.noteTitle" />}
         >
-          {transaction.note.title}
+          <span data-test="note_title">{transaction.note.title}</span>
         </LineRow>
       )}
       {transaction.note.content && (
         <LineRow
           label={<Trans i18nKey="transactionCreation:steps.note.noteContent" />}
         >
-          {transaction.note.content}
+          <span data-test="note_comments">{transaction.note.content}</span>
         </LineRow>
       )}
       <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>

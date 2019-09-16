@@ -15,12 +15,12 @@ test("renderLoadingInTransition=true should render Loading in a simple transitio
   });
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("max");
   inst.update(render(<Animal animalId="id_doge" />));
   expect(inst.toJSON()).toBe("loading");
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("doge");
   inst.unmount();
 });

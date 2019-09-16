@@ -16,7 +16,7 @@ import Spinner from "components/base/Spinner";
 import DeviceInteraction from "components/DeviceInteraction";
 import VaultCentered from "components/VaultCentered";
 import Card from "components/base/Card";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import { MIGRATION_REDIRECTION } from "containers/Welcome";
 
 type Props = {

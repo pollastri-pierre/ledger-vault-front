@@ -55,7 +55,7 @@ function resolveCurOrToken({
     return { ticker: currency.ticker };
   }
   if (fromAccount) {
-    if (fromAccount.account_type === "ERC20") {
+    if (fromAccount.account_type === "Erc20") {
       const token = getERC20TokenByContractAddress(
         fromAccount.contract_address,
       );

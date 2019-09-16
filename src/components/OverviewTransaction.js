@@ -6,6 +6,7 @@ import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
 import type { Account, TransactionType } from "data/types";
 import TransactionTypeIcon from "components/TransactionTypeIcon";
+import Box from "components/base/Box";
 import CurrencyAccountValue from "./CurrencyAccountValue";
 
 const styles = {
@@ -14,8 +15,6 @@ const styles = {
     marginBottom: "32px",
   },
   amount: {
-    color: "black",
-    letterSpacing: "-0.9px",
     fontSize: "20px",
     margin: 0,
   },
@@ -24,12 +23,6 @@ const styles = {
     flexDirection: "row",
     justifyContent: "center",
   },
-  down: {
-    fill: "#cccccc",
-    width: "16px",
-    height: "16px",
-    marginBottom: 20,
-  },
   fiat: {
     fontSize: "11px",
     fontWeight: "600",
@@ -37,13 +30,6 @@ const styles = {
     display: "flex",
     marginTop: "7px",
     justifyContent: "center",
-  },
-  hash: {
-    fontSize: "13px",
-    margin: "auto",
-    marginBottom: "30px",
-    width: 290,
-    overflowWrap: "break-word",
   },
 };
 
@@ -60,29 +46,27 @@ class OverviewTransaction extends Component<Props, *> {
     const isReceive = transactionType === "RECEIVE";
     return (
       <div className={classes.base}>
-        <div>
-          <div className={classes.containerTitle}>
-            <TransactionTypeIcon isReceive={isReceive} />
-            <div
-              className={classes.amount}
-              style={{ color: isReceive ? colors.green : colors.shark }}
-            >
-              <CurrencyAccountValue
-                account={account}
-                value={amount}
-                alwaysShowSign
-                type={transactionType}
-              />
-            </div>
-          </div>
-          <div className={classes.fiat}>
-            <CounterValue
+        <Box horizontal justify="center" align="center" flow={10}>
+          <TransactionTypeIcon type={transactionType} />
+          <div
+            className={classes.amount}
+            style={{ color: isReceive ? colors.green : colors.shark }}
+          >
+            <CurrencyAccountValue
+              account={account}
               value={amount}
-              fromAccount={account}
               alwaysShowSign
               type={transactionType}
             />
           </div>
+        </Box>
+        <div className={classes.fiat}>
+          <CounterValue
+            value={amount}
+            fromAccount={account}
+            alwaysShowSign
+            type={transactionType}
+          />
         </div>
       </div>
     );

@@ -91,6 +91,7 @@ class SelectAccount extends PureComponent<Props> {
         options={accounts.map(buildOption)}
         components={customComponents}
         placeholder="Select an account"
+        inputId="input_account"
         {...props}
         onChange={this.handleChange}
         value={value}

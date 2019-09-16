@@ -100,8 +100,8 @@ class HeaderCellComponent extends PureComponent<Props> {
 
 const HeaderCell = styled(MUITableCell)`
   && {
-    background-color: #fafafa;
-    border-bottom-color: #f0f0f0;
+    background-color: ${colors.form.bg};
+    border-bottom-color: ${colors.legacyLightGrey1};
   }
 `;
 
@@ -112,10 +112,10 @@ export const Table = styled(MUITable)`
       border: none;
     }
     tr:nth-child(even) {
-      background: #fbfbfb;
+      background: ${colors.legacyLightGrey4};
     }
     tr:hover {
-      background: white;
+      background: ${colors.white};
     }
     tr:last-child td {
       border-bottom: none;
