@@ -190,25 +190,6 @@ export const getCurrentDevice = async () => {
   return data.device_id;
 };
 
-const mapNameToDevice = {
-  "4": "Admin 1",
-  "5": "Admin 2",
-  "6": "Admin 3",
-  "10": "op 10",
-  "11": "op 11",
-  "12": "op 12",
-  "13": "op 13",
-  "14": "op 14",
-  "15": "op 15",
-  "16": "op 16",
-  "17": "op 17",
-  "18": "op 18",
-  "19": "op 19",
-  "20": "op 20",
-  "21": "op 21",
-  "22": "op 22",
-};
-
 export const authenticate = async (
   transport: *,
   challenge: Buffer,
@@ -223,12 +204,11 @@ export const authenticate = async (
   signature: string,
   rawResponse: string,
 }> => {
-  const currentId = await getCurrentDevice();
   const data = await deviceNetwork(ENDPOINTS.AUTHENTICATE, "POST", {
     challenge: challenge.toString("hex"),
     application,
     key_handle: keyHandle.toString("hex"),
-    name: mapNameToDevice[currentId],
+    name: userName,
     role: fromStringRoleToBytes[role.toLowerCase()].toString("hex"),
     type: psdType.toString("hex"),
     workspaceName: workspace,
