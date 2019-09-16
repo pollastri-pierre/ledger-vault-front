@@ -11,7 +11,11 @@ import type {
 import { getCryptoCurrencyIcon as getIcon } from "@ledgerhq/live-common/lib/react";
 
 import type { ERC20Token } from "data/types";
-import rawERC20List from "data/erc20-list.json";
+
+const rawERC20List =
+  process.env.NODE_ENV === "production"
+    ? require("data/erc20-list.json")
+    : require("data/erc20-list.test.json");
 
 const supported: CryptoCurrencyIds[] = [
   "bitcoin",

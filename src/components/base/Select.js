@@ -48,7 +48,7 @@ const customComponents = {
 const customStyles = {
   clearIndicator: styles => ({
     ...styles,
-    color: "#ddd",
+    color: colors.legacyLightGrey7,
     padding: "5px 0",
   }),
   input: styles => ({
@@ -65,7 +65,7 @@ const customStyles = {
   indicatorSeparator: () => ({}),
   dropdownIndicator: (styles, state) => ({
     ...styles,
-    color: "#ddd",
+    color: colors.legacyLightGrey7,
     transition: "300ms ease transform",
     transform: state.selectProps.menuIsOpen
       ? "rotate(-180deg)"
@@ -94,7 +94,7 @@ const customStyles = {
   menu: styles => ({
     ...styles,
     border: `1px solid ${colors.form.focus}`,
-    borderTopColor: "#e5e5e5",
+    borderTopColor: colors.legacyLightGrey8,
     borderTopStyle: "dashed",
     boxShadow: colors.form.shadow.focus,
     borderTopLeftRadius: 0,

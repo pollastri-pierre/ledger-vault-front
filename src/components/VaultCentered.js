@@ -15,6 +15,9 @@ export default function VaultCentered({ children }: { children: React$Node }) {
         <LogoRow />
         {children}
       </div>
+      <Box align="center" mt={40}>
+        <Text small>Vault - v{VAULT_FRONT_VERSION}</Text>
+      </Box>
     </CenteredLayout>
   );
 }

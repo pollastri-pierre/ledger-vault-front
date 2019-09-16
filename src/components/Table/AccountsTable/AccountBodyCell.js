@@ -14,6 +14,8 @@ import CurrencyAccountValue from "components/CurrencyAccountValue";
 import type { Account } from "data/types";
 import type { TableItem } from "../types";
 
+import AccountDetailsButton from "./AccountDetailsButton";
+
 type CellProps = {
   account: Account,
   item: TableItem,
@@ -41,6 +43,8 @@ class AccountBodyCell extends PureComponent<CellProps> {
         return <ApproverRole account={account} />;
       case "date":
         return <DateFormat date={account.created_on} />;
+      case "details":
+        return <AccountDetailsButton account={account} />;
       default:
         return <div>N/A</div>;
     }
@@ -49,7 +53,7 @@ class AccountBodyCell extends PureComponent<CellProps> {
   render() {
     const { item } = this.props;
     return (
-      <MUITableCell align={item.body.align}>
+      <MUITableCell align={item.body.align} size={item.body.size}>
         {this.renderCellMapper()}
       </MUITableCell>
     );

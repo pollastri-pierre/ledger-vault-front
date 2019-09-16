@@ -30,7 +30,7 @@ class TranslatedError extends PureComponent<Props> {
       return null;
     }
     // $FlowFixMe
-    const arg: Object = Object.assign({ message: error.message }, error);
+    const arg: Object = Object.assign({ message: error.message }, error); // eslint-disable-line prefer-object-spread
     if (error.name) {
       const translation = t(`errors:${error.name}.${field}`, arg);
       if (translation !== `${error.name}.${field}`) {

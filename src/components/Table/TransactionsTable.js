@@ -14,6 +14,7 @@ import AccountName from "components/AccountName";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 import TransactionStatus from "components/TransactionStatus";
+import TransactionTypeIcon from "components/TransactionTypeIcon";
 
 import type { Account, Transaction } from "data/types";
 
@@ -35,6 +36,16 @@ type State = {
 };
 
 export const defaultDefinition = [
+  {
+    header: {
+      label: "",
+      align: "left",
+    },
+    body: {
+      prop: "type",
+      align: "left",
+    },
+  },
   {
     header: {
       label: "Date",
@@ -186,6 +197,10 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
         style={onClick ? transactionRowHover : undefined}
         onClick={onClick ? this.handleClick : undefined}
       >
+        <MUITableCell align="center" size="small" padding="checkbox">
+          <TransactionTypeIcon type={transaction.type} />
+        </MUITableCell>
+
         <MUITableCell>
           <DateFormat format="ddd D MMM, h:mmA" date={transaction.created_on} />
         </MUITableCell>

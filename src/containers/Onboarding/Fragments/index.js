@@ -74,7 +74,7 @@ const FragmentContainer = styled(Box).attrs({ align: "center" })`
   width: 150px;
   font-size: 11px;
   font-weight: 600;
-  color: #27d0e2;
+  color: ${colors.ocean};
   opacity: ${p => (p.disabled ? "0.3" : "1")};
   pointer-events: ${p => (p.disabled ? "none" : "auto")};
   cursor: pointer;

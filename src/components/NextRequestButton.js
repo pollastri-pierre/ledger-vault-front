@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 
 import NextRequestMutation from "api/mutations/NextRequestMutation";
 import connectData from "restlay/connectData";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 import type { Request } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 

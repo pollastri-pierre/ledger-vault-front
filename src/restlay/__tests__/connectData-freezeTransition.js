@@ -37,13 +37,13 @@ test("freezeTransition=true should not render a pending step", async () => {
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   check();
   expect(renderCount).toBe(1);
   inst.update(render(<Animal animalId="id_doge" />));
   check();
   net.tick();
-  await flushPromises();
+  await renderer.act(flushPromises);
   check();
   expect(renderCount).toBe(2);
   inst.unmount();

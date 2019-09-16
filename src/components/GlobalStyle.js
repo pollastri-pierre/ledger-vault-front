@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import colors from "shared/colors";
 
 export default createGlobalStyle`
   * {
@@ -11,16 +12,17 @@ export default createGlobalStyle`
   }
 
   body {
+    margin: 0;
     font-family: "Open Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
-    color: #6f6f6f;
+    color: ${colors.text};
     font-size: 13px;
     line-height: 20px;
 
     user-select: none;
 
     & ::selection {
-      background: rgba(0, 0, 0, 0.1);
+      background: ${colors.legacyTranslucentGrey3};
     }
   }
 

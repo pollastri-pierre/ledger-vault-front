@@ -6,9 +6,11 @@ import qs from "query-string";
 import styled from "styled-components";
 import type { ObjectParameters } from "query-string";
 
+import colors from "shared/colors";
+
 const Container = styled.div`
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  color: #777799;
+  border-bottom: 2px solid ${colors.legacyTranslucentGrey3};
+  color: ${colors.legacyViolet};
   font-family: monospace;
   padding: 10px 70px 10px 0;
   white-space: pre-wrap;
@@ -20,14 +22,14 @@ const Method = styled.span`
   cursor: default;
   user-select: none;
   padding-right: 10px;
-  color: rgba(0, 0, 0, 0.3);
+  color: ${colors.legacyTranslucentGrey5};
   font-weight: bold;
 `;
 
 const Copy = styled.div`
-  background: rgba(0, 0, 0, 0.1);
+  background: ${colors.legacyTranslucentGrey3};
   user-select: none;
-  color: rgba(0, 0, 0, 0.7);
+  color: ${colors.legacyDarkGrey6};
   font-size: 10px;
   padding: 5px 10px;
   cursor: pointer;
@@ -36,11 +38,11 @@ const Copy = styled.div`
   right: 0;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.15);
+    background: ${colors.legacyLightGrey12};
   }
 
   &:active {
-    background: rgba(0, 0, 0, 0.2);
+    background: ${colors.legacyTranslucentGrey2};
   }
 `;
 

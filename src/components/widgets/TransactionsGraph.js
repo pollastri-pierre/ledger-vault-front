@@ -36,7 +36,7 @@ function TransactionsGraph(props: Props) {
     const margin = { top: 80, right: 50, bottom: 30, left: 100 };
     const width = containerRef.current.clientWidth - margin.left - margin.right;
     const height = 350 - margin.top - margin.bottom;
-    const isERC20 = account.account_type === "ERC20";
+    const isERC20 = account.account_type === "Erc20";
 
     let color;
     if (isERC20) {
@@ -100,14 +100,18 @@ function TransactionsGraph(props: Props) {
     let t = new Date();
     t = new Date(startOfDay(t) - 1);
 
+    data.push({ date: t, value: balance.toNumber() });
+
     for (let i = dotsNumber; i > 0; i--) {
       while (
         j < rawTransactions.length &&
         new Date(rawTransactions[j].created_on) > t
       ) {
-        const { type, amount } = rawTransactions[j];
+        const { type, amount, fees } = rawTransactions[j];
         balance =
-          type === "SEND" ? balance.minus(amount) : balance.plus(amount);
+          type === "SEND"
+            ? balance.minus(amount.plus(fees))
+            : balance.plus(amount);
         j++;
       }
 

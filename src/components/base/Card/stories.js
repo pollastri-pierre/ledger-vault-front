@@ -7,6 +7,8 @@ import { storiesOf } from "@storybook/react";
 import Card, { CardTitle } from "components/base/Card";
 import Text from "components/base/Text";
 
+import colors from "shared/colors";
+
 const Page = styled.div`
   position: absolute;
   top: 0;
@@ -14,7 +16,7 @@ const Page = styled.div`
   right: 0;
   bottom: 0;
   padding: 100px;
-  background-color: #eee;
+  background-color: ${colors.argile};
 `;
 
 storiesOf("components/base", module).add("Card", () => (

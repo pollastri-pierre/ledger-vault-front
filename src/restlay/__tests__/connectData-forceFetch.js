@@ -67,20 +67,20 @@ test("forceFetch will trigger a refresh of siblings that depend on same query", 
   );
   expect(inst.toJSON()).toMatchObject({ children: null });
   expect(net.tick()).toBe(3);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toMatchObject({
     children: ["doge_19", "max_19", "max_14", "doge_5", "2"],
   });
   m.incrementAge();
   expect(net.tick()).toBe(0);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toMatchObject({
     children: ["doge_19", "max_19", "max_14", "doge_5", "2"],
   });
   invariant(rlay, "restlay available");
   rlay.forceFetch();
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toMatchObject({
     children: ["doge_20", "max_20", "max_15", "doge_5", "2"],
   });
@@ -90,7 +90,7 @@ test("forceFetch will trigger a refresh of siblings that depend on same query", 
   rlay.forceFetch();
   rlay.forceFetch();
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toMatchObject({
     children: ["doge_20", "max_20", "max_15", "doge_5", "2"],
   });
@@ -119,11 +119,11 @@ test("forceFetch will reload multiple queries", async () => {
   const inst = renderer.create(render(<All animalId="id_doge" />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(2);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("doge_19");
   m.incrementAge();
   expect(net.tick()).toBe(0);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("doge_19");
   invariant(rlay, "restlay available");
   const promise = rlay.forceFetch();
@@ -132,13 +132,13 @@ test("forceFetch will reload multiple queries", async () => {
   promise.then(() => {
     completed = true;
   });
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(completed).toBe(false);
   expect(net.tickOne()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(completed).toBe(false);
   expect(net.tickOne()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(completed).toBe(true);
   expect(inst.toJSON()).toBe("doge_21");
   inst.unmount();
@@ -161,13 +161,13 @@ test("forceFetch reload queries even if it have a cacheMaxAge", async () => {
   const inst = renderer.create(render(<All animalId="id_max" />));
   expect(inst.toJSON()).toBe(null);
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("14");
   m.incrementAge();
   invariant(rlay, "restlay available");
   rlay.forceFetch();
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("15");
   inst.unmount();
 });

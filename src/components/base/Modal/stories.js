@@ -17,7 +17,7 @@ import Modal, {
 } from "components/base/Modal";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import Button from "components/base/Button";
+import Button from "components/legacy/Button";
 
 storiesOf("components/base/modals", module)
   .add("RichModal", () => (

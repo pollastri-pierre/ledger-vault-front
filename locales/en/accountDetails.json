@@ -5,5 +5,9 @@
   "created": "Create date",
   "balance": "Balance",
   "archive": "Archive",
-  "warnPendingTxs": "Accounts can't be edited when a transaction is pending approval"
+  "warnPendingTxs": "Accounts can't be edited when a transaction is pending approval",
+  "tableSubmenu": {
+    "overview": "Details",
+    "edit": "Edit account"
+  }
 }

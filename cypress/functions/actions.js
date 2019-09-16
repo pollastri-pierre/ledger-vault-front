@@ -70,7 +70,7 @@ export function route() {
   // Accounts
   cy.route("post", "**/challenge?account_type=Bitcoin").as("account_Bitcoin");
   cy.route("post", "**/challenge?account_type=Ethereum").as("account_Ethereum");
-  cy.route("post", "**/challenge?account_type=ERC20").as("account_ERC20");
+  cy.route("post", "**/challenge?account_type=Erc20").as("account_ERC20");
   cy.route("post", "**/accounts").as("accounts");
   cy.route("get", "**/accounts/pending").as("pending");
   cy.route("get", "**/accounts?status=ACTIVE&status=VIEW_ONLY").as(
@@ -245,9 +245,6 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.get("[data-test=buttonCreate]").click();
   cy.wait(2000);
   cy.get("[data-test=group_name]").type(groupName);
-  cy.get("[data-test=group_description]").type(description);
-  cy.contains("Next").click();
-  cy.wait(1500);
   cy.get("#input_groups_users")
     .type(user1, { force: true })
     .type("{enter}");
@@ -257,6 +254,8 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.get("#input_groups_users")
     .type(user3, { force: true })
     .type("{enter}");
+  cy.get("[data-test=group_description]").type(description);
+
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
   cy.wait(2500);
@@ -306,7 +305,7 @@ export function create_erc20_account(
   user1,
 ) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(4500);
+  cy.wait(7500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
     .type("{enter}");
@@ -330,7 +329,7 @@ export function create_erc20_account(
 
 export function create_erc20_account_new_eth(erc20, childname, group, user1) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(5500);
+  cy.wait(8500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
     .type("{enter}");
@@ -399,6 +398,14 @@ export function provide_viewonly_rule(name, groups, user1) {
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
   cy.wait(3500);
+}
+
+export function approve_tx() {
+  cy.url().should("include", "/operator/dashboard");
+  cy.get("[data-test=awaiting-approval]").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(4500);
+  successfull_message();
 }
 
 export function revoke_users(name) {

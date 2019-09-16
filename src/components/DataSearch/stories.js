@@ -14,6 +14,7 @@ import {
 } from "data/mock-entities";
 
 import { delay } from "utils/promise";
+import colors from "shared/colors";
 
 import RestlayProvider from "restlay/RestlayProvider";
 import UserContextProvider from "components/UserContextProvider";
@@ -250,7 +251,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #f9f9f9;
+  background-color: ${colors.cream};
   padding: 20px;
   overflow: auto;
 `;

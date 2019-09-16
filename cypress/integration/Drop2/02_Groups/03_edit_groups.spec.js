@@ -29,7 +29,6 @@ describe("Test Case for Groups", function() {
       "New descprition Group by Cypress",
     );
     cy.contains("Next").click();
-    cy.contains("Next").click();
     cy.wait(1500);
     cy.contains(
       "Editing the description doesn't require the approval from other Administrators or your device",
@@ -54,7 +53,6 @@ describe("Test Case for Groups", function() {
     cy.get("[data-test=group_name]").clear();
     cy.get("[data-test=group_name]").type("New EMEA");
     cy.contains("Next").click();
-    cy.contains("Next").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
@@ -69,7 +67,6 @@ describe("Test Case for Groups", function() {
     cy.contains("NORTH Asia").click();
     cy.wait(1500);
     cy.get("[data-test=edit-button]").click();
-    cy.contains("Next").click();
     cy.get("#input_groups_users")
       .clear()
       .type("Aidan", { force: true })
@@ -78,6 +75,7 @@ describe("Test Case for Groups", function() {
       .clear()
       .type("Anna", { force: true })
       .type("{enter}");
+    cy.get("[data-test=group_name]").click();
     cy.contains("Next").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
@@ -88,14 +86,14 @@ describe("Test Case for Groups", function() {
     cy.server();
     route();
     logout();
-    login(16);
+    login(6);
     cy.url().should("include", "/admin/dashboard");
-    cy.contains("Edit group").click();
+    cy.get("[data-test=1]").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.wait(1500);
-    cy.contains("Awaiting approval").click();
+    cy.get("[data-test=0]").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();

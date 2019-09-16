@@ -13,7 +13,12 @@ class TransactionStatus extends Component<*> {
     const { transaction } = this.props;
 
     if (transaction.status === "SUBMITTED" && transaction.confirmations) {
-      return <ConfirmationStatus nbConfirmations={transaction.confirmations} />;
+      return (
+        <ConfirmationStatus
+          nbConfirmations={transaction.confirmations}
+          threshold={transaction.min_confirmations}
+        />
+      );
     }
 
     return (

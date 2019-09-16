@@ -48,7 +48,7 @@ export const getAccountsInSettings = (accounts: Account[]): Account[] =>
   accounts.filter(a => a.account_type !== "ERC20");
 
 export const getAccountCurrencyName = (account: Account) => {
-  if (account.account_type === "ERC20" && account.contract_address) {
+  if (account.account_type === "Erc20" && account.contract_address) {
     const token = getERC20TokenByContractAddress(account.contract_address);
     if (!token) {
       // TODO what should we return
@@ -70,7 +70,7 @@ export const getAccountCurrencyName = (account: Account) => {
  * relatable: LV-1004
  */
 export const isSupportedAccount = (account: Account) => {
-  if (account.account_type === "ERC20") {
+  if (account.account_type === "Erc20") {
     const token = getERC20TokenByContractAddress(account.contract_address);
     return !!token;
   }

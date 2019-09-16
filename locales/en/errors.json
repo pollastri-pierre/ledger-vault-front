@@ -23,6 +23,10 @@
     "title": "Invalid address",
     "description": "Please enter a valid address."
   },
+  "AddressShouldNotBeSegwit": {
+    "title": "Address is SegWit",
+    "description": "Segwit addresses aren’t supported."
+  },
   "AmountTooHigh": {
     "title": "Not enough funds",
     "description": "You don't have enough funds to create this transaction."
@@ -50,6 +54,14 @@
   "NetworkTimeoutError": {
     "description": "The request timed out. Please try again.",
     "title": "Timeout error"
+  },
+  "DeviceNotOnDashboard": {
+    "title": "Device not on dashboard",
+    "description": "The device is not on dashboard. Please close the Vault app."
+  },
+  "DeviceOnDashboardExpected": {
+    "title": "User denied manager",
+    "description": "Please allow Ledger manager on your device"
   },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",

@@ -116,6 +116,7 @@ class InputAmount extends PureComponent<Props, State> {
             placeholder="0"
             align="right"
             grow
+            data-test="input_amount"
             value={displayValue}
             inputRef={this.inputRef}
             {...props}

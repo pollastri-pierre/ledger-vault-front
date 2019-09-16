@@ -2,7 +2,6 @@
 
 import {
   getConfidentialityPublicKey,
-  getU2FPublicKey,
   getAttestation,
   generateWrappingKey,
 } from "device/interactions/common";
@@ -67,7 +66,6 @@ const postFragment: Interaction = {
 };
 
 export const generateWrappingKeyFlow = [
-  getU2FPublicKey,
   getConfidentialityPublicKey,
   openSessionDevice,
   getAttestation,

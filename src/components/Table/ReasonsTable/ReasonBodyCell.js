@@ -25,7 +25,7 @@ class ReasonBodyCell extends PureComponent<CellProps> {
         if (reason.type === "Transaction") {
           return (
             <Box horizontal>
-              <TransactionTypeIcon />
+              <TransactionTypeIcon type="SEND" />
               Transaction
             </Box>
           );

@@ -30,7 +30,7 @@ const TransactionCreationAmount = (
   invariant(bridge, "bridge has not been created yet");
 
   const { EditFees } = bridge;
-  const isERC20 = account.account_type === "ERC20";
+  const isERC20 = account.account_type === "Erc20";
   const currency = getCryptoCurrencyById(account.currency);
 
   const onChangeTransaction = transaction => updatePayload({ transaction });

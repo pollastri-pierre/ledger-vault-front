@@ -20,7 +20,7 @@ import SelectGroupsUsers, {
 } from "components/SelectGroupsUsers";
 import HiddenRule from "components/ApprovalsRules/HiddenRule";
 import { isRequestPending } from "utils/request";
-import { MAX_MEMBERS } from "components/GroupCreationFlow/GroupCreationMembers";
+import { MAX_MEMBERS } from "components/GroupCreationFlow/GroupCreationInfos";
 
 import type {
   ApprovalsRule as ApprovalsRuleType,
@@ -34,7 +34,9 @@ type Props = {
   onRemove: () => void,
   parentSelectedIds: ApprovalsSelectedIds,
   users: User[],
-  index: number,
+  // used by react-sortable-hoc (and swallowed by it)
+  index: number, // eslint-disable-line react/no-unused-prop-types
+  ruleIndex: number,
   groups: Group[],
   readOnly?: boolean,
   t: string => string,
@@ -101,7 +103,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
       groups,
       onRemove,
       parentSelectedIds,
-      index,
+      ruleIndex,
       readOnly,
       t,
     } = this.props;
@@ -110,8 +112,8 @@ class ApprovalsRule extends PureComponent<Props, State> {
         <div style={styles.paddedBotForDrag}>
           <RuleContainer>
             <Box horizontal position="relative" align="flex-start">
-              <StepBallComponent number={index + 1} />
-              <HiddenRule stepNumber={index + 1} />
+              <StepBallComponent number={ruleIndex + 1} />
+              <HiddenRule stepNumber={ruleIndex + 1} />
             </Box>
           </RuleContainer>
         </div>
@@ -142,8 +144,9 @@ class ApprovalsRule extends PureComponent<Props, State> {
     return (
       <div style={styles.paddedBotForDrag}>
         <RuleContainer isInvalid={isInvalid}>
+          <StepBallComponent number={ruleIndex + 1} />
           <div style={{ padding: 10, paddingLeft: 15 }}>
-            {index === 0 ? (
+            {ruleIndex === 0 ? (
               <Trans
                 i18nKey="approvalsRules:creator_role"
                 components={<strong>0</strong>}
@@ -157,7 +160,6 @@ class ApprovalsRule extends PureComponent<Props, State> {
           </div>
           <Box horizontal position="relative" align="flex-start">
             {!readOnly && grip}
-            <StepBallComponent number={index + 1} />
             <NumberChooser
               style={styles.fixedHeight}
               value={rule.quorum}
@@ -236,7 +238,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
             )}
           </Box>
           {!!nbSelected && <NbOfUsers nb={nbSelected} isGroup={!!group} />}
-          {nbSelected === MAX_MEMBERS && (
+          {!readOnly && nbSelected >= MAX_MEMBERS && (
             <Box p={10} pl={40} pt={0}>
               <InfoBox type="warning">
                 <Text i18nKey="group:maxMembers" />
@@ -274,11 +276,12 @@ const styles = {
 const RuleContainer = styled(Box).attrs({
   bg: "white",
 })`
+  position: relative;
   border: 1px solid;
-  border-color: ${p => (p.isInvalid ? colors.blue_orange : " #eee")}
+  border-color: ${p => (p.isInvalid ? colors.blue_orange : colors.argile)}
   border-radius: 3px;
   user-select: none;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px 0 ${colors.legacyTranslucentGrey4};
 `;
 
 const Grip = SortableHandle(styled(Box).attrs({
@@ -289,13 +292,13 @@ const Grip = SortableHandle(styled(Box).attrs({
   height: 60px;
   width: 40px;
   cursor: ns-resize;
-  color: #eee;
+  color: ${colors.argile};
   transition: 50ms linear color;
 `);
 
 const StepBallContainer = styled.div`
   position: absolute;
-  top: -32px;
+  top: 5px;
   left: -25px; //yep yep
   display: flex;
   align-items: center;
@@ -309,7 +312,7 @@ const RemoveContainer = styled(Box).attrs({
   justify: "center",
 })`
   position: absolute;
-  color: #ccc;
+  color: ${colors.legacyGrey};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -321,17 +324,17 @@ const RemoveContainer = styled(Box).attrs({
   transform: translateY(-50%);
 
   &:hover {
-    color: #aaa;
+    color: ${colors.textLight};
   }
 
   &:active {
-    color: #888;
+    color: ${colors.legacyDarkGrey2};
   }
 `;
 
 const NbOfUsers = ({ nb, isGroup }: { nb: number, isGroup: boolean }) => (
   <Box style={styles.nbOfUsers} p={10} pt={0}>
-    <Text small color="#aaa">
+    <Text small color={colors.textLight}>
       <Trans
         i18nKey={
           isGroup
@@ -370,7 +373,7 @@ const approvalsFrom = (
     <Text
       lineHeight={0}
       small
-      color="#555"
+      color={colors.legacyDarkGrey3}
       i18nKey="approvalsRules:approvalsFrom"
     />
   </Box>

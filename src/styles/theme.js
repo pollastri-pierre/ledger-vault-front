@@ -91,6 +91,11 @@ const theme = {
         },
       },
     },
+    MuiTableCell: {
+      body: {
+        color: "inherit",
+      },
+    },
     MuiMenuItem: {
       root: {
         fontSize: 11,
@@ -529,6 +534,7 @@ const theme = {
 
 export const styledTheme = {
   space: [],
+  colors,
 };
 
 export const vaultLayoutConfig = {

@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import colors from "shared/colors";
 import type { Note } from "data/types";
 
 // after a migration, old notes will be created by SYSTEM ADMIN
@@ -10,24 +11,24 @@ const styles = {
   title: {
     outline: "none",
     fontSize: "13px",
-    color: "#000",
+    color: colors.black,
     fontWeight: "600",
     paddingBottom: "16px",
     marginBottom: "16px",
-    borderBottom: "1px solid #eee",
+    borderBottom: `1px solid ${colors.argile}`,
   },
   body: {
     outline: "none",
     fontSize: "13px",
-    color: "#000",
+    color: colors.black,
     paddingBottom: "16px",
     marginBottom: "16px",
     lineHeight: "20px",
-    borderBottom: "1px solid #eee",
+    borderBottom: `1px solid ${colors.argile}`,
   },
   author: {
     fontSize: "11px",
-    color: "#999",
+    color: colors.lead,
   },
 };
 function TabLabel(props: { note: Note, classes: Object }) {

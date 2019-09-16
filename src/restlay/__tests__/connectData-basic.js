@@ -48,7 +48,7 @@ test("a simple query works", async () => {
   const inst = renderer.create(render(<Animals />));
   expect(inst.toJSON()).toMatchSnapshot();
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(net.countTickWaiters()).toBe(0);
   expect(inst.toJSON()).toMatchSnapshot();
   inst.unmount();
@@ -76,12 +76,12 @@ test("query with props works", async () => {
   const inst = renderer.create(render(<Animal id_prop="id_max" />));
   expect(inst.toJSON()).toMatchSnapshot();
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(net.countTickWaiters()).toBe(0);
   expect(inst.toJSON()).toMatchSnapshot();
   inst.update(render(<Animal id_prop="id_doge" />));
   expect(net.tick()).toBe(1);
-  await flushPromises();
+  await renderer.act(flushPromises);
   expect(net.countTickWaiters()).toBe(0);
   expect(inst.toJSON()).toMatchSnapshot();
   inst.unmount();

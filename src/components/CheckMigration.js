@@ -113,10 +113,10 @@ const CheckMigration = (props: Props) => {
 };
 
 const AccountsToMigrate = styled(Box)`
-  border: 1px solid #f0f0f0;
+  border: 1px solid ${colors.legacyLightGrey1};
   border-radius: 4px;
   > * + * {
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid ${colors.legacyLightGrey1};
   }
 `;
 

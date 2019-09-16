@@ -20,7 +20,7 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Ethereum", "Syscoin", "Key accounts Ops", "America Ops");
+    create_account("Ethereum", "Syscoin2", "Key accounts Ops", "America Ops");
     successfull_message();
   });
 
@@ -31,6 +31,7 @@ describe("Test Case for Account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
+    cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
     cy.wait(7500);
     successfull_message();
@@ -58,6 +59,7 @@ describe("Test Case for Account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
+    cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
     cy.wait(7500);
     successfull_message();

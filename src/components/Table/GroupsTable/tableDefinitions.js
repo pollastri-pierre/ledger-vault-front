@@ -26,11 +26,11 @@ export const groupsTableDefault = [
   {
     header: {
       label: "Members",
-      align: "right",
+      align: "left",
     },
     body: {
       prop: "members",
-      align: "right",
+      align: "left",
     },
   },
 ];

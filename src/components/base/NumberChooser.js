@@ -64,7 +64,8 @@ const NumberChooserAction = styled.div`
   width: 30px;
   pointer-events: ${p => (p.isDisabled ? "none" : "auto")};
 
-  color: ${p => (p.isDisabled ? "#ddd" : opacity(colors.ocean, 0.5))};
+  color: ${p =>
+    p.isDisabled ? colors.legacyLightGrey7 : opacity(colors.ocean, 0.5)};
   &:hover {
     cursor: pointer;
     color: ${colors.ocean};
@@ -80,7 +81,7 @@ const NumberChooserValue = styled.div`
   justify-content: center;
   flex-grow: 1;
 
-  color: #888;
+  color: ${colors.legacyDarkGrey2};
   font-size: 18px;
   font-weight: bold;
 `;

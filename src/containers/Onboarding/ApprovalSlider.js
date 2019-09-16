@@ -5,6 +5,7 @@ import Disabled from "components/Disabled";
 import type { Translate } from "data/types";
 import { withTranslation, Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
+import colors from "shared/colors";
 import Arrow from "../../components/icons/full/ArrowDown";
 
 const styles = {
@@ -15,11 +16,11 @@ const styles = {
   },
   out: {
     fontSize: 12,
-    color: "#767676",
+    color: colors.steel,
   },
   flex: { display: "flex", justifyContent: "space-between" },
   require: {
-    color: "#27d0e2",
+    color: colors.ocean,
     fontSize: 11,
     textTransform: "uppercase",
     fontWeight: 600,
@@ -36,20 +37,20 @@ const styles = {
   bar: {
     height: 3,
     width: 60,
-    background: "#e2e2e2",
+    background: colors.mouse,
     display: "inline-block",
     marginRight: 5,
   },
   barSelected: {
-    background: "#27d0e2",
+    background: colors.ocean,
   },
   left: {
-    fill: "#27d0e2",
+    fill: colors.ocean,
     marginRight: 8,
     transform: "rotate(90deg)",
   },
   right: {
-    fill: "#27d0e2",
+    fill: colors.ocean,
     marginLeft: 8,
     transform: "rotate(-90deg)",
   },

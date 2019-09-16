@@ -82,10 +82,13 @@ function main () {
     done
   fi
 
-  notify-send \
-    -u critical \
-    -i ~/dotfiles/assets/rick.png \
-    "Finished 👌" "Vault ready to go! 🚀"
+  notifyReady
+}
+
+function notifyReady() {
+  [[ $(uname) == "Linux" ]]  && notify-send -u critical -i ~/dotfiles/assets/rick.png "Finished 👌" "Vault ready to go! 🚀"
+  [[ $(uname) == "Darwin" ]]  && osascript -e 'display notification "Vault ready to go!"'
+  return 0
 }
 
 function run_scenario() {
@@ -171,6 +174,7 @@ function create_default_scenarios() {
   echo "$SCENARIO_ONBOARDING" > "$VAULT_WORKSPACE/scenarios/onboarding"
   echo "$SCENARIO_STATE_1" > "$VAULT_WORKSPACE/scenarios/state-1"
   cp scripts/scenarios/real-world "$VAULT_WORKSPACE/scenarios/real-world"
+  cp scripts/scenarios/qa-setup "$VAULT_WORKSPACE/scenarios/qa-setup"
   cp scripts/scenarios/lot-of-accounts "$VAULT_WORKSPACE/scenarios/lot-of-accounts"
   cp scripts/scenarios/unrealistic-lot-of-accounts "$VAULT_WORKSPACE/scenarios/unrealistic-lot-of-accounts"
 }

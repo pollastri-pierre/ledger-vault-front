@@ -9,7 +9,7 @@ import { FaSort, FaArrowDown, FaArrowUp } from "react-icons/fa";
 import colors from "shared/colors";
 
 export type Direction = "asc" | "desc" | null;
-type Alignment = "left" | "right";
+type Alignment = "left" | "right" | "center";
 
 type Props = {
   label: React$Node,
@@ -107,7 +107,7 @@ const Container = styled.div`
 
   &:hover {
     cursor: pointer;
-    color: #444;
+    color: ${colors.legacyDarkGrey4};
   }
 
   > * + * {
