@@ -8,6 +8,8 @@ import colors from "shared/colors";
 import type { User } from "data/types";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
+import UserAvatar from "components/base/UserAvatar";
+import { useOrganization } from "components/OrganizationContext";
 import { vaultLayoutConfig } from "styles/theme";
 import { urlByRole } from "components/HelpLink";
 
@@ -16,13 +18,30 @@ type Props = {
   onLogout: () => void,
 };
 
+function UserIdentifier({ username }: { username: string }) {
+  const { organization } = useOrganization();
+
+  return (
+    <Box m={8} px={15} justify="center">
+      <Box horizontal justify="center" flow={10} align="center">
+        <UserAvatar />
+        <Box>
+          <Text small color={colors.shark} bold>
+            {username}
+          </Text>
+          <Text tiny color={colors.steel}>
+            {organization.workspace}
+          </Text>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
 export default ({ user, onLogout }: Props) => {
   return (
     <VaultLayoutTopBar>
       <VaultLayoutTopBarRight>
-        <Box horizontal align="center" px={20}>
-          <Text small>{user.username}</Text>
-        </Box>
+        <UserIdentifier username={user.username} />
         <TopBarAction link={urlByRole[user.role]} Icon={FaQuestionCircle} />
         <TopBarAction data-test="logout" Icon={FaPowerOff} onClick={onLogout} />
       </VaultLayoutTopBarRight>

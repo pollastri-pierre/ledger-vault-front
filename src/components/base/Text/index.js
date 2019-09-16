@@ -13,6 +13,8 @@ const Text = styled.div`
   font-size: ${p =>
     p.header
       ? "18px"
+      : p.tiny
+      ? "9px"
       : p.small
       ? "11px"
       : p.large
