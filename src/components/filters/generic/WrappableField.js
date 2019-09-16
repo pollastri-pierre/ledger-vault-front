@@ -4,7 +4,7 @@ import React, { Component, createRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import styled from "styled-components";
 
-import colors from "shared/colors";
+import colors, { opacity } from "shared/colors";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -27,6 +27,7 @@ type State = {
 
 const MENU_WIDTH = 400;
 const GUTTER = 50;
+const ACTIVE_COLOR = opacity(colors.blue, 0.1);
 
 class WrappableField extends Component<Props, State> {
   static defaultProps = {
@@ -148,16 +149,14 @@ class WrappableField extends Component<Props, State> {
           </div>
         </InlineLabel>
       );
-
+    const borderColor = isActive && !isOpened ? ACTIVE_COLOR : colors.argile;
     return (
       <Box
         position="relative"
+        borderRadius={5}
+        bg={isActive && !isOpened ? ACTIVE_COLOR : colors.white}
         ref={this.ref}
-        style={
-          isActive && !isOpened
-            ? { borderBottom: `1px solid ${colors.form.focus}` }
-            : { borderBottom: "1px solid transparent" }
-        }
+        style={{ border: `1px solid ${borderColor}` }}
       >
         {inner}
         {isOpened && !inPlace && (
@@ -192,7 +191,6 @@ const InlineLabel = styled(Box).attrs({
       : "transparent"};
   border-bottom-color: ${p => (p.isOpened ? colors.white : "")};
   z-index: ${p => (p.isOpened ? 30 : 0)};
-  background-color: ${p => (p.isOpened ? colors.white : colors.form.bg)};
   transition: 100ms linear background-color;
   pointer-events: ${p => (p.interactive === false ? "none" : "auto")};
   opacity: ${p => (p.interactive === false ? 0.7 : 1)};
