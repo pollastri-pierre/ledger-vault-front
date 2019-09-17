@@ -57,6 +57,8 @@ const colors = {
   // LEGACY
   legacyLightBlue: "#27d0e280",
   legacyLightBlue2: "rgba(39, 208, 226, 0.04)",
+  legacyDeviceBlue: "#4B9CDF",
+  legacyDeviceGreen: "#8fe2b0",
   legacyGreen: "#0ce4bf",
   legacyLightBlue3: "#f3fbff",
   legacyBlue: "#18909c",
