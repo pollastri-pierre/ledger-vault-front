@@ -1,7 +1,7 @@
 // @flow
 import type { DeviceError } from "utils/errors";
 import { NetworkTimeoutError } from "utils/errors";
-import { getLocalStorageToken } from "../redux/modules/auth";
+import { getCookieToken } from "../redux/modules/auth";
 import fetchF from "./fetchF";
 
 export function NetworkError(obj: *) {
@@ -17,7 +17,7 @@ export default function<T>(
   tokenParam: ?string,
   fetchParams: Object,
 ): Promise<T> {
-  const token = tokenParam || getLocalStorageToken();
+  const token = tokenParam || getCookieToken();
   const headers = {
     Accept: "application/json",
     "Content-Type":
