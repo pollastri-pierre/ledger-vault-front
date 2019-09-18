@@ -122,7 +122,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
 
 function isAddressSegwit(currency, recipient) {
   if (currency.id === "bitcoin" || currency.id === "bitcoin_testnet") {
-    return recipient.startsWith("3") || recipient.startsWith("bc1");
+    return recipient.startsWith("bc1");
   }
   return false;
 }
