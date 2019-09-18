@@ -48,6 +48,13 @@ const mockSync = (uri, method) => {
       }));
       return { edges, pageInfo: { hasNextPage: false } };
     }
+    if (/whitelists-mock.*/.test(uri)) {
+      const edges = mockEntities.whitelistsArray.map(key => ({
+        node: denormalize(key, schema.Whitelist, mockEntities),
+        cursor: key,
+      }));
+      return { edges, pageInfo: { hasNextPage: false } };
+    }
 
     if (/groups-mock.*/.test(uri)) {
       const edges = mockEntities.groupsArray.map(key => ({
@@ -70,6 +77,12 @@ const mockSync = (uri, method) => {
     if (m) {
       const group = mockEntities.groups[m[1]];
       return denormalize(group.id, schema.Group, mockEntities);
+    }
+    // GET /whitelists-mock/:id
+    m = /^\/whitelist-mock\/([^/]+)$/.exec(uri);
+    if (m) {
+      const whitelist = mockEntities.whitelists[m[1]];
+      return denormalize(whitelist.id, schema.Whitelist, mockEntities);
     }
     // GET /group-mock/:id/accounts
     m = /^\/group-mock\/([^/]+)\/accounts$/.exec(uri);
