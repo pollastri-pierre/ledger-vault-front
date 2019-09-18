@@ -81,6 +81,7 @@ const HintsWrap = styled.div`
   top: 100%;
   right: 0;
   pointer-events: none;
+  z-index: 2;
 `;
 
 const Ball = styled.div`

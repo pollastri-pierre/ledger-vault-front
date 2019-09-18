@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { withTranslation, useTranslation } from "react-i18next";
+import { withTranslation, useTranslation, Trans } from "react-i18next";
 
 import type { Translate } from "data/types";
 
@@ -10,6 +10,9 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
 import type { UserCreationStepProps } from "../types";
+
+const USERNAME_LENGTH = 19;
+const USERID_LENGTH = 16;
 
 type Props = UserCreationStepProps & {
   t: Translate,
@@ -23,21 +26,45 @@ const isUserIDCharValid = (c: string) => {
 };
 
 export const isUserIDValid = (v: string) =>
-  !!v && v.length === 16 && v.split("").every(isUserIDCharValid);
+  !!v && v.length === USERID_LENGTH && v.split("").every(isUserIDCharValid);
 
 const userIDHints = [
   {
     key: "nbCharts",
-    label: "Exactly 16 characters",
-    check: v => v.length === 16,
+    label: v => (
+      <Trans
+        i18nKey="inviteUser:form.hints.userID.nbCharts"
+        values={{ uIDLength: USERID_LENGTH, nbLeft: USERID_LENGTH - v.length }}
+      />
+    ),
+    check: v => v.length === USERID_LENGTH,
   },
   {
     key: "alphanum",
-    label: "Contains only numbers and uppercase letters",
+    label: <Trans i18nKey="inviteUser:form.hints.userID.alphanum" />,
     check: v => v.split("").every(isUserIDCharValid),
   },
 ];
-
+const usernameHints = [
+  {
+    key: "maxLength",
+    label: v => (
+      <Trans
+        i18nKey="inviteUser:form.hints.username.maxLength"
+        values={{
+          unLength: USERNAME_LENGTH,
+          nbLeft: USERNAME_LENGTH - v.length,
+        }}
+      />
+    ),
+    check: v => v.length < USERNAME_LENGTH,
+  },
+  {
+    key: "nonAscii",
+    label: <Trans i18nKey="inviteUser:form.hints.username.onlyAscii" />,
+    check: () => true,
+  },
+];
 export const InputUserID = ({
   value,
   onChange,
@@ -61,7 +88,7 @@ export const InputUserID = ({
       value={value}
       onChange={handleChange}
       placeholder={t("inviteUser:form.placeholderUserID")}
-      maxLength={16}
+      maxLength={USERID_LENGTH}
       hints={userIDHints}
       {...props}
     />
@@ -88,7 +115,8 @@ function UserCreationInfo(props: Props) {
             onChange={handleChangeUsername}
             placeholder={t("inviteUser:form.placeholderUsername")}
             fullWidth
-            maxLength={19}
+            hints={usernameHints}
+            maxLength={USERNAME_LENGTH}
             onlyAscii
           />
         </Box>

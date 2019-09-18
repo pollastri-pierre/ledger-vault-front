@@ -35,6 +35,16 @@
   "form": {
     "labelUsername": "Username",
     "placeholderUsername": "Enter a username",
+    "hints": {
+      "username": {
+        "maxLength": "{{unLength}} characters max ({{nbLeft}} left)",
+        "onlyAscii": "No special characters"
+      },
+      "userID": {
+        "alphanum": "Contains only numbers and uppercase letters",
+        "nbCharts": "Exactly {{uIDLength}} characters ({{nbLeft}} left)"
+      }
+    },
     "placeholderUserID": "Enter the user ID of the user",
     "labelUserID": "User ID"
   },
