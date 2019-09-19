@@ -114,6 +114,19 @@ export type Approval = {
   type: "APPROVE" | "ABORT",
 };
 
+export type Address = {
+  currency: Currency,
+  address: string,
+  alias?: string,
+};
+export type Whitelist = {
+  id: number,
+  name: string,
+  addresses: Address[],
+  created_on: Date,
+  created_by: User,
+};
+
 export type AccountType = "Ethereum" | "Bitcoin" | "Erc20";
 
 type ExtendedPubKey = {
