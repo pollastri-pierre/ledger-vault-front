@@ -127,7 +127,7 @@ export type Whitelist = {
   created_by: User,
 };
 
-export type AccountType = "Ethereum" | "Bitcoin" | "ERC20" | "Ripple";
+export type AccountType = "Ethereum" | "Bitcoin" | "Erc20" | "Ripple";
 
 type ExtendedPubKey = {
   public_key: string,
