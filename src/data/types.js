@@ -343,6 +343,7 @@ type TransactionCommon = {
   last_request?: Request,
   gas_price?: BigNumber,
   gas_limit?: BigNumber,
+  destination_tag?: number,
 };
 
 export type Transaction = TransactionCommon & {
