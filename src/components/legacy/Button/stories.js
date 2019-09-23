@@ -40,7 +40,7 @@ class ButtonStories extends PureComponent {
   }
 }
 
-storiesOf("components/base", module).add("Button", () => {
+storiesOf("components/base", module).add("ButtonsLegacy", () => {
   const isLeftIcon = boolean("isLeftIcon", true);
   const isRightIcon = boolean("isRightIcon", false);
   const isDisabled = boolean("isDisabled", false);

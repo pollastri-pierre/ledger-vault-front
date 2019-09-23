@@ -2,12 +2,11 @@
 
 import React from "react";
 import { Trans } from "react-i18next";
-import { FaUser, FaCheck } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import connectData from "restlay/connectData";
-import colors from "shared/colors";
 
 import MultiStepsFlow from "components/base/MultiStepsFlow";
-import { ModalFooterButton } from "components/base/Modal";
+import Button from "components/base/Button";
 
 import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -57,10 +56,9 @@ const steps = [
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
       return (
-        <ModalFooterButton color={colors.ocean} onClick={onClose}>
-          <FaCheck style={{ marginRight: 10 }} />
+        <Button type="primary" onClick={onClose}>
           <Trans i18nKey="common:done" />
-        </ModalFooterButton>
+        </Button>
       );
     },
   },

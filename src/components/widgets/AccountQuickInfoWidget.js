@@ -25,7 +25,8 @@ import Copy from "components/base/Copy";
 import Absolute from "components/base/Absolute";
 import type { Account } from "data/types";
 import { Label } from "components/base/form";
-import Button from "components/legacy/Button";
+import LegacyButton from "components/legacy/Button";
+import Button from "components/base/Button";
 import SyncButton from "components/SyncButton";
 import Disabled from "components/Disabled";
 import Text from "components/base/Text";
@@ -52,25 +53,25 @@ function AccountQuickInfoWidget(props: Props) {
       <Box horizontal flow={10}>
         <Disabled disabled={!isAccountSpendable(account)} customOpacity="0.3">
           <Link to={`${account.id}/send/${account.id}`}>
-            <Button
+            <LegacyButton
               IconLeft={IconSend}
               customColor={colors.blue}
               variant="filled"
               size="tiny"
             >
               Send
-            </Button>
+            </LegacyButton>
           </Link>
         </Disabled>
         <Link to={`${account.id}/receive/${account.id}`}>
-          <Button
+          <LegacyButton
             IconLeft={IconReceive}
             customColor={colors.blue}
             variant="filled"
             size="tiny"
           >
             Receive
-          </Button>
+          </LegacyButton>
         </Link>
       </Box>
     ) : null;
@@ -152,7 +153,7 @@ function AccountQuickInfoWidget(props: Props) {
                 <InfoSquare>
                   <Label>Parent Ethereum account</Label>
                   <Link to={account.parent.toString()}>
-                    <Button
+                    <LegacyButton
                       IconLeft={FaLink}
                       customColor={colors.text}
                       variant="filled"
@@ -161,7 +162,7 @@ function AccountQuickInfoWidget(props: Props) {
                       <span style={{ marginLeft: 5 }}>
                         Go to parent account
                       </span>
-                    </Button>
+                    </LegacyButton>
                   </Link>
                 </InfoSquare>
               )}
@@ -175,32 +176,20 @@ function AccountQuickInfoWidget(props: Props) {
   return (
     <div style={{ position: "relative" }}>
       {widget}
-      <Absolute top={40} right={10}>
-        <Tooltip title="Account settings">
-          <SettingsLink
+      <Absolute top={50} right={10}>
+        <Tooltip title="Account settings" placement="left">
+          <Link
             to={`${location.pathname}/accounts/details/${account.id}/overview`}
-            className="content-header-button"
           >
-            <FaWrench />
-          </SettingsLink>
+            <Button>
+              <FaWrench />
+            </Button>
+          </Link>
         </Tooltip>
       </Absolute>
     </div>
   );
 }
-
-const SettingsLink = styled(Link)`
-  height: 40px;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${colors.mediumGrey};
-
-  &:hover {
-    color: ${colors.shark};
-  }
-`;
 
 const InfoSquare = styled(Box).attrs({
   mr: 50,

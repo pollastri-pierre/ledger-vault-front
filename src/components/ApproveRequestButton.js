@@ -1,14 +1,13 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { FaCheck, FaTrash } from "react-icons/fa";
 
 import Absolute from "components/base/Absolute";
+import Button from "components/base/Button";
 import DeviceInteraction from "components/DeviceInteraction";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
-import { ModalFooterButton, ConfirmModal } from "components/base/Modal";
+import { ConfirmModal } from "components/base/Modal";
 
-import colors from "shared/colors";
 import type { GateError } from "data/types";
 import type {
   Interaction,
@@ -19,8 +18,6 @@ import type { DeviceError } from "utils/errors";
 type Props = {
   interactions: Interaction[],
   isRevoke?: boolean,
-  Icon?: React$ComponentType<*>,
-  color?: string,
   additionalFields: Object,
   onSuccess: Function,
   onError?: (DeviceInteractionError, Object) => void,
@@ -48,10 +45,6 @@ class ApproveRequestButton extends PureComponent<Props, State> {
     error: null,
   };
 
-  static defaultProps = {
-    color: colors.ocean,
-  };
-
   onCreate = () => {
     this.setState({ isInProgress: true, isConfirmModalOpened: false });
   };
@@ -74,17 +67,13 @@ class ApproveRequestButton extends PureComponent<Props, State> {
       disabled,
       additionalFields,
       isRevoke,
-      color,
       buttonLabel,
       withConfirm,
       confirmContent,
       confirmTitle,
       confirmLabel,
       rejectLabel,
-      Icon,
     } = this.props;
-
-    const BtnIcon = Icon || (isRevoke ? FaTrash : FaCheck);
 
     return (
       <>
@@ -101,15 +90,14 @@ class ApproveRequestButton extends PureComponent<Props, State> {
             />
           </Absolute>
         ) : (
-          <ModalFooterButton
+          <Button
+            type={isRevoke ? "danger" : "primary"}
+            disabled={disabled}
             data-test="approve_button"
-            color={color}
             onClick={withConfirm ? this.openConfirmModal : this.onCreate}
-            isDisabled={disabled}
           >
-            <BtnIcon style={{ marginRight: 10 }} />
             {buttonLabel}
-          </ModalFooterButton>
+          </Button>
         )}
         {withConfirm && confirmContent && (
           <ConfirmModal

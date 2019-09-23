@@ -33,9 +33,10 @@ class AdminGroups extends PureComponent<Props> {
 
   ActionComponent = () => (
     <Box noShrink>
-      <AddLink onClick={this.createGroup}>
-        <Text i18nKey="group:create.title" />
-      </AddLink>
+      <AddLink
+        onClick={this.createGroup}
+        title={<Text i18nKey="group:create.title" />}
+      />
     </Box>
   );
 

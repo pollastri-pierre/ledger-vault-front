@@ -1,8 +1,7 @@
 // @flow
 
 import React, { useState } from "react";
-import { Trans } from "react-i18next";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import colors from "shared/colors";
@@ -33,18 +32,13 @@ const SyncButton = (props: Props) => {
     return promise;
   };
   return !synced ? (
-    <Button
-      IconLeft={() => <FaSync style={{ marginRight: 2 }} />}
-      size="tiny"
-      variant="text"
-      customColor={colors.mediumGrey}
-      onClick={forceSync}
-    >
-      {synced ? (
-        <Trans i18nKey="accountView:synced" />
-      ) : (
-        <Trans i18nKey="accountView:sync_button" />
-      )}
+    <Button type="primary" small onClick={forceSync}>
+      <Box horizontal flow={5} align="center">
+        <FaSync />
+        <Text
+          i18nKey={synced ? "accountView:synced" : "accountView:sync_button"}
+        />
+      </Box>
     </Button>
   ) : (
     <Box horizontal flow={5} align="center">
