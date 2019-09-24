@@ -344,9 +344,44 @@ export function genTransactions(nb, { accounts, users }) {
   return transactions;
 }
 
+export function genAddress() {
+  return {
+    currency: genCurrency(),
+    address: faker.random.alphaNumeric(40),
+    alias: faker.random.alphaNumeric(10),
+  };
+}
+export function genAddresses(nb) {
+  const addresses = [];
+  for (let i = 0; i < nb; i++) {
+    addresses.push(genAddress());
+  }
+  return addresses;
+}
+
+export function genWhitelists(nb, { users }) {
+  const whitelists = [];
+  for (let i = 0; i < nb; i++) {
+    whitelists.push(genWhitelist({ users }));
+  }
+  return whitelists;
+}
+
+export function genWhitelist({ users }) {
+  const admins = users.filter(m => m.role === "admin");
+  return {
+    id: faker.random.number({ min: 1, max: 1000000000 }),
+    created_by: faker.random.arrayElement(admins),
+    created_on: faker.date.past(1),
+    name: faker.company.companyName(),
+    addresses: genAddresses(3),
+  };
+}
+
 const users = genUsers(20);
 const accounts = genAccounts(20, { users });
 const transactions = genTransactions(100, { accounts, users });
+const whitelists = genWhitelists(10, { users });
 const groups = genGroups(4, { users });
 
 export default {
@@ -357,4 +392,6 @@ export default {
   users: keyBy(users, "id"),
   usersArray: users,
   transactions: keyBy(transactions, "id"),
+  whitelists: keyBy(whitelists, "id"),
+  whitelistsArray: whitelists,
 };
