@@ -12,10 +12,7 @@ type ButtonType = "primary" | "outline" | "link" | "danger";
 type Props = {
   children?: React$Node,
   type?: ButtonType,
-  primary?: boolean,
-  danger?: boolean,
   disabled?: boolean,
-  isFocused?: boolean,
   onClick?: Function,
   small?: boolean,
   circular?: boolean,
@@ -23,42 +20,33 @@ type Props = {
 
 const buttonStyles: { [_: string]: Object } = {
   default: {
-    default: p => `
-    box-shadow: ${
-      p.isFocused
-        ? `
-      0 0 0 1px ${rgba(colors.bLive, 0.5)} inset,
-      0 0 0 1px ${rgba(colors.bLive, 0.3)},
-      0 0 0 2px ${rgba(colors.bLive, 0.3)}
-      `
-        : ""
-    }
-    `,
+    default: () => ``,
     active: () => `
       background: ${opacity(colors.argile, 0.8)};
     `,
     hover: () => `
       background: ${opacity(colors.argile, 0.5)};
     `,
+    focus: () => `
+      box-shadow: 0 0 0 1px ${rgba(colors.argile, 0.5)} inset,
+      0 0 0 1px ${rgba(colors.argile, 0.3)},
+      0 0 0 2px ${rgba(colors.argile, 0.3)}`,
   },
   primary: {
     default: p => `
-      background: ${p.disabled ? `${colors.argile} !important` : colors.bLive};
-      color: ${p.disabled ? colors.shark : colors.white};
-      box-shadow: ${
-        p.isFocused
-          ? `
-        0 0 0 1px ${darken(colors.bLive, 0.3)} inset,
-        0 0 0 1px ${rgba(colors.bLive, 0.5)},
-        0 0 0 2px ${rgba(colors.bLive, 0.3)};`
-          : ""
-      }
+      background: ${p.disabled ? `${colors.cream} !important` : colors.bLive};
+      color: ${p.disabled ? colors.mediumGrey : colors.white};
     `,
     hover: () => `
-       background: ${lighten(colors.bLive, 0.1)};
+      background: ${lighten(colors.bLive, 0.1)};
      `,
+    focus: () => `
+      box-shadow: 0 0 0 1px ${darken(colors.bLive, 0.3)} inset,
+      0 0 0 1px ${rgba(colors.bLive, 0.5)},
+      0 0 0 2px ${rgba(colors.bLive, 0.3)};
+    `,
     active: () => `
-       background: ${darken(colors.bLive, 0.1)};
+      background: ${darken(colors.bLive, 0.1)};
      `,
   },
   danger: {
@@ -67,21 +55,17 @@ const buttonStyles: { [_: string]: Object } = {
         p.disabled ? `${colors.argile} !important` : colors.grenade
       };
       color: ${p.disabled ? colors.shark : colors.white};
-      box-shadow: ${
-        p.isFocused
-          ? `
-              0 0 0 1px ${darken(colors.grenade, 0.3)} inset,
-              0 0 0 1px ${rgba(colors.grenade, 0.5)},
-              0 0 0 3px ${rgba(colors.grenade, 0.3)};
-            `
-          : ""
-      }
     `,
     hover: () => `
-    background: ${lighten(colors.grenade, 0.1)};
+      background: ${lighten(colors.grenade, 0.1)};
      `,
+    focus: () => `
+      box-shadow: 0 0 0 1px ${darken(colors.grenade, 0.3)} inset,
+      0 0 0 1px ${rgba(colors.grenade, 0.5)},
+      0 0 0 3px ${rgba(colors.grenade, 0.3)};
+    `,
     active: () => `
-    background: ${darken(colors.grenade, 0.1)};
+      background: ${darken(colors.grenade, 0.1)};
      `,
   },
   outline: {
@@ -92,13 +76,7 @@ const buttonStyles: { [_: string]: Object } = {
       return `
         background: transparent;
         border: 1px solid ${c};
-        color: ${c};
-        box-shadow: ${
-          p.isFocused
-            ? `
-            0 0 0 3px ${rgba(c, 0.3)};`
-            : ""
-        }
+        color: ${darken(c, 0.4)};
       `;
     },
     hover: p => {
@@ -107,6 +85,14 @@ const buttonStyles: { [_: string]: Object } = {
         : colors.bLive;
       return `
         background: ${rgba(c, 0.1)};
+      `;
+    },
+    focus: p => {
+      const c = p.outlineColor
+        ? colors[p.outlineColor] || p.outlineColor
+        : colors.bLive;
+      return `
+        box-shadow: 0 0 0 3px ${rgba(c, 0.3)};
       `;
     },
     active: p => {
@@ -135,10 +121,10 @@ const buttonStyles: { [_: string]: Object } = {
       color: ${p.disabled ? colors.steel : colors.shark};
     `,
     hover: () => `
-    color: ${lighten(colors.bLive, 0.1)};
+      color: ${lighten(colors.bLive, 0.1)};
      `,
     active: () => `
-    color: ${darken(colors.bLive, 0.1)};
+      color: ${darken(colors.bLive, 0.1)};
      `,
   },
 };
@@ -175,7 +161,8 @@ export const ButtonBase = styled.div.attrs({
 })`
   ${space};
   ${color};
-  font-size: ${p => p.fontSize || (p.small ? "9px" : "11px")};
+  font-size: ${p => p.fontSize || (p.small ? "11px" : "13px")};
+  font-weight: bold;
   border: none;
   display: flex;
   justify-content: center;
@@ -191,6 +178,9 @@ export const ButtonBase = styled.div.attrs({
 
   &:hover {
     ${p => getStyles(p, "hover")};
+  }
+  &:focus {
+    ${p => getStyles(p, "focus")};
   }
   &:active {
     ${p => getStyles(p, "active")};

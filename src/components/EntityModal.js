@@ -169,15 +169,13 @@ function EntityModal<T>(props: Props<T>) {
 
 function EditButton({ url, disabled }: { url: string, disabled?: boolean }) {
   const inner = (
-    <Box mb={5}>
-      <Link replace to={url} data-test="edit-button">
-        <Tooltip title={<Trans i18nKey="entityModal:edit" />} placement="left">
-          <Button>
-            <FaPen />
-          </Button>
-        </Tooltip>
-      </Link>
-    </Box>
+    <Link replace to={url} data-test="edit-button">
+      <Tooltip title={<Trans i18nKey="entityModal:edit" />} placement="left">
+        <Button>
+          <FaPen />
+        </Button>
+      </Tooltip>
+    </Link>
   );
 
   if (disabled) {

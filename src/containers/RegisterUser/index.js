@@ -9,7 +9,6 @@ import { Redirect } from "react-router";
 import type { Match } from "react-router-dom";
 import GlobalLoading from "components/GlobalLoading";
 
-import colors from "shared/colors";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import InviteUserQuery from "api/queries/InviteUserQuery";
 import DeviceInteraction from "components/DeviceInteraction";
@@ -24,12 +23,8 @@ import LineRow from "components/LineRow";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import {
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalFooterButton,
-} from "components/base/Modal";
+import Button from "components/base/Button";
+import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
 import Card from "components/base/Card";
 
 import type { UserInvite, Organization } from "data/types";
@@ -138,13 +133,15 @@ function RegisterUser(props: Props) {
                   />
                 </Box>
               ) : (
-                <ModalFooterButton
-                  color={colors.ocean}
-                  onClick={() => setRegistering(true)}
-                  data-test="button_registration"
-                >
-                  <Trans i18nKey="inviteUser:registration.button" />
-                </ModalFooterButton>
+                <Box my={10}>
+                  <Button
+                    type="primary"
+                    onClick={() => setRegistering(true)}
+                    data-test="button_registration"
+                  >
+                    <Trans i18nKey="inviteUser:registration.button" />
+                  </Button>
+                </Box>
               )}
             </ModalFooter>
           </ModalBody>

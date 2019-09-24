@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 
 import NextRequestMutation from "api/mutations/NextRequestMutation";
 import connectData from "restlay/connectData";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import type { Request } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
@@ -12,36 +12,21 @@ type Props = {
   request: Request,
 };
 
-type State = {
-  isLoading: boolean,
-};
-
-class NextRequestButton extends PureComponent<Props, State> {
-  state = {
-    isLoading: false,
-  };
-
+class NextRequestButton extends PureComponent<Props> {
   triggerNext = async () => {
     const { request, restlay } = this.props;
     try {
-      this.setState({ isLoading: true });
       await restlay.commitMutation(
         new NextRequestMutation({ requestId: request.id }),
       );
-    } finally {
-      this.setState({ isLoading: false });
+    } catch (err) {
+      console.log(err); // eslint-disable-line no-console
     }
   };
 
   render() {
-    const { isLoading } = this.state;
     return (
-      <Button
-        variant="filled"
-        size="tiny"
-        onClick={this.triggerNext}
-        isLoading={isLoading}
-      >
+      <Button type="primary" small onClick={this.triggerNext}>
         RETRY
       </Button>
     );

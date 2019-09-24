@@ -7,6 +7,7 @@ import connectData from "restlay/connectData";
 
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Button from "components/base/Button";
+import Box from "components/base/Box";
 
 import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -56,9 +57,11 @@ const steps = [
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
       return (
-        <Button type="primary" onClick={onClose}>
-          <Trans i18nKey="common:done" />
-        </Button>
+        <Box my={10}>
+          <Button type="primary" onClick={onClose}>
+            <Trans i18nKey="common:done" />
+          </Button>
+        </Box>
       );
     },
   },

@@ -29,7 +29,7 @@ import TranslatedError from "components/TranslatedError";
 import VaultCentered from "components/VaultCentered";
 import Box from "components/base/Box";
 import Card from "components/base/Card";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import ProgressBar from "components/base/ProgressBar";
 import Text from "components/base/Text";
 
@@ -233,18 +233,14 @@ const UpdateApp = ({ history, location }: Props) => {
         ) : isFinished ? (
           <>
             <Text i18nKey="update:success" />
-            <Button
-              variant="filled"
-              customColor={colors.blue}
-              onClick={redirect}
-            >
+            <Button type="primary" onClick={redirect}>
               <Text
                 i18nKey={`update:${redirectURL ? "goBack" : "goToLogin"}`}
               />
             </Button>
           </>
         ) : isIdle ? (
-          <Button variant="filled" customColor={colors.blue} onClick={run}>
+          <Button type="primary" onClick={run}>
             <Text i18nKey="update:update" />
           </Button>
         ) : null}

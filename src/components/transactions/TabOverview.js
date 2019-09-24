@@ -52,7 +52,7 @@ class TabOverview extends Component<Props> {
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.status" />}
           >
-            <Box flow={10} horizontal>
+            <Box flow={10} horizontal align="center">
               <TransactionStatus transaction={transaction} />
               {transaction.status === "APPROVED" &&
                 transaction.last_request && (

@@ -25,10 +25,8 @@ import Copy from "components/base/Copy";
 import Absolute from "components/base/Absolute";
 import type { Account } from "data/types";
 import { Label } from "components/base/form";
-import LegacyButton from "components/legacy/Button";
 import Button from "components/base/Button";
 import SyncButton from "components/SyncButton";
-import Disabled from "components/Disabled";
 import Text from "components/base/Text";
 import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/AccountIcon";
@@ -51,27 +49,21 @@ function AccountQuickInfoWidget(props: Props) {
   const title =
     me.role === "OPERATOR" ? (
       <Box horizontal flow={10}>
-        <Disabled disabled={!isAccountSpendable(account)} customOpacity="0.3">
-          <Link to={`${account.id}/send/${account.id}`}>
-            <LegacyButton
-              IconLeft={IconSend}
-              customColor={colors.blue}
-              variant="filled"
-              size="tiny"
-            >
-              Send
-            </LegacyButton>
-          </Link>
-        </Disabled>
+        <Link to={`${account.id}/send/${account.id}`}>
+          <Button small type="primary" disabled={!isAccountSpendable(account)}>
+            <Box horizontal flow={5} align="center">
+              <IconSend size={10} />
+              <Text i18nKey="accountView:sendButton" />
+            </Box>
+          </Button>
+        </Link>
         <Link to={`${account.id}/receive/${account.id}`}>
-          <LegacyButton
-            IconLeft={IconReceive}
-            customColor={colors.blue}
-            variant="filled"
-            size="tiny"
-          >
-            Receive
-          </LegacyButton>
+          <Button small type="primary">
+            <Box horizontal flow={5} align="center">
+              <IconReceive size={10} />
+              <Text i18nKey="accountView:receiveButton" />
+            </Box>
+          </Button>
         </Link>
       </Box>
     ) : null;
@@ -153,16 +145,10 @@ function AccountQuickInfoWidget(props: Props) {
                 <InfoSquare>
                   <Label>Parent Ethereum account</Label>
                   <Link to={account.parent.toString()}>
-                    <LegacyButton
-                      IconLeft={FaLink}
-                      customColor={colors.text}
-                      variant="filled"
-                      size="tiny"
-                    >
-                      <span style={{ marginLeft: 5 }}>
-                        Go to parent account
-                      </span>
-                    </LegacyButton>
+                    <Box horizontal flow={5} align="center" justify="center">
+                      <FaLink />
+                      <Text i18nKey="accountView:navigateParent" />
+                    </Box>
                   </Link>
                 </InfoSquare>
               )}

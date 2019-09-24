@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import { FaPlus } from "react-icons/fa";
 import type { MemoryHistory } from "history";
 import type { Location } from "react-router-dom";
 
@@ -9,15 +8,13 @@ import colors from "shared/colors";
 import Card from "components/base/Card";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import { AccountsList } from "components/lists";
 import SearchAccounts from "api/queries/SearchAccounts";
 import type { Account } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 import { useMe } from "components/UserContextProvider";
 import Widget, { connectWidget } from "./Widget";
-
-const IconPlus = () => <FaPlus size={12} />;
 
 type Props = {
   accountsConnection: Connection<Account>,
@@ -31,7 +28,7 @@ function AccountsWidget(props: Props) {
   const accounts = accountsConnection.edges.map(n => n.node);
   const onAdd = () => history.push(`${location.pathname}/accounts/new`);
   const addButton = (
-    <Button type="submit" variant="filled" IconLeft={IconPlus} onClick={onAdd}>
+    <Button type="primary" onClick={onAdd}>
       Create an account
     </Button>
   );

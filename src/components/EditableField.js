@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import { InputText } from "components/base/form";
 
 import colors from "shared/colors";
@@ -82,9 +82,7 @@ class EditableField extends PureComponent<Props, State> {
               {...inputProps}
             />
             <Button
-              size="small"
-              type="submit"
-              variant="filled"
+              type="primary"
               onClick={this.onConfirm}
               disabled={getSaveDisabled ? getSaveDisabled(localValue) : false}
             >

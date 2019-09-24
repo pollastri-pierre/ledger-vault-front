@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import InputField from "components/InputField";
 import colors from "shared/colors";
@@ -66,9 +66,8 @@ const AddMember = ({ finish, organization }: Props) => {
           />
         ) : (
           <Button
-            type="submit"
             disabled={!username}
-            variant="outlined"
+            type="primary"
             data-test="dialog-button"
             onClick={() => setRegistering(!registering)}
           >

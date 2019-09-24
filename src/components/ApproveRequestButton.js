@@ -2,8 +2,8 @@
 
 import React, { PureComponent } from "react";
 
-import Absolute from "components/base/Absolute";
 import Button from "components/base/Button";
+import Box from "components/base/Box";
 import DeviceInteraction from "components/DeviceInteraction";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import { ConfirmModal } from "components/base/Modal";
@@ -79,25 +79,25 @@ class ApproveRequestButton extends PureComponent<Props, State> {
       <>
         {error && <TriggerErrorNotification error={error} />}
         {isInProgress ? (
-          <Absolute right={15} bottom={15}>
-            <DeviceInteraction
-              light
-              interactions={interactions}
-              noCheckVersion
-              onSuccess={onSuccess}
-              onError={this.onError}
-              additionalFields={additionalFields}
-            />
-          </Absolute>
+          <DeviceInteraction
+            light
+            interactions={interactions}
+            noCheckVersion
+            onSuccess={onSuccess}
+            onError={this.onError}
+            additionalFields={additionalFields}
+          />
         ) : (
-          <Button
-            type={isRevoke ? "danger" : "primary"}
-            disabled={disabled}
-            data-test="approve_button"
-            onClick={withConfirm ? this.openConfirmModal : this.onCreate}
-          >
-            {buttonLabel}
-          </Button>
+          <Box mt={10} mb={10}>
+            <Button
+              type={isRevoke ? "danger" : "primary"}
+              disabled={disabled}
+              data-test="approve_button"
+              onClick={withConfirm ? this.openConfirmModal : this.onCreate}
+            >
+              {buttonLabel}
+            </Button>
+          </Box>
         )}
         {withConfirm && confirmContent && (
           <ConfirmModal
