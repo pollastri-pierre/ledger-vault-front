@@ -16,6 +16,8 @@ const Account = create("accounts", {
   fresh_addresses: Address,
 });
 
+const Whitelist = create("whitelists");
+
 const Request = create("requests");
 
 const Activity = create(
@@ -48,6 +50,7 @@ export default {
   Request,
   Currency,
   Account,
+  Whitelist,
   Transaction,
   Fiat,
   Balance,
