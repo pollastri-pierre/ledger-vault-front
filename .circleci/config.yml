@@ -159,4 +159,5 @@ workflows:
               only:
                 - master
                 - master-drop2
+                - develop-drop2
                 - release_candidate
