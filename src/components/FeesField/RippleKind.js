@@ -68,12 +68,8 @@ function FeesFieldRippleKind(props: Props) {
         // fetch fees
         const payload = {
           memos: [],
-          send_to: [
-            {
-              address: transaction.recipient,
-              amount: transaction.amount.toFixed(),
-            },
-          ],
+          amount: transaction.amount,
+          recipient: transaction.recipient,
         };
 
         const estimatedFees = await getFees(account, payload, restlay);

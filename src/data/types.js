@@ -179,12 +179,6 @@ export type TransactionGetFees = {
   gas_price?: ?BigNumber,
   max_amount?: ?BigNumber,
   memo?: [],
-  send_to?: [
-    {
-      address: string,
-      amount: string,
-    },
-  ],
 };
 
 export type AccountEntity = AccountCommon & {

@@ -170,12 +170,6 @@ function serializePayload(payload: TransactionCreationPayload<*>) {
       memos: [],
       destination_tag: transaction.destinationTag || null,
       fees: transaction.estimatedFees.toFixed(),
-      send_to: [
-        {
-          address: transaction.recipient,
-          amount: transaction.amount.toFixed(),
-        },
-      ],
     });
   }
 
