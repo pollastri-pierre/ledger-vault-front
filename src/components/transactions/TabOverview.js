@@ -29,6 +29,8 @@ class TabOverview extends Component<Props> {
   render() {
     const { transaction, account, classes } = this.props;
     const note = transaction.notes.length ? transaction.notes[0] : null;
+    const isRipple = account.account_type === "Ripple";
+
     return (
       <div>
         <OverviewTransaction
@@ -66,6 +68,16 @@ class TabOverview extends Component<Props> {
               <AccountName account={account} />
             </Box>
           </LineRow>
+
+          {isRipple && (
+            <LineRow
+              label={
+                <Trans i18nKey="transactionCreation:steps.amount.destinationTag" />
+              }
+            >
+              {transaction.destination_tag}
+            </LineRow>
+          )}
           {note && note.title && (
             <LineRow
               label={

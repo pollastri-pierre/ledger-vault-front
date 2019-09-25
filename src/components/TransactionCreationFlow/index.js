@@ -165,6 +165,14 @@ function serializePayload(payload: TransactionCreationPayload<*>) {
     });
   }
 
+  if (account.account_type === "Ripple") {
+    Object.assign(tx, {
+      memos: [],
+      destination_tag: transaction.destinationTag || null,
+      fees: transaction.estimatedFees.toFixed(),
+    });
+  }
+
   const request = {
     account_id: account.id,
     transaction: tx,

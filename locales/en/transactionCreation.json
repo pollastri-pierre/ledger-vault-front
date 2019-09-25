@@ -10,7 +10,9 @@
       "amount": "Amount",
       "recipient": "Recipient address",
       "feesInfos": "To have your transaction confirmed faster, select a higher fee.",
-      "estimatedFees": "Estimated fees"
+      "estimatedFees": "Estimated fees",
+      "destinationTag": "Destination tag",
+      "destinationTagDesc": "Up to 9 digits"
     },
     "note": {
       "title": "Comments",

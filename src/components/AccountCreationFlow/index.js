@@ -241,7 +241,9 @@ export const deserialize: Account => AccountCreationPayload = account => {
     name: account.name,
     rules,
     currency:
-      account.account_type === "Bitcoin" || account.account_type === "Ethereum"
+      account.account_type === "Bitcoin" ||
+      account.account_type === "Ethereum" ||
+      account.account_type === "Ripple"
         ? getCryptoCurrencyById(account.currency)
         : null,
     parentAccount: account.parent ? { id: account.parent } : null,

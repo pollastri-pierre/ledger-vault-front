@@ -12,12 +12,15 @@ import AccountName from "components/AccountName";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import InputAddress from "components/TransactionCreationFlow/InputAddress";
 import { Label, InputAmount, InputAmountNoUnits } from "components/base/form";
-import { AmountTooHigh, AmountExceedMax } from "utils/errors";
+import {
+  AmountTooHigh,
+  AmountExceedMax,
+  RippleAmountExceedMinBalance,
+} from "utils/errors";
 import { currencyUnitValueFormat } from "components/CurrencyUnitValue";
+import { MIN_RIPPLE_BALANCE } from "bridge/RippleBridge";
 
 import type { TransactionCreationStepProps } from "../types";
-
-const amountTooHighError = new AmountTooHigh();
 
 const TransactionCreationAmount = (
   props: TransactionCreationStepProps<any>,
@@ -29,7 +32,7 @@ const TransactionCreationAmount = (
   invariant(transaction, "transaction has not been created yet");
   invariant(bridge, "bridge has not been created yet");
 
-  const { EditFees } = bridge;
+  const { EditFees, ExtraFields } = bridge;
   const isERC20 = account.account_type === "Erc20";
   const currency = getCryptoCurrencyById(account.currency);
 
@@ -44,12 +47,23 @@ const TransactionCreationAmount = (
   const amountErrors = [];
   const gateMaxAmount =
     bridge.getMaxAmount && bridge.getMaxAmount(account, transaction);
-  const amountTooHigh = bridge
-    .getTotalSpent(account, transaction)
-    .isGreaterThan(account.balance);
-  if (amountTooHigh) {
-    amountErrors.push(amountTooHighError);
+
+  if (account.account_type === "Ripple") {
+    const amountExceedRippleLimit = bridge
+      .getTotalSpent(account, transaction)
+      .isGreaterThan(account.balance.minus(MIN_RIPPLE_BALANCE));
+    if (amountExceedRippleLimit) {
+      amountErrors.push(new RippleAmountExceedMinBalance());
+    }
+  } else {
+    const amountTooHigh = bridge
+      .getTotalSpent(account, transaction)
+      .isGreaterThan(account.balance);
+    if (amountTooHigh) {
+      amountErrors.push(new AmountTooHigh());
+    }
   }
+
   if (gateMaxAmount && transaction.amount.isGreaterThan(gateMaxAmount)) {
     amountErrors.push(
       new AmountExceedMax(null, {
@@ -120,6 +134,14 @@ const TransactionCreationAmount = (
       </Box>
       {EditFees && (
         <EditFees
+          account={account}
+          transaction={transaction}
+          onChangeTransaction={onChangeTransaction}
+          bridge={bridge}
+        />
+      )}
+      {ExtraFields && (
+        <ExtraFields
           account={account}
           transaction={transaction}
           onChangeTransaction={onChangeTransaction}

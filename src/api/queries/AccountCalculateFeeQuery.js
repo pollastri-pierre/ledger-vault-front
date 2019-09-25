@@ -41,7 +41,7 @@ export default class AccountCalculateFeeQuery extends Mutation<
     const { txGetFees } = this.props;
     return {
       ...txGetFees,
-      amount: txGetFees.amount.toFixed(),
+      amount: txGetFees.amount ? txGetFees.amount.toFixed() : null,
       gas_limit: txGetFees.gas_limit ? txGetFees.gas_limit.toFixed() : null,
       gas_price: txGetFees.gas_price ? txGetFees.gas_price.toFixed() : null,
     };

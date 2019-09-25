@@ -99,7 +99,8 @@ export function navigateToRequest(request: Request, history: MemoryHistory) {
   } else if (
     request.target_type === "BITCOIN_ACCOUNT" ||
     request.target_type === "ERC20_ACCOUNT" ||
-    request.target_type === "ETHEREUM_ACCOUNT"
+    request.target_type === "ETHEREUM_ACCOUNT" ||
+    request.target_type === "RIPPLE_ACCOUNT"
   ) {
     history.push(
       getModalTabLink(
@@ -109,7 +110,8 @@ export function navigateToRequest(request: Request, history: MemoryHistory) {
     );
   } else if (
     request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
-    request.target_type === "ETHEREUM_LIKE_TRANSACTION"
+    request.target_type === "ETHEREUM_LIKE_TRANSACTION" ||
+    request.target_type === "RIPPLE_TRANSACTION"
   ) {
     history.push(
       getModalTabLink(
