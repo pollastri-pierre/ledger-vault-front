@@ -24,7 +24,11 @@ export default function MultiStepsSuccess(props: Props) {
         <Text header bold>
           {title}
         </Text>
-        {desc && <Text textAlign="center">{desc}</Text>}
+        {desc && (
+          <Text large textAlign="center">
+            {desc}
+          </Text>
+        )}
       </Box>
     </Box>
   );

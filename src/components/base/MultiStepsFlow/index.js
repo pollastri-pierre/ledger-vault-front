@@ -31,17 +31,23 @@ type Props<T, P> = {
 type State<T> = {
   cursor: number,
   payload: T,
+  blockAllNavigation: boolean,
 };
 
 class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   state: State<T> = {
     cursor: this.props.initialCursor || 0,
     payload: this.props.initialPayload,
+    blockAllNavigation: false,
   };
 
   canPrev = () => this.state.cursor > 0;
 
   canNext = () => this.state.cursor < this.props.steps.length - 1;
+
+  disableAllSteps = () => {
+    return this.setState({ blockAllNavigation: true });
+  };
 
   setCursor = (cursor: number) => {
     const { steps } = this.props;
@@ -72,6 +78,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
   onCtaFinish = () => {
     this.transitionTo("finish");
+    this.disableAllSteps();
   };
 
   updatePayload: PayloadUpdater<T> = (patch, cb) =>
@@ -108,12 +115,14 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     i,
   ) => {
     const { steps } = this.props;
-    const { cursor } = this.state;
+    const { cursor, blockAllNavigation } = this.state;
     const canTransition = this.canTransitionTo(step.id);
     const nextStep = steps[i + 1];
     const isActive = step.id === steps[cursor].id;
-    const isValid = !!nextStep && this.canTransitionTo(nextStep.id);
-    const isDisabled = isActive || !canTransition;
+    const isValid =
+      (!!nextStep && this.canTransitionTo(nextStep.id)) ||
+      (!nextStep && isActive);
+    const isDisabled = isActive || !canTransition || blockAllNavigation;
     const onClick = () => this.transitionTo(step.id);
     return (
       <StepName
@@ -156,6 +165,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
+      disableAllSteps: this.disableAllSteps,
       ...additionalProps,
     };
 
