@@ -16,31 +16,23 @@ class UserCreationConfirmation extends PureComponent<UserCreationStepProps> {
     return (
       <Box>
         <LineRow
-          label={
-            <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.username" />
-          }
+          label={<Trans i18nKey="inviteUser:steps.recap.rowTitle.username" />}
         >
           {username}
         </LineRow>
         <LineRow
-          label={
-            <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.role" />
-          }
+          label={<Trans i18nKey="inviteUser:steps.recap.rowTitle.role" />}
         >
           <UserRoleFormatter userRole={role} />
         </LineRow>
         <LineRow
-          label={
-            <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.userID" />
-          }
+          label={<Trans i18nKey="inviteUser:steps.recap.rowTitle.userID" />}
         >
           {userID.toUpperCase()}
         </LineRow>
         {url && (
           <LineRow
-            label={
-              <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.url" />
-            }
+            label={<Trans i18nKey="inviteUser:steps.recap.rowTitle.url" />}
           >
             <Copy text={url} />
           </LineRow>

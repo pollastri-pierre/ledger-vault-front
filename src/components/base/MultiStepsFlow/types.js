@@ -21,4 +21,5 @@ export type StepProps<T> = {
   transitionTo: string => void,
   isEditMode?: boolean,
   onClose: () => void,
+  onSuccess?: () => void,
 };
