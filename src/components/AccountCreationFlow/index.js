@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Trans } from "react-i18next";
-import { FaMoneyCheck } from "react-icons/fa";
+import { FaMoneyCheck, FaCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -16,7 +16,10 @@ import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQ
 import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
+import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
+import { ModalFooterButton } from "components/base/Modal";
 import Text from "components/base/Text";
+import Box from "components/base/Box";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import { handleCancelOnDevice } from "utils/request";
 import {
@@ -25,7 +28,9 @@ import {
   getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
 import { deserializeApprovalSteps } from "utils/accounts";
+import colors from "shared/colors";
 import type { ApprovalsRule } from "components/ApprovalsRules";
+import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 
 import type { Account } from "data/types";
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
@@ -88,11 +93,13 @@ const steps = [
       onClose,
       isEditMode,
       restlay,
+      onSuccess,
     }: {
       payload: AccountCreationPayload,
       onClose: () => void,
       isEditMode?: boolean,
       restlay: RestlayEnvironment,
+      onSuccess: () => void,
     }) => {
       const data = serializePayload(payload, isEditMode);
       const isMigrated = payload.accountStatus === "MIGRATED";
@@ -108,7 +115,7 @@ const steps = [
                 );
               }
             } finally {
-              onClose();
+              onSuccess();
             }
           }}
           disabled={false}
@@ -126,6 +133,38 @@ const steps = [
             />
           }
         />
+      );
+    },
+  },
+  {
+    id: "finish",
+    name: <Trans i18nKey="accountCreation:finish" />,
+    hideBack: true,
+    Step: ({ payload }: { payload: AccountCreationPayload }) => {
+      return (
+        <MultiStepsSuccess
+          title={
+            <Box horizontal align="center" justify="center" flow={5}>
+              {payload.currency && (
+                <CryptoCurrencyIcon
+                  currency={payload.currency}
+                  color={payload.currency.color}
+                  size={18}
+                />
+              )}
+              <Text i18nKey="accountCreation:finishTitle" />
+            </Box>
+          }
+          desc={<Trans i18nKey="accountCreation:finishDesc" />}
+        />
+      );
+    },
+    Cta: ({ onClose }: { onClose: () => void }) => {
+      return (
+        <ModalFooterButton hideBack color={colors.ocean} onClick={onClose}>
+          <FaCheck style={{ marginRight: 10 }} />
+          <Trans i18nKey="common:done" />
+        </ModalFooterButton>
       );
     },
   },

@@ -70,6 +70,10 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     }
   };
 
+  onCtaFinish = () => {
+    this.transitionTo("finish");
+  };
+
   updatePayload: PayloadUpdater<T> = (patch, cb) =>
     this.setState(
       ({ payload }) => ({
@@ -143,11 +147,12 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
     if (!step) return null;
 
-    const { Step, Cta, nextLabel, prevLabel } = step;
+    const { Step, Cta, nextLabel, prevLabel, hideBack } = step;
 
     const stepProps = {
       payload,
       initialPayload,
+      hideBack,
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
@@ -167,14 +172,12 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
           <Step {...stepProps} />
         </Box>
         <RichModalFooter style={{ justifyContent: "space-between" }}>
-          {prevStep ? (
+          {prevStep && !hideBack && (
             <Button onClick={this.prev}>
               {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
             </Button>
-          ) : (
-            <div />
           )}
-          {nextStep && (
+          {nextStep && !Cta && (
             <Button
               type="filled"
               onClick={this.next}
@@ -187,6 +190,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
             <Cta
               payload={payload}
               onClose={onClose}
+              onSuccess={this.onCtaFinish}
               isEditMode={this.props.isEditMode}
               initialPayload={initialPayload}
               transitionTo={this.transitionTo}

@@ -24,5 +24,8 @@
       "title": "Confirmation"
     }
   },
-  "cta": "Create transaction"
+  "cta": "Create transaction",
+  "finish": "Finish",
+  "finishTitle": "Transaction Request was successfully created!",
+  "finishDesc": "Your request to create a transaction was created and now it has a pending status"
 }

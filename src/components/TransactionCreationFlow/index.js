@@ -3,18 +3,21 @@
 import React from "react";
 import invariant from "invariant";
 import { Trans } from "react-i18next";
-import { FaMoneyCheck } from "react-icons/fa";
+import { FaMoneyCheck, FaCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
+import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
+import { ModalFooterButton } from "components/base/Modal";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import { handleCancelOnDevice } from "utils/request";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
 import { createAndApprove } from "device/interactions/hsmFlows";
+import colors from "shared/colors";
 
 import TransactionCreationAccount, {
   getBridgeAndTransactionFromAccount,
@@ -62,8 +65,9 @@ const steps = [
       payload: TransactionCreationPayload<any>,
       onClose: Function,
       restlay: RestlayEnvironment,
+      onSuccess: () => void,
     }) => {
-      const { payload, onClose, restlay } = props;
+      const { payload, onClose, restlay, onSuccess } = props;
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
@@ -79,7 +83,7 @@ const steps = [
                 );
               }
             } finally {
-              onClose();
+              onSuccess();
             }
           }}
           disabled={false}
@@ -90,6 +94,27 @@ const steps = [
           }}
           buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
         />
+      );
+    },
+  },
+  {
+    id: "finish",
+    name: <Trans i18nKey="transactionCreation:finish" />,
+    hideBack: true,
+    Step: () => {
+      return (
+        <MultiStepsSuccess
+          title={<Trans i18nKey="transactionCreation:finishTitle" />}
+          desc={<Trans i18nKey="transactionCreation:finishDesc" />}
+        />
+      );
+    },
+    Cta: ({ onClose }: { onClose: () => void }) => {
+      return (
+        <ModalFooterButton hideBack color={colors.ocean} onClick={onClose}>
+          <FaCheck style={{ marginRight: 10 }} />
+          <Trans i18nKey="common:done" />
+        </ModalFooterButton>
       );
     },
   },

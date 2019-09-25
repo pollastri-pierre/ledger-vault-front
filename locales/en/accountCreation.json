@@ -20,5 +20,8 @@
   "cta_edit": "Edit account",
   "rulesSumup": "1 step",
   "rulesSumup_plural": "{{count}} steps",
-  "edit_title": "Edit account"
+  "edit_title": "Edit account",
+  "finish": "Finish",
+  "finishTitle": "Account request was successfully created!",
+  "finishDesc": "Your request to create an account was created and now it has a pending status until it is approved by your security scheme"
 }
