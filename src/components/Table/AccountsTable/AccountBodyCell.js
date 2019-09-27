@@ -34,9 +34,15 @@ class AccountBodyCell extends PureComponent<CellProps> {
           />
         );
       case "countervalue":
-        return <CounterValue fromAccount={account} value={account.balance} />;
+        return account.status === "PENDING" ? (
+          "N/A"
+        ) : (
+          <CounterValue fromAccount={account} value={account.balance} />
+        );
       case "balance":
-        return (
+        return account.status === "PENDING" ? (
+          "N/A"
+        ) : (
           <CurrencyAccountValue account={account} value={account.balance} />
         );
       case "approver_role":

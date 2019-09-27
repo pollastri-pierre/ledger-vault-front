@@ -8,5 +8,8 @@
   "warningEditAdminRules": "If you edit the admin rule, all pending requests will fail",
   "cantEditAdminRules_revokeAdmin": "You can't edit the admin rule if an Administrator is pending revocation.",
   "cantEditAdminRules_createAdmin": "You can't edit the admin rule if an Administrator is pending creation.",
-  "cantEditAdminRules_alreadyEdit": "There is already a pending edit admin rule request"
+  "cantEditAdminRules_alreadyEdit": "There is already a pending edit admin rule request",
+  "assetDistributionWidget": {
+    "infoErc20": "For some ERC20 tokens there is no countervalue available"
+  }
 }
