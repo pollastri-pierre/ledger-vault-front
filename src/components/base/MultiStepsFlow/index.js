@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
-import { FaCheck, FaChevronLeft } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 
 import colors, { opacity } from "shared/colors";
 import Box from "components/base/Box";
@@ -171,19 +171,14 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
           {prevStep && (
             <Absolute top={25} left={20}>
               <Button onClick={this.prev}>
-                <Box horizontal flow={5} align="center" justify="center">
-                  <FaChevronLeft />
-                  <Text>
-                    {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
-                  </Text>
-                </Box>
+                {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
               </Button>
             </Absolute>
           )}
           {nextStep && (
             <Absolute top={25} right={20}>
               <Button
-                type="primary"
+                type="filled"
                 onClick={this.next}
                 disabled={!this.canTransitionTo(nextStep.id)}
               >

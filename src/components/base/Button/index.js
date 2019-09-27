@@ -1,156 +1,24 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { space, color } from "styled-system";
 import Loader from "components/base/Loader";
-import colors, { opacity, lighten, darken, rgba } from "shared/colors";
 import Box from "components/base/Box";
+import { getStyles } from "./helpers";
 
-type ButtonType = "primary" | "outline" | "link" | "danger";
+type ButtonType = "filled" | "outline" | "link";
+type ButtonVariant = "primary" | "danger" | "warning" | "info";
 
-type Props = {
+export type ButtonProps = {
   children?: React$Node,
   type?: ButtonType,
+  variant?: ButtonVariant,
   disabled?: boolean,
   onClick?: Function,
   small?: boolean,
   circular?: boolean,
 };
-
-const buttonStyles: { [_: string]: Object } = {
-  default: {
-    default: () => ``,
-    active: () => `
-      background: ${opacity(colors.argile, 0.8)};
-    `,
-    hover: () => `
-      background: ${opacity(colors.argile, 0.5)};
-    `,
-    focus: () => `
-      box-shadow: 0 0 0 1px ${rgba(colors.argile, 0.5)} inset,
-      0 0 0 1px ${rgba(colors.argile, 0.3)},
-      0 0 0 2px ${rgba(colors.argile, 0.3)}`,
-  },
-  primary: {
-    default: p => `
-      background: ${p.disabled ? `${colors.cream} !important` : colors.bLive};
-      color: ${p.disabled ? colors.mediumGrey : colors.white};
-    `,
-    hover: () => `
-      background: ${lighten(colors.bLive, 0.1)};
-     `,
-    focus: () => `
-      box-shadow: 0 0 0 1px ${darken(colors.bLive, 0.3)} inset,
-      0 0 0 1px ${rgba(colors.bLive, 0.5)},
-      0 0 0 2px ${rgba(colors.bLive, 0.3)};
-    `,
-    active: () => `
-      background: ${darken(colors.bLive, 0.1)};
-     `,
-  },
-  danger: {
-    default: p => `
-      background: ${
-        p.disabled ? `${colors.argile} !important` : colors.grenade
-      };
-      color: ${p.disabled ? colors.shark : colors.white};
-    `,
-    hover: () => `
-      background: ${lighten(colors.grenade, 0.1)};
-     `,
-    focus: () => `
-      box-shadow: 0 0 0 1px ${darken(colors.grenade, 0.3)} inset,
-      0 0 0 1px ${rgba(colors.grenade, 0.5)},
-      0 0 0 3px ${rgba(colors.grenade, 0.3)};
-    `,
-    active: () => `
-      background: ${darken(colors.grenade, 0.1)};
-     `,
-  },
-  outline: {
-    default: p => {
-      const c = p.outlineColor
-        ? colors[p.outlineColor] || p.outlineColor
-        : colors.bLive;
-      return `
-        background: transparent;
-        border: 1px solid ${c};
-        color: ${darken(c, 0.4)};
-      `;
-    },
-    hover: p => {
-      const c = p.outlineColor
-        ? colors[p.outlineColor] || p.outlineColor
-        : colors.bLive;
-      return `
-        background: ${rgba(c, 0.1)};
-      `;
-    },
-    focus: p => {
-      const c = p.outlineColor
-        ? colors[p.outlineColor] || p.outlineColor
-        : colors.bLive;
-      return `
-        box-shadow: 0 0 0 3px ${rgba(c, 0.3)};
-      `;
-    },
-    active: p => {
-      const c = p.outlineColor
-        ? colors[p.outlineColor] || p.outlineColor
-        : colors.bLive;
-      return `
-        background: ${rgba(c, 0.15)};
-        color: ${darken(
-          p.outlineColor
-            ? colors[p.outlineColor] || p.outlineColor
-            : colors.bLive,
-          0.1,
-        )};
-        border-color: ${darken(
-          p.outlineColor
-            ? colors[p.outlineColor] || p.outlineColor
-            : colors.bLive,
-          0.1,
-        )};
-      `;
-    },
-  },
-  link: {
-    default: p => `
-      color: ${p.disabled ? colors.steel : colors.shark};
-    `,
-    hover: () => `
-      color: ${lighten(colors.bLive, 0.1)};
-     `,
-    active: () => `
-      color: ${darken(colors.bLive, 0.1)};
-     `,
-  },
-};
-function getStyles(props, state) {
-  let output = ``;
-  let hasModifier = false;
-  for (const s in buttonStyles) {
-    if (
-      Object.prototype.hasOwnProperty.call(buttonStyles, s) &&
-      props.type === s
-    ) {
-      const style = buttonStyles[s][state];
-      if (style) {
-        hasModifier = true;
-        output += style(props);
-      }
-    }
-  }
-  if (!hasModifier) {
-    const defaultStyle = buttonStyles.default[state];
-    if (defaultStyle) {
-      output += defaultStyle(props) || "";
-    }
-  }
-  return output;
-}
 
 export const ButtonBase = styled.div.attrs({
   px: p => (p.circular ? 12 : p.small ? 16 : 25),
@@ -187,15 +55,9 @@ export const ButtonBase = styled.div.attrs({
   }
 `;
 
-export default function Button(props: Props) {
+export default function Button(props: ButtonProps) {
   const { onClick, children, small, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      console.log("cleaned up"); // eslint-disable-line no-console
-    };
-  }, []);
 
   const handleClick = () => {
     if (!onClick) return;

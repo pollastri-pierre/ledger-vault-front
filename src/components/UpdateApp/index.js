@@ -233,14 +233,14 @@ const UpdateApp = ({ history, location }: Props) => {
         ) : isFinished ? (
           <>
             <Text i18nKey="update:success" />
-            <Button type="primary" onClick={redirect}>
+            <Button type="filled" onClick={redirect}>
               <Text
                 i18nKey={`update:${redirectURL ? "goBack" : "goToLogin"}`}
               />
             </Button>
           </>
         ) : isIdle ? (
-          <Button type="primary" onClick={run}>
+          <Button type="filled" onClick={run}>
             <Text i18nKey="update:update" />
           </Button>
         ) : null}

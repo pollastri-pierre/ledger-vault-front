@@ -135,7 +135,7 @@ function RegisterUser(props: Props) {
               ) : (
                 <Box my={10}>
                   <Button
-                    type="primary"
+                    type="filled"
                     onClick={() => setRegistering(true)}
                     data-test="button_registration"
                   >

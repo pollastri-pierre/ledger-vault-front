@@ -82,7 +82,7 @@ class Welcome extends Component<Props, State> {
             <Text i18nKey="welcome:domain_description" />
             <Absolute right={15} bottom={10}>
               <Button
-                type="primary"
+                type="filled"
                 data-test="continue_button"
                 onClick={this.onSubmit}
                 isDisabled={!domain}

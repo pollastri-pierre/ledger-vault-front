@@ -16,7 +16,7 @@ export default ({
   title: React$Node,
 }) => (
   <Tooltip title={title} placement="left">
-    <Button type="primary" circular onClick={onClick}>
+    <Button type="filled" circular onClick={onClick}>
       <Icon />
     </Button>
   </Tooltip>

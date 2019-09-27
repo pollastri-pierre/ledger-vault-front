@@ -32,7 +32,7 @@ const SyncButton = (props: Props) => {
     return promise;
   };
   return !synced ? (
-    <Button type="primary" small onClick={forceSync}>
+    <Button type="filled" small onClick={forceSync}>
       <Box horizontal flow={5} align="center">
         <FaSync />
         <Text

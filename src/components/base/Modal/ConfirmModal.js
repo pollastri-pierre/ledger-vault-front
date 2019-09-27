@@ -52,13 +52,13 @@ function ConfirmModal(props: Props) {
         <Button
           small
           type="outline"
-          outlineColor={colors.pearl}
+          variant="info"
           data-test="Cancel"
           onClick={onReject}
         >
           {rejectLabel}
         </Button>
-        <Button type="danger" small data-test="Confirm" onClick={onConfirm}>
+        <Button type="filled" small data-test="Confirm" onClick={onConfirm}>
           {confirmLabel}
         </Button>
       </Box>

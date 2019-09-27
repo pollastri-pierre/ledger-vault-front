@@ -54,7 +54,12 @@ class AbortRequestButton extends PureComponent<Props, State> {
     return (
       <>
         {error && <TriggerErrorNotification error={error} />}
-        <Button disabled={disabled} onClick={this.abort} type="danger">
+        <Button
+          disabled={disabled}
+          onClick={this.abort}
+          type="filled"
+          variant="danger"
+        >
           <Trans i18nKey="common:abort" />
         </Button>
       </>

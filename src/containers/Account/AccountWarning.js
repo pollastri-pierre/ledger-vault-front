@@ -46,7 +46,7 @@ class AccountWarning extends Component<Props> {
             <Button
               onClick={this.editAccount}
               type="outline"
-              outlineColor={colors.warning}
+              variant="warning"
               data-test="view_only_provide_rules"
             >
               <Trans i18nKey="accountView:view_only_provide_rules" />
@@ -58,11 +58,7 @@ class AccountWarning extends Component<Props> {
             <Text>
               <Trans i18nKey="accountView:updated_provide_rule_subtext" />
             </Text>
-            <Button
-              onClick={this.editAccount}
-              type="outline"
-              outlineColor={colors.warning}
-            >
+            <Button onClick={this.editAccount} type="outline" variant="warning">
               <Trans i18nKey="accountView:view_only_provide_rules" />
             </Button>
           </Warning>

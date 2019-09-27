@@ -21,8 +21,6 @@ import EntityModal from "components/EntityModal";
 import { FetchEntityHistory } from "components/EntityHistory";
 import type { Transaction, Account } from "data/types";
 
-import colors from "shared/colors";
-
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import TabDetails from "./TabDetails";
@@ -53,7 +51,7 @@ function TransactionDetails(props: Props) {
   const footer = url ? (
     <Absolute top={20} right={20}>
       <a target="_blank" rel="noopener noreferrer" href={url}>
-        <Button type="outline" outlineColor={colors.lead}>
+        <Button type="outline" variant="info">
           <Box horizontal align="center" flow={5}>
             <Text>
               <Trans i18nKey="transactionDetails:explore" />

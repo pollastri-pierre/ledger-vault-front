@@ -82,7 +82,7 @@ class EditableField extends PureComponent<Props, State> {
               {...inputProps}
             />
             <Button
-              type="primary"
+              type="filled"
               onClick={this.onConfirm}
               disabled={getSaveDisabled ? getSaveDisabled(localValue) : false}
             >

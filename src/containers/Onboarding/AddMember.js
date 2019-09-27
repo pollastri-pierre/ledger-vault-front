@@ -67,7 +67,7 @@ const AddMember = ({ finish, organization }: Props) => {
         ) : (
           <Button
             disabled={!username}
-            type="primary"
+            type="filled"
             data-test="dialog-button"
             onClick={() => setRegistering(!registering)}
           >

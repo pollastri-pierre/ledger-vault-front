@@ -105,7 +105,12 @@ function AccountSettings(props: Props) {
               <Text small>{account.derivation_path}</Text>
             </LineRow>
             <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
-              <Button type="danger" small onClick={onXpubModal}>
+              <Button
+                type="filled"
+                variant="danger"
+                small
+                onClick={onXpubModal}
+              >
                 <Box horizontal flow={5} align="center">
                   <FaRegCopy />
                   <Text>Copy XPUB</Text>

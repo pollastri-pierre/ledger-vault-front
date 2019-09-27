@@ -28,7 +28,7 @@ class UpdateDescriptionButton extends Component<Props> {
 
   render() {
     return (
-      <Button onClick={this.onSubmit} type="primary">
+      <Button onClick={this.onSubmit} type="filled">
         <Trans i18nKey="group:create.submit_edit" />
       </Button>
     );

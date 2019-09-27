@@ -28,7 +28,7 @@ storiesOf("components/base/modals", module)
           <RichModalTab to="details">Details</RichModalTab>
           <RichModalTab to="history">History</RichModalTab>
         </RichModalTabsContainer>
-        <Button small type="submit">
+        <Button small>
           <Box horizontal flow={5} align="center" justify="center">
             <MdEdit />
             <Text>Take action</Text>

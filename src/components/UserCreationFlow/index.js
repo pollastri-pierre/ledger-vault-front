@@ -58,7 +58,7 @@ const steps = [
     Cta: ({ onClose }: { onClose: () => void }) => {
       return (
         <Box my={10}>
-          <Button type="primary" onClick={onClose}>
+          <Button type="filled" onClick={onClose}>
             <Trans i18nKey="common:done" />
           </Button>
         </Box>

@@ -8,7 +8,7 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 
 const WebUSBClickFallback = ({ onClick }: { onClick: () => void }) => (
-  <Button type="primary" onClick={onClick}>
+  <Button type="filled" onClick={onClick}>
     <Box horizontal flow={5} align="center">
       <FaUsb />
       <Text> Click to connect</Text>

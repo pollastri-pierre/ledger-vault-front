@@ -28,7 +28,7 @@ function AccountsWidget(props: Props) {
   const accounts = accountsConnection.edges.map(n => n.node);
   const onAdd = () => history.push(`${location.pathname}/accounts/new`);
   const addButton = (
-    <Button type="primary" onClick={onAdd}>
+    <Button type="filled" onClick={onAdd}>
       Create an account
     </Button>
   );

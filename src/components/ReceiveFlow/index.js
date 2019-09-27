@@ -99,7 +99,7 @@ const VerifyFreshAddress = connectData(
           <Box grow="1">
             <Button
               onClick={() => setVerifying(true)}
-              type="primary"
+              type="filled"
               data-test="verifyaddress"
               disabled={isVerifying}
             >

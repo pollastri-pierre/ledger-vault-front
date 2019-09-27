@@ -90,7 +90,8 @@ class ApproveRequestButton extends PureComponent<Props, State> {
         ) : (
           <Box mt={10} mb={10}>
             <Button
-              type={isRevoke ? "danger" : "primary"}
+              type="filled"
+              variant={isRevoke ? "danger" : "primary"}
               disabled={disabled}
               data-test="approve_button"
               onClick={withConfirm ? this.openConfirmModal : this.onCreate}

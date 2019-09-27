@@ -72,7 +72,7 @@ export default function Login(props: Props) {
         {error ? (
           <>
             <TriggerErrorNotification error={error} />
-            <Button type="primary" onClick={backToWelcome}>
+            <Button type="filled" onClick={backToWelcome}>
               Go back
             </Button>
           </>

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Checkbox from "@material-ui/core/Checkbox";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-import colors from "shared/colors";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
@@ -37,12 +36,7 @@ function AccountXpub(props: Props) {
           <Checkbox checked={checked} />
         </Box>
         <CopyToClipboard text={account.xpub} onCopy={onCopy}>
-          <Button
-            small
-            type="outline"
-            outlineColor={colors.mediumGrey}
-            disabled={!checked}
-          >
+          <Button small type="outline" variant="info" disabled={!checked}>
             <Text>{copied ? "Copied" : "Copy"} </Text>
           </Button>
         </CopyToClipboard>
