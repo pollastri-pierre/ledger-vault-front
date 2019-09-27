@@ -87,5 +87,6 @@ export default connectWidget(withMe(RequestsWidget), {
   propsToQueryParams: () => ({
     status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
     pageSize: -1,
+    order: "asc",
   }),
 });
