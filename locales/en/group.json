@@ -29,7 +29,14 @@
     "no_hsm_validation": "Editing the description doesn't require the approval from other Administrators or your device",
     "hsm_validation": "Editing the name or members of the group requires HSM and Device validation",
     "no_edit": "No changes were made",
-    "submit_edit": "Edit group"
+    "submit_edit": "Edit group",
+    "finish": "Finish",
+    "finishTitle": "Group Request was successfully created!",
+    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme"
+  },
+  "update": {
+    "finishTitle": "Update Group Request was successfully created!",
+    "finishDesc": "Your request to update this group was created and now it has a pending status until it is approved by your security scheme"
   },
   "revokeWarning": {
     "content": "Once the request is approved, this group will be permanently deleted."

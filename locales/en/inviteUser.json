@@ -22,15 +22,18 @@
         "desc": "Operators create and/or approve transactions for accounts they have access to"
       }
     },
-    "confirmation": {
-      "title": "Confirmation",
+    "recap": {
+      "title": "Recap",
       "rowTitle": {
         "username": "Username",
         "userID": "User ID",
         "role": "Role",
         "url": "Invitation URL"
       }
-    }
+    },
+    "finish": "Finish",
+    "finishTitle": "User Invitation was successfully created!",
+    "finishDesc": "Your request to create a user invitation was created. It can be now communicated to the user."
   },
   "form": {
     "labelUsername": "Username",

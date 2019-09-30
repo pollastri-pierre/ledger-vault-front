@@ -8,6 +8,7 @@ import connectData from "restlay/connectData";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Button from "components/base/Button";
 import Box from "components/base/Box";
+import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
 
 import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -49,11 +50,33 @@ const steps = [
     onNext: onProcessUserInfo,
   },
   {
-    id: "confirm",
-    name: <Trans i18nKey="inviteUser:steps.confirmation.title" />,
+    id: "recap",
+    name: <Trans i18nKey="inviteUser:steps.recap.title" />,
     Step: UserCreationConfirmation,
     requirements: (payload: UserCreationPayload) => {
       return !!payload.username && isUserIDValid(payload.userID);
+    },
+    Cta: ({ onSuccess }: { onSuccess?: () => void }) => {
+      return (
+        <Box my={10}>
+          <Button type="filled" onClick={onSuccess}>
+            <Trans i18nKey="common:done" />
+          </Button>
+        </Box>
+      );
+    },
+  },
+  {
+    id: "finish",
+    name: <Trans i18nKey="inviteUser:steps.finish" />,
+    hideBack: true,
+    Step: () => {
+      return (
+        <MultiStepsSuccess
+          title={<Trans i18nKey="inviteUser:steps.finishTitle" />}
+          desc={<Trans i18nKey="inviteUser:steps.finishDesc" />}
+        />
+      );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
       return (

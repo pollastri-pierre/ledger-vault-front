@@ -23,6 +23,7 @@ const colors = {
   bLive: "#6490f1",
   night: "#1d2028",
   mouse: "#e2e2e2",
+  gLive: "rgba(102, 190, 84, 0.1)",
   green: "rgb(102, 190, 84)",
   ocean: "#27d0e2",
   grenade: "#d67080",

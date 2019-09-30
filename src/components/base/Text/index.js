@@ -28,7 +28,7 @@ const Text = styled.div`
   text-transform: ${p => (p.uppercase ? "uppercase" : "")};
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
   user-select: ${p => (p.select ? "text" : p.noSelect ? "none" : "inherit")};
-
+  text-align: ${p => (p.textAlign ? p.textAlign : "inherit")};
   ${p =>
     p.selectable
       ? `

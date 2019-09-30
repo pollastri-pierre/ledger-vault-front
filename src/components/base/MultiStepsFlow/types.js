@@ -1,6 +1,6 @@
 // @flow
 
-export type MultiStepsFlowStep<T, P> = {
+export type MultiStepsFlowStep<T, P> = {|
   id: string,
   name: React$Node,
   Step: React$ComponentType<StepProps<T> & P>,
@@ -9,7 +9,8 @@ export type MultiStepsFlowStep<T, P> = {
   onNext?: (T, PayloadUpdater<T>, ?P) => Promise<void>,
   nextLabel?: React$Node,
   prevLabel?: React$Node,
-};
+  hideBack?: boolean,
+|};
 
 export type PayloadUpdater<T> = ($Shape<T>, ?() => void) => void;
 
@@ -20,4 +21,5 @@ export type StepProps<T> = {
   transitionTo: string => void,
   isEditMode?: boolean,
   onClose: () => void,
+  onSuccess?: () => void,
 };
