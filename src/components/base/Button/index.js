@@ -20,13 +20,13 @@ export type ButtonProps = {
   circular?: boolean,
 };
 
-export const ButtonBase = styled.div.attrs({
-  px: p => (p.circular ? 12 : p.small ? 16 : 25),
-  py: p => (p.circular ? 12 : p.small ? 5 : 8),
+export const ButtonBase = styled.div.attrs(p => ({
+  px: p.circular ? 12 : p.small ? 16 : 25,
+  py: p.circular ? 12 : p.small ? 5 : 8,
   color: "grey",
   bg: "transparent",
   tabIndex: 0,
-})`
+}))`
   ${space};
   ${color};
   font-size: ${p => p.fontSize || (p.small ? "11px" : "13px")};
@@ -86,5 +86,5 @@ export default function Button(props: ButtonProps) {
 }
 
 const Container = styled(Box)`
-  opacity: ${p => (p.isLoading ? "0.1" : "1")};
+  opacity: ${p => (p.isLoading ? 0 : 1)};
 `;

@@ -50,15 +50,14 @@ function ConfirmModal(props: Props) {
       </Box>
       <Box horizontal m={20} justify="space-between">
         <Button
-          small
-          type="outline"
+          type="link"
           variant="info"
           data-test="Cancel"
           onClick={onReject}
         >
           {rejectLabel}
         </Button>
-        <Button type="filled" small data-test="Confirm" onClick={onConfirm}>
+        <Button type="filled" data-test="Confirm" onClick={onConfirm}>
           {confirmLabel}
         </Button>
       </Box>

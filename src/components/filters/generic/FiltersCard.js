@@ -5,7 +5,7 @@ import styled from "styled-components";
 import type { ObjectParameters, ObjectParameter } from "query-string";
 import isEqual from "lodash/isEqual";
 
-import colors, { opacity } from "shared/colors";
+import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 
@@ -132,16 +132,11 @@ function hasProps(obj) {
 }
 
 const ClearButton = styled.div`
-  color: ${opacity(colors.grenade, 0.7)};
   cursor: pointer;
+  color: ${colors.grenade};
 
   &:hover {
-    color: ${opacity(colors.grenade, 0.8)};
     text-decoration: underline;
-  }
-
-  &:active {
-    color: ${colors.grenade};
   }
 `;
 

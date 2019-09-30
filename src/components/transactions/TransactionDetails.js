@@ -49,7 +49,7 @@ function TransactionDetails(props: Props) {
     : null;
 
   const footer = url ? (
-    <Absolute top={20} right={20}>
+    <Absolute top={25} right={20}>
       <a target="_blank" rel="noopener noreferrer" href={url}>
         <Button type="outline" variant="info">
           <Box horizontal align="center" flow={5}>
