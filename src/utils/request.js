@@ -111,7 +111,7 @@ export function navigateToRequest(request: Request, history: MemoryHistory) {
   } else if (
     request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
     request.target_type === "ETHEREUM_LIKE_TRANSACTION" ||
-    request.target_type === "RIPPLE_TRANSACTION"
+    request.target_type === "RIPPLE_LIKE_TRANSACTION"
   ) {
     history.push(
       getModalTabLink(
