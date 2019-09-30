@@ -175,7 +175,13 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
         <Box grow p={40} style={styles.content}>
           <Step {...stepProps} />
         </Box>
-        <RichModalFooter style={{ justifyContent: "space-between" }}>
+        <RichModalFooter
+          style={
+            hideBack
+              ? { justifyContent: "flex-end" }
+              : { justifyContent: "space-between" }
+          }
+        >
           {prevStep && !hideBack && (
             <Button onClick={this.prev}>
               {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
