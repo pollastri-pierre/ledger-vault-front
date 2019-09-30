@@ -110,9 +110,7 @@ export const Table = styled(MUITable)`
     user-select: none;
     tr td {
       border: none;
-    }
-    tr:nth-child(even) {
-      background: ${colors.legacyLightGrey4};
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
     tr:hover {
       background: ${colors.white};
