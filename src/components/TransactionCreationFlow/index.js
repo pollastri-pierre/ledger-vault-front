@@ -3,21 +3,21 @@
 import React from "react";
 import invariant from "invariant";
 import { Trans } from "react-i18next";
-import { FaMoneyCheck, FaCheck } from "react-icons/fa";
+import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
+import Box from "components/base/Box";
+import Button from "components/base/Button";
 import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
-import { ModalFooterButton } from "components/base/Modal";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import { handleCancelOnDevice } from "utils/request";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
 import { createAndApprove } from "device/interactions/hsmFlows";
-import colors from "shared/colors";
 
 import TransactionCreationAccount, {
   getBridgeAndTransactionFromAccount,
@@ -111,10 +111,11 @@ const steps = [
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
       return (
-        <ModalFooterButton hideBack color={colors.ocean} onClick={onClose}>
-          <FaCheck style={{ marginRight: 10 }} />
-          <Trans i18nKey="common:done" />
-        </ModalFooterButton>
+        <Box my={10}>
+          <Button type="filled" onClick={onClose}>
+            <Trans i18nKey="common:done" />
+          </Button>
+        </Box>
       );
     },
   },

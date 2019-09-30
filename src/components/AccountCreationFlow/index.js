@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Trans } from "react-i18next";
-import { FaMoneyCheck, FaCheck } from "react-icons/fa";
+import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -16,8 +16,8 @@ import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQ
 import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
+import Button from "components/base/Button";
 import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
-import { ModalFooterButton } from "components/base/Modal";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import ApproveRequestButton from "components/ApproveRequestButton";
@@ -28,7 +28,6 @@ import {
   getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
 import { deserializeApprovalSteps } from "utils/accounts";
-import colors from "shared/colors";
 import type { ApprovalsRule } from "components/ApprovalsRules";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 
@@ -140,7 +139,13 @@ const steps = [
     id: "finish",
     name: <Trans i18nKey="accountCreation:finish" />,
     hideBack: true,
-    Step: ({ payload }: { payload: AccountCreationPayload }) => {
+    Step: ({
+      payload,
+      isEditMode,
+    }: {
+      payload: AccountCreationPayload,
+      isEditMode: boolean,
+    }) => {
       return (
         <MultiStepsSuccess
           title={
@@ -152,19 +157,30 @@ const steps = [
                   size={18}
                 />
               )}
-              <Text i18nKey="accountCreation:finishTitle" />
+              {isEditMode ? (
+                <Text i18nKey="accountCreation:finishEditTitle" />
+              ) : (
+                <Text i18nKey="accountCreation:finishTitle" />
+              )}
             </Box>
           }
-          desc={<Trans i18nKey="accountCreation:finishDesc" />}
+          desc={
+            isEditMode ? (
+              <Trans i18nKey="accountCreation:finishEditDesc" />
+            ) : (
+              <Trans i18nKey="accountCreation:finishDesc" />
+            )
+          }
         />
       );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
       return (
-        <ModalFooterButton hideBack color={colors.ocean} onClick={onClose}>
-          <FaCheck style={{ marginRight: 10 }} />
-          <Trans i18nKey="common:done" />
-        </ModalFooterButton>
+        <Box my={10}>
+          <Button type="filled" onClick={onClose}>
+            <Trans i18nKey="common:done" />
+          </Button>
+        </Box>
       );
     },
   },

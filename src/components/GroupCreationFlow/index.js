@@ -8,7 +8,7 @@ import { createAndApprove } from "device/interactions/hsmFlows";
 import UsersQuery from "api/queries/UsersQuery";
 import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMutation";
 import GroupQuery from "api/queries/GroupQuery";
-import { FaCheck, FaUsers } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
 
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import ApproveRequestButton from "components/ApproveRequestButton";
@@ -17,11 +17,11 @@ import { handleCancelOnDevice } from "utils/request";
 
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
+import Button from "components/base/Button";
+import Box from "components/base/Box";
 import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
 
 import type { Group } from "data/types";
-import { ModalFooterButton } from "components/base/Modal";
-import colors from "shared/colors";
 
 import GroupCreationInfos from "./GroupCreationInfos";
 import GroupCreationConfirmation from "./GroupCreationConfirmation";
@@ -119,10 +119,11 @@ const steps = [
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
       return (
-        <ModalFooterButton hideBack color={colors.ocean} onClick={onClose}>
-          <FaCheck style={{ marginRight: 10 }} />
-          <Trans i18nKey="common:done" />
-        </ModalFooterButton>
+        <Box my={10}>
+          <Button type="filled" onClick={onClose}>
+            <Trans i18nKey="common:done" />
+          </Button>
+        </Box>
       );
     },
   },
