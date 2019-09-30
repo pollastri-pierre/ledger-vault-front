@@ -78,5 +78,6 @@ export default connectData(EditAdminRules, {
   propsToQueryParams: () => ({
     status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
     pageSize: -1,
+    order: "asc",
   }),
 });
