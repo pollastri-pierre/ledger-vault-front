@@ -25,9 +25,8 @@ import Copy from "components/base/Copy";
 import Absolute from "components/base/Absolute";
 import type { Account } from "data/types";
 import { Label } from "components/base/form";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import SyncButton from "components/SyncButton";
-import Disabled from "components/Disabled";
 import Text from "components/base/Text";
 import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/AccountIcon";
@@ -50,26 +49,20 @@ function AccountQuickInfoWidget(props: Props) {
   const title =
     me.role === "OPERATOR" ? (
       <Box horizontal flow={10}>
-        <Disabled disabled={!isAccountSpendable(account)} customOpacity="0.3">
-          <Link to={`${account.id}/send/${account.id}`}>
-            <Button
-              IconLeft={IconSend}
-              customColor={colors.blue}
-              variant="filled"
-              size="tiny"
-            >
-              Send
-            </Button>
-          </Link>
-        </Disabled>
+        <Link to={`${account.id}/send/${account.id}`}>
+          <Button small type="filled" disabled={!isAccountSpendable(account)}>
+            <Box horizontal flow={5} align="center">
+              <IconSend size={10} />
+              <Text i18nKey="accountView:sendButton" />
+            </Box>
+          </Button>
+        </Link>
         <Link to={`${account.id}/receive/${account.id}`}>
-          <Button
-            IconLeft={IconReceive}
-            customColor={colors.blue}
-            variant="filled"
-            size="tiny"
-          >
-            Receive
+          <Button small type="filled">
+            <Box horizontal flow={5} align="center">
+              <IconReceive size={10} />
+              <Text i18nKey="accountView:receiveButton" />
+            </Box>
           </Button>
         </Link>
       </Box>
@@ -152,16 +145,10 @@ function AccountQuickInfoWidget(props: Props) {
                 <InfoSquare>
                   <Label>Parent Ethereum account</Label>
                   <Link to={account.parent.toString()}>
-                    <Button
-                      IconLeft={FaLink}
-                      customColor={colors.text}
-                      variant="filled"
-                      size="tiny"
-                    >
-                      <span style={{ marginLeft: 5 }}>
-                        Go to parent account
-                      </span>
-                    </Button>
+                    <Box horizontal flow={5} align="center" justify="center">
+                      <FaLink />
+                      <Text i18nKey="accountView:navigateParent" />
+                    </Box>
                   </Link>
                 </InfoSquare>
               )}
@@ -175,32 +162,20 @@ function AccountQuickInfoWidget(props: Props) {
   return (
     <div style={{ position: "relative" }}>
       {widget}
-      <Absolute top={40} right={10}>
-        <Tooltip title="Account settings">
-          <SettingsLink
+      <Absolute top={50} right={10}>
+        <Tooltip title="Account settings" placement="left">
+          <Link
             to={`${location.pathname}/accounts/details/${account.id}/overview`}
-            className="content-header-button"
           >
-            <FaWrench />
-          </SettingsLink>
+            <Button>
+              <FaWrench />
+            </Button>
+          </Link>
         </Tooltip>
       </Absolute>
     </div>
   );
 }
-
-const SettingsLink = styled(Link)`
-  height: 40px;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${colors.mediumGrey};
-
-  &:hover {
-    color: ${colors.shark};
-  }
-`;
 
 const InfoSquare = styled(Box).attrs({
   mr: 50,

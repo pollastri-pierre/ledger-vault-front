@@ -5,15 +5,15 @@ import { Trans } from "react-i18next";
 import type { MemoryHistory } from "history";
 import type { Location } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import { FaPen } from "react-icons/fa";
 
 import RequestsQuery from "api/queries/RequestsQuery";
 import type { Connection } from "restlay/ConnectionQuery";
-import colors from "shared/colors";
 import type { Request } from "data/types";
 import { useOrganization } from "components/OrganizationContext";
 import CircleProgress from "components/base/CircleProgress";
 import Card from "components/base/Card";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import Absolute from "components/base/Absolute";
 import Text from "components/base/Text";
 import Widget, { connectWidget } from "./Widget";
@@ -40,16 +40,15 @@ function QuorumWidget(props: Props) {
     !updateQuorumRequest && !revokeAdminRequest && !addAdminRequest;
   let editBtn = (
     <Absolute top={10} right={10}>
-      <Button
-        disabled={!canEdit}
-        customColor={colors.text}
-        variant="filled"
-        size="tiny"
-        onClick={onEdit}
-        data-test="edit-admin-rule"
-      >
-        Edit admin rule
-      </Button>
+      <Tooltip title="Edit Admin Rule" placement="left">
+        <Button
+          disabled={!canEdit}
+          onClick={onEdit}
+          data-test="edit-admin-rule"
+        >
+          <FaPen />
+        </Button>
+      </Tooltip>
     </Absolute>
   );
   if (!canEdit) {

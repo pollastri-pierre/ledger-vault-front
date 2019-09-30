@@ -12,7 +12,7 @@ import { login } from "redux/modules/auth";
 import type { Translate } from "data/types";
 
 import VaultCentered from "components/VaultCentered";
-import { ModalFooterButton } from "components/base/Modal";
+import Button from "components/base/Button";
 import Absolute from "components/base/Absolute";
 import InputField from "components/InputField";
 import Text from "components/base/Text";
@@ -80,15 +80,15 @@ class Welcome extends Component<Props, State> {
               placeholder={t("welcome:placeholder_domain")}
             />
             <Text i18nKey="welcome:domain_description" />
-            <Absolute right={15} bottom={0}>
-              <ModalFooterButton
+            <Absolute right={15} bottom={10}>
+              <Button
+                type="filled"
                 data-test="continue_button"
-                color={colors.ocean}
                 onClick={this.onSubmit}
                 isDisabled={!domain}
               >
                 <Text i18nKey="common:continue" />
-              </ModalFooterButton>
+              </Button>
             </Absolute>
           </Box>
         </Card>

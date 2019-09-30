@@ -3,16 +3,14 @@
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
-import { FaArrowRight, FaArrowLeft, FaCheck } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 
 import colors, { opacity } from "shared/colors";
 import Box from "components/base/Box";
-import {
-  ModalFooterButton,
-  ModalClose,
-  RichModalFooter,
-} from "components/base/Modal";
+import { ModalClose, RichModalFooter } from "components/base/Modal";
+import Button from "components/base/Button";
 import Text from "components/base/Text";
+import Absolute from "components/base/Absolute";
 
 import type {
   MultiStepsFlowStep as MultiStepsFlowStepType,
@@ -34,14 +32,12 @@ type Props<T, P> = {
 type State<T> = {
   cursor: number,
   payload: T,
-  isNextLoading: boolean,
 };
 
 class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   state: State<T> = {
     cursor: this.props.initialCursor || 0,
     payload: this.props.initialPayload,
-    isNextLoading: false,
   };
 
   canPrev = () => this.state.cursor > 0;
@@ -64,14 +60,11 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     const { onNext } = step;
     if (onNext) {
       try {
-        this.setState(() => ({ isNextLoading: true }));
         await onNext(payload, this.updatePayload, additionalProps);
         this.setCursor(this.state.cursor + 1);
       } catch (err) {
         // FIXME handle that
         console.error(err);
-      } finally {
-        this.setState(() => ({ isNextLoading: false }));
       }
     } else {
       this.setCursor(this.state.cursor + 1);
@@ -143,7 +136,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       additionalProps,
       onClose,
     } = this.props;
-    const { cursor, payload, isNextLoading } = this.state;
+    const { cursor, payload } = this.state;
 
     const step = steps[cursor];
     const prevStep = steps[cursor - 1] || null;
@@ -176,25 +169,25 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
         </Box>
         <RichModalFooter>
           {prevStep && (
-            <FooterButton onClick={this.prev} left color={colors.lead}>
-              <FaArrowLeft style={{ marginRight: 10 }} />
-              {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
-            </FooterButton>
+            <Absolute top={25} left={20}>
+              <Button onClick={this.prev}>
+                {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
+              </Button>
+            </Absolute>
           )}
           {nextStep && (
-            <FooterButton
-              onClick={this.next}
-              right
-              isDisabled={!this.canTransitionTo(nextStep.id)}
-              color={colors.ocean}
-              isLoading={isNextLoading}
-            >
-              {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
-              <FaArrowRight style={{ marginLeft: 10 }} />
-            </FooterButton>
+            <Absolute top={25} right={20}>
+              <Button
+                type="filled"
+                onClick={this.next}
+                disabled={!this.canTransitionTo(nextStep.id)}
+              >
+                {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
+              </Button>
+            </Absolute>
           )}
           {Cta && (
-            <CtaContainer>
+            <Absolute top={15} right={20}>
               <Cta
                 payload={payload}
                 onClose={onClose}
@@ -204,7 +197,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
                 updatePayload={this.updatePayload}
                 {...additionalProps}
               />
-            </CtaContainer>
+            </Absolute>
           )}
         </RichModalFooter>
       </Box>
@@ -302,19 +295,6 @@ const StepName = styled(Box).attrs({
     cursor: pointer;
     color: ${colors.legacyDarkGrey3};
   }
-`;
-
-const FooterButton = styled(ModalFooterButton)`
-  position: absolute;
-  left: ${p => (p.left ? "15px" : "auto")};
-  right: ${p => (p.right ? "15px" : "auto")};
-`;
-
-export const CtaContainer = styled.div`
-  position: absolute;
-  padding-right: 15px;
-  right: 0;
-  bottom: 0;
 `;
 
 export default MultiStepsFlow;

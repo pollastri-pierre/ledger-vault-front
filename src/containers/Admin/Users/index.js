@@ -43,9 +43,10 @@ class Users extends PureComponent<Props> {
 
   ActionComponent = () => (
     <Box noShrink>
-      <AddLink onClick={this.inviteUser}>
-        <Text i18nKey="inviteUser:inviteLink" />
-      </AddLink>
+      <AddLink
+        onClick={this.inviteUser}
+        title={<Text i18nKey="inviteUser:inviteLink" />}
+      />
     </Box>
   );
 

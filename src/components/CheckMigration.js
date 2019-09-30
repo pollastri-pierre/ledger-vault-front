@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
-import { FaHourglassHalf, FaCheck, FaArrowRight } from "react-icons/fa";
+import { FaHourglassHalf, FaCheck } from "react-icons/fa";
 
 import colors from "shared/colors";
 import AccountsToMigrateQuery from "api/queries/AccountsToMigrateQuery";
@@ -23,13 +23,11 @@ import AccountName from "components/AccountName";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import ApprovalsRules from "components/ApprovalsRules";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import Modal, {
-  ModalClose,
-  ModalFooterButton,
-  ModalFooter,
-} from "components/base/Modal";
+import Modal, { ModalClose } from "components/base/Modal";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
+import Button from "components/base/Button";
+import Absolute from "components/base/Absolute";
 import { RestlayTryAgain } from "components/TryAgain";
 
 type Props = {
@@ -96,15 +94,12 @@ const CheckMigration = (props: Props) => {
           </AccountsToMigrate>
         </Box>
         {isFinished && (
-          <Box height={40}>
-            <ModalFooter>
-              <ModalFooterButton color={colors.ocean} onClick={onClose}>
-                <Box align="center" horizontal flow={10}>
-                  <span>Access the Vault</span>
-                  <FaArrowRight />
-                </Box>
-              </ModalFooterButton>
-            </ModalFooter>
+          <Box height={40} position="relative">
+            <Absolute top={20} right={20}>
+              <Button type="filled" onClick={onClose}>
+                <Text>Access the Vault</Text>
+              </Button>
+            </Absolute>
           </Box>
         )}
       </Box>
@@ -165,24 +160,19 @@ const AccountToMigrate = ({
             rules={payload.rules}
             onChange={onRulesChange}
           />
-          <Box
-            horizontal
-            align="flex-end"
-            justify="flex-end"
-            height={80}
-            mb={-20}
-            mr={-5}
-          >
-            <ApproveRequestButton
-              disabled={!isValid}
-              interactions={createAndApprove("ACCOUNT")}
-              onSuccess={onMigrationSuccess}
-              additionalFields={{
-                type: isMigrated ? "MIGRATE_ACCOUNT" : "EDIT_ACCOUNT",
-                data,
-              }}
-              buttonLabel="Update account"
-            />
+          <Box height={80} position="relative">
+            <Absolute top={20} right={20}>
+              <ApproveRequestButton
+                disabled={!isValid}
+                interactions={createAndApprove("ACCOUNT")}
+                onSuccess={onMigrationSuccess}
+                additionalFields={{
+                  type: isMigrated ? "MIGRATE_ACCOUNT" : "EDIT_ACCOUNT",
+                  data,
+                }}
+                buttonLabel="Update account"
+              />
+            </Absolute>
           </Box>
         </>
       )}

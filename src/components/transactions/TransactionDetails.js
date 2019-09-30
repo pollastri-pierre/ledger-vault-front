@@ -13,8 +13,10 @@ import TransactionWithAccountQuery from "api/queries/TransactionWithAccountQuery
 import ProfileQuery from "api/queries/ProfileQuery";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import { CardError } from "components/base/Card";
-import { ModalFooterButton } from "components/base/Modal";
+import Button from "components/base/Button";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
+import Absolute from "components/base/Absolute";
 import EntityModal from "components/EntityModal";
 import { FetchEntityHistory } from "components/EntityHistory";
 import type { Transaction, Account } from "data/types";
@@ -47,18 +49,18 @@ function TransactionDetails(props: Props) {
     : null;
 
   const footer = url ? (
-    <Box grow align="flex-end">
+    <Absolute top={20} right={20}>
       <a target="_blank" rel="noopener noreferrer" href={url}>
-        <ModalFooterButton>
+        <Button type="outline" variant="info">
           <Box horizontal align="center" flow={5}>
-            <FaExternalLinkAlt />
-            <span>
+            <Text>
               <Trans i18nKey="transactionDetails:explore" />
-            </span>
+            </Text>
+            <FaExternalLinkAlt />
           </Box>
-        </ModalFooterButton>
+        </Button>
       </a>
-    </Box>
+    </Absolute>
   ) : null;
 
   return (

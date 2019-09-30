@@ -20,6 +20,7 @@ form.shadow = formShadows;
 
 const colors = {
   spinner: "hsl(0, 0%, 60%)",
+  bLive: "#6490f1",
   night: "#1d2028",
   mouse: "#e2e2e2",
   green: "rgb(102, 190, 84)",
@@ -133,4 +134,11 @@ function lighten(c, n) {
     .string();
 }
 
-export { colors as default, opacity, darken, lighten };
+function rgba(c, a) {
+  return color(c)
+    .alpha(a)
+    .rgb()
+    .toString();
+}
+
+export { colors as default, opacity, darken, lighten, rgba };

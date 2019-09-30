@@ -42,6 +42,9 @@
   "updated_provide_rule": "Provide transaction rules",
   "updated_provide_rule_subtext": "You must define the transaction rules of this account before you can create new transactions",
   "backButton": "All accounts",
-  "sync_button": "synchronize",
-  "synced": "Synchronized"
+  "sync_button": "Synchronize",
+  "synced": "Synchronized",
+  "sendButton": "Send",
+  "receiveButton": "Receive",
+  "navigateParent": "Go to parent account"
 }

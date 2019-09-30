@@ -9,7 +9,6 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import type { User } from "data/types";
-import colors from "shared/colors";
 import { createAndApprove } from "device/interactions/hsmFlows";
 import { useMe } from "components/UserContextProvider";
 
@@ -30,7 +29,6 @@ function UserDetails(props: Props) {
     <ApproveRequestButton
       interactions={createAndApprove("PERSON")}
       onSuccess={close}
-      color={colors.grenade}
       isRevoke
       disabled={false}
       additionalFields={{

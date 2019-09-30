@@ -9,7 +9,7 @@ import { isAccountOutdated } from "utils/accounts";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import type { Account } from "data/types";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import colors, { opacity, darken } from "shared/colors";
 
 type Props = {
@@ -35,7 +35,7 @@ class AccountWarning extends Component<Props> {
     const isOutdated = isAccountOutdated(account);
 
     if (!showViewOnlyWarning && !isOutdated) return null;
-
+    // \o/
     return (
       <Box align="center">
         {showViewOnlyWarning && (
@@ -45,8 +45,8 @@ class AccountWarning extends Component<Props> {
             </Text>
             <Button
               onClick={this.editAccount}
-              variant="filled"
-              customColor={darken(colors.warning, 0.2)}
+              type="outline"
+              variant="warning"
               data-test="view_only_provide_rules"
             >
               <Trans i18nKey="accountView:view_only_provide_rules" />
@@ -58,12 +58,7 @@ class AccountWarning extends Component<Props> {
             <Text>
               <Trans i18nKey="accountView:updated_provide_rule_subtext" />
             </Text>
-            <Button
-              onClick={this.editAccount}
-              variant="filled"
-              data-test="view_only_provide_rules"
-              customColor={darken(colors.warning, 0.2)}
-            >
+            <Button onClick={this.editAccount} type="outline" variant="warning">
               <Trans i18nKey="accountView:view_only_provide_rules" />
             </Button>
           </Warning>

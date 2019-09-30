@@ -12,7 +12,8 @@ import type { Account, FreshAddress } from "data/types";
 import { verifyAddressFlow } from "device/interactions/hsmFlows";
 import colors from "shared/colors";
 import { RichModalHeader } from "components/base/Modal";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
+import Text from "components/base/Text";
 import Copy from "components/base/Copy";
 import { Label } from "components/base/form";
 import SelectAccount from "components/SelectAccount";
@@ -98,19 +99,20 @@ const VerifyFreshAddress = connectData(
           <Box grow="1">
             <Button
               onClick={() => setVerifying(true)}
-              type="submit"
-              variant="filled"
+              type="filled"
               data-test="verifyaddress"
-              IconLeft={hasBeenVerified === false ? IconRetry : IconBlue}
               disabled={isVerifying}
             >
-              {hasBeenVerified === true ? (
-                <Trans i18nKey="receive:verifyAgain" />
-              ) : hasBeenVerified === false ? (
-                <Trans i18nKey="receive:retry" />
-              ) : (
-                <Trans i18nKey="receive:verify" />
-              )}
+              <Box horizontal flow={10} align="center" justify="center">
+                {hasBeenVerified === false ? <IconRetry /> : <IconBlue />}
+                {hasBeenVerified === true ? (
+                  <Text i18nKey="receive:verifyAgain" />
+                ) : hasBeenVerified === false ? (
+                  <Text i18nKey="receive:retry" />
+                ) : (
+                  <Text i18nKey="receive:verify" />
+                )}
+              </Box>
             </Button>
           </Box>
         </Box>

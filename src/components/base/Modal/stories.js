@@ -6,18 +6,16 @@ import { boolean } from "@storybook/addon-knobs";
 import { FaUser } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 
-import colors from "shared/colors";
 import Modal, {
   ConfirmModal,
   RichModalHeader,
   RichModalFooter,
   RichModalTabsContainer,
   RichModalTab,
-  ModalFooterButton,
 } from "components/base/Modal";
 import Box from "components/base/Box";
+import Button from "components/base/Button";
 import Text from "components/base/Text";
-import Button from "components/legacy/Button";
 
 storiesOf("components/base/modals", module)
   .add("RichModal", () => (
@@ -30,8 +28,11 @@ storiesOf("components/base/modals", module)
           <RichModalTab to="details">Details</RichModalTab>
           <RichModalTab to="history">History</RichModalTab>
         </RichModalTabsContainer>
-        <Button size="tiny" type="submit" variant="filled" IconLeft={MdEdit}>
-          Take action
+        <Button small>
+          <Box horizontal flow={5} align="center" justify="center">
+            <MdEdit />
+            <Text>Take action</Text>
+          </Box>
         </Button>
       </RichModalHeader>
 
@@ -47,8 +48,8 @@ storiesOf("components/base/modals", module)
           align="flex-end"
           justify="space-between"
         >
-          <ModalFooterButton color={colors.ocean}>Do this</ModalFooterButton>
-          <ModalFooterButton color={colors.grenade}>Do that</ModalFooterButton>
+          <Button type="primary">Do this</Button>
+          <Button type="danger">Do that</Button>
         </Box>
       </RichModalFooter>
     </Modal>
