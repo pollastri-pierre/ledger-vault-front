@@ -70,9 +70,9 @@ function Welcome(props: { history: MemoryHistory }) {
               type="filled"
               data-test="continue_button"
               onClick={onSubmit}
-              isDisabled={!domain}
+              disabled={!domain}
             >
-              <Text i18nKey="common:continue" />
+              <Text i18nKey="welcome:signin" />
             </Button>
           </Absolute>
         </Box>
