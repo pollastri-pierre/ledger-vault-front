@@ -177,7 +177,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
         </Box>
         <RichModalFooter
           style={
-            hideBack
+            cursor === 0 || hideBack
               ? { justifyContent: "flex-end" }
               : { justifyContent: "space-between" }
           }
