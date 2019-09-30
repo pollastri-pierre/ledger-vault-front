@@ -71,10 +71,10 @@ const buttonStyles: { [_: string]: Object } = {
       background: ${darken(getBgByVariant(p), 0.1)};
     `,
     hover: p => `
-      background: ${opacity(getBgByVariant(p), 0.5)};
+      background: ${darken(getBgByVariant(p), 0.05)};
     `,
     focus: p => `
-      box-shadow: 0 0 0 1px ${rgba(getBgByVariant(p), 0.5)} inset,
+      box-shadow: 0 0 0 1px ${darken(getBgByVariant(p), 0.2)} inset,
       0 0 0 1px ${rgba(getBgByVariant(p), 0.3)},
       0 0 0 2px ${rgba(getBgByVariant(p), 0.3)}`,
   },
@@ -93,8 +93,8 @@ const buttonStyles: { [_: string]: Object } = {
   outline: {
     default: p => `
       background: transparent;
-      border: 1px solid ${getBgByVariant(p)};
-      color: ${darken(getColorByVariant(p), 0.4)};
+      border: 2px solid ${getBgByVariant(p)};
+      color: ${getColorByVariant(p)};
     `,
     hover: p => `
       background: ${rgba(getBgByVariant(p), 0.1)};

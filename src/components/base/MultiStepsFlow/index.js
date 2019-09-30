@@ -10,7 +10,6 @@ import Box from "components/base/Box";
 import { ModalClose, RichModalFooter } from "components/base/Modal";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
-import Absolute from "components/base/Absolute";
 
 import type {
   MultiStepsFlowStep as MultiStepsFlowStepType,
@@ -167,37 +166,33 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
         <Box grow p={40} style={styles.content}>
           <Step {...stepProps} />
         </Box>
-        <RichModalFooter>
-          {prevStep && (
-            <Absolute top={25} left={20}>
-              <Button onClick={this.prev}>
-                {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
-              </Button>
-            </Absolute>
+        <RichModalFooter style={{ justifyContent: "space-between" }}>
+          {prevStep ? (
+            <Button onClick={this.prev}>
+              {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
+            </Button>
+          ) : (
+            <div />
           )}
           {nextStep && (
-            <Absolute top={25} right={20}>
-              <Button
-                type="filled"
-                onClick={this.next}
-                disabled={!this.canTransitionTo(nextStep.id)}
-              >
-                {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
-              </Button>
-            </Absolute>
+            <Button
+              type="filled"
+              onClick={this.next}
+              disabled={!this.canTransitionTo(nextStep.id)}
+            >
+              {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
+            </Button>
           )}
           {Cta && (
-            <Absolute top={15} right={20}>
-              <Cta
-                payload={payload}
-                onClose={onClose}
-                isEditMode={this.props.isEditMode}
-                initialPayload={initialPayload}
-                transitionTo={this.transitionTo}
-                updatePayload={this.updatePayload}
-                {...additionalProps}
-              />
-            </Absolute>
+            <Cta
+              payload={payload}
+              onClose={onClose}
+              isEditMode={this.props.isEditMode}
+              initialPayload={initialPayload}
+              transitionTo={this.transitionTo}
+              updatePayload={this.updatePayload}
+              {...additionalProps}
+            />
           )}
         </RichModalFooter>
       </Box>

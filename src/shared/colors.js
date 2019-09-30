@@ -25,7 +25,7 @@ const colors = {
   mouse: "#e2e2e2",
   green: "rgb(102, 190, 84)",
   ocean: "#27d0e2",
-  grenade: "#ea2e49",
+  grenade: "#d67080",
   argile: "#eeeeee",
   lightGrey: "#d8d8d8",
   mediumGrey: "#bbbbbb",

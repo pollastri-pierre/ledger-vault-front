@@ -80,7 +80,7 @@ class Welcome extends Component<Props, State> {
               placeholder={t("welcome:placeholder_domain")}
             />
             <Text i18nKey="welcome:domain_description" />
-            <Absolute right={15} bottom={10}>
+            <Absolute right={20} bottom={20}>
               <Button
                 type="filled"
                 data-test="continue_button"

@@ -3,7 +3,6 @@
 import React, { PureComponent } from "react";
 
 import Button from "components/base/Button";
-import Box from "components/base/Box";
 import DeviceInteraction from "components/DeviceInteraction";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import { ConfirmModal } from "components/base/Modal";
@@ -88,17 +87,15 @@ class ApproveRequestButton extends PureComponent<Props, State> {
             additionalFields={additionalFields}
           />
         ) : (
-          <Box mt={10} mb={10}>
-            <Button
-              type="filled"
-              variant={isRevoke ? "danger" : "primary"}
-              disabled={disabled}
-              data-test="approve_button"
-              onClick={withConfirm ? this.openConfirmModal : this.onCreate}
-            >
-              {buttonLabel}
-            </Button>
-          </Box>
+          <Button
+            type={isRevoke ? "outline" : "filled"}
+            variant={isRevoke ? "danger" : "primary"}
+            disabled={disabled}
+            data-test="approve_button"
+            onClick={withConfirm ? this.openConfirmModal : this.onCreate}
+          >
+            {buttonLabel}
+          </Button>
         )}
         {withConfirm && confirmContent && (
           <ConfirmModal
