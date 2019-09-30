@@ -40,6 +40,7 @@ class AbortRequestButton extends PureComponent<Props, State> {
         new RequestsQuery({
           status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
           pageSize: -1,
+          order: "asc",
         }),
       );
       onSuccess();
