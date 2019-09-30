@@ -10,7 +10,7 @@ import { getStyles } from "./helpers";
 type ButtonType = "filled" | "outline" | "link";
 type ButtonVariant = "primary" | "danger" | "warning" | "info";
 
-export type ButtonProps = {
+export type ButtonProps = {|
   children?: React$Node,
   type?: ButtonType,
   variant?: ButtonVariant,
@@ -18,7 +18,8 @@ export type ButtonProps = {
   onClick?: Function,
   small?: boolean,
   circular?: boolean,
-};
+  "data-test"?: string,
+|};
 
 export const ButtonBase = styled.div.attrs(p => ({
   px: p.circular ? 12 : p.small ? 16 : 25,
@@ -55,7 +56,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   }
 `;
 
-export default function Button(props: ButtonProps) {
+function Button(props: ButtonProps, ref: any) {
   const { onClick, children, small, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -76,6 +77,7 @@ export default function Button(props: ButtonProps) {
       small={small}
       isLoading={isLoading}
       onClick={handleClick}
+      ref={ref}
     >
       <Container isLoading={isLoading}>{children}</Container>
       {isLoading && (
@@ -84,6 +86,8 @@ export default function Button(props: ButtonProps) {
     </ButtonBase>
   );
 }
+
+export default React.forwardRef<ButtonProps, typeof Button>(Button);
 
 const Container = styled(Box)`
   opacity: ${p => (p.isLoading ? 0 : 1)};

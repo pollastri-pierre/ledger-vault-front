@@ -28,7 +28,7 @@ export const fromStringRoleToBytes = {
 };
 
 const USE_TRANSPORT_U2F = true; // localStorage.getItem("U2F");
-const FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB");
+const FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB") === "1";
 const mockTransport = Promise.resolve({ close: () => Promise.resolve() });
 
 if (USE_TRANSPORT_U2F && !FORCE_WEB_USB) {

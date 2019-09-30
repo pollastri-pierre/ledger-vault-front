@@ -14,6 +14,7 @@ import VaultCentered from "components/VaultCentered";
 import Button from "components/base/Button";
 import Absolute from "components/base/Absolute";
 import InputField from "components/InputField";
+import TransportChooser from "components/TransportChooser";
 import Text from "components/base/Text";
 import Card from "components/base/Card";
 import Box from "components/base/Box";
@@ -53,6 +54,9 @@ function Welcome(props: { history: MemoryHistory }) {
   return (
     <VaultCentered>
       <Card overflow="visible" height={350} position="relative">
+        <Absolute top={10} right={10}>
+          <TransportChooser />
+        </Absolute>
         <Box flow={20} px={20} pt={60} align="center">
           <FaUser color={colors.lightGrey} size={32} />
           <InputField
