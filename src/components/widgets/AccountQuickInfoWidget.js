@@ -42,7 +42,6 @@ type Props = {
 function AccountQuickInfoWidget(props: Props) {
   const { account } = props;
   const me = useMe();
-
   const icon = getIcon(account);
   const displayName = getDisplayName(account);
 
@@ -89,26 +88,31 @@ function AccountQuickInfoWidget(props: Props) {
               {account.name}
             </Text>
           </InfoSquare>
-          <InfoSquare>
-            <Label align="center" horizontal flow={5}>
-              <FaCoins />
-              <span>Balance</span>
-            </Label>
-            <Text header select noWrap>
-              <CurrencyAccountValue account={account} value={account.balance} />
-              <Text small color={colors.textLight}>
-                <CounterValue
+          {account.status !== "PENDING" && (
+            <InfoSquare>
+              <Label align="center" horizontal flow={5}>
+                <FaCoins />
+                <span>Balance</span>
+              </Label>
+              <Text header select noWrap>
+                <CurrencyAccountValue
+                  account={account}
                   value={account.balance}
-                  fromAccount={account}
-                  renderNA={
-                    account.account_type === "Erc20" ? (
-                      <ERC20CountervalueUnavailable account={account} />
-                    ) : null
-                  }
                 />
+                <Text small color={colors.textLight}>
+                  <CounterValue
+                    value={account.balance}
+                    fromAccount={account}
+                    renderNA={
+                      account.account_type === "Erc20" ? (
+                        <ERC20CountervalueUnavailable account={account} />
+                      ) : null
+                    }
+                  />
+                </Text>
               </Text>
-            </Text>
-          </InfoSquare>
+            </InfoSquare>
+          )}
           <InfoSquare>
             <Label align="center" horizontal flow={5}>
               <FaTicketAlt />
