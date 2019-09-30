@@ -64,16 +64,12 @@ function AccountQuickInfoWidget(props: Props) {
             </Box>
           </Button>
         </Link>
+        <SyncButton account={account} />
       </Box>
     ) : null;
 
   const widget = (
-    <Widget
-      title={title}
-      titleRight={<SyncButton account={account} />}
-      grow
-      position="relative"
-    >
+    <Widget titleRight={title} grow position="relative">
       <SoftCard grow flow={20} style={{ padding: 0 }}>
         <Box horizontal flexWrap="wrap">
           <InfoSquare>

@@ -32,13 +32,8 @@ const SyncButton = (props: Props) => {
     return promise;
   };
   return !synced ? (
-    <Button type="filled" small onClick={forceSync}>
-      <Box horizontal flow={5} align="center">
-        <FaSync />
-        <Text
-          i18nKey={synced ? "accountView:synced" : "accountView:sync_button"}
-        />
-      </Box>
+    <Button type="filled" variant="info" small onClick={forceSync}>
+      <FaSync />
     </Button>
   ) : (
     <Box horizontal flow={5} align="center">

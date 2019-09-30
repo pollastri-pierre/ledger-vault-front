@@ -35,7 +35,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: ${p => (p.circular ? "50%" : "5px")};
+  border-radius: ${p => (p.circular ? "50%" : "2px")};
   cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
   pointer-events: ${p => (p.disabled || p.isLoading ? "none" : "auto")};
   text-decoration: ${p => (p.link ? "underline" : "none")};
