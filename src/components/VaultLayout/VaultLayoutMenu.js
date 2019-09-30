@@ -32,7 +32,10 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
       globalAnimation,
       items,
     } = this.props;
-    const whiteBackgroundStyle = getBgStyle(globalAnimation);
+    const whiteBackgroundStyle = getBgStyle(globalAnimation, {
+      isFloating,
+      isOpened,
+    });
     const toggleArrowStyle = getArrowStyle(globalAnimation);
     const headerStyle = getHeaderStyle(globalAnimation);
     const arrowIcon = isOpened ? arrowLeft : arrowRight;
@@ -160,9 +163,13 @@ const VaultLayoutMenuHeader = ({
   </VaultLayoutMenuHeaderComponent>
 );
 
-function getBgStyle(globalAnimation) {
+function getBgStyle(globalAnimation, options) {
   return {
     ...styles.whiteBackground,
+    pointerEvents:
+      !options.isFloating || !options.isOpened
+        ? "none"
+        : styles.whiteBackground.pointerEvents,
     transform: [
       {
         translateX: globalAnimation.interpolate({
