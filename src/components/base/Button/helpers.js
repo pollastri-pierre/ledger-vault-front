@@ -1,6 +1,6 @@
 // @flow
 
-import colors, { opacity, lighten, darken, rgba } from "shared/colors";
+import colors, { opacity, darken, rgba } from "shared/colors";
 
 import type { ButtonProps } from "./";
 
@@ -84,10 +84,12 @@ const buttonStyles: { [_: string]: Object } = {
       color: ${p.disabled ? colors.steel : getBgByVariant(p)};
     `,
     hover: p => `
-      color: ${lighten(getBgByVariant(p), 0.1)};
+      color: ${getBgByVariant(p)};
+      background: ${opacity(getBgByVariant(p), 0.05)};
      `,
     active: p => `
       color: ${darken(getBgByVariant(p), 0.1)};
+      background: ${opacity(getBgByVariant(p), 0.1)};
      `,
   },
   outline: {

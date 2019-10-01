@@ -1,6 +1,7 @@
 {
   "domain_description": "Enter the name of your workspace to sign in",
   "help": "Help",
+  "signin": "Sign in",
   "placeholder_domain": "Workspace name",
   "migration": {
     "settingUp": "Setting up the workspace...",
