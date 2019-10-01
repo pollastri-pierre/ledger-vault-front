@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { space, color } from "styled-system";
 import Loader from "components/base/Loader";
@@ -57,8 +57,16 @@ export const ButtonBase = styled.div.attrs(p => ({
 `;
 
 function Button(props: ButtonProps, ref: any) {
+  const isUnmounted = useRef(false);
   const { onClick, children, small, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(
+    () => () => {
+      isUnmounted.current = true;
+    },
+    [],
+  );
 
   const handleClick = () => {
     if (!onClick) return;
@@ -67,7 +75,9 @@ function Button(props: ButtonProps, ref: any) {
       .then(onClick)
       .catch(e => e)
       .finally(() => {
-        setIsLoading(false);
+        if (isUnmounted.current === false) {
+          setIsLoading(false);
+        }
       });
   };
 
