@@ -9,7 +9,7 @@ const Text = styled.div`
   ${space};
   ${color};
   display: ${p => (p.inline ? "inline-block" : "block")};
-  font-family: "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Inter", "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: ${p =>
     p.header
       ? "18px"
