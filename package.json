@@ -33,6 +33,7 @@
     "cypress:run:erc20_account": "cypress run --spec 'cypress/integration/Drop2/03_Accounts/04_erc20_accounts.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:view_only_account": "cypress run --spec 'cypress/integration/Drop2/03_Accounts/05_view_only_accounts.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:xrp_account": "cypress run --spec 'cypress/integration/Drop2/03_Accounts/06_xrp_accounts.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+    "cypress:run:xrp_tx": "cypress run --spec 'cypress/integration/Drop2/04_Transactions/01_xrp_tx.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:operator": "cypress run --spec 'cypress/integration/Drop2/05_Operator/01_operator.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:revoke": "cypress run --spec 'cypress/integration/Drop2/05_Operator/02_revoke_user.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:edit_admin_rule": "cypress run --spec 'cypress/integration/Drop2/06_Admin/01_edit_admin_rule.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",

@@ -36,14 +36,12 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=1]").click();
     cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
+    cy.wait(2500);
     successfull_message();
-    cy.wait(2000);
     cy.get("[data-test=0]").click();
     cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
+    cy.wait(2500);
     successfull_message();
-    cy.wait(2000);
   });
 });

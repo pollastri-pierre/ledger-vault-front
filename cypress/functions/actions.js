@@ -286,7 +286,7 @@ export function create_erc20_with_viewonly_eth_account(
 export function provide_viewonly_rule(name, groups, user1) {
   cy.get("[data-test=view_only_provide_rules]").click();
   cy.wait(5500);
-  cy.get("[data-test=account_childname]").should("have.value", name);
+  cy.get("[data-test=account_name]").should("have.value", name);
   cy.contains("Next").click();
   cy.get("#input_groups_users")
     .type(groups, { force: true })

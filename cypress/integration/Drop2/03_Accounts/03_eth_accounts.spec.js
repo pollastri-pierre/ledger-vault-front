@@ -34,9 +34,8 @@ describe("Test Case for Account", function() {
     cy.contains("Awaiting approval").click();
     cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
+    cy.wait(3500);
     successfull_message();
-    cy.wait(2000);
   });
 
   it("Create Ethereum Ropsten Account", () => {
@@ -62,8 +61,7 @@ describe("Test Case for Account", function() {
     cy.contains("Awaiting approval").click();
     cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
+    cy.wait(2500);
     successfull_message();
-    cy.wait(2000);
   });
 });

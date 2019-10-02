@@ -37,7 +37,6 @@ describe("Test Case for Account", function() {
     cy.wait(2500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
-    cy.wait(2000);
   });
 
   it("Create the same erc20 account on the same eth account should fail", () => {
@@ -56,7 +55,7 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/accounts");
     create_erc20_with_viewonly_eth_account(
       "ATM",
-      "Chain2B",
+      "ATM Test",
       "Limecoin",
       "APAC",
       "Claudia",
@@ -64,7 +63,7 @@ describe("Test Case for Account", function() {
     success_creation_account();
   });
 
-  it("Approve DAI token Account", () => {
+  it("Approve ATM token Account", () => {
     cy.server();
     route();
     logout();
@@ -74,6 +73,5 @@ describe("Test Case for Account", function() {
     cy.wait(2500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
-    cy.wait(2000);
   });
 });

@@ -34,9 +34,8 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
+    cy.wait(2500);
     successfull_message();
-    cy.wait(2000);
   });
 
   it("Create Bitcoin Testnet Account", () => {
@@ -62,9 +61,7 @@ describe("Test Case for Account", function() {
     cy.contains("Awaiting approval").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
-    successfull_message();
-    cy.wait(2000);
+    cy.wait(2500);
   });
 
   it("Create a account with the same name should fail", () => {
