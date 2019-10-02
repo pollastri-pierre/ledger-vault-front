@@ -1,10 +1,9 @@
 // @flow
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { space, color } from "styled-system";
 import Loader from "components/base/Loader";
-import Box from "components/base/Box";
 import { getStyles } from "./helpers";
 
 type ButtonType = "filled" | "outline" | "link";
@@ -57,8 +56,16 @@ export const ButtonBase = styled.div.attrs(p => ({
 `;
 
 function Button(props: ButtonProps, ref: any) {
+  const isUnmounted = useRef(false);
   const { onClick, children, small, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(
+    () => () => {
+      isUnmounted.current = true;
+    },
+    [],
+  );
 
   const handleClick = () => {
     if (!onClick) return;
@@ -67,7 +74,9 @@ function Button(props: ButtonProps, ref: any) {
       .then(onClick)
       .catch(e => e)
       .finally(() => {
-        setIsLoading(false);
+        if (isUnmounted.current === false) {
+          setIsLoading(false);
+        }
       });
   };
 
@@ -89,6 +98,6 @@ function Button(props: ButtonProps, ref: any) {
 
 export default React.forwardRef<ButtonProps, typeof Button>(Button);
 
-const Container = styled(Box)`
+const Container = styled.div`
   opacity: ${p => (p.isLoading ? 0 : 1)};
 `;

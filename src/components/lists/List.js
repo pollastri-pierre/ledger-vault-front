@@ -30,6 +30,7 @@ export const ListItem = styled.div`
   position: relative;
   &:hover {
     cursor: ${p => (p.onClick ? "pointer" : "")};
+    background: ${colors.form.bg};
   }
 `;
 

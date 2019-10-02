@@ -13,7 +13,7 @@ export default createGlobalStyle`
 
   body {
     margin: 0;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Inter", "Open Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
     color: ${colors.text};
     font-size: 13px;

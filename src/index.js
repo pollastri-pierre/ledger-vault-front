@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import jss from "jss";
 import ReactDOM from "react-dom";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
@@ -12,26 +13,34 @@ import GlobalLoading from "components/GlobalLoading";
 import network from "network";
 import theme, { styledTheme } from "styles/theme";
 import OrganizationAppRouter from "containers/OrganizationAppRouter";
-import jss from "jss";
-import MuseoWoff from "assets/fonts/MuseoSans_500-webfont.woff";
+
+import InterRegular from "assets/fonts/Inter-Regular.woff2";
+import InterBold from "assets/fonts/Inter-Bold.woff2";
+
 import i18n from "./i18n";
 
 jss
   .createStyleSheet({
-    "@font-face": {
-      "font-family": "Museo",
-      src: [`url('${MuseoWoff}') format('woff')`],
-    },
+    "@font-face": [
+      {
+        "font-family": "Inter",
+        "font-style": "normal",
+        "font-weight": "normal",
+        src: [`url('${InterRegular}') format('woff2')`],
+      },
+      {
+        "font-family": "Inter",
+        "font-style": "normal",
+        "font-weight": "bold",
+        src: [`url('${InterBold}') format('woff2')`],
+      },
+    ],
   })
   .attach();
-// injectTapEventPlugin(); // Required by Material-UI
 
 const muiTheme = createMuiTheme(theme);
-
 const locale = window.localStorage.getItem("locale") || "en";
-
 const store = create({ locale });
-
 const $root = document.getElementById("root");
 
 const render = Component => {

@@ -245,8 +245,7 @@ const title = {
   base: {
     fontSize: 18,
     letterSpacing: -0.2,
-    fontFamily: "Museo",
-    fontWeight: "500",
+    fontWeight: "bold",
     margin: "8px 0 30px 0",
   },
 };

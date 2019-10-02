@@ -106,11 +106,11 @@ const VerifyFreshAddress = connectData(
               <Box horizontal flow={10} align="center" justify="center">
                 {hasBeenVerified === false ? <IconRetry /> : <IconBlue />}
                 {hasBeenVerified === true ? (
-                  <Text i18nKey="receive:verifyAgain" />
+                  <Text i18nKey="receive:verifyAgain" noWrap />
                 ) : hasBeenVerified === false ? (
-                  <Text i18nKey="receive:retry" />
+                  <Text i18nKey="receive:retry" noWrap />
                 ) : (
-                  <Text i18nKey="receive:verify" />
+                  <Text i18nKey="receive:verify" noWrap />
                 )}
               </Box>
             </Button>
