@@ -29,7 +29,7 @@ import { hasPendingRequest, hasPendingEdit } from "utils/entities";
 import { isRequestAffectingAdminRules } from "utils/request";
 import type { Entity, User } from "data/types";
 
-const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
+export const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
 
 type Props<T> = {
   entity: Entity,
