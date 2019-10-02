@@ -10,6 +10,7 @@ import {
   AccountsWidget,
   TotalBalanceWidget,
   RequestsWidget,
+  LastTransactionsWidget,
 } from "components/widgets";
 
 type Props = {
@@ -20,15 +21,18 @@ type Props = {
 const OperatorDashboard = (props: Props) => {
   const { history, location } = props;
   return (
-    <ResponsiveContainer style={{ alignItems: "stretch" }}>
-      <Box flex={1} flow={20}>
-        <RequestsWidget history={history} />
-      </Box>
-      <Box flex={1} flow={20}>
-        <TotalBalanceWidget />
-        <AccountsWidget history={history} location={location} />
-      </Box>
-    </ResponsiveContainer>
+    <Box flow={20}>
+      <ResponsiveContainer style={{ alignItems: "stretch" }}>
+        <Box flex={1} flow={20}>
+          <RequestsWidget history={history} />
+        </Box>
+        <Box flex={1} flow={20}>
+          <TotalBalanceWidget />
+          <AccountsWidget history={history} location={location} />
+        </Box>
+      </ResponsiveContainer>
+      <LastTransactionsWidget />
+    </Box>
   );
 };
 
