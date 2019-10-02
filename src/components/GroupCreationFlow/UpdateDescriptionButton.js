@@ -28,7 +28,11 @@ class UpdateDescriptionButton extends Component<Props> {
 
   render() {
     return (
-      <Button onClick={this.onSubmit} type="filled">
+      <Button
+        onClick={this.onSubmit}
+        data-test="edit-desc-button"
+        type="filled"
+      >
         <Trans i18nKey="group:create.submit_edit" />
       </Button>
     );

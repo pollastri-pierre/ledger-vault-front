@@ -20,7 +20,7 @@ export default function MultiStepsSuccess(props: Props) {
       <SuccessIconWrapper>
         <Check color={colors.green} size={40} />
       </SuccessIconWrapper>
-      <Box flow={10} align="center" justify="center">
+      <Box flow={10} align="center" data-test="success_msg" justify="center">
         <Text header bold>
           {title}
         </Text>

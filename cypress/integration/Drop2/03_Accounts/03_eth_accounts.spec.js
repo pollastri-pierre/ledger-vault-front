@@ -3,6 +3,7 @@ import {
   logout,
   route,
   create_account,
+  success_creation_account,
   successfull_message,
 } from "../../../functions/actions";
 
@@ -21,7 +22,7 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     create_account("Ethereum", "Syscoin2", "Key accounts Ops", "America Ops");
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve Eth Account", () => {
@@ -49,7 +50,7 @@ describe("Test Case for Account", function() {
       "Key accounts Ops",
       "South Africa",
     );
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve Eth Ropsten Account", () => {

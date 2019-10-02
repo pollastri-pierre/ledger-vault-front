@@ -4,6 +4,7 @@ import {
   route,
   successfull_message,
   create_erc20_account_new_eth,
+  success_creation_account,
   create_erc20_with_viewonly_eth_account,
   error_message,
 } from "../../../functions/actions";
@@ -23,7 +24,7 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     create_erc20_account_new_eth("DAI", "Chain2B", "America Ops", "James");
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve DAI token Account", () => {
@@ -60,7 +61,7 @@ describe("Test Case for Account", function() {
       "APAC",
       "Claudia",
     );
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve DAI token Account", () => {

@@ -8,7 +8,7 @@ export function login(id) {
   cy.clearCookies();
   switch_device(id);
   cy.get("input[type=text]").type(orga_name, { delay: 40 });
-  cy.contains("Continue").click();
+  cy.get("[data-test=continue_button]").click();
   cy.wait(2500);
   cy.url().should("include", "/dashboard");
 }
@@ -99,150 +99,30 @@ export function cancel() {
   });
 }
 
-/**
- * Default way to create a account.
- */
-export function create_account1(currency, name) {
-  cy.get(".test-new-account").click();
-  cy.wait(2500);
-  cy.get("#input_crypto")
-    .type(currency, { force: true })
-    .type("{enter}");
-  cy.get("input[type=text]").type(name);
-  cy.get("[data-test=dialog-button]").click();
-  cy.contains("Members").click();
-  cy.get(".test-member-row")
-    .eq(0)
-    .click({ force: true });
-  cy.get(".test-member-row")
-    .eq(1)
-    .click({ force: true });
-  cy.get("[data-test=dialog-button]").click();
-  cy.contains("Approvals").click();
-
-  cy.get("input[type=text]").clear();
-  cy.get("input[type=text]").type(2);
-  cy.contains("done").click();
-  cy.get("[data-test=dialog-button]").click();
-  cy.contains("done").click();
-  cy.wait(8000);
-
-  // We should get a Account request created message
-  cy.get(".top-message-body")
-    .contains("The account request has been successfully created")
-    .get(".top-message-title")
-    .contains("account request created");
-}
-
-/**
- * Default way to create approve a account.
- */
-export function approve_account(currency, name, fiat) {
-  cy.contains("Pending").click();
-  cy.url().should("include", "/pending");
-  cy.wait(2000);
-  cy.get("[data-test=name]")
-    .contains(name)
-    .click();
-
-  // Checking Value
-  cy.get("[data-test=balance]").contains(fiat);
-  // cy.get("[data-test=balance]").contains("USD");
-  cy.get("[data-test=requested]").should("be.visible");
-  cy.get("[data-test=name]").contains(name);
-  cy.get("[data-test=currency]").contains(currency);
-  cy.get("button")
-    .contains("Approve")
-    .should("be.visible");
-  cy.get("button")
-    .contains("Abort")
-    .should("be.visible");
-  cy.get("button")
-    .contains("Close")
-    .should("be.visible");
-  cy.get("button")
-    .contains("Approve")
-    .click();
-  cy.wait(2500);
-  cy.get(".top-message-body")
-    .contains("The account request has been successfully approved")
-    .get(".top-message-title")
-    .contains("account request approved");
-}
-
-/**
- * Default way to create a transaction.
- */
-export function create_transaction(name, id, address, amount) {
-  cy.get("[data-test=new-transaction]").click();
-  cy.get("[data-test=transaction-creation-accounts]")
-    .contains(name)
-    .click();
-  cy.get("[data-test=crypto-address-picker]")
-    .find("input")
-    .type(address);
-  cy.get("[data-test=transaction-creation-amount]")
-    .find("input")
-    .type(amount);
-  cy.wait(6000);
-  cy.contains("Continue").click();
-  cy.contains("Continue").click();
-  cy.get("[data-test=dialog-button]")
-    .contains("Confirm")
-    .click({ force: true });
-  cy.wait(6500);
-  cy.get(".top-message-body")
-    .contains("The transaction request has been successfully created")
-    .get(".top-message-title")
-    .contains("transaction request created");
-}
-
-/**
- * Default way to approve a transaction.
- */
-export function approve_transaction(name) {
-  cy.contains("Pending").click();
-  cy.url().should("include", "/pending");
-  cy.wait(2000);
-  cy.get("[data-test=pending-transaction]")
-    .eq(0)
-    .click();
-  cy.get("[data-test=name]").contains(name);
-
-  cy.get("button")
-    .contains("Approve")
-    .should("be.visible");
-  cy.get("button").contains("Abort");
-  cy.get("button").contains("Close");
-  cy.get("[data-test=dialog-button]")
-    .contains("Approve")
-    .click({ force: true });
-  cy.wait(2000);
-  cy.get(".top-message-body")
-    .contains("The transaction request has been successfully approved")
-    .get(".top-message-title")
-    .contains("transaction request approved");
-}
-
 /** *****************************************************************************
  ***************************** DROP 2 *******************************************
  ****************************************************************************** */
 
 export function create_user(username, userID, role) {
-  cy.get("[data-test=buttonCreate]").click();
+  cy.get("[data-test=add-button]").click();
   cy.get(role).click();
   cy.get("[data-test=username]").type(username);
   cy.get("[data-test=userID]").type(userID);
   cy.contains("Next").click();
-  cy.get(".top-message-title").contains("User invitation created");
-  cy.get(".top-message-body").contains(
-    "The User invitation has been successfully created",
-  );
   cy.contains("Done").click();
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "User Invitation was successfully created!",
+  );
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Your request to create a user invitation was created. It can be now communicated to the user.",
+  );
+  cy.get("[data-test=close]").click();
 }
 
 export function create_group(groupName, description, user1, user2, user3) {
-  cy.get("[data-test=buttonCreate]").click();
+  cy.get("[data-test=add-button]").click();
   cy.wait(2000);
   cy.get("[data-test=group_name]").type(groupName);
   cy.get("#input_groups_users")
@@ -259,6 +139,16 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
   cy.wait(2500);
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Group Request was successfully created!",
+  );
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+  );
+
+  cy.contains("Done").click();
 }
 
 export function successfull_message() {
@@ -275,8 +165,20 @@ export function error_message(title, message) {
     .contains(message);
 }
 
+export function success_creation_account() {
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Account creation request was successfully created!",
+  );
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Your request to create an account was created and now it has a pending status until it is approved by your security scheme",
+  );
+  cy.contains("Done").click();
+}
+
 export function create_account(currency, name, group, user1) {
-  cy.get("[data-test=buttonCreate]").click();
+  cy.get("[data-test=add-button]").click();
   cy.wait(4500);
   cy.get("#input_crypto")
     .type(currency, { force: true })
@@ -304,7 +206,7 @@ export function create_erc20_account(
   group,
   user1,
 ) {
-  cy.get("[data-test=buttonCreate]").click();
+  cy.get("[data-test=add-button]").click();
   cy.wait(7500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
@@ -328,7 +230,7 @@ export function create_erc20_account(
 }
 
 export function create_erc20_account_new_eth(erc20, childname, group, user1) {
-  cy.get("[data-test=buttonCreate]").click();
+  cy.get("[data-test=add-button]").click();
   cy.wait(8500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
@@ -357,7 +259,7 @@ export function create_erc20_with_viewonly_eth_account(
   group,
   user1,
 ) {
-  cy.get("[data-test=buttonCreate]").click();
+  cy.get("[data-test=add-button]").click();
   cy.wait(5500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
@@ -384,7 +286,7 @@ export function create_erc20_with_viewonly_eth_account(
 export function provide_viewonly_rule(name, groups, user1) {
   cy.get("[data-test=view_only_provide_rules]").click();
   cy.wait(5500);
-  cy.get("[data-test=account_name]").should("have.value", name);
+  cy.get("[data-test=account_childname]").should("have.value", name);
   cy.contains("Next").click();
   cy.get("#input_groups_users")
     .type(groups, { force: true })

@@ -4,6 +4,7 @@ import {
   route,
   create_account,
   successfull_message,
+  success_creation_account,
   error_message,
 } from "../../../functions/actions";
 
@@ -22,7 +23,7 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     create_account("Bitcoin", "Coinhy.pe", "APAC", "New EMEA");
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve Btc Account", () => {
@@ -49,7 +50,7 @@ describe("Test Case for Account", function() {
       "America Ops",
       "Key accounts Ops",
     );
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve Btc Testnet Account", () => {

@@ -33,7 +33,7 @@ describe("Test Case for Groups", function() {
     cy.contains(
       "Editing the description doesn't require the approval from other Administrators or your device",
     );
-    cy.get("[data-test=update-description]").click();
+    cy.get("[data-test=edit-desc-button]").click();
     cy.get(".top-message-body")
       .contains("The group's description has been successfully saved")
       .get(".top-message-title")
