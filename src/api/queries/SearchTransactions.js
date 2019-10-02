@@ -10,6 +10,7 @@ type In = {
   label?: string,
   currency?: string,
   status?: string[],
+  pageSize?: number,
   account?: string[],
   start?: string,
   end?: string,
@@ -31,7 +32,7 @@ export default class SearchQuery extends ConnectionQuery<In, Node> {
 
   nodeSchema = schema.Transaction;
 
-  pageSize = 30;
+  pageSize = this.props.pageSize || 30;
 
   deserialize = deserializeTransaction;
 

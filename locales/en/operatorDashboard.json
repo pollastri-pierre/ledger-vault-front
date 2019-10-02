@@ -2,5 +2,6 @@
   "myRequestsTitle": "Transactions awaiting approval",
   "otherRequestsTitle": "Pending transactions",
   "myRequestsEmpty": "No transactions to approve",
-  "otherRequestsEmpty": "No transactions to track"
+  "otherRequestsEmpty": "No transactions to track",
+  "transactionsEmpty": "No transactions"
 }
