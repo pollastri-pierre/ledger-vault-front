@@ -4,12 +4,15 @@ import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router";
 import { Trans } from "react-i18next";
+import { useMe } from "components/UserContextProvider";
 import type { MemoryHistory } from "history";
 import Menu from "@material-ui/core/Menu";
+import { hasPendingRequest } from "utils/entities";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import { FaEllipsisV } from "react-icons/fa";
 
+import { EDIT_ALLOWED_STATUS } from "components/EntityModal";
 import type { Account } from "data/types";
 
 type Props = {
@@ -46,6 +49,13 @@ function AccountTableSubmenu(props: Props) {
     preventRowClick(e);
     setAnchorEl(null);
   }
+  const me = useMe();
+  const hasPendingReq = hasPendingRequest(account);
+
+  const isAbleToEdit =
+    me.role === "ADMIN" &&
+    EDIT_ALLOWED_STATUS.indexOf(account.status) > -1 &&
+    !hasPendingReq;
 
   return (
     <div>
@@ -66,9 +76,11 @@ function AccountTableSubmenu(props: Props) {
         <StyledMenuItem onClick={handleOverview}>
           <Trans i18nKey="accountDetails:tableSubmenu.overview" />
         </StyledMenuItem>
-        <StyledMenuItem onClick={handleEdit}>
-          <Trans i18nKey="accountDetails:tableSubmenu.edit" />
-        </StyledMenuItem>
+        {isAbleToEdit && (
+          <StyledMenuItem onClick={handleEdit}>
+            <Trans i18nKey="accountDetails:tableSubmenu.edit" />
+          </StyledMenuItem>
+        )}
       </Menu>
     </div>
   );
