@@ -61,4 +61,12 @@ describe("Test on Operator ", function() {
     login(11);
     approve_tx();
   });
+
+  it("Approved tx by Charles", () => {
+    cy.server();
+    route();
+    logout();
+    login(22);
+    approve_tx();
+  });
 });
