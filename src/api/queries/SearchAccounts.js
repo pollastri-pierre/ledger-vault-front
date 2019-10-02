@@ -9,6 +9,7 @@ import type { Account } from "data/types";
 
 type Input = {
   name?: string,
+  pageSize?: number,
 };
 
 type Node = Account;
@@ -25,7 +26,7 @@ const uri = (query: Input) => {
 export default class AccountsQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
-  pageSize = 30;
+  pageSize = this.props.pageSize || 30;
 
   nodeSchema = schema.Account;
 
