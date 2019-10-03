@@ -19,7 +19,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     route();
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
-    cy.get("[data-test=buttonCreate]").click();
+    cy.get("[data-test=add-button]").click();
     cy.wait(2000);
     cy.get("[data-test=group_description]").type("Key accounts Ops by cypress");
     cy.get("#input_groups_users")
@@ -77,7 +77,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     route();
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
-    cy.get("[data-test=buttonCreate]").click();
+    cy.get("[data-test=add-button]").click();
     cy.wait(1500);
     cy.get("[data-test=group_description]").type(
       "Key accounts Ops group by cypress",
