@@ -53,25 +53,25 @@ storiesOf("components/base", module).add("Button", () => (
       </Text>
       <Box horizontal flow={15}>
         <Button type="filled" variant="danger" onClick={asyncAction}>
-          <Text>Filled danger</Text>
+          Filled danger
         </Button>
         <Button type="outline" variant="warning" onClick={asyncAction}>
-          <Text>Outline warning</Text>
+          Outline warning
         </Button>
         <Button type="link" onClick={asyncAction}>
-          <Text>Link Default</Text>
+          Link Default
         </Button>
         <Button type="filled" variant="primary" onClick={asyncAction}>
-          <Text>Filled Primary</Text>
+          Filled Primary
         </Button>
         <Button type="outline" variant="primary" onClick={asyncAction}>
-          <Text>Outline Primary</Text>
+          Outline Primary
         </Button>
         <Button type="filled" variant="info" onClick={asyncAction}>
-          <Text>Filled Primary</Text>
+          Filled Primary
         </Button>
         <Button type="outline" variant="info" onClick={asyncAction}>
-          <Text>Outline Primary</Text>
+          Outline Primary
         </Button>
       </Box>
     </Box>
@@ -81,7 +81,7 @@ storiesOf("components/base", module).add("Button", () => (
       </Text>
       <Box horizontal flow={15}>
         <Button type="primary" disabled onClick={asyncAction}>
-          <Text>Disabled</Text>
+          Disabled
         </Button>
       </Box>
     </Box>
@@ -128,10 +128,10 @@ storiesOf("components/base", module).add("Button", () => (
       </Text>
       <Box horizontal flow={15}>
         <Button type="filled" small onClick={asyncAction}>
-          <Text>Small</Text>
+          Small
         </Button>
         <Button type="outline" onClick={asyncAction}>
-          <Text>Default</Text>
+          Default
         </Button>
         <Button circular type="outline" onClick={asyncAction}>
           <FaPowerOff size={12} />

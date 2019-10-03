@@ -100,4 +100,8 @@ export default React.forwardRef<ButtonProps, typeof Button>(Button);
 
 const Container = styled.div`
   opacity: ${p => (p.isLoading ? 0 : 1)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
 `;
