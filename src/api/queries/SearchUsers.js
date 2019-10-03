@@ -8,6 +8,7 @@ import type { User } from "data/types";
 
 type Input = {
   name?: string,
+  pageSize?: number,
   role?: string,
 };
 
@@ -35,7 +36,7 @@ const uri = (query: Input) => {
 export default class SearchUsersQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
-  pageSize = 30;
+  pageSize = this.props.pageSize || 30;
 
   nodeSchema = schema.User;
 }

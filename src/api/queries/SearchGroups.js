@@ -7,6 +7,7 @@ import type { Group } from "data/types";
 
 type Input = {
   name?: string,
+  pageSize?: number,
 };
 
 type Node = Group[];
@@ -23,7 +24,7 @@ const uri = (query: Input) => {
 export default class GroupsQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
-  pageSize = 30;
+  pageSize = this.props.pageSize || 30;
 
   nodeSchema = schema.Group;
 }
