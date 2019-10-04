@@ -84,7 +84,7 @@ const buttonStyles: { [_: string]: Object } = {
       color: ${p.disabled ? colors.steel : getBgByVariant(p)};
     `,
     hover: p => `
-      color: ${getBgByVariant(p)};
+      color: ${darken(getBgByVariant(p), 0.1)};
       background: ${opacity(getBgByVariant(p), 0.05)};
      `,
     active: p => `

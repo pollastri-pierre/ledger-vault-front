@@ -22,7 +22,9 @@ type GroupItem = {
   type: "group",
 };
 
-const ICON_SIZE = 15;
+const ICON_SIZE = 12;
+
+export type SelectGroupUsersData = { members: User[], groups: Group[] };
 
 export type Item = MemberItem | GroupItem;
 // we have to use an extra `data` field here because we use react-select in multi mode
@@ -41,7 +43,7 @@ type Props = {
     members?: User[],
     groups?: Group[],
   },
-  onChange: ({ members: User[], groups: Group[] }) => void,
+  onChange: SelectGroupUsersData => void,
 };
 
 const checkedIcon = <MdCheckBox size={ICON_SIZE} />;
@@ -103,9 +105,20 @@ const colourStyles = {
   multiValueRemove: styles => ({
     ...styles,
     ":hover": {
-      backgroundColor: colors.steel,
-      color: "white",
+      backgroundColor: colors.lightGrey,
+      borderTopLeftRadius: 0,
+      borderBottomLeftRadius: 0,
+      cursor: "pointer",
     },
+    ":active": {
+      backgroundColor: colors.mediumGrey,
+    },
+  }),
+  multiValueLabel: styles => ({
+    ...styles,
+    font: "inherit",
+    color: "inherit",
+    padding: "2px 5px",
   }),
 };
 class SelectInGroup extends PureComponent<Props> {
