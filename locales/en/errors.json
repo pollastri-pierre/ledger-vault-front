@@ -35,6 +35,10 @@
     "title": "Not enough funds",
     "description": "The parent Ethereum account must be credited to pay the confirmation fees of this transaction."
   },
+  "tecNO_DST_INSUF_XRP": {
+    "title": "Recipient not active",
+    "description": "The account on the receiving end of the transaction does not exist, and the transaction is not sending enough XRP to create it. "
+  },
   "AmountExceedMax": {
     "title": "Max amount exceeded",
     "description": "The amount entered exceeds the limit of 100 UTXOs. Decrease the amount to a maximum of: {{max}}"
