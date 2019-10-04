@@ -45,6 +45,8 @@ function AccountQuickInfoWidget(props: Props) {
   const icon = getIcon(account);
   const displayName = getDisplayName(account);
 
+  const syncButton = <SyncButton account={account} />;
+
   const title =
     me.role === "OPERATOR" ? (
       <Box horizontal flow={10}>
@@ -64,9 +66,11 @@ function AccountQuickInfoWidget(props: Props) {
             </Box>
           </Button>
         </Link>
-        <SyncButton account={account} />
+        {syncButton}
       </Box>
-    ) : null;
+    ) : (
+      syncButton
+    );
 
   const widget = (
     <Widget titleRight={title} grow position="relative">
