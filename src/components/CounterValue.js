@@ -103,18 +103,19 @@ class CounterValue extends PureComponent<Props> {
 
     // display specific string if value is lower than 0.01 USD
     // see https://ledgerhq.atlassian.net/browse/LV-828
+    let inner;
     if (value.isGreaterThan(0) && countervalue.isEqualTo(0)) {
-      return "< USD 0.01";
+      inner = "< USD 0.01";
+    } else {
+      inner = (
+        <CurrencyFiatValue
+          fiat="USD"
+          value={countervalue}
+          alwaysShowSign={alwaysShowSign}
+          type={type}
+        />
+      );
     }
-
-    const inner = (
-      <CurrencyFiatValue
-        fiat="USD"
-        value={countervalue}
-        alwaysShowSign={alwaysShowSign}
-        type={type}
-      />
-    );
 
     // we use <span> here instead of <Box> because <CounterValue/> is renderered
     // a lot in table, in cell with align:right, so we want to keep it "inline"
@@ -129,6 +130,7 @@ class CounterValue extends PureComponent<Props> {
             display: "inline-block",
             marginLeft: 8,
             verticalAlign: "middle",
+            lineHeight: 1,
           }}
         >
           <Tooltip title={`Source: ${exchange}`}>
