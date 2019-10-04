@@ -55,7 +55,7 @@ const ApprovalStepParameters = (props: Props) => {
 
 const NbOfUsers = ({ nb, isGroup }: { nb: number, isGroup: boolean }) => (
   <Box style={{ alignSelf: "flex-end" }}>
-    <Text small color={colors.textLight}>
+    <Text size="small" color={colors.textLight}>
       <Trans
         i18nKey={
           isGroup

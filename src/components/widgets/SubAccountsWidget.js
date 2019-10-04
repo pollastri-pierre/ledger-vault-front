@@ -20,14 +20,14 @@ function SubAccountsWidget(props: Props) {
   const accounts = accountsConnection.edges
     .map(a => a.node)
     .filter(a => a.parent === account.id);
-  if (!accounts.length) return null;
   return (
-    <Widget
-      title={<Trans i18nKey="accountView:erc20_children" />}
-      style={{ maxWidth: 400 }}
-    >
+    <Widget title={<Trans i18nKey="accountView:erc20_children" />}>
       <SoftCard style={{ padding: 10 }}>
-        <AccountsList accounts={accounts} />
+        {accounts.length ? (
+          <AccountsList accounts={accounts} />
+        ) : (
+          "No children accounts"
+        )}
       </SoftCard>
     </Widget>
   );

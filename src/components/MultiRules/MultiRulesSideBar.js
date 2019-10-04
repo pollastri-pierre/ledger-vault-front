@@ -136,7 +136,7 @@ const RulesSetTab = SortableElement(
             <FaGripVertical />
           </GripAction>
         )}
-        <Text bold>{rulesSet.name}</Text>
+        <Text fontWeight="bold">{rulesSet.name}</Text>
         {!readOnly && (
           <Action
             pos="right"

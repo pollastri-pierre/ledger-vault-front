@@ -15,13 +15,13 @@ import type { User, Account, Group } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
 import {
-  areApprovalsRulesValid,
+  areRulesSetsValid,
   serializePayload,
   deserialize as accountToPayload,
 } from "components/AccountCreationFlow";
 import AccountName from "components/AccountName";
 import ApproveRequestButton from "components/ApproveRequestButton";
-import ApprovalsRules from "components/ApprovalsRules";
+import MultiRules from "components/MultiRules";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Modal, { ModalClose } from "components/base/Modal";
 import Text from "components/base/Text";
@@ -134,8 +134,8 @@ const AccountToMigrate = ({
 }) => {
   const isMigrated = account.status === "MIGRATED";
   const [payload, setPayload] = useState(accountToPayload(account));
-  const onRulesChange = rules => setPayload({ ...payload, rules });
-  const isValid = areApprovalsRulesValid(payload.rules);
+  const onRulesSetsChange = rulesSets => setPayload({ ...payload, rulesSets });
+  const isValid = areRulesSetsValid(payload.rulesSets);
   const isEditMode = true;
   const data = isValid ? serializePayload(payload, isEditMode) : null;
   const isOpened = status === "active";
@@ -158,11 +158,11 @@ const AccountToMigrate = ({
       </Box>
       {isOpened && (
         <>
-          <ApprovalsRules
+          <MultiRules
+            rulesSets={payload.rulesSets}
+            onChange={onRulesSetsChange}
             users={users}
             groups={groups}
-            rules={payload.rules}
-            onChange={onRulesChange}
           />
           <Box height={80} position="relative">
             <Absolute top={20} right={20}>

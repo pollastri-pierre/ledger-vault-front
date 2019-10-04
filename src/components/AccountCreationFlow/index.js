@@ -27,8 +27,8 @@ import {
   getCurrencyIdFromBlockchainName,
   getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
-import { deserializeApprovalSteps } from "utils/accounts";
-import type { ApprovalsRule } from "components/ApprovalsRules";
+import { serializeRulesSetsForPOST } from "components/MultiRules/helpers";
+import type { RulesSet } from "components/MultiRules/types";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 
 import type { Account } from "data/types";
@@ -42,7 +42,17 @@ import type { AccountCreationPayload } from "./types";
 const initialPayload: AccountCreationPayload = {
   name: "",
   accountStatus: "",
-  rules: [{ quorum: 1, group_id: null, users: [] }],
+  rulesSets: [
+    {
+      name: "Rule 1",
+      rules: [
+        {
+          type: "MULTI_AUTHORIZATIONS",
+          data: [],
+        },
+      ],
+    },
+  ],
   currency: null,
   erc20token: null,
   parentAccount: null,
@@ -85,7 +95,7 @@ const steps = [
     name: <Trans i18nKey="accountCreation:steps.confirmation.title" />,
     Step: AccountCreationConfirmation,
     requirements: (payload: AccountCreationPayload) => {
-      return areApprovalsRulesValid(payload.rules);
+      return areRulesSetsValid(payload.rulesSets);
     },
     Cta: ({
       payload,
@@ -283,18 +293,11 @@ const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
 export default Wrapper;
 
 export const deserialize: Account => AccountCreationPayload = account => {
-  const { tx_approval_steps } = account;
-
-  const rules =
-    !tx_approval_steps || tx_approval_steps.length === 0
-      ? initialPayload.rules
-      : deserializeApprovalSteps(tx_approval_steps);
-
   return {
     id: account.id,
     accountStatus: account.status,
     name: account.name,
-    rules,
+    rulesSets: account.governance_rules,
     currency:
       account.account_type === "Bitcoin" ||
       account.account_type === "Ethereum" ||
@@ -315,9 +318,7 @@ export function serializePayload(
 ) {
   const data: Object = {
     name: payload.name,
-    governance_rules: {
-      tx_approval_steps: payload.rules,
-    },
+    governance_rules: serializeRulesSetsForPOST(payload.rulesSets),
   };
 
   if (payload.currency) {
@@ -360,9 +361,8 @@ export function serializePayload(
   return finalPayload;
 }
 
-export function areApprovalsRulesValid(rules: Array<?ApprovalsRule>) {
-  if (!rules.length) return false;
-  return rules.every(
-    rule => rule && (rule.group_id !== null || rule.users.length > 0),
-  );
+export function areRulesSetsValid(rulesSets: RulesSet[]) {
+  if (!rulesSets.length) return false;
+  // FIXME FIXME DO VALIDATION
+  return true;
 }

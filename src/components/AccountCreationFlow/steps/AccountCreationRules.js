@@ -2,18 +2,22 @@
 
 import React from "react";
 
-import ApprovalsRules from "components/ApprovalsRules";
+import MultiRules from "components/MultiRules";
 import type { AccountCreationStepProps } from "../types";
 
 export default (props: AccountCreationStepProps) => {
   const { payload, updatePayload, users, groups } = props;
-  const handleChangeRules = rules => updatePayload({ rules });
+  const handleChangeRules = rulesSets => updatePayload({ rulesSets });
+
+  const usersArray = users.edges.map(u => u.node);
+  const groupsArray = groups.edges.map(g => g.node);
+
   return (
-    <ApprovalsRules
-      rules={payload.rules}
+    <MultiRules
+      rulesSets={payload.rulesSets}
       onChange={handleChangeRules}
-      users={users.edges.map(u => u.node)}
-      groups={groups.edges.map(g => g.node)}
+      users={usersArray}
+      groups={groupsArray}
     />
   );
 };

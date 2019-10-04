@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import styled from "styled-components";
 import type { Match } from "react-router-dom";
 
 import AccountWarning from "containers/Account/AccountWarning";
@@ -14,7 +13,6 @@ import {
   AccountQuickInfoWidget,
   AccountLastTransactionsWidget,
   SubAccountsWidget,
-  AccountTransactionRulesWidget,
   TransactionsGraphWidget,
   connectWidget,
 } from "components/widgets";
@@ -31,23 +29,18 @@ function AccountView(props: Props) {
       <ResponsiveContainer>
         <Box flow={20} grow>
           <AccountQuickInfoWidget account={account} />
-          {account.account_type === "Ethereum" && (
-            <SubAccountsWidget account={account} />
-          )}
-          <div>
-            <Container>
-              {account.tx_approval_steps && (
-                <Box flex={1} style={{ margin: 10 }}>
-                  <AccountTransactionRulesWidget account={account} />
-                </Box>
-              )}
-              {isBalanceAvailable(account) && (
-                <Box flex={1} style={{ minWidth: 500, margin: 10 }}>
-                  <TransactionsGraphWidget account={account} />
-                </Box>
-              )}
-            </Container>
-          </div>
+          <Box horizontal flow={20}>
+            {account.account_type === "Ethereum" && (
+              <Box flex={1}>
+                <SubAccountsWidget account={account} />
+              </Box>
+            )}
+            {isBalanceAvailable(account) && (
+              <Box flex={2} style={{ minWidth: 500 }}>
+                <TransactionsGraphWidget account={account} />
+              </Box>
+            )}
+          </Box>
           <AccountLastTransactionsWidget account={account} />
         </Box>
       </ResponsiveContainer>
@@ -64,10 +57,3 @@ export default connectWidget(AccountView, {
     accountId: match.params.id,
   }),
 });
-
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  margin: -10px;
-`;

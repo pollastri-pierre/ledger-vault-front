@@ -9,14 +9,7 @@ import Box from "components/base/Box";
 import Spinner from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity } from "shared/colors";
-import RulesViewer from "components/ApprovalsRules/RulesViewer";
-import type {
-  Account,
-  User,
-  Group,
-  TxApprovalStepCollection,
-  EditApprovalStep,
-} from "data/types";
+import type { Account, User, Group } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
@@ -27,25 +20,25 @@ type Props = {
 
 class AccountEditRequest extends PureComponent<Props> {
   render() {
-    const { account, groups, users } = this.props;
-    const { tx_approval_steps, last_request } = account;
+    const { account } = this.props;
+    const { last_request } = account;
 
     if (!last_request) return null;
 
-    const isAccountMigration = last_request.type === "MIGRATE_ACCOUNT";
+    // const isAccountMigration = last_request.type === "MIGRATE_ACCOUNT";
     const editData = last_request.edit_data || null;
 
-    const newRules = isAccountMigration
-      ? tx_approval_steps
-      : editData
-      ? resolveRules(
-          editData.governance_rules.tx_approval_steps,
-          groups.edges.map(e => e.node),
-          users.edges.map(e => e.node),
-        )
-      : null;
+    // const newRules = isAccountMigration
+    //   ? tx_approval_steps
+    //   : editData
+    //   ? resolveRules(
+    //       editData.governance_rules.tx_approval_steps,
+    //       groups.edges.map(e => e.node),
+    //       users.edges.map(e => e.node),
+    //     )
+    //   : null;
 
-    const oldRules = isAccountMigration ? null : tx_approval_steps;
+    // const oldRules = isAccountMigration ? null : tx_approval_steps;
     const hasNameChanged = editData && account.name !== editData.name;
 
     return (
@@ -68,7 +61,10 @@ class AccountEditRequest extends PureComponent<Props> {
             </Box>
           )}
           <b>Rules</b>
-          <RulesViewer rules={oldRules} />
+          <div>
+            {/* TODO VIEW ONLY MULTI-RULES - BEFORE */}
+            Previous set of rules
+          </div>
         </Box>
         <Box bg={opacity(colors.ocean, 0.05)} {...diffBoxProps}>
           <Box mb={20}>
@@ -88,7 +84,10 @@ class AccountEditRequest extends PureComponent<Props> {
             </Box>
           )}
           <b>Rules</b>
-          <RulesViewer rules={newRules} />
+          <div>
+            {/* TODO VIEW ONLY MULTI-RULES - AFTER */}
+            New set of rules
+          </div>
         </Box>
       </Box>
     );
@@ -106,6 +105,7 @@ const RenderLoading = () => (
     <Spinner />
   </Box>
 );
+
 const C: React$ComponentType<$Shape<Props>> = connectData(AccountEditRequest, {
   RenderLoading,
   queries: {
@@ -115,34 +115,3 @@ const C: React$ComponentType<$Shape<Props>> = connectData(AccountEditRequest, {
 });
 
 export default C;
-const resolveRules = (
-  editRules: EditApprovalStep[],
-  groups: Group[],
-  users: User[],
-): TxApprovalStepCollection => {
-  const newRules = [];
-  editRules.forEach((r, i) => {
-    const { users: ruleUsers } = r;
-    if (r.group_id) {
-      const group = groups.find(g => g.id === r.group_id);
-      if (group) {
-        newRules.push({
-          quorum: r.quorum,
-          group,
-        });
-      }
-    } else if (ruleUsers) {
-      const members = users.filter(u => ruleUsers.indexOf(u.id) > -1);
-      const group = {
-        id: i,
-        is_internal: true,
-        members,
-      };
-      newRules.push({
-        quorum: r.quorum,
-        group,
-      });
-    }
-  });
-  return newRules;
-};
