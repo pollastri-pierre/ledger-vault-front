@@ -129,6 +129,7 @@ class CounterValue extends PureComponent<Props> {
             display: "inline-block",
             marginLeft: 8,
             verticalAlign: "middle",
+            lineHeight: 1,
           }}
         >
           <Tooltip title={`Source: ${exchange}`}>
