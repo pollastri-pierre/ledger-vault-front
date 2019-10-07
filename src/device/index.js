@@ -53,6 +53,7 @@ if (USE_TRANSPORT_U2F && !FORCE_WEB_USB) {
       // $FlowFixMe
       if (softwareMode()) return mockTransport;
       const t = await TransportUSB.create();
+      // $FlowFixMe
       return t;
     },
     disconnect: () => null,
