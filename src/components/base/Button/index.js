@@ -18,6 +18,7 @@ export type ButtonProps = {|
   small?: boolean,
   circular?: boolean,
   "data-test"?: string,
+  style?: Object,
 |};
 
 export const ButtonBase = styled.div.attrs(p => ({
