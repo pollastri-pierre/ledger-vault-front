@@ -58,6 +58,7 @@ function LastTransactionsWidget(props: Props) {
 // to all queries
 // other alternative is to create a custom query
 const height = 300;
+const defaultNumber = 10;
 export default withRouter(
   connectWidget(
     connectWidget(LastTransactionsWidget, {
@@ -67,7 +68,7 @@ export default withRouter(
       },
       propsToQueryParams: props => ({
         status: TransactionStatusMap.SUBMITTED,
-        pageSize: props.number || 5,
+        pageSize: props.number || defaultNumber,
       }),
     }),
     {
