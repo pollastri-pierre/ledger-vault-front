@@ -1,0 +1,188 @@
+[
+  {
+    "index": 0,
+    "name": "Rule 1",
+    "rules": [
+      {
+        "type": "WHITELIST",
+        "data": []
+      },
+      {
+        "data": [
+          {
+            "group": {
+              "created_by": {
+                "created_on": "2019-10-01T12:08:53.092207+00:00",
+                "id": 14,
+                "key_handle": "00000000000000000000000000000000000000000000000000000000000000001c9dee0d5886038b076a0ee93ede2d6cc2ace842280de8415cab430371d91863",
+                "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "3e5d93bd3d1bb422",
+                "username": "Admin 1"
+              },
+              "created_on": "2019-10-01T12:19:21.180187+00:00",
+              "description": "",
+              "id": 7,
+              "is_internal": true,
+              "is_under_edit": false,
+              "last_request": null,
+              "members": [
+                {
+                  "created_on": "2019-10-01T12:09:05.689811+00:00",
+                  "id": 23,
+                  "key_handle": "00000000000000000000000000000000000000000000000000000000000000000a93f94588999d10ed58cf9f0868cc6296002ec29263d8878da95f23f8a30572",
+                  "pub_key": "046F7CC33659787CA88242459E94E5056BD7F2F7391B340D91B015CB23166AAF1E6593B0ECAECAEFF88E44C8521CDF943AC74FD0F1E5C53A87B890EB05D7AB59B5",
+                  "role": "OPERATOR",
+                  "status": "ACTIVE",
+                  "user_id": "84e5ca3641ab0d8f",
+                  "username": "user40584"
+                },
+                {
+                  "created_on": "2019-10-01T12:09:10.178084+00:00",
+                  "id": 24,
+                  "key_handle": "00000000000000000000000000000000000000000000000000000000000000009c73f44332baa371ff6277a899404efcb1213d424693bdcbc7338dceace4eabc",
+                  "pub_key": "0449EC5B55E30FCD75FC5BF33255D50470786ECC837135600060305255C432267EB74CA2C734CF78AC9D0EA7202031AF36BB8509BC3A31E90CF97D34254A375817",
+                  "role": "OPERATOR",
+                  "status": "ACTIVE",
+                  "user_id": "2d6b4c922d0816a8",
+                  "username": "user71301"
+                }
+              ],
+              "name": "d439450b-2a81-41bc-a887-98a04b4c0f5c",
+              "status": "ACTIVE"
+            },
+            "quorum": 1
+          },
+          {
+            "group": {
+              "created_by": {
+                "created_on": "2019-10-01T12:08:53.092207+00:00",
+                "id": 14,
+                "key_handle": "00000000000000000000000000000000000000000000000000000000000000001c9dee0d5886038b076a0ee93ede2d6cc2ace842280de8415cab430371d91863",
+                "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "3e5d93bd3d1bb422",
+                "username": "Admin 1"
+              },
+              "created_on": "2019-10-01T12:09:41.810208+00:00",
+              "description": "bloublibla",
+              "id": 3,
+              "is_internal": false,
+              "is_under_edit": false,
+              "last_request": {
+                "created_by": {
+                  "created_on": "2019-10-01T12:08:53.092207+00:00",
+                  "id": 14,
+                  "key_handle": "00000000000000000000000000000000000000000000000000000000000000001c9dee0d5886038b076a0ee93ede2d6cc2ace842280de8415cab430371d91863",
+                  "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+                  "role": "ADMIN",
+                  "status": "ACTIVE",
+                  "user_id": "3e5d93bd3d1bb422",
+                  "username": "Admin 1"
+                },
+                "created_on": "2019-10-01T12:09:41.818373+00:00",
+                "expired_at": "2019-10-08T12:09:41.818297+00:00",
+                "id": 9,
+                "status": "APPROVED",
+                "target_id": 3,
+                "target_type": "GROUP",
+                "type": "CREATE_GROUP"
+              },
+              "members": [
+                {
+                  "created_on": "2019-10-01T12:09:13.158337+00:00",
+                  "id": 25,
+                  "key_handle": "0000000000000000000000000000000000000000000000000000000000000000a74d24bce8fddaadf9766458310643a57697438705c374b221a7bda423cf7711",
+                  "pub_key": "044F3417F5ECC0B7FBBC5AF4F82A7C99A11EED5C1529354DFBACF2F7B1E0EFCC63FB2E80BB3CE7654D1F520DF2420CFF7C0D3984900E73D4CDE44EC6A463671757",
+                  "role": "OPERATOR",
+                  "status": "ACTIVE",
+                  "user_id": "a1887741b3079235",
+                  "username": "user25349"
+                },
+                {
+                  "created_on": "2019-10-01T12:09:16.129740+00:00",
+                  "id": 26,
+                  "key_handle": "0000000000000000000000000000000000000000000000000000000000000000fcf3cf7235a3ea7e8b0a194960a58a667ca42d48233b1ef4716aed70375bd140",
+                  "pub_key": "0455A4BCE7F96DB5CD05F86358FB34228A2C8D0B742BBF704FB931EC02F791EDF7193A87D62FB330F6190296D084C500820D84503C078C780AEC09192B7006F56F",
+                  "role": "OPERATOR",
+                  "status": "ACTIVE",
+                  "user_id": "ee28c05e09d91079",
+                  "username": "user54376"
+                }
+              ],
+              "name": "my_group_40215",
+              "status": "ACTIVE"
+            },
+            "quorum": 2
+          },
+          {
+            "group": {
+              "created_by": {
+                "created_on": "2019-10-01T12:08:53.092207+00:00",
+                "id": 14,
+                "key_handle": "00000000000000000000000000000000000000000000000000000000000000001c9dee0d5886038b076a0ee93ede2d6cc2ace842280de8415cab430371d91863",
+                "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "3e5d93bd3d1bb422",
+                "username": "Admin 1"
+              },
+              "created_on": "2019-10-01T12:09:44.269150+00:00",
+              "description": "bloublibla",
+              "id": 4,
+              "is_internal": false,
+              "is_under_edit": false,
+              "last_request": {
+                "created_by": {
+                  "created_on": "2019-10-01T12:08:53.092207+00:00",
+                  "id": 14,
+                  "key_handle": "00000000000000000000000000000000000000000000000000000000000000001c9dee0d5886038b076a0ee93ede2d6cc2ace842280de8415cab430371d91863",
+                  "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+                  "role": "ADMIN",
+                  "status": "ACTIVE",
+                  "user_id": "3e5d93bd3d1bb422",
+                  "username": "Admin 1"
+                },
+                "created_on": "2019-10-01T12:09:44.277591+00:00",
+                "expired_at": "2019-10-08T12:09:44.277518+00:00",
+                "id": 10,
+                "status": "APPROVED",
+                "target_id": 4,
+                "target_type": "GROUP",
+                "type": "CREATE_GROUP"
+              },
+              "members": [
+                {
+                  "created_on": "2019-10-01T12:09:19.254259+00:00",
+                  "id": 27,
+                  "key_handle": "00000000000000000000000000000000000000000000000000000000000000004e62e7678b25f5f87dad96d66db7745e4762d6fe7786f720a48581b38f6bbd5c",
+                  "pub_key": "04170323837BADE82BC4850A0BE87836327D3844232920D9C01BDFF131B900C1502EF9F2FC3EF03B7E3E3A642B3F77F75BBBEBA7E739BD58FF8598DB51904633AB",
+                  "role": "OPERATOR",
+                  "status": "ACTIVE",
+                  "user_id": "7996a597c0dc62a0",
+                  "username": "user55785"
+                },
+                {
+                  "created_on": "2019-10-01T12:09:22.298022+00:00",
+                  "id": 28,
+                  "key_handle": "00000000000000000000000000000000000000000000000000000000000000004a2e0f2a88142eaa49a64c833bccea3d4c5f9f39cef2ca852ac887f045c5254b",
+                  "pub_key": "0429AEC099E5AFE0AA8E91ABD4714D5EA7963215FF96EA32528B51D143CF110341D9750309A75FA8E497B0FAE1E441F9AA0987F9569B91E9E26DFD528EFD1D1EAC",
+                  "role": "OPERATOR",
+                  "status": "ACTIVE",
+                  "user_id": "ee19fed05c6d809d",
+                  "username": "user35948"
+                }
+              ],
+              "name": "my_group_50167",
+              "status": "ACTIVE"
+            },
+            "quorum": 1
+          }
+        ],
+        "type": "MULTI_AUTHORIZATIONS"
+      }
+    ]
+  }
+]

@@ -22,7 +22,7 @@ type GroupItem = {
   type: "group",
 };
 
-const ICON_SIZE = 12;
+const ICON_SIZE = 13;
 
 export type SelectGroupUsersData = { members: User[], groups: Group[] };
 

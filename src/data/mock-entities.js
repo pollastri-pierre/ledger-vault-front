@@ -294,9 +294,10 @@ function genGroup({ users, status }) {
     users: admins,
   });
   return {
-    id: faker.random.alphaNumeric("10"),
+    id: faker.random.alphaNumeric(10),
     name: faker.random.arrayElement(FAKE_GROUP_NAMES),
     created_on: faker.date.past(1),
+    is_internal: false,
     created_by: admins[faker.random.number({ min: 0, max: admins.length })],
     description: faker.company.catchPhrase(),
     status:
