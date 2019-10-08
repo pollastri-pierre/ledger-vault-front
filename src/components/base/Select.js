@@ -114,12 +114,12 @@ const customStyles = {
   option: (styles, state) => ({
     ...styles,
     color: "",
-    background: state.isFocused ? opacity(colors.blue, 0.05) : "white",
+    background: state.isFocused ? opacity(colors.bLive, 0.05) : "white",
     "&:hover": {
-      background: opacity(colors.blue, 0.05),
+      background: opacity(colors.bLive, 0.05),
     },
     "&:active": {
-      background: opacity(colors.blue, 0.09),
+      background: opacity(colors.bLive, 0.09),
     },
   }),
 };
