@@ -56,6 +56,7 @@ class AbortRequestButton extends PureComponent<Props, State> {
       <>
         {error && <TriggerErrorNotification error={error} />}
         <Button
+          data-test="reject-button"
           disabled={disabled}
           onClick={this.abort}
           type="filled"

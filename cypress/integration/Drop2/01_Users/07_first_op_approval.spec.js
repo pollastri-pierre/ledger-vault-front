@@ -55,13 +55,11 @@ describe("Approve User as Operator with the first admin", function() {
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.wait(2000);
-    cy.get("[data-test=close]").click();
 
     // Charles operator
     cy.contains("Charles").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.wait(2000);
-    cy.get("[data-test=close]").click();
   });
 });
