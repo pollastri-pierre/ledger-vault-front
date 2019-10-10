@@ -67,6 +67,7 @@ class EditableField extends PureComponent<Props, State> {
           <>
             <Text>{value}</Text>
             <FaRegEdit
+              data-test="edit-icon"
               style={styles.cursor}
               color={colors.lead}
               size={12}
@@ -76,6 +77,7 @@ class EditableField extends PureComponent<Props, State> {
         ) : (
           <Box horizontal align="center" flow={5}>
             <Input
+              data-test="type-edit"
               autoFocus
               value={localValue}
               onChange={this.handleChange}
@@ -83,6 +85,7 @@ class EditableField extends PureComponent<Props, State> {
             />
             <Button
               type="filled"
+              data-test="save-button"
               onClick={this.onConfirm}
               disabled={getSaveDisabled ? getSaveDisabled(localValue) : false}
             >
