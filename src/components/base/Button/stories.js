@@ -127,8 +127,11 @@ storiesOf("components/base", module).add("Button", () => (
         Buttons by size
       </Text>
       <Box horizontal flow={15}>
-        <Button type="filled" small onClick={asyncAction}>
+        <Button type="filled" size="small" onClick={asyncAction}>
           Small
+        </Button>
+        <Button type="filled" size="slim" onClick={asyncAction}>
+          Slim
         </Button>
         <Button type="outline" onClick={asyncAction}>
           Default

@@ -26,7 +26,7 @@ class NextRequestButton extends PureComponent<Props> {
 
   render() {
     return (
-      <Button type="filled" small onClick={this.triggerNext}>
+      <Button type="filled" size="small" onClick={this.triggerNext}>
         RETRY
       </Button>
     );

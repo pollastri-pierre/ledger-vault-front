@@ -51,7 +51,11 @@ function AccountQuickInfoWidget(props: Props) {
     me.role === "OPERATOR" ? (
       <Box horizontal flow={10}>
         <Link to={`${account.id}/send/${account.id}`}>
-          <Button small type="filled" disabled={!isAccountSpendable(account)}>
+          <Button
+            size="small"
+            type="filled"
+            disabled={!isAccountSpendable(account)}
+          >
             <Box horizontal flow={5} align="center">
               <IconSend size={10} />
               <Text i18nKey="accountView:sendButton" />
@@ -59,7 +63,7 @@ function AccountQuickInfoWidget(props: Props) {
           </Button>
         </Link>
         <Link to={`${account.id}/receive/${account.id}`}>
-          <Button small type="filled">
+          <Button size="small" type="filled">
             <Box horizontal flow={5} align="center">
               <IconReceive size={10} />
               <Text i18nKey="accountView:receiveButton" />
