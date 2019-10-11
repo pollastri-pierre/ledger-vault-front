@@ -15,6 +15,8 @@ import type { TransactionType, Account } from "data/types";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import counterValues from "data/counterValues";
 
+import colors from "shared/colors";
+
 type CurOrToken = {
   ticker: string,
 };
@@ -134,7 +136,7 @@ class CounterValue extends PureComponent<Props> {
           }}
         >
           <Tooltip title={`Source: ${exchange}`}>
-            <FaInfoCircle size={12} />
+            <FaInfoCircle size={12} color={colors.mouse} />
           </Tooltip>
         </span>
       </span>
