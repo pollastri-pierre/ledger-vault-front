@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import styled from "styled-components";
 import MUITable from "@material-ui/core/Table";
 import type { ObjectParameters, ObjectParameter } from "query-string";
@@ -9,6 +10,7 @@ import MUITableCell from "@material-ui/core/TableCell";
 import MUITableHead from "@material-ui/core/TableHead";
 import MUITableRow from "@material-ui/core/TableRow";
 
+import VaultLink from "components/VaultLink";
 import Text from "components/base/Text";
 import colors, { opacity } from "shared/colors";
 import TableSort from "./TableSort";
@@ -35,6 +37,7 @@ export class TableHeader extends PureComponent<TableHeaderProps> {
               item={item}
               onSortChange={onSortChange}
               queryParams={queryParams}
+              style={getExtraCellStyle(item.body.prop)}
             />
           ))}
         </MUITableRow>
@@ -47,6 +50,7 @@ type Props = {
   item: TableItem,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
+  style?: Object,
 };
 
 class HeaderCellComponent extends PureComponent<Props> {
@@ -76,13 +80,13 @@ class HeaderCellComponent extends PureComponent<Props> {
   };
 
   render() {
-    const { item, queryParams, onSortChange } = this.props;
+    const { item, queryParams, onSortChange, style } = this.props;
     const { orderBy, order } = resolveSort(queryParams);
     const direction = resolveDirection(
       orderBy === item.body.prop ? order : null,
     );
     return (
-      <HeaderCell align={item.header.align} key={item.body.prop}>
+      <HeaderCell align={item.header.align} key={item.body.prop} style={style}>
         {item.header.sortable && onSortChange ? (
           <TableSort
             align={item.header.align}
@@ -131,6 +135,33 @@ export const Table = styled(MUITable)`
   }
 `;
 
+export const OpenExternal = ({ url }: { url: string }) => (
+  <VaultLink
+    withRole
+    target="_blank"
+    to={url}
+    onClick={e => e.stopPropagation()}
+    title="Open in a new tab"
+  >
+    <OpenExternalContainer>
+      <FaExternalLinkAlt />
+    </OpenExternalContainer>
+  </VaultLink>
+);
+
+const OpenExternalContainer = styled.div`
+  width: 40px;
+  height: 40px;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${colors.lightGrey};
+  &:hover {
+    color: ${colors.mediumGrey};
+  }
+`;
+
 function resolveSort(queryParams: ?ObjectParameters) {
   return {
     orderBy: (queryParams && queryParams.orderBy) || null,
@@ -146,4 +177,13 @@ function resolveDirection(
     : potentialDirection === "desc"
     ? "desc"
     : null;
+}
+
+export function getExtraCellStyle(cellID: string) {
+  if (cellID === "link") {
+    return {
+      padding: 0,
+      width: 60,
+    };
+  }
 }

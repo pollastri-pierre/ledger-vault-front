@@ -5,6 +5,16 @@ import { Trans } from "react-i18next";
 export const accountsTableDefault = [
   {
     header: {
+      label: "",
+      align: "left",
+    },
+    body: {
+      prop: "link",
+      align: "left",
+    },
+  },
+  {
+    header: {
       label: "Account name",
       align: "left",
       sortable: true,
