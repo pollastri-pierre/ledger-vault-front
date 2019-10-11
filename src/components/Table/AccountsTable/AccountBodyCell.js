@@ -4,6 +4,7 @@ import React, { PureComponent } from "react";
 
 import MUITableCell from "@material-ui/core/TableCell";
 
+import { getExtraCellStyle, OpenExternal } from "components/Table/TableBase";
 import CounterValue from "components/CounterValue";
 import AccountName from "components/AccountName";
 import EntityStatus from "components/EntityStatus";
@@ -51,6 +52,8 @@ class AccountBodyCell extends PureComponent<CellProps> {
         return <DateFormat date={account.created_on} />;
       case "details":
         return <AccountDetailsButton account={account} />;
+      case "link":
+        return <OpenExternal url={`/accounts/view/${account.id}`} />;
       default:
         return <div>N/A</div>;
     }
@@ -58,8 +61,13 @@ class AccountBodyCell extends PureComponent<CellProps> {
 
   render() {
     const { item } = this.props;
+
     return (
-      <MUITableCell align={item.body.align} size={item.body.size}>
+      <MUITableCell
+        align={item.body.align}
+        size={item.body.size}
+        style={getExtraCellStyle(item.body.prop)}
+      >
         {this.renderCellMapper()}
       </MUITableCell>
     );
