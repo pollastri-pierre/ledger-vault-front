@@ -3,13 +3,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {
-  FaCoins,
-  FaWrench,
-  FaTicketAlt,
-  FaLink,
-  FaCheck,
-} from "react-icons/fa";
+import { FaCoins, FaInfo, FaTicketAlt, FaLink, FaCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -28,6 +22,7 @@ import { Label } from "components/base/form";
 import Button from "components/base/Button";
 import SyncButton from "components/SyncButton";
 import Text from "components/base/Text";
+import PageHeaderActions from "components/base/PageHeaderActions";
 import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
@@ -47,37 +42,8 @@ function AccountQuickInfoWidget(props: Props) {
 
   const syncButton = <SyncButton account={account} />;
 
-  const title =
-    me.role === "OPERATOR" ? (
-      <Box horizontal flow={10}>
-        <Link to={`${account.id}/send/${account.id}`}>
-          <Button
-            size="small"
-            type="filled"
-            disabled={!isAccountSpendable(account)}
-          >
-            <Box horizontal flow={5} align="center">
-              <IconSend size={10} />
-              <Text i18nKey="accountView:sendButton" />
-            </Box>
-          </Button>
-        </Link>
-        <Link to={`${account.id}/receive/${account.id}`}>
-          <Button size="small" type="filled">
-            <Box horizontal flow={5} align="center">
-              <IconReceive size={10} />
-              <Text i18nKey="accountView:receiveButton" />
-            </Box>
-          </Button>
-        </Link>
-        {syncButton}
-      </Box>
-    ) : (
-      syncButton
-    );
-
   const widget = (
-    <Widget titleRight={title} grow position="relative">
+    <Widget grow position="relative">
       <SoftCard grow flow={20} style={{ padding: 0 }}>
         <Box horizontal flexWrap="wrap">
           <InfoSquare>
@@ -169,14 +135,43 @@ function AccountQuickInfoWidget(props: Props) {
 
   return (
     <div style={{ position: "relative" }}>
+      <PageHeaderActions title={account.name}>
+        {me.role === "OPERATOR" ? (
+          <Box horizontal flow={10}>
+            <Link to={`${account.id}/send/${account.id}`}>
+              <Button
+                size="small"
+                type="filled"
+                disabled={!isAccountSpendable(account)}
+              >
+                <Box horizontal flow={5} align="center">
+                  <IconSend size={10} />
+                  <Text i18nKey="accountView:sendButton" />
+                </Box>
+              </Button>
+            </Link>
+            <Link to={`${account.id}/receive/${account.id}`}>
+              <Button size="small" type="filled">
+                <Box horizontal flow={5} align="center">
+                  <IconReceive size={10} />
+                  <Text i18nKey="accountView:receiveButton" />
+                </Box>
+              </Button>
+            </Link>
+            {syncButton}
+          </Box>
+        ) : (
+          syncButton
+        )}
+      </PageHeaderActions>
       {widget}
-      <Absolute top={50} right={10}>
-        <Tooltip title="Account settings" placement="left">
+      <Absolute top={60} right={10}>
+        <Tooltip title="Account details" placement="left">
           <Link
             to={`${location.pathname}/accounts/details/${account.id}/overview`}
           >
             <Button>
-              <FaWrench />
+              <FaInfo />
             </Button>
           </Link>
         </Tooltip>
