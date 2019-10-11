@@ -33,9 +33,9 @@ const SyncButton = (props: Props) => {
   return (
     <Box width={40}>
       <Button
-        type={synced ? "outline" : "filled"}
-        variant="info"
-        small
+        type="outline"
+        variant="primary"
+        size="small"
         onClick={forceSync}
         disabled={synced}
       >

@@ -4,35 +4,78 @@ import colors, { opacity, darken, rgba } from "shared/colors";
 
 import type { ButtonProps } from "./";
 
-export function getBgByVariant(props: ButtonProps) {
-  switch (props.variant) {
-    case "primary":
-      return colors.bLive;
-    case "danger":
-      return colors.grenade;
-    case "warning":
-      return colors.warning;
-    case "info":
-      return colors.mediumGrey;
-    default:
-      return colors.bLive;
-  }
+const bgByVariant = {
+  primary: colors.bLive,
+  danger: colors.grenade,
+  warning: colors.warning,
+  info: colors.mediumGrey,
+};
+export function getBgByVariant({ variant }: ButtonProps) {
+  return (variant && bgByVariant[variant]) || colors.bLive;
 }
 
+const colorByVariant = {
+  primary: colors.white,
+  danger: colors.white,
+  warning: colors.argile,
+  info: colors.white,
+};
 export function getColorByVariant(props: ButtonProps) {
   if (props.type === "outline") return getBgByVariant(props);
-  switch (props.variant) {
-    case "primary":
-      return colors.white;
-    case "danger":
-      return colors.white;
-    case "warning":
-      return colors.argile;
-    case "info":
-      return colors.white;
-    default:
-      return colors.white;
+  return (props.variant && colorByVariant[props.variant]) || colors.white;
+}
+const fontSizeBySize = {
+  tiny: 9,
+  small: 11,
+  slim: 11,
+};
+export function getFontSize({ size }: ButtonProps) {
+  return (size && fontSizeBySize[size]) || 13;
+}
+
+const buttonHeightBySize = {
+  tiny: 20,
+  small: 30,
+  slim: 34,
+};
+export function getButtonHeight({ size, circular }: ButtonProps) {
+  if (circular) {
+    return "inherit";
   }
+  return (size && buttonHeightBySize[size]) || 40;
+}
+
+const buttonPaddingX = {
+  tiny: 13,
+  small: 16,
+  slim: 25,
+};
+export function getPaddingX({ size, circular }: ButtonProps) {
+  if (circular) {
+    return 12;
+  }
+  return (size && buttonPaddingX[size]) || 25;
+}
+
+const buttonPaddingY = {
+  tiny: 3,
+  small: 5,
+  slim: 8,
+};
+export function getPaddingY({ size, circular }: ButtonProps) {
+  if (circular) {
+    return 12;
+  }
+  return (size && buttonPaddingY[size]) || 8;
+}
+
+const loaderBySize = {
+  tiny: 9,
+  small: 12,
+  slim: 16,
+};
+export function getLoaderSize({ size }: ButtonProps) {
+  return (size && loaderBySize[size]) || 16;
 }
 
 export function getStyles(props: ButtonProps, state: string) {

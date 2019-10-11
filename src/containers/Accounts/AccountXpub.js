@@ -36,7 +36,12 @@ function AccountXpub(props: Props) {
           <Checkbox checked={checked} />
         </Box>
         <CopyToClipboard text={account.xpub} onCopy={onCopy}>
-          <Button small type="outline" variant="info" disabled={!checked}>
+          <Button
+            size="small"
+            type="outline"
+            variant="info"
+            disabled={!checked}
+          >
             <Text>{copied ? "Copied" : "Copy"} </Text>
           </Button>
         </CopyToClipboard>

@@ -108,7 +108,7 @@ function AccountSettings(props: Props) {
               <Button
                 type="filled"
                 variant="danger"
-                small
+                size="small"
                 onClick={onXpubModal}
               >
                 <Box horizontal flow={5} align="center">

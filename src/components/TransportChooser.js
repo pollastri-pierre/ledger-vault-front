@@ -46,7 +46,13 @@ export default function TransportChooser() {
 
   return (
     <Box position="relative">
-      <Button small type="link" variant="primary" onClick={toggle} ref={btnRef}>
+      <Button
+        size="small"
+        type="link"
+        variant="primary"
+        onClick={toggle}
+        ref={btnRef}
+      >
         <Box horizontal align="center" flow={5}>
           <FaUsb />
           <span>{FORCE_WEB_USB ? "WebUSB" : "U2F"}</span>
