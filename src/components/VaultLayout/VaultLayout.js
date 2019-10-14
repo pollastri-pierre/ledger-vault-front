@@ -23,6 +23,7 @@ type Props = {
   user: User,
   onLogout: () => void,
   match: Match,
+  TopBarContent: React$ComponentType<*>,
 };
 
 type State = {
@@ -98,7 +99,14 @@ class VaultLayout extends Component<Props, State> {
   };
 
   render() {
-    const { children, menuItems, user, onLogout, match } = this.props;
+    const {
+      children,
+      menuItems,
+      user,
+      onLogout,
+      match,
+      TopBarContent,
+    } = this.props;
     const { isMenuOpened, isMenuFloating, globalAnimation } = this.state;
 
     return (
@@ -117,6 +125,7 @@ class VaultLayout extends Component<Props, State> {
           user={user}
           onLogout={onLogout}
           globalAnimation={globalAnimation}
+          TopBarContent={TopBarContent}
         />
         <VaultLayoutMainView isMenuOpened={isMenuOpened}>
           {children}
