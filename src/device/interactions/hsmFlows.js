@@ -27,7 +27,10 @@ import {
 import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
 import RegisterUserMutation from "api/mutations/RegisterUserMutation";
 import RequestsQuery from "api/queries/RequestsQuery";
-import type { Interaction } from "components/DeviceInteraction";
+import type {
+  Interaction,
+  ApproveFlowConfigOptions,
+} from "components/DeviceInteraction";
 import type { RequestTargetType } from "data/types";
 import Text from "components/base/Text";
 
@@ -324,17 +327,22 @@ const getSecureChannel: Interaction = {
   },
 };
 
-const postApproval: Interaction = {
-  responseKey: "post",
-  action: ({ request_id, restlay, u2f_key: { pubKey }, validate_device }) =>
-    restlay.commitMutation(
-      new ApproveRequestMutation({
-        requestId: request_id,
-        signature: validate_device.toString("base64"),
-        public_key: pubKey.toString("hex"),
-      }),
-    ),
-};
+function postApproval(configOptions?: ApproveFlowConfigOptions): Interaction {
+  return {
+    responseKey: "post",
+    action: ({ request_id, restlay, u2f_key: { pubKey }, validate_device }) =>
+      restlay.commitMutation(
+        new ApproveRequestMutation(
+          {
+            requestId: request_id,
+            signature: validate_device.toString("base64"),
+            public_key: pubKey.toString("hex"),
+          },
+          configOptions,
+        ),
+      ),
+  };
+}
 
 const refetchPending: Interaction = {
   responseKey: "pending",
@@ -354,17 +362,20 @@ const postRequest: Interaction = {
       .commitMutation(new NewRequestMutation({ type, ...data }))
       .then(request => request.id),
 };
-export const approveFlow = (entity: TargetType) => [
+export const approveFlow = (
+  entity: TargetType,
+  configOptions?: ApproveFlowConfigOptions,
+) => [
   getSecureChannel,
   ...validateOperation(entity),
-  postApproval,
+  postApproval(configOptions),
   refetchPending,
 ];
 export const verifyAddressFlow = [getAddress, ...validateAdddress];
-export const createAndApprove = (entity: TargetType) => [
-  postRequest,
-  ...approveFlow(entity),
-];
+export const createAndApprove = (
+  entity: TargetType,
+  configOptions?: ApproveFlowConfigOptions,
+) => [postRequest, ...approveFlow(entity, configOptions)];
 
 export const generateSeed = [
   openSessionValidate,

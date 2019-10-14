@@ -1,6 +1,7 @@
 // @flow
 import Mutation from "restlay/Mutation";
 import { success } from "formatters/notification";
+import type { ApproveFlowConfigOptions } from "components/DeviceInteraction";
 
 type Input = {
   requestId: number,
@@ -10,7 +11,11 @@ type Input = {
 
 type Response = Object; // TODO add Request type
 
-export default class ApproveRequestMutation extends Mutation<Input, Response> {
+export default class ApproveRequestMutation extends Mutation<
+  Input,
+  Response,
+  ApproveFlowConfigOptions,
+> {
   uri = `/requests/${this.props.requestId}/approve`;
 
   method = "POST";
@@ -18,7 +23,9 @@ export default class ApproveRequestMutation extends Mutation<Input, Response> {
   // responseSchema = schema.Member;
 
   getSuccessNotification = () => {
-    return success("request", "created");
+    return this.config && this.config.successNotif
+      ? success("request", "created")
+      : null;
   };
 
   getBody() {

@@ -82,7 +82,9 @@ class RequestActionButtons extends PureComponent<Props> {
             />
             {!isPendingRegistration && !userApprovedRequest && (
               <ApproveRequestButton
-                interactions={approveFlow(lastRequest.target_type)}
+                interactions={approveFlow(lastRequest.target_type, {
+                  successNotif: true,
+                })}
                 onSuccess={onSuccess}
                 onError={onError}
                 additionalFields={{
