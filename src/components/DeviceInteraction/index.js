@@ -30,6 +30,10 @@ export type Interaction = {
   action: Object => Promise<*>,
 };
 
+export type ApproveFlowConfigOptions = {
+  successNotif?: boolean,
+};
+
 export type DeviceError = { statusCode: number };
 export type DeviceInteractionError = Error | GateError | DeviceError;
 type Props = {

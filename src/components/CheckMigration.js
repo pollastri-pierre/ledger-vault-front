@@ -164,7 +164,9 @@ const AccountToMigrate = ({
             <Absolute top={20} right={20}>
               <ApproveRequestButton
                 disabled={!isValid}
-                interactions={createAndApprove("ACCOUNT")}
+                interactions={createAndApprove("ACCOUNT", {
+                  successNotif: true,
+                })}
                 onSuccess={onMigrationSuccess}
                 additionalFields={{
                   type: isMigrated ? "MIGRATE_ACCOUNT" : "EDIT_ACCOUNT",
