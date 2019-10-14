@@ -16,7 +16,7 @@ set -e
 VAULT_WORKSPACE=${VAULT_WORKSPACE:-$HOME/.vault}
 
 function usage() {
-  echo -e "\e[2m"
+  echo -e "\033[2m"
   echo "    \`8.\`888b           ,8' .8.       8 8888      88 8 8888   8888888 8888888888"
   echo "     \`8.\`888b         ,8' .888.      8 8888      88 8 8888         8 8888      "
   echo "      \`8.\`888b       ,8' :88888.     8 8888      88 8 8888         8 8888      "
@@ -28,30 +28,30 @@ function usage() {
   echo "            \`8.\`8' .888888888. \`88888. 8888   ,d8P  8 8888         8 8888      "
   echo "             \`8.\` .8'       \`8. \`88888. \`Y88888P'   8 888888888888 8 8888      "
   echo ""
-  echo -e "\e[0m"
+  echo -e "\033[0m"
 
-  echo -e "\e[1m=> HELP COMMANDS\e[0m"
+  echo -e "\033[1m=> HELP COMMANDS\033[0m"
   echo ""
   echo "   yarn vault -h                                 display this help message."
   echo "   yarn vault -e                                 display vault env"
 
   echo ""
-  echo -e "\e[1m=> RUN & MANAGE BACKEND\e[0m"
+  echo -e "\033[1m=> RUN & MANAGE BACKEND\033[0m"
   echo ""
   echo "   yarn vault                                    start (or restart) vault backend on previous state"
   echo "   yarn vault -i                                 reset & restart vault backend"
-  echo -e "   yarn vault -i \e[34m<scenario> [...scenarios]\e[39m       reset vault backend and run given scenario(s)"
-  echo -e "   yarn vault -s \e[34m<scenario> [...scenarios]\e[39m       only run given scenario(s)"
+  echo -e "   yarn vault -i \033[34m<scenario> [...scenarios]\033[39m       reset vault backend and run given scenario(s)"
+  echo -e "   yarn vault -s \033[34m<scenario> [...scenarios]\033[39m       only run given scenario(s)"
   echo ""
   echo "  => Available scenarios are:"
   echo ""
   list_scenarios
 
   echo ""
-  echo -e "\e[1m=> MANAGE FIRMWARE & APPS ON BLUE DEVICE\e[0m"
+  echo -e "\033[1m=> MANAGE FIRMWARE & APPS ON BLUE DEVICE\033[0m"
   echo ""
-  echo -e "   yarn vault -f \e[33m<prev-firm> <next-firm>\e[39m         install firmware on Blue device"
-  echo -e "                                                 \e[2me.g: yarn vault -f 2.2.4-ee 2.2.5-eed\e[0m"
+  echo -e "   yarn vault -f \033[33m<prev-firm> <next-firm>\033[39m         install firmware on Blue device"
+  echo -e "                                                 \033[2me.g: yarn vault -f 2.2.4-ee 2.2.5-eed\033[0m"
   echo ""
 }
 
@@ -171,7 +171,7 @@ function sync_containers() {
 }
 
 function wait_up_gate() {
-  printf "\e[34m- waiting for gate... \e[0m"
+  printf "\033[34m- waiting for gate... \033[0m"
   while true; do
     if curl --connect-timeout 1 http://localhost:5000/ledger1/_health &>/dev/null ; then
       break
@@ -181,7 +181,7 @@ function wait_up_gate() {
   done
 
   # TODO we should not be forced to do that
-  printf "\n\e[34m- additional waiting time for gate to wake up... \e[0m"
+  printf "\n\033[34m- additional waiting time for gate to wake up... \033[0m"
   sleep 10
 
   echo "[OK]"
@@ -218,19 +218,19 @@ function copy_scenarios() {
 
 function list_scenarios() {
   for filename in "$VAULT_WORKSPACE"/scenarios/*; do
-    printf "     \e[34m%-22s\e[39m%s\n" "$(basename "$filename")" "$(grep DESC "$filename" | sed 's/^# DESC //g')"
+    printf "     \033[34m%-22s\033[39m%s\n" "$(basename "$filename")" "$(grep DESC "$filename" | sed 's/^# DESC //g')"
   done
 }
 
 function ensure_set() {
   if [[ "${!1}" == "" ]]; then
-    printf "\e[31merror: \$%s is not set\e[0m\n" "$1"
+    printf "\033[31merror: \$%s is not set\033[0m\n" "$1"
     exit 1
   fi
 }
 
 function sync_repo() {
-  printf "\e[34m- syncing %s on branch \e[35m%s\e[34m... \e[0m" "$1" "$2"
+  printf "\033[34m- syncing %s on branch \033[35m%s\033[34m... \033[0m" "$1" "$2"
   cd "$VAULT_WORKSPACE"
   if ! [[ -d "$1" ]]; then
     git clone "git@github.com:LedgerHQ/$1.git" >/dev/null
@@ -260,7 +260,7 @@ function install_firmware() {
   [[ "$CURRENT_FIRMWARE" == "" ]] && echo "No current firm given" && exit 1
   [[ "$EXPECTED_FIRMWARE" == "" ]] && echo "No expected firm given" && exit 1
   echo ""
-  echo -e "\e[1m=> About to upgrade \e[33;1m$CURRENT_FIRMWARE\e[39;1m into \e[33;1m$EXPECTED_FIRMWARE\e[0m"
+  echo -e "\033[1m=> About to upgrade \033[33;1m$CURRENT_FIRMWARE\033[39;1m into \033[33;1m$EXPECTED_FIRMWARE\033[0m"
   echo ""
   cd "$VAULT_WORKSPACE"
   if ! [[ -d ledgerblue ]]; then
