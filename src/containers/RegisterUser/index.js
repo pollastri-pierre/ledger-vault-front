@@ -84,7 +84,7 @@ function RegisterUser(props: Props) {
         {success ? (
           <RegisterUserSuccess />
         ) : (
-          <ModalBody>
+          <ModalBody width={550}>
             <ModalHeader>
               <Box horizontal align="center" flow={10}>
                 <Text
