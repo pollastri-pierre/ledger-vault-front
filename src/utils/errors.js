@@ -55,5 +55,13 @@ export function remapError(err: Error) {
   ) {
     return new TargetXRPNotActive();
   }
+  if (
+    // $FlowFixMe
+    err.json &&
+    err.json.message &&
+    err.json.message.includes("Not enough funds")
+  ) {
+    return new AmountTooHigh();
+  }
   return err;
 }

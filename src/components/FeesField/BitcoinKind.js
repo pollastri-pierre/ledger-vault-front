@@ -13,6 +13,7 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
+import { remapError, AmountTooHigh } from "utils/errors";
 import Spinner from "components/base/Spinner";
 import TranslatedError from "components/TranslatedError";
 import Box from "components/base/Box";
@@ -57,7 +58,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
       bridge,
     } = this.props;
 
-    this.setState({ error: null });
+    this.setState(() => ({ error: null }));
     if (transaction.amount.isEqualTo(0)) return null;
     const feeLevel =
       bridge.getTransactionFeeLevel &&
@@ -71,7 +72,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
     );
     if (nonce !== this.nonce) return;
     if (!recipientError) {
-      this.setState({ status: "fetching" });
+      this.setState(() => ({ status: "fetching" }));
       try {
         const txGetFees = {
           fees_level: feeLevel || "normal",
@@ -86,16 +87,30 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
           estimatedMaxAmount: estimatedFees.max_amount,
         });
       } catch (err) {
-        console.error(err); // eslint-disable-line no-console
-        this.setState({ error: err });
         if (nonce !== this.nonce) return;
-        onChangeTransaction({
-          ...transaction,
-          estimatedFees: null,
-          estimatedMaxAmount: null,
-        });
+
+        const error = remapError(err);
+        console.error(err); // eslint-disable-line no-console
+
+        if (error instanceof AmountTooHigh) {
+          // HACK: to make the amount input display the correct error,
+          // we put the fees to account balance...
+          onChangeTransaction({
+            ...transaction,
+            estimatedFees: account.balance,
+            estimatedMaxAmount: null,
+          });
+          this.setState(() => ({ error }));
+        } else {
+          onChangeTransaction({
+            ...transaction,
+            estimatedFees: null,
+            estimatedMaxAmount: null,
+          });
+          this.setState(() => ({ error }));
+        }
       } finally {
-        this.setState({ status: "idle" });
+        this.setState(() => ({ status: "idle" }));
       }
     }
   }
@@ -126,11 +141,17 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
     const feeLevel =
       bridge.getTransactionFeeLevel &&
       bridge.getTransactionFeeLevel(account, transaction);
-    const shouldDisplayFeesField = !!(
-      status === "fetching" ||
-      transaction.estimatedFees ||
-      error
-    );
+
+    // HACK: because we receive an error when trying to fetch the
+    // fees with a too high amount, we need to identify this error
+    // and not display it in the fees error field.. (it should be
+    // displayed in the amount field)
+    const hasHackAmountTooHigh = error && error instanceof AmountTooHigh;
+
+    const shouldDisplayFeesField =
+      !hasHackAmountTooHigh &&
+      !!(status === "fetching" || transaction.estimatedFees || error);
+
     return (
       <Box horizontal flow={20}>
         <Box width={370} noShrink>
