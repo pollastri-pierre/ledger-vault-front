@@ -32,8 +32,8 @@
       }
     },
     "finish": "Finish",
-    "finishTitle": "User Invitation was successfully created!",
-    "finishDesc": "Your request to create a user invitation was created. It can be now communicated to the user."
+    "finishTitle": "User invitation request successfully created!",
+    "finishDesc": "You can now share the registration URL with the new user."
   },
   "form": {
     "labelUsername": "Username",
