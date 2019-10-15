@@ -66,13 +66,17 @@ export const ModalHeader = styled(Box).attrs({
 `;
 
 export const ModalTitle = ({
+  bold,
   children,
   ...props
 }: {
   children: React$Node,
+  bold?: boolean,
 }) => (
   <Box mb={20} {...props}>
-    <Text header>{children}</Text>
+    <Text header bold={bold}>
+      {children}
+    </Text>
   </Box>
 );
 
@@ -148,13 +152,13 @@ export const RichModalHeader = ({
 export const RichModalFooter = styled.div`
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  padding: 0 20px;
-  // border-top: 1px solid #f0f0f0;
-  box-shadow: hsla(0, 0%, 10%, 0.1) 0 4px 6px -4px inset;
-  background: ${colors.form.bg};
+  padding: 20px;
+  border-top: 1px solid #f0f0f0;
+  box-shadow: hsla(0, 0%, 10%, 0.1) 0 4px 3px -4px inset;
   min-height: 90px;
   display: flex;
   align-items: flex-end;
+  position: relative;
 `;
 
 export const RichModalTabsContainer = styled.div`

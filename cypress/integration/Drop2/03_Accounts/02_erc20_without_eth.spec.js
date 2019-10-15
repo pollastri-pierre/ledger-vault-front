@@ -3,6 +3,7 @@ import {
   logout,
   route,
   successfull_message,
+  success_creation_account,
   create_erc20_account,
 } from "../../../functions/actions";
 
@@ -23,11 +24,11 @@ describe("Test Case for Account", function() {
     create_erc20_account(
       "USDC",
       "Block.Chain 33",
-      "Syscoin",
+      "CryptoC",
       "South Africa",
       "EMEA",
     );
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve USDC token Account", () => {
@@ -37,9 +38,9 @@ describe("Test Case for Account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
-    cy.wait(2500);
+    cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
+    cy.wait(2500);
     successfull_message();
-    cy.wait(2000);
   });
 });

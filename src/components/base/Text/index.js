@@ -9,7 +9,7 @@ const Text = styled.div`
   ${space};
   ${color};
   display: ${p => (p.inline ? "inline-block" : "block")};
-  font-family: "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Inter", "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: ${p =>
     p.header
       ? "18px"
@@ -28,7 +28,7 @@ const Text = styled.div`
   text-transform: ${p => (p.uppercase ? "uppercase" : "")};
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
   user-select: ${p => (p.select ? "text" : p.noSelect ? "none" : "inherit")};
-
+  text-align: ${p => (p.textAlign ? p.textAlign : "inherit")};
   ${p =>
     p.selectable
       ? `

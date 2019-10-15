@@ -17,6 +17,7 @@ export default (props: TransactionCreationStepProps<any>) => {
   const { transaction, account, bridge } = payload;
   invariant(transaction && account && bridge, "Invalid transaction");
   const isERC20 = account.account_type === "Erc20";
+  const isRipple = account.account_type === "Ripple";
   const fees = bridge.getFees(account, transaction);
   const totalSpent = bridge.getTotalSpent(account, transaction);
   return (
@@ -59,6 +60,15 @@ export default (props: TransactionCreationStepProps<any>) => {
           <Amount account={account} value={totalSpent} strong />
         )}
       </LineRow>
+      {isRipple && (
+        <LineRow
+          label={
+            <Trans i18nKey="transactionCreation:steps.amount.destinationTag" />
+          }
+        >
+          {transaction.destinationTag}
+        </LineRow>
+      )}
     </Box>
   );
 };

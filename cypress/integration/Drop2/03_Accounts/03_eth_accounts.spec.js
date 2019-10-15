@@ -3,6 +3,7 @@ import {
   logout,
   route,
   create_account,
+  success_creation_account,
   successfull_message,
 } from "../../../functions/actions";
 
@@ -21,7 +22,7 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     create_account("Ethereum", "Syscoin2", "Key accounts Ops", "America Ops");
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve Eth Account", () => {
@@ -33,9 +34,8 @@ describe("Test Case for Account", function() {
     cy.contains("Awaiting approval").click();
     cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
+    cy.wait(3500);
     successfull_message();
-    cy.wait(2000);
   });
 
   it("Create Ethereum Ropsten Account", () => {
@@ -49,7 +49,7 @@ describe("Test Case for Account", function() {
       "Key accounts Ops",
       "South Africa",
     );
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve Eth Ropsten Account", () => {
@@ -61,8 +61,7 @@ describe("Test Case for Account", function() {
     cy.contains("Awaiting approval").click();
     cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
+    cy.wait(2500);
     successfull_message();
-    cy.wait(2000);
   });
 });

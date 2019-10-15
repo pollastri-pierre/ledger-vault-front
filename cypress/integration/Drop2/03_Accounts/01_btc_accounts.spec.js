@@ -4,6 +4,7 @@ import {
   route,
   create_account,
   successfull_message,
+  success_creation_account,
   error_message,
 } from "../../../functions/actions";
 
@@ -22,7 +23,7 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     create_account("Bitcoin", "Coinhy.pe", "APAC", "New EMEA");
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve Btc Account", () => {
@@ -33,9 +34,8 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
+    cy.wait(2500);
     successfull_message();
-    cy.wait(2000);
   });
 
   it("Create Bitcoin Testnet Account", () => {
@@ -49,7 +49,7 @@ describe("Test Case for Account", function() {
       "America Ops",
       "Key accounts Ops",
     );
-    successfull_message();
+    success_creation_account();
   });
 
   it("Approve Btc Testnet Account", () => {
@@ -61,9 +61,7 @@ describe("Test Case for Account", function() {
     cy.contains("Awaiting approval").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7500);
-    successfull_message();
-    cy.wait(2000);
+    cy.wait(2500);
   });
 
   it("Create a account with the same name should fail", () => {

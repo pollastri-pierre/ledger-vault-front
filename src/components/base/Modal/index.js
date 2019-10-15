@@ -189,7 +189,6 @@ const BODY_WRAPPER_STYLE = {
   alignItems: "center",
 };
 
-export { default as ModalFooterButton } from "./ModalFooterButton";
 export {
   ModalClose,
   ModalFooter,

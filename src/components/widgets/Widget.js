@@ -14,7 +14,7 @@ import Text from "components/base/Text";
 type WidgetSettingsProps = {};
 
 type Props = {
-  title: React$Node,
+  title?: React$Node,
   titleRight?: React$Node,
   desc?: React$Node,
   children: React$Node,

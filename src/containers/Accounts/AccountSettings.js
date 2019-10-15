@@ -10,7 +10,7 @@ import { withMe } from "components/UserContextProvider";
 import connectData from "restlay/connectData";
 import LineRow from "components/LineRow";
 import Modal from "components/base/Modal";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { currencyExchangeSelector } from "redux/modules/exchanges";
@@ -106,13 +106,15 @@ function AccountSettings(props: Props) {
             </LineRow>
             <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
               <Button
-                variant="filled"
-                size="tiny"
-                customColor={colors.grenade}
-                IconLeft={FaRegCopy}
+                type="filled"
+                variant="danger"
+                small
                 onClick={onXpubModal}
               >
-                Copy XPUB
+                <Box horizontal flow={5} align="center">
+                  <FaRegCopy />
+                  <Text>Copy XPUB</Text>
+                </Box>
               </Button>
               <Modal isOpened={isXpubModalOpen} onClose={onXpubModal}>
                 <AccountXpub account={account} />

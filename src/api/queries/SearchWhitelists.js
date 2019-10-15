@@ -5,7 +5,9 @@ import schema from "data/schema";
 import type { Whitelist } from "data/types";
 import queryString from "query-string";
 
-type In = {};
+type In = {
+  pageSize?: number,
+};
 
 type Node = Whitelist;
 
@@ -19,7 +21,7 @@ export default class WhitelistsQuery extends ConnectionQuery<In, Node> {
 
   nodeSchema = schema.Whitelist;
 
-  pageSize = 30;
+  pageSize = this.props.pageSize || 30;
 
   getPaginationURLParams(first?: number, after?: string): Object {
     const params = {};

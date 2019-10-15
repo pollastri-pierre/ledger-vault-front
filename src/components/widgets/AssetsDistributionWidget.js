@@ -132,6 +132,10 @@ function AssetsDistributionWidget(props: Props) {
     .map(e => e.node)
     .some(a => a.balance.isGreaterThan(0));
 
+  const isErc20Present = accountsConnection.edges
+    .map(e => e.node)
+    .find(a => a.account_type === "Erc20");
+
   return (
     <Widget title="Assets distribution">
       <Card align="center">
@@ -147,9 +151,11 @@ function AssetsDistributionWidget(props: Props) {
               <PieChart data={data} size={300} />
               <Box flow={20}>{renderLegends()}</Box>
             </Box>
-            <InfoBox type="info">
-              There is no countervalue available for some ERC20 tokens
-            </InfoBox>
+            {isErc20Present && (
+              <InfoBox type="info">
+                <Text i18nKey="adminDashboard:assetDistributionWidget.infoErc20" />
+              </InfoBox>
+            )}
           </>
         )}
       </Card>

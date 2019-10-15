@@ -5,6 +5,7 @@ import queryString from "query-string";
 import ConnectionQuery from "restlay/ConnectionQuery";
 
 type Input = {
+  pageSize?: number,
   name?: string,
 };
 
@@ -22,5 +23,5 @@ const uri = (query: Input) => {
 export default class SearchRequestsQuery extends ConnectionQuery<Input, *> {
   uri = uri(this.props);
 
-  pageSize = 30;
+  pageSize = this.props.pageSize || 30;
 }

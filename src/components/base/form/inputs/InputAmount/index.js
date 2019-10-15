@@ -111,7 +111,7 @@ class InputAmount extends PureComponent<Props, State> {
     const option = options.find(opt => opt.data === unit);
     return (
       <Box horizontal flow={10} width={width || 370}>
-        <Box grow>
+        <Box grow flow={8}>
           <InputText
             placeholder="0"
             align="right"

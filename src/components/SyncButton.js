@@ -1,11 +1,8 @@
 // @flow
 
 import React, { useState } from "react";
-import { Trans } from "react-i18next";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import Box from "components/base/Box";
-import Text from "components/base/Text";
-import colors from "shared/colors";
 import SyncAccountMutation from "api/mutations/SyncAccountMutation";
 import SearchTransactions from "api/queries/SearchTransactions";
 import connectData from "restlay/connectData";
@@ -32,24 +29,18 @@ const SyncButton = (props: Props) => {
     setSynced(true);
     return promise;
   };
-  return !synced ? (
-    <Button
-      IconLeft={() => <FaSync style={{ marginRight: 2 }} />}
-      size="tiny"
-      variant="text"
-      customColor={colors.mediumGrey}
-      onClick={forceSync}
-    >
-      {synced ? (
-        <Trans i18nKey="accountView:synced" />
-      ) : (
-        <Trans i18nKey="accountView:sync_button" />
-      )}
-    </Button>
-  ) : (
-    <Box horizontal flow={5} align="center">
-      <FaCheck color={colors.mediumGrey} />
-      <Text i18nKey="accountView:synced" color={colors.mediumGrey} />
+  // had to wrap in a fixed width box  because outline button are slightly larger than filled button
+  return (
+    <Box width={40}>
+      <Button
+        type={synced ? "outline" : "filled"}
+        variant="info"
+        small
+        onClick={forceSync}
+        disabled={synced}
+      >
+        {synced ? <FaCheck /> : <FaSync />}
+      </Button>
     </Box>
   );
 };

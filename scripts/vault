@@ -128,9 +128,12 @@ function up_containers() {
 }
 
 function sync_containers() {
-  cd "$VAULT_WORKSPACE/vault-integration"
-  docker-compose pull
-  cd - &>/dev/null
+  # if NO_PULL is set, skip the docker-compose pull phase
+  if [[ -z "$NO_PULL" ]]; then
+    cd "$VAULT_WORKSPACE/vault-integration"
+    docker-compose pull
+    cd - &>/dev/null
+  fi
 }
 
 function wait_up_gate() {

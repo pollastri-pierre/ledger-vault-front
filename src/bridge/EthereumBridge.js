@@ -8,7 +8,6 @@ import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
 import { NonEIP55Address, InvalidAddress } from "utils/errors";
 import type { WalletBridge } from "./types";
 
-// convertion to the BigNumber needed
 export type Transaction = {
   recipient: string,
   amount: BigNumber,

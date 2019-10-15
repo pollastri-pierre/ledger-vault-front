@@ -8,6 +8,7 @@ import { createAndApprove } from "device/interactions/hsmFlows";
 import UsersQuery from "api/queries/UsersQuery";
 import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMutation";
 import GroupQuery from "api/queries/GroupQuery";
+import { FaUsers } from "react-icons/fa";
 
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import ApproveRequestButton from "components/ApproveRequestButton";
@@ -16,7 +17,10 @@ import { handleCancelOnDevice } from "utils/request";
 
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
-import { FaUsers } from "react-icons/fa";
+import Button from "components/base/Button";
+import Box from "components/base/Box";
+import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
+
 import type { Group } from "data/types";
 
 import GroupCreationInfos from "./GroupCreationInfos";
@@ -48,12 +52,14 @@ const steps = [
       isEditMode,
       initialPayload,
       restlay,
+      onSuccess,
     }: {
       payload: GroupCreationPayload,
       initialPayload: GroupCreationPayload,
       onClose: Function,
       isEditMode?: boolean,
       restlay: RestlayEnvironment,
+      onSuccess: () => void,
     }) => {
       // if only description changed
       if (onlyDescriptionChanged(payload, initialPayload)) {
@@ -70,7 +76,7 @@ const steps = [
           }
           onError={handleCancelOnDevice(restlay, onClose)}
           onSuccess={() => {
-            onClose();
+            onSuccess();
           }}
           disabled={!hasEditOccured(payload, initialPayload)}
           additionalFields={{
@@ -84,6 +90,40 @@ const steps = [
             />
           }
         />
+      );
+    },
+  },
+  {
+    id: "finish",
+    name: <Trans i18nKey="group:create.finish" />,
+    hideBack: true,
+    Step: ({ isEditMode }: { isEditMode?: boolean }) => {
+      return (
+        <MultiStepsSuccess
+          title={
+            isEditMode ? (
+              <Trans i18nKey="group:update.finishTitle" />
+            ) : (
+              <Trans i18nKey="group:create.finishTitle" />
+            )
+          }
+          desc={
+            isEditMode ? (
+              <Trans i18nKey="group:update.finishDesc" />
+            ) : (
+              <Trans i18nKey="group:create.finishDesc" />
+            )
+          }
+        />
+      );
+    },
+    Cta: ({ onClose }: { onClose: () => void }) => {
+      return (
+        <Box my={10}>
+          <Button type="filled" onClick={onClose}>
+            <Trans i18nKey="common:done" />
+          </Button>
+        </Box>
       );
     },
   },

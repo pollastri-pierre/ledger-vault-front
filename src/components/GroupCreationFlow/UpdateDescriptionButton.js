@@ -1,56 +1,40 @@
 // @flow
 
 import React, { Component } from "react";
-import { FaCheck } from "react-icons/fa";
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
-import colors from "shared/colors";
-import { ModalFooterButton } from "components/base/Modal";
+
 import type { RestlayEnvironment } from "restlay/connectData";
 import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMutation";
+import Button from "components/base/Button";
 
-type State = {
-  isLoading: boolean,
-};
 type Props = {
   payload: *,
   restlay: RestlayEnvironment,
   onClose: Function,
 };
-class UpdateDescriptionButton extends Component<Props, State> {
-  state = {
-    isLoading: false,
-  };
-
+class UpdateDescriptionButton extends Component<Props> {
   onSubmit = async () => {
     const { restlay, payload, onClose } = this.props;
 
-    this.setState({ isLoading: true });
-    try {
-      await restlay.commitMutation(
-        new EditGroupDescriptionMutation({
-          groupId: payload.id,
-          description: payload.description,
-        }),
-      );
-      onClose();
-    } finally {
-      this.setState({ isLoading: false });
-    }
+    await restlay.commitMutation(
+      new EditGroupDescriptionMutation({
+        groupId: payload.id,
+        description: payload.description,
+      }),
+    );
+    onClose();
   };
 
   render() {
-    const { isLoading } = this.state;
     return (
-      <ModalFooterButton
-        data-test="update-description"
+      <Button
         onClick={this.onSubmit}
-        isLoading={isLoading}
-        color={colors.ocean}
+        data-test="edit-desc-button"
+        type="filled"
       >
-        <FaCheck style={{ marginRight: 10 }} />
         <Trans i18nKey="group:create.submit_edit" />
-      </ModalFooterButton>
+      </Button>
     );
   }
 }

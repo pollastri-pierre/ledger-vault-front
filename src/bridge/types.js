@@ -53,11 +53,14 @@ export interface WalletBridge<Transaction> {
     restlay: RestlayEnvironment,
     currency: *,
     recipient: string,
+    account?: Account,
   ) => Promise<?Error>;
 
   EditFees?: *; // React$ComponentType<EditProps<Transaction>>;
 
   EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
+
+  ExtraFields?: React$ComponentType<EditProps<Transaction>>;
 
   checkValidTransactionSync(
     account: Account,

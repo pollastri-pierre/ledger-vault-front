@@ -67,6 +67,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
         restlay,
         currency,
         recipient,
+        account,
       );
       if (nonce !== this._nonce || this._unmounted) return;
 

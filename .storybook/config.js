@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import JssProvider from "react-jss/lib/JssProvider";
 import { I18nextProvider } from "react-i18next";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
@@ -53,26 +52,20 @@ const StorybookGlobalStyle = createGlobalStyle`
   }
 `;
 
-const generateClassName = (a, b) => {
-  return `${b.options.classNamePrefix}-${a.key}`;
-};
-
 function loadStories() {
   req.keys().forEach(filename => req(filename));
 }
 
 addDecorator(story => (
-  <JssProvider generateClassName={generateClassName}>
-    <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <MuiThemeProvider theme={muiTheme}>
-          <ThemeProvider theme={styledTheme}>
-            <BrowserRouter>{story()}</BrowserRouter>
-          </ThemeProvider>
-        </MuiThemeProvider>
-      </I18nextProvider>
-    </Provider>
-  </JssProvider>
+  <Provider store={store}>
+    <I18nextProvider i18n={i18n}>
+      <MuiThemeProvider theme={muiTheme}>
+        <ThemeProvider theme={styledTheme}>
+          <BrowserRouter>{story()}</BrowserRouter>
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </I18nextProvider>
+  </Provider>
 ));
 
 addDecorator(withKnobs);

@@ -16,7 +16,10 @@ import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQ
 import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
+import Button from "components/base/Button";
+import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
 import Text from "components/base/Text";
+import Box from "components/base/Box";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import { handleCancelOnDevice } from "utils/request";
 import {
@@ -26,6 +29,7 @@ import {
 } from "utils/cryptoCurrencies";
 import { deserializeApprovalSteps } from "utils/accounts";
 import type { ApprovalsRule } from "components/ApprovalsRules";
+import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 
 import type { Account } from "data/types";
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
@@ -88,11 +92,13 @@ const steps = [
       onClose,
       isEditMode,
       restlay,
+      onSuccess,
     }: {
       payload: AccountCreationPayload,
       onClose: () => void,
       isEditMode?: boolean,
       restlay: RestlayEnvironment,
+      onSuccess: () => void,
     }) => {
       const data = serializePayload(payload, isEditMode);
       const isMigrated = payload.accountStatus === "MIGRATED";
@@ -108,7 +114,7 @@ const steps = [
                 );
               }
             } finally {
-              onClose();
+              onSuccess();
             }
           }}
           disabled={false}
@@ -126,6 +132,55 @@ const steps = [
             />
           }
         />
+      );
+    },
+  },
+  {
+    id: "finish",
+    name: <Trans i18nKey="accountCreation:finish" />,
+    hideBack: true,
+    Step: ({
+      payload,
+      isEditMode,
+    }: {
+      payload: AccountCreationPayload,
+      isEditMode: boolean,
+    }) => {
+      return (
+        <MultiStepsSuccess
+          title={
+            <Box horizontal align="center" justify="center" flow={5}>
+              {payload.currency && (
+                <CryptoCurrencyIcon
+                  currency={payload.currency}
+                  color={payload.currency.color}
+                  size={18}
+                />
+              )}
+              {isEditMode ? (
+                <Text i18nKey="accountCreation:finishEditTitle" />
+              ) : (
+                <Text i18nKey="accountCreation:finishTitle" />
+              )}
+            </Box>
+          }
+          desc={
+            isEditMode ? (
+              <Trans i18nKey="accountCreation:finishEditDesc" />
+            ) : (
+              <Trans i18nKey="accountCreation:finishDesc" />
+            )
+          }
+        />
+      );
+    },
+    Cta: ({ onClose }: { onClose: () => void }) => {
+      return (
+        <Box my={10}>
+          <Button type="filled" onClick={onClose}>
+            <Trans i18nKey="common:done" />
+          </Button>
+        </Box>
       );
     },
   },
@@ -241,7 +296,9 @@ export const deserialize: Account => AccountCreationPayload = account => {
     name: account.name,
     rules,
     currency:
-      account.account_type === "Bitcoin" || account.account_type === "Ethereum"
+      account.account_type === "Bitcoin" ||
+      account.account_type === "Ethereum" ||
+      account.account_type === "Ripple"
         ? getCryptoCurrencyById(account.currency)
         : null,
     parentAccount: account.parent ? { id: account.parent } : null,

@@ -1,6 +1,8 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import Tooltip from "@material-ui/core/Tooltip";
+import { FaInfoCircle } from "react-icons/fa";
 import { BigNumber } from "bignumber.js";
 import { connect } from "react-redux";
 import {
@@ -39,7 +41,7 @@ const mapStateToProps = (state, ownProps) => {
     value: ownProps.value,
   });
 
-  return { countervalue };
+  return { countervalue, exchange: state.exchanges.data.USD };
 };
 
 function resolveCurOrToken({
@@ -74,9 +76,11 @@ function resolveCurOrToken({
 
 type Props = {
   countervalue: ?BigNumber,
+  exchange: string,
   value: BigNumber, // eslint-disable-line react/no-unused-prop-types
   from?: string, // eslint-disable-line react/no-unused-prop-types
   fromAccount?: Account, // eslint-disable-line react/no-unused-prop-types
+  disableTooltip?: boolean,
   alwaysShowSign?: boolean,
   type?: TransactionType,
   renderNA?: React$Node,
@@ -84,24 +88,56 @@ type Props = {
 
 class CounterValue extends PureComponent<Props> {
   render() {
-    const { value, countervalue, alwaysShowSign, type, renderNA } = this.props;
+    const {
+      value,
+      countervalue,
+      alwaysShowSign,
+      type,
+      renderNA,
+      exchange,
+      disableTooltip,
+    } = this.props;
     if (!countervalue) {
       return renderNA || "N/A";
     }
 
     // display specific string if value is lower than 0.01 USD
     // see https://ledgerhq.atlassian.net/browse/LV-828
+    let inner;
     if (value.isGreaterThan(0) && countervalue.isEqualTo(0)) {
-      return "< USD 0.01";
+      inner = "< USD 0.01";
+    } else {
+      inner = (
+        <CurrencyFiatValue
+          fiat="USD"
+          value={countervalue}
+          alwaysShowSign={alwaysShowSign}
+          type={type}
+        />
+      );
     }
 
-    return (
-      <CurrencyFiatValue
-        fiat="USD"
-        value={countervalue}
-        alwaysShowSign={alwaysShowSign}
-        type={type}
-      />
+    // we use <span> here instead of <Box> because <CounterValue/> is renderered
+    // a lot in table, in cell with align:right, so we want to keep it "inline"
+    // to not break the alignment
+    return disableTooltip ? (
+      inner
+    ) : (
+      <span>
+        {inner}
+        <span
+          style={{
+            display: "inline-block",
+            marginLeft: 8,
+            verticalAlign: "middle",
+            lineHeight: 1,
+          }}
+        >
+          <Tooltip title={`Source: ${exchange}`}>
+            <FaInfoCircle size={12} />
+          </Tooltip>
+        </span>
+      </span>
     );
   }
 }

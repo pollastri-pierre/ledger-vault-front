@@ -28,12 +28,15 @@ export const fromStringRoleToBytes = {
 };
 
 const USE_TRANSPORT_U2F = true; // localStorage.getItem("U2F");
-const FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB");
+const FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB") === "1";
+const mockTransport = Promise.resolve({ close: () => Promise.resolve() });
 
 if (USE_TRANSPORT_U2F && !FORCE_WEB_USB) {
   registerTransportModule({
     id: "u2f",
     open: async () => {
+      // $FlowFixMe
+      if (softwareMode()) return mockTransport;
       // $FlowFixMe
       const t = await LedgerTransportU2F.create();
       t.setScrambleKey("v1+");
@@ -47,12 +50,10 @@ if (USE_TRANSPORT_U2F && !FORCE_WEB_USB) {
   registerTransportModule({
     id: "webusb",
     open: async () => {
-      // prevent the native webusb modal from opening
-      if (softwareMode()) {
-        // $FlowFixMe obv it's not a Promise<Transport<T>>
-        return Promise.resolve({ close: () => Promise.resolve() });
-      }
+      // $FlowFixMe
+      if (softwareMode()) return mockTransport;
       const t = await TransportUSB.create();
+      // $FlowFixMe
       return t;
     },
     disconnect: () => null,

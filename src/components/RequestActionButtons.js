@@ -75,13 +75,7 @@ class RequestActionButtons extends PureComponent<Props> {
             <Text bold>You already approved this request</Text>
           </Box>
         ) : userInCurrentStep || isUserCreationRequest ? (
-          <Box
-            horizontal
-            align="center"
-            justify="space-between"
-            mb={-20}
-            mx={-5}
-          >
+          <Box pt={20} horizontal justify="space-between" align="flex-end">
             <AbortRequestButton
               requestID={lastRequest.id}
               onSuccess={onSuccess}
@@ -107,7 +101,7 @@ class RequestActionButtons extends PureComponent<Props> {
     );
 
     return (
-      <Box grow flow={20} py={20} style={{ minHeight: 90 }} justify="center">
+      <Box grow flow={20} style={{ minHeight: 90 }} justify="center">
         {inner}
       </Box>
     );

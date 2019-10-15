@@ -10,6 +10,9 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
+import Box from "components/base/Box";
+import Button from "components/base/Button";
+import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import { handleCancelOnDevice } from "utils/request";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -62,8 +65,9 @@ const steps = [
       payload: TransactionCreationPayload<any>,
       onClose: Function,
       restlay: RestlayEnvironment,
+      onSuccess: () => void,
     }) => {
-      const { payload, onClose, restlay } = props;
+      const { payload, onClose, restlay, onSuccess } = props;
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
@@ -79,7 +83,7 @@ const steps = [
                 );
               }
             } finally {
-              onClose();
+              onSuccess();
             }
           }}
           disabled={false}
@@ -90,6 +94,28 @@ const steps = [
           }}
           buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
         />
+      );
+    },
+  },
+  {
+    id: "finish",
+    name: <Trans i18nKey="transactionCreation:finish" />,
+    hideBack: true,
+    Step: () => {
+      return (
+        <MultiStepsSuccess
+          title={<Trans i18nKey="transactionCreation:finishTitle" />}
+          desc={<Trans i18nKey="transactionCreation:finishDesc" />}
+        />
+      );
+    },
+    Cta: ({ onClose }: { onClose: () => void }) => {
+      return (
+        <Box my={10}>
+          <Button type="filled" onClick={onClose}>
+            <Trans i18nKey="common:done" />
+          </Button>
+        </Box>
       );
     },
   },
@@ -162,6 +188,14 @@ function serializePayload(payload: TransactionCreationPayload<*>) {
     Object.assign(tx, {
       gas_price: transaction.gasPrice.toFixed(),
       gas_limit: transaction.gasLimit.toFixed(),
+    });
+  }
+
+  if (account.account_type === "Ripple") {
+    Object.assign(tx, {
+      memos: [],
+      destination_tag: transaction.destinationTag || null,
+      fees: transaction.estimatedFees.toFixed(),
     });
   }
 

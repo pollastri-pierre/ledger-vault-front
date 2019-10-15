@@ -2,10 +2,11 @@
 
 import React from "react";
 import { Trans } from "react-i18next";
-import { MdEdit } from "react-icons/md";
+import { FaPen } from "react-icons/fa";
 import { withRouter, matchPath } from "react-router";
 import { Link } from "react-router-dom";
 import type { Location, Match } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import {
   RichModalHeader,
@@ -13,10 +14,11 @@ import {
   RichModalTabsContainer,
   RichModalTab,
 } from "components/base/Modal";
+
 import { useOrganization } from "components/OrganizationContext";
 import Disabled from "components/Disabled";
 import { withMe } from "components/UserContextProvider";
-import Button from "components/legacy/Button";
+import Button from "components/base/Button";
 import GrowingCard from "components/base/GrowingCard";
 import EntityLastRequest from "components/EntityLastRequest";
 import RequestActionButtons from "components/RequestActionButtons";
@@ -27,7 +29,7 @@ import { hasPendingRequest, hasPendingEdit } from "utils/entities";
 import { isRequestAffectingAdminRules } from "utils/request";
 import type { Entity, User } from "data/types";
 
-const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
+export const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
 
 type Props<T> = {
   entity: Entity,
@@ -168,9 +170,11 @@ function EntityModal<T>(props: Props<T>) {
 function EditButton({ url, disabled }: { url: string, disabled?: boolean }) {
   const inner = (
     <Link replace to={url} data-test="edit-button">
-      <Button size="tiny" type="submit" variant="filled" IconLeft={MdEdit}>
-        <Trans i18nKey="entityModal:edit" />
-      </Button>
+      <Tooltip title={<Trans i18nKey="entityModal:edit" />} placement="left">
+        <Button>
+          <FaPen />
+        </Button>
+      </Tooltip>
     </Link>
   );
 

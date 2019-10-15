@@ -3,7 +3,6 @@ import {
   logout,
   route,
   create_group,
-  successfull_message,
   error_message,
 } from "../../../functions/actions";
 
@@ -24,10 +23,8 @@ describe("Test Case for Create Groups", function() {
     cy.url().should("include", "/admin/groups");
 
     create_group("APAC", "Group for APAC", "Thomas", "Anna", "Aidan");
-    successfull_message();
 
     create_group("EMEA", "Group for EMEA", "James", "Laura", "Sally");
-    successfull_message();
 
     create_group(
       "NORTH Asia",
@@ -36,7 +33,6 @@ describe("Test Case for Create Groups", function() {
       "Allison",
       "Tyler",
     );
-    successfull_message();
     cy.wait(1500);
 
     create_group(
@@ -46,7 +42,6 @@ describe("Test Case for Create Groups", function() {
       "Anna",
       "Laura",
     );
-    successfull_message();
   });
 
   it("Create Group with the same name", () => {
@@ -54,7 +49,23 @@ describe("Test Case for Create Groups", function() {
     route();
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
-    create_group("EMEA", "Group for EMEA", "Aidan", "Anna", "James");
+    cy.get("[data-test=add-button]").click();
+    cy.wait(2000);
+    cy.get("[data-test=group_name]").type("EMEA");
+    cy.get("#input_groups_users")
+      .type("Aidan", { force: true })
+      .type("{enter}");
+    cy.get("#input_groups_users")
+      .type("Anna", { force: true })
+      .type("{enter}");
+    cy.get("#input_groups_users")
+      .type("James", { force: true })
+      .type("{enter}");
+    cy.get("[data-test=group_description]").type("Group for EMEA");
+    cy.contains("Next").click();
+    cy.get("[data-test=approve_button]").click();
+    cy.wait(1500);
+
     error_message("Error 10202", "Group already exists");
     cy.get("[data-test=close]")
       .eq(1)

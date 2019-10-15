@@ -127,7 +127,7 @@ export type Whitelist = {
   created_by: User,
 };
 
-export type AccountType = "Ethereum" | "Bitcoin" | "Erc20";
+export type AccountType = "Ethereum" | "Bitcoin" | "Erc20" | "Ripple";
 
 type ExtendedPubKey = {
   public_key: string,
@@ -138,6 +138,8 @@ export type TxApprovalStep = { quorum: number, group: $Shape<Group> };
 type AccountCommon = {
   id: number,
   account_type: AccountType,
+  // for xrp...
+  address?: string,
   contract_address: string,
   parent?: number,
   name: string,
@@ -170,12 +172,13 @@ export type TransactionRecipientIsValid = {
 };
 
 export type TransactionGetFees = {
-  amount: BigNumber,
-  recipient: string,
+  amount?: BigNumber,
+  recipient?: string,
   fees_level?: string,
   gas_limit?: ?BigNumber,
   gas_price?: ?BigNumber,
   max_amount?: ?BigNumber,
+  memo?: [],
 };
 
 export type AccountEntity = AccountCommon & {
@@ -334,6 +337,7 @@ type TransactionCommon = {
   last_request?: Request,
   gas_price?: BigNumber,
   gas_limit?: BigNumber,
+  destination_tag?: number,
 };
 
 export type Transaction = TransactionCommon & {
@@ -447,9 +451,11 @@ export type RequestTargetType =
   | "GROUP"
   | "BITCOIN_ACCOUNT"
   | "ETHEREUM_ACCOUNT"
+  | "RIPPLE_ACCOUNT"
   | "ERC20_ACCOUNT"
   | "BITCOIN_LIKE_TRANSACTION"
   | "ETHEREUM_LIKE_TRANSACTION"
+  | "RIPPLE_LIKE_TRANSACTION"
   | "PERSON"
   | "ORGANIZATION";
 

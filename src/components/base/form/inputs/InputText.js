@@ -9,7 +9,7 @@ import Absolute from "components/base/Absolute";
 import Box from "components/base/Box";
 
 import ErrorsWrapper from "components/base/form/ErrorsWrapper";
-import HintsWrapper from "components/base/form/HintsWrapper";
+import HintsWrapper, { evalHints } from "components/base/form/HintsWrapper";
 import type { InputProps } from "components/base/form/types";
 
 type Icon = {
@@ -83,8 +83,13 @@ class InputText extends PureComponent<Props, State> {
       ...props
     } = this.props;
     const { isFocused } = this.state;
-    const hasError = !!errors && !!errors.length;
+    const enrichedHints = evalHints(hints, value);
+    const hasError =
+      (!!errors && !!errors.length) ||
+      (enrichedHints && enrichedHints.some(h => h.status === "invalid"));
+
     const hasWarning = !hasError && !!warnings && !!warnings.length;
+
     return (
       <Box position="relative" grow={grow}>
         {IconLeft && <IconWrapper Icon={IconLeft} isFocused={isFocused} />}
@@ -112,7 +117,7 @@ class InputText extends PureComponent<Props, State> {
               errors={hasWarning ? warnings : undefined}
               bg={colors.form.warning}
             />
-            <HintsWrapper hints={hints} value={value} />
+            <HintsWrapper hints={enrichedHints} value={value} />
           </>
         )}
       </Box>

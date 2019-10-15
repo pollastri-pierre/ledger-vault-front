@@ -61,6 +61,11 @@ export default function TransactionsFilters(props: Props) {
       <FieldAccount />
       <FieldDate />
       <FieldText title="Label" queryKey="label" placeholder="Label" />
+      <FieldText
+        title="Destination tag"
+        queryKey="destination_tag"
+        placeholder="Destination tag"
+      />
     </FiltersCard>
   );
 }

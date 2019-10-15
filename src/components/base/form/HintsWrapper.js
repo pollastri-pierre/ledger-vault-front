@@ -17,21 +17,15 @@ type Props = {
 
 function HintsWrapper(props: Props) {
   const { hints, value } = props;
-  if (!hints) return null;
+  if (!hints || !hints.length) return null;
   return (
     <HintsWrap>
       <HintsContainer>
         {hints.map(hint => {
-          const { label, check, key } = hint;
+          const { label, key, status } = hint;
 
           const displayedLabel =
             typeof label === "function" ? label(value) : label;
-
-          const status = value
-            ? check(value)
-              ? "valid"
-              : "invalid"
-            : "unchecked";
 
           return (
             <Box position="relative" key={key} horizontal flow={5} noShrink>
@@ -48,6 +42,14 @@ function HintsWrapper(props: Props) {
       </HintsContainer>
     </HintsWrap>
   );
+}
+
+export function evalHints(hints: ?(Hint[]), value: string): Hint[] {
+  if (!hints) return [];
+  return hints.map(hint => ({
+    ...hint,
+    status: value ? (hint.check(value) ? "valid" : "invalid") : "unchecked",
+  }));
 }
 
 const enter = keyframes`

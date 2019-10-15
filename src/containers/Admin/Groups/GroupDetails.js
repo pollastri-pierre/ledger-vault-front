@@ -34,7 +34,6 @@ function GroupDetails(props: Props) {
     <ApproveRequestButton
       interactions={createAndApprove("GROUP")}
       onSuccess={close}
-      color={colors.grenade}
       isRevoke
       additionalFields={{
         data: { group_id: group.id },
