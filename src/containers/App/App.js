@@ -1,7 +1,9 @@
 // @flow
 import React, { useState } from "react";
+import { Route } from "react-router-dom";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
+import { FaArrowLeft } from "react-icons/fa";
 
 import type { Account, User, Transaction, Organization } from "data/types";
 import connectData from "restlay/connectData";
@@ -14,6 +16,8 @@ import Spinner from "components/base/Spinner";
 import Content from "containers/Content";
 import Modals from "containers/Modals";
 import Card from "components/base/Card";
+import Text from "components/base/Text";
+import VaultLink from "components/VaultLink";
 import CheckMigration from "components/CheckMigration";
 import Box from "components/base/Box";
 import UserContextProvider, { withMe } from "components/UserContextProvider";
@@ -53,6 +57,17 @@ const AppWrapper = ({ me, organization, restlay, ...props }: Props) => {
   );
 };
 
+const TopBarContent = () => (
+  <Route path="/:org/:role/accounts/view/:id">
+    <VaultLink withRole to="/accounts">
+      <Box horizontal align="center" flow={5} py={10}>
+        <FaArrowLeft />
+        <Text i18nKey="accountView:backButton" />
+      </Box>
+    </VaultLink>
+  </Route>
+);
+
 const App = withMe((props: Props & { me: User }) => {
   const {
     match,
@@ -83,6 +98,7 @@ const App = withMe((props: Props & { me: User }) => {
         user={me}
         onLogout={handleLogout}
         match={match}
+        TopBarContent={TopBarContent}
       >
         {me.role === "ADMIN" && <CheckMigration />}
         <Content match={match} />
