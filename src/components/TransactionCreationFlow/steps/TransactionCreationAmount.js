@@ -5,7 +5,6 @@ import invariant from "invariant";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { Trans } from "react-i18next";
 
-import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import AccountName from "components/AccountName";
@@ -74,8 +73,26 @@ const TransactionCreationAmount = (
 
   return (
     <Box flow={20}>
-      <Box horizontal justify="space-between" flow={20}>
-        <Box grow style={{ maxWidth: 370 }}>
+      <Box grow flow={20}>
+        <Box horizontal align="center" justify="space-between" mb={20}>
+          <Box>
+            <Label>
+              <Trans i18nKey="transactionCreation:steps.amount.accountToDebit" />
+            </Label>
+            <Text bold large>
+              <AccountName account={account} />
+            </Text>
+          </Box>
+          <Box>
+            <Label>
+              <Trans i18nKey="transactionCreation:steps.amount.balance" />
+            </Label>
+            <Text bold large lineHeight={1}>
+              <CurrencyAccountValue account={account} value={account.balance} />
+            </Text>
+          </Box>
+        </Box>
+        <Box grow>
           <Label>
             <Trans i18nKey="transactionCreation:steps.amount.recipient" />
           </Label>
@@ -88,26 +105,9 @@ const TransactionCreationAmount = (
             bridge={bridge}
           />
         </Box>
-        <Box align="flex-end">
-          <Label>Sending from</Label>
-          <Box
-            horizontal
-            align="center"
-            flow={10}
-            style={{ height: 40, border: `1px solid ${colors.form.border}` }}
-            px={10}
-            borderRadius={4}
-            bg={colors.form.bg}
-          >
-            <AccountName account={account} />
-            <Text color={colors.textLight} mt={2} small>
-              <CurrencyAccountValue account={account} value={account.balance} />
-            </Text>
-          </Box>
-        </Box>
       </Box>
       <Box horizontal flow={20}>
-        <Box grow>
+        <Box>
           <Label>
             <Trans i18nKey="transactionCreation:steps.amount.amount" />
           </Label>

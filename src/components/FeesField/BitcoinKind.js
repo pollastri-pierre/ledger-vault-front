@@ -154,7 +154,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
 
     return (
       <Box horizontal flow={20}>
-        <Box width={370} noShrink>
+        <Box noShrink>
           <Label>
             <Trans i18nKey="send:details.fees.title" />
           </Label>
