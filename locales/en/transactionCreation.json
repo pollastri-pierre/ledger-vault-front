@@ -7,6 +7,8 @@
     },
     "amount": {
       "title": "Details",
+      "accountToDebit": "Sending from",
+      "balance": "Balance",
       "amount": "Amount",
       "recipient": "Recipient address",
       "feesInfos": "To have your transaction confirmed faster, select a higher fee.",
