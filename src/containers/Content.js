@@ -5,6 +5,7 @@ import type { Match } from "react-router-dom";
 import { withMe } from "components/UserContextProvider";
 
 import AdminDashboard from "containers/Admin/Dashboard";
+import Whitelists from "containers/Admin/Whitelists";
 import AdminTasks from "containers/Admin/AdminTasks";
 import AdminGroups from "containers/Admin/Groups";
 import Users from "containers/Admin/Users";
@@ -30,6 +31,7 @@ function Content({ match, me }: { match: Match, me: User }) {
       <Route path={`${u}/admin/accounts/view/:id`} component={AccountView} />
       <Route path={`${u}/admin/accounts`} component={Accounts} />
       <Route path={`${u}/admin/transactions`} component={Transactions} />
+      <Route path={`${u}/admin/whitelists`} component={Whitelists} />
 
       <Route path={`${u}/operator/dashboard`} component={OperatorDashboard} />
       <Route path={`${u}/operator/transactions`} component={Transactions} />
