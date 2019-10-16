@@ -6,59 +6,38 @@ import { withTranslation } from "react-i18next";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 
-import colors, { opacity, darken } from "shared/colors";
+import colors, { darken } from "shared/colors";
 
 import type { Translate } from "data/types";
 
 const BG_BY_STATUS = {
-  ABORTED: opacity(colors.grenade, 0.1),
-  REVOKED: opacity(colors.grenade, 0.1),
-  ACCESS_SUSPENDED: opacity(colors.grenade, 0.1),
-  DELETED: opacity(colors.grenade, 0.1),
-  BLOCKED: "hsl(0, 0%, 85%)",
-  EXPIRED: "hsl(0, 0%, 85%)",
-  CREATION_ABORTED: opacity(colors.grenade, 0.1),
-  APPROVED: opacity(colors.green, 0.1),
-  SUBMITTED: opacity(colors.green, 0.1),
-  ACTIVE: opacity(colors.green, 0.1),
-  MIGRATED: opacity("violet", 0.1),
-  HSM_COIN_UPDATED: opacity("violet", 0.1),
-  PENDING: opacity(colors.ocean, 0.1),
-  PENDING_APPROVAL: opacity(colors.ocean, 0.1),
-  PENDING_UPDATE: opacity(colors.ocean, 0.1),
-  AWAITING_APPROVAL: opacity(colors.blue_orange, 0.1),
-  PENDING_REVOCATION_APPROVAL: opacity(colors.ocean, 0.1),
-  PENDING_VIEW_ONLY: opacity(colors.ocean, 0.1),
-  PENDING_MIGRATED: opacity(colors.ocean, 0.1),
-  PENDING_REVOCATION: opacity(colors.ocean, 0.1),
-  PENDING_REGISTRATION: opacity(colors.ocean, 0.1),
-  VIEW_ONLY: colors.lightGrey,
+  ABORTED: colors.paleRed,
+  REVOKED: colors.paleRed,
+  ACCESS_SUSPENDED: colors.paleRed,
+  DELETED: colors.paleRed,
+  BLOCKED: colors.argile,
+  EXPIRED: colors.argile,
+  CREATION_ABORTED: colors.paleRed,
+  APPROVED: colors.paleGreen,
+  SUBMITTED: colors.paleGreen,
+  ACTIVE: colors.paleGreen,
+  MIGRATED: colors.paleViolet,
+  HSM_COIN_UPDATED: colors.paleViolet,
+  PENDING: colors.paleBlue,
+  PENDING_APPROVAL: colors.paleBlue,
+  PENDING_UPDATE: colors.paleBlue,
+  AWAITING_APPROVAL: colors.paleYellow,
+  PENDING_REVOCATION_APPROVAL: colors.paleBlue,
+  PENDING_VIEW_ONLY: colors.paleBlue,
+  PENDING_MIGRATED: colors.paleBlue,
+  PENDING_REVOCATION: colors.paleBlue,
+  PENDING_REGISTRATION: colors.paleBlue,
+  VIEW_ONLY: colors.argile,
 };
 
-const COLOR_BY_STATUS = {
-  ABORTED: colors.grenade,
-  REVOKED: colors.grenade,
-  ACCESS_SUSPENDED: colors.grenade,
-  DELETED: colors.grenade,
-  BLOCKED: "hsl(0, 0%, 25%)",
-  EXPIRED: "hsl(0, 0%, 25%)",
-  CREATION_ABORTED: colors.grenade,
-  APPROVED: darken(colors.green, 0.2),
-  SUBMITTED: darken(colors.green, 0.2),
-  ACTIVE: darken(colors.green, 0.2),
-  MIGRATED: "violet",
-  HSM_COIN_UPDATED: "violet",
-  PENDING: darken(colors.ocean, 0.5),
-  PENDING_APPROVAL: darken(colors.ocean, 0.5),
-  PENDING_UPDATE: darken(colors.ocean, 0.5),
-  PENDING_VIEW_ONLY: darken(colors.ocean, 0.5),
-  AWAITING_APPROVAL: darken(colors.blue_orange, 0.5),
-  PENDING_REVOCATION_APPROVAL: darken(colors.ocean, 0.5),
-  PENDING_REVOCATION: darken(colors.ocean, 0.5),
-  PENDING_MIGRATED: darken(colors.ocean, 0.5),
-  PENDING_REGISTRATION: darken(colors.ocean, 0.5),
-  VIEW_ONLY: colors.steel,
-};
+function getColorByBg(status: any) {
+  return darken(BG_BY_STATUS[status], 0.7) || "inherit";
+}
 
 type Props = {
   t: Translate,
@@ -89,7 +68,7 @@ class Status extends PureComponent<Props> {
     if (textOnly) return str;
 
     const bg = BG_BY_STATUS[status] || "white";
-    const color = COLOR_BY_STATUS[status] || "inherit";
+    const color = getColorByBg(status);
 
     return (
       <Box
@@ -97,12 +76,13 @@ class Status extends PureComponent<Props> {
         horizontal
         align="center"
         inline
-        px={5}
+        px={10}
+        py={2}
         bg={bg}
         color={color}
-        borderRadius={3}
+        borderRadius={15}
       >
-        <Text small={size !== "big"} style={styles.text}>
+        <Text semiBold small={size !== "big"} style={styles.text}>
           {str}
         </Text>
       </Box>
