@@ -1,0 +1,25 @@
+{
+  "add": "add whitelist",
+  "create": {
+    "title": "New whitelist",
+    "editTitle": "Edit whitelist",
+    "details": "Details",
+    "add_addresses": "Add addresses",
+    "confirmation": "Confirmation",
+    "name_placeholder": "Whitelist name",
+    "desc_placeholder": "Whitelist description",
+    "add_addr": "Add addresses",
+    "addr_name_placeholder": "Address name",
+    "addr_placeholder": "Enter address",
+    "submit": "Create whitelist",
+    "no_edit": "No changes were made",
+    "finishTitle": "Whitelist Request was successfully created!",
+    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+    "no_hsm_validation": "Editing the description doesn't require the approval from other Administrators or your device"
+  },
+  "update": {
+    "finishTitle": "Update Whitelist Request was successfully created!",
+    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+    "submit": "Edit whitelist"
+  }
+}

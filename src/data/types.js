@@ -1,6 +1,7 @@
 // @flow
 
 import type { BigNumber } from "bignumber.js";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
@@ -28,7 +29,7 @@ type Price = {
   amount: BigNumber,
 };
 
-export type Entity = Group | Account | User | Transaction;
+export type Entity = Group | Account | User | Transaction | Whitelist;
 
 export const userRoleMap = {
   ADMIN: "ADMIN",
@@ -115,16 +116,21 @@ export type Approval = {
 };
 
 export type Address = {
-  currency: Currency,
+  id: number,
+  currency: CryptoCurrency,
   address: string,
-  alias?: string,
+  name: string,
 };
 export type Whitelist = {
   id: number,
   name: string,
+  description: string,
   addresses: Address[],
   created_on: Date,
   created_by: User,
+  approvals: Approval[],
+  status: string,
+  last_request?: Request,
 };
 
 export type AccountType = "Ethereum" | "Bitcoin" | "Erc20" | "Ripple";
@@ -452,6 +458,7 @@ export const RequestActivityTypeList: RequestActivityType[] = Object.keys(
 
 export type RequestTargetType =
   | "GROUP"
+  | "WHITELIST"
   | "BITCOIN_ACCOUNT"
   | "ETHEREUM_ACCOUNT"
   | "RIPPLE_ACCOUNT"
