@@ -55,6 +55,12 @@ const colors = {
   text: "#6f6f6f",
   textLight: "#aaaaaa",
   form,
+  // STATUSES
+  paleGreen: "#d7f5ea",
+  paleYellow: "#fbf8de",
+  paleRed: "#f1c8cf",
+  paleViolet: "#f0eaf3",
+  paleBlue: "#d1eef9",
 
   // LEGACY
   legacyLightBlue: "#27d0e280",

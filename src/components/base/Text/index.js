@@ -22,7 +22,8 @@ const Text = styled.div`
       : p.normal
       ? "13px"
       : "inherit"};
-  font-weight: ${p => (p.bold ? "bold" : "inherit")} !important;
+  font-weight: ${p =>
+    p.bold ? "bold" : p.semiBold ? 600 : "inherit"} !important;
   font-style: ${p => (p.italic ? "italic" : "inherit")};
   line-height: ${p => ("lineHeight" in p ? p.lineHeight : "1.75")};
   text-transform: ${p => (p.uppercase ? "uppercase" : "")};
