@@ -25,8 +25,8 @@ export default function WhitelistsFilters(props: FieldsGroupProps) {
         placeholder={t("common:requestStatus")}
         queryKey="meta_status"
       />
-      <FieldText title="name" queryKey="name" placeholder="name" />
-      <FieldText title="address" queryKey="address" placeholder="address" />
+      <FieldText title="Name" queryKey="name" placeholder="name" />
+      <FieldText title="Address" queryKey="address" placeholder="address" />
     </FiltersCard>
   );
 }

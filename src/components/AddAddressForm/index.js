@@ -1,6 +1,7 @@
 // @flow
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { Trans, useTranslation } from "react-i18next";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import { FaAddressBook, FaPlus } from "react-icons/fa";
@@ -215,6 +216,7 @@ const FormAdd = connectData(
       };
       onSubmit(data);
     };
+    const { t } = useTranslation();
     return (
       <Box flow={20}>
         <Box flow={20}>
@@ -223,7 +225,7 @@ const FormAdd = connectData(
               <SelectCurrency
                 autoFocus
                 noToken
-                placeholder="currency"
+                placeholder={t("whitelists:create.currency_placeholder")}
                 value={currency}
                 onChange={val => setCurrency(val ? val.value : null)}
                 noOptionsMessage="no-options"
@@ -231,7 +233,7 @@ const FormAdd = connectData(
             </Box>
             <Box flex="1">
               <InputText
-                placeholder="name"
+                placeholder={t("whitelists:create.addr_name_placeholder")}
                 maxLength={19}
                 onChange={setName}
                 value={name}
@@ -241,7 +243,7 @@ const FormAdd = connectData(
             </Box>
           </Box>
           <InputText
-            placeholder="address"
+            placeholder={t("whitelists:create.addr_placeholder")}
             value={address}
             onChange={setAddress}
             errors={addressError ? [addressError] : null}
@@ -297,6 +299,11 @@ const NoAddressPlaceholder = () => (
     style={{ background: colors.cream }}
   >
     <FaAddressBook size={25} />
-    <Text>There is no address in the whitelist</Text>
+    <Text>
+      <Trans
+        i18nKey="whitelists:create.no_address"
+        components={<strong>0</strong>}
+      />
+    </Text>
   </Box>
 );
