@@ -96,9 +96,16 @@ class InfoBox extends PureComponent<Props> {
   };
 
   render() {
-    const { children, type, Footer, withIcon, alignCenter } = this.props;
+    const {
+      children,
+      type,
+      Footer,
+      withIcon,
+      alignCenter,
+      ...props
+    } = this.props;
     return (
-      <Container type={type} alignCenter={alignCenter}>
+      <Container type={type} alignCenter={alignCenter} {...props}>
         <Box horizontal align="flex-start">
           {withIcon && this.renderIcon()}
           <Box p={10} style={{ textAlign: alignCenter ? "center" : "left" }}>

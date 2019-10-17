@@ -1,13 +1,15 @@
 // @flow
 
 import React from "react";
-import { FaExclamation } from "react-icons/fa";
+import styled from "styled-components";
 
-import colors from "shared/colors";
+import ExclamationCircle from "components/icons/ExclamationCircle";
+import colors, { opacity } from "shared/colors";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 import Button from "components/base/Button";
 import Modal from "./index";
-import { ModalTitle } from "./components";
+import { ModalBody, ModalFooter } from "./components";
 import type { ModalProps } from "./types";
 
 type Props = ModalProps & {
@@ -30,40 +32,40 @@ function ConfirmModal(props: Props) {
   } = props;
   return (
     <Modal {...props} isOpened={isOpened} onClose={onReject}>
-      <Box width={450} p={40}>
-        <ModalTitle bold align="center">
-          {title}
-        </ModalTitle>
-        <Box flow={20} align="center" style={{ textAlign: "center" }}>
-          <Box
-            align="center"
-            justify="center"
-            bg={colors.pearl}
-            width={40}
-            height={40}
-            borderRadius={50}
-          >
-            <FaExclamation color={colors.lead} />
-          </Box>
+      <ModalBody width={450}>
+        <WarningIconWrapper>
+          <ExclamationCircle
+            color={opacity(colors.light_orange, 0.6)}
+            size={50}
+          />
+        </WarningIconWrapper>
+        <Box flow={10} mt={20} align="center" justify="center">
+          <Text bold>{title}</Text>
           {children}
         </Box>
-      </Box>
-      <Box horizontal m={20} justify="space-between">
-        <Button
-          type="link"
-          variant="info"
-          data-test="Cancel"
-          onClick={onReject}
-        >
-          {rejectLabel}
-        </Button>
-        <Button type="filled" data-test="Confirm" onClick={onConfirm}>
-          {confirmLabel}
-        </Button>
-      </Box>
+        <ModalFooter>
+          <Box grow flow={10} horizontal m={20} justify="space-between">
+            <Button
+              type="link"
+              variant="info"
+              data-test="Cancel"
+              onClick={onReject}
+            >
+              {rejectLabel}
+            </Button>
+            <Button type="filled" data-test="Confirm" onClick={onConfirm}>
+              {confirmLabel}
+            </Button>
+          </Box>
+        </ModalFooter>
+      </ModalBody>
     </Modal>
   );
 }
+
+const WarningIconWrapper = styled(Box)`
+  align-self: center;
+`;
 
 ConfirmModal.defaultProps = {
   title: "Are you sure?",

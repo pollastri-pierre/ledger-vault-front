@@ -41,9 +41,12 @@ function UserDetails(props: Props) {
       confirmLabel={<Trans i18nKey="userDetails:revokeWarning.confirm" />}
       confirmContent={
         <Box flow={15} align="flex-start">
-          <Text i18nKey="userDetails:revokeWarning.content" />
+          <Text
+            textAlign="center"
+            i18nKey="userDetails:revokeWarning.content"
+          />
           {user.role === "ADMIN" && (
-            <InfoBox type="warning">
+            <InfoBox type="warning" style={{ alignSelf: "center" }}>
               <Text i18nKey="userDetails:revokeWarning.contentAdmin" />
             </InfoBox>
           )}
