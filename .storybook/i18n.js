@@ -16,7 +16,7 @@ i18n.init({
   resources: {
     en: resources,
   },
-  debug: true,
+  debug: false,
 });
 
 export default i18n;
