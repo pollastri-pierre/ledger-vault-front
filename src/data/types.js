@@ -135,6 +135,9 @@ type ExtendedPubKey = {
 };
 
 export type TxApprovalStep = { quorum: number, group: $Shape<Group> };
+
+export type TxApprovalStepCollection = Array<TxApprovalStep | null>;
+
 type AccountCommon = {
   id: number,
   account_type: AccountType,
@@ -157,7 +160,7 @@ type AccountCommon = {
   status: string,
   last_request?: Request,
   xpub: string,
-  tx_approval_steps?: TxApprovalStep[],
+  tx_approval_steps?: TxApprovalStepCollection,
   parent: ?number,
   derivation_path: string,
   extended_public_key: ExtendedPubKey,

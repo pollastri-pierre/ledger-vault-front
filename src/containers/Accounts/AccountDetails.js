@@ -29,7 +29,7 @@ function AccountDetails(props: Props) {
   const hasPendingTransactions = pendingTransactions.edges.length > 0;
   const hasPendingEditGroup =
     account.tx_approval_steps &&
-    account.tx_approval_steps.some(s => s.group.is_under_edit);
+    account.tx_approval_steps.some(s => s && s.group.is_under_edit);
 
   return (
     <EntityModal
