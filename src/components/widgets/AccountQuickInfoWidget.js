@@ -34,15 +34,56 @@ type Props = {
   account: Account,
 };
 
-function AccountQuickInfoWidget(props: Props) {
-  const { account } = props;
+const AccountQuickInfoWidget = (props: Props) => (
+  <div style={{ position: "relative" }}>
+    <AccountQuickInfoHeader {...props} />
+    <WidgetContent {...props} />
+    <DetailsLink {...props} />
+  </div>
+);
+
+const AccountQuickInfoHeader = ({ account }: Props) => {
+  const me = useMe();
+  const isSendDisabled = !isAccountSpendable(account);
+  const sendBtn = (
+    <Button size="small" type="filled" disabled={isSendDisabled}>
+      <Box horizontal flow={5} align="center">
+        <IconSend size={10} />
+        <Text i18nKey="accountView:sendButton" />
+      </Box>
+    </Button>
+  );
+  return (
+    <PageHeaderActions title={account.name}>
+      {me.role === "OPERATOR" ? (
+        <Box horizontal flow={10}>
+          {isSendDisabled ? (
+            sendBtn
+          ) : (
+            <Link to={`${account.id}/send/${account.id}`}>{sendBtn}</Link>
+          )}
+          <Link to={`${account.id}/receive/${account.id}`}>
+            <Button size="small" type="filled">
+              <Box horizontal flow={5} align="center">
+                <IconReceive size={10} />
+                <Text i18nKey="accountView:receiveButton" />
+              </Box>
+            </Button>
+          </Link>
+          <SyncButton account={account} />
+        </Box>
+      ) : (
+        <SyncButton account={account} />
+      )}
+    </PageHeaderActions>
+  );
+};
+
+const WidgetContent = ({ account }: Props) => {
   const me = useMe();
   const icon = getIcon(account);
   const displayName = getDisplayName(account);
-
-  const syncButton = <SyncButton account={account} />;
-
-  const widget = (
+  return (
     <Widget grow position="relative">
       <SoftCard grow flow={20} style={{ padding: 0 }}>
         <Box horizontal flexWrap="wrap">
@@ -132,53 +173,19 @@ function AccountQuickInfoWidget(props: Props) {
       </SoftCard>
     </Widget>
   );
+};
 
-  return (
-    <div style={{ position: "relative" }}>
-      <PageHeaderActions title={account.name}>
-        {me.role === "OPERATOR" ? (
-          <Box horizontal flow={10}>
-            <Link to={`${account.id}/send/${account.id}`}>
-              <Button
-                size="small"
-                type="filled"
-                disabled={!isAccountSpendable(account)}
-              >
-                <Box horizontal flow={5} align="center">
-                  <IconSend size={10} />
-                  <Text i18nKey="accountView:sendButton" />
-                </Box>
-              </Button>
-            </Link>
-            <Link to={`${account.id}/receive/${account.id}`}>
-              <Button size="small" type="filled">
-                <Box horizontal flow={5} align="center">
-                  <IconReceive size={10} />
-                  <Text i18nKey="accountView:receiveButton" />
-                </Box>
-              </Button>
-            </Link>
-            {syncButton}
-          </Box>
-        ) : (
-          syncButton
-        )}
-      </PageHeaderActions>
-      {widget}
-      <Absolute top={60} right={10}>
-        <Tooltip title="Account details" placement="left">
-          <Link
-            to={`${location.pathname}/accounts/details/${account.id}/overview`}
-          >
-            <Button>
-              <FaInfo />
-            </Button>
-          </Link>
-        </Tooltip>
-      </Absolute>
-    </div>
-  );
-}
+const DetailsLink = ({ account }: Props) => (
+  <Absolute top={60} right={10}>
+    <Tooltip title="Account details" placement="left">
+      <Link to={`${location.pathname}/accounts/details/${account.id}/overview`}>
+        <Button>
+          <FaInfo />
+        </Button>
+      </Link>
+    </Tooltip>
+  </Absolute>
+);
 
 const InfoSquare = styled(Box).attrs({
   mr: 50,
