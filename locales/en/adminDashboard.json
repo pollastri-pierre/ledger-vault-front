@@ -1,6 +1,6 @@
 {
   "adminRule": "Admin rule",
-  "myRequestsTitle": "Requests awaiting approval",
+  "myRequestsTitle": "Requests awaiting your approval",
   "myRequestsEmpty": "No requests to approve",
   "otherRequestsTitle": "Pending requests",
   "otherRequestsEmpty": "No requests to track",
