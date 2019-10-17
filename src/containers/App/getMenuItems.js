@@ -11,7 +11,7 @@ import {
   FaUsers,
   FaMoneyCheck,
   FaExchangeAlt,
-  FaAddressBook,
+  // FaAddressBook,
 } from "react-icons/fa";
 
 import { getVisibleAccountsInMenu } from "utils/accounts";
@@ -78,14 +78,14 @@ export default function getMenuItems(props: Props) {
         query: { status: usersStatuses },
         Icon: FaUser,
       },
-      {
-        key: "whitelists",
-        dataTest: "menuItem-whitelists",
-        label: <Trans i18nKey="menu:admin.whitelists" />,
-        url: `${match.url}/admin/whitelists`,
-        query: { status: transactionsStatuses },
-        Icon: FaAddressBook,
-      },
+      // {
+      //   key: "whitelists",
+      //   dataTest: "menuItem-whitelists",
+      //   label: <Trans i18nKey="menu:admin.whitelists" />,
+      //   url: `${match.url}/admin/whitelists`,
+      //   query: { status: transactionsStatuses },
+      //   Icon: FaAddressBook,
+      // },
       {
         key: "accounts",
         dataTest: "menuItem-accounts",
