@@ -10,7 +10,12 @@ import Spinner from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity } from "shared/colors";
 import RulesViewer from "components/ApprovalsRules/RulesViewer";
-import type { Account, User, Group, TxApprovalStep } from "data/types";
+import type {
+  Account,
+  User,
+  Group,
+  TxApprovalStepCollection,
+} from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
@@ -108,7 +113,7 @@ const resolveRules = (
   editRules: EditApprovalStep[],
   groups: Group[],
   users: User[],
-): TxApprovalStep[] => {
+): TxApprovalStepCollection => {
   const newRules = [];
   editRules.forEach((r, i) => {
     const { users: ruleUsers } = r;
