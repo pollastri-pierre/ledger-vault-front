@@ -5,6 +5,7 @@ export default createGlobalStyle`
   * {
     color: inherit;
     box-sizing: border-box;
+    min-width: 0;
   }
 
   input {
