@@ -17,7 +17,7 @@ const WhitelistCreationAddresses = (props: Props) => {
     const nextId = lastItem ? lastItem.id + 1 : 0;
 
     updatePayload({
-      addresses: [...payload.addresses, { ...addr, id: nextId }],
+      addresses: [{ ...addr, id: nextId }, ...payload.addresses],
     });
   };
 
