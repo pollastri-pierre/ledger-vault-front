@@ -135,6 +135,7 @@ function FeesFieldRippleKind(props: Props) {
                 />
                 {" ("}
                 <CounterValue
+                  smallerInnerMargin
                   value={transaction.estimatedFees}
                   from={account.currency}
                 />

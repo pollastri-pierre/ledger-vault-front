@@ -86,6 +86,7 @@ type Props = {
   alwaysShowSign?: boolean,
   type?: TransactionType,
   renderNA?: React$Node,
+  smallerInnerMargin?: boolean,
 };
 
 class CounterValue extends PureComponent<Props> {
@@ -98,6 +99,7 @@ class CounterValue extends PureComponent<Props> {
       renderNA,
       exchange,
       disableTooltip,
+      smallerInnerMargin,
     } = this.props;
     if (!countervalue) {
       return renderNA || "N/A";
@@ -130,7 +132,7 @@ class CounterValue extends PureComponent<Props> {
         <span
           style={{
             display: "inline-block",
-            marginLeft: 8,
+            marginLeft: smallerInnerMargin ? 4 : 8,
             verticalAlign: "middle",
             lineHeight: 1,
           }}

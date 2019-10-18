@@ -217,6 +217,7 @@ class FeesFieldEthereumKind extends PureComponent<
                 />
                 {" ("}
                 <CounterValue
+                  smallerInnerMargin
                   value={transaction.estimatedFees}
                   from={account.currency}
                 />
