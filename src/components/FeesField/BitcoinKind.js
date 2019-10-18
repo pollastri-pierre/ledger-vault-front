@@ -198,6 +198,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
                 <span>
                   {" ("}
                   <CounterValue
+                    smallerInnerMargin
                     value={transaction.estimatedFees}
                     from={account.currency}
                   />
