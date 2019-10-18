@@ -44,17 +44,15 @@ const AddAddressForm = (props: Props) => {
         )}
         <Box position="relative">
           {form && (
-            <AbsoluteFormContainer>
-              <FormContainer>
-                <FormAdd
-                  onSubmit={addr => {
-                    setForm(false);
-                    onAddAddress(addr);
-                  }}
-                  onCancel={() => setForm(false)}
-                />
-              </FormContainer>
-            </AbsoluteFormContainer>
+            <FormContainer>
+              <FormAdd
+                onSubmit={addr => {
+                  setForm(false);
+                  onAddAddress(addr);
+                }}
+                onCancel={() => setForm(false)}
+              />
+            </FormContainer>
           )}
         </Box>
       </Box>
@@ -97,15 +95,13 @@ const AddressRow = ({
     <Container ref={ref}>
       <>
         {editMode && (
-          <AbsoluteFormContainer>
-            <FormContainer>
-              <FormAdd
-                addr={addr}
-                onSubmit={editAddr}
-                onCancel={() => setEditMode(false)}
-              />
-            </FormContainer>
-          </AbsoluteFormContainer>
+          <FormContainer>
+            <FormAdd
+              addr={addr}
+              onSubmit={editAddr}
+              onCancel={() => setEditMode(false)}
+            />
+          </FormContainer>
         )}
         <Box
           horizontal
@@ -280,8 +276,6 @@ const FormContainer = styled.div`
   width: 621px;
   background: #fbfbfb;
   border: 1px solid ${colors.lightGrey};
-`;
-const AbsoluteFormContainer = styled.div`
   position: absolute;
   left: -1px;
   top: 100%;
