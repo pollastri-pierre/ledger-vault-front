@@ -245,6 +245,7 @@ const openSessionValidate: Interaction = {
       "CREATE_TRANSACTION",
       "BITCOIN_LIKE_TRANSACTION",
       "ETHEREUM_LIKE_TRANSACTION",
+      "RIPPLE_LIKE_TRANSACTION",
     ];
     await openSession()(
       transport,
