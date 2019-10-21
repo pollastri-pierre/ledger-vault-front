@@ -111,7 +111,7 @@ const RenderLoading = () => (
     <Spinner />
   </Box>
 );
-export default connectData(AccountEditRequest, {
+const C: React$ComponentType<$Shape<Props>> = connectData(AccountEditRequest, {
   RenderLoading,
   queries: {
     users: UsersQuery,
@@ -119,6 +119,7 @@ export default connectData(AccountEditRequest, {
   },
 });
 
+export default C;
 const resolveRules = (
   editRules: EditApprovalStep[],
   groups: Group[],
