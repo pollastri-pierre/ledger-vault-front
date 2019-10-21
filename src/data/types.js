@@ -7,11 +7,13 @@ import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 // We have a little variation with the way client denormalize the data,
 // therefore we will have _T_Entity types to be the denormalized form of _T_
 
-// export type Fiat = {
-//   id: number,
-//   name: string,
-//   type: string
-// };
+export const mapRestlayKeyToType = {
+  users: "USER",
+  groups: "GROUP",
+  accounts: "ACCOUNT",
+  transactions: "TRANSACTION",
+  whitelists: "WHITELIST",
+};
 
 export type Translate = (?string, ?Object) => any;
 
