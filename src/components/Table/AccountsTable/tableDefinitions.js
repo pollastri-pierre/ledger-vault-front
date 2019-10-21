@@ -72,6 +72,16 @@ export const accountsTableDefault = [
 export const accountsIsOperatorTableDefault = [
   {
     header: {
+      label: "",
+      align: "left",
+    },
+    body: {
+      prop: "link",
+      align: "left",
+    },
+  },
+  {
+    header: {
       label: "Account name",
       align: "left",
       sortable: true,
