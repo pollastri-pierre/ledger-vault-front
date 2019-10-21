@@ -19,11 +19,7 @@ type In = {
 type Node = Transaction;
 
 const uri = (query: In) => {
-  const finalQuery: Object = {
-    ...query,
-    with_daemon_info: true,
-  };
-  const q = queryString.stringify(finalQuery);
+  const q = queryString.stringify(query);
   return `/transactions${q ? "?" : ""}${q}`;
 };
 
