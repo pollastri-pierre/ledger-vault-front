@@ -1,6 +1,6 @@
 // @flow
 
-import type { User, Request } from "data/types";
+import type { User, GenericRequest } from "data/types";
 
 // TODO: LOL
 type GateHistory = *;
@@ -35,7 +35,7 @@ export type VaultHistoryStep = {
   createdOn: string,
   createdBy: User,
   approvalsSteps?: Array<?VaultHistoryApprovalStep>,
-  blockerRequest?: Request,
+  blockerRequest?: GenericRequest,
 };
 
 export type VaultHistoryItem = {

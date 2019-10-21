@@ -89,11 +89,11 @@ type UserCommon = {
   created_on: string,
   status: string,
   email?: string,
-  last_request?: Request,
   role: UserRole,
 };
-export type UserEntity = UserCommon;
-export type User = UserCommon;
+export type User = UserCommon & {
+  last_request?: Request<"USER">,
+};
 
 export type UserInvite = {
   id: string,
@@ -124,7 +124,7 @@ export type Address = {
   address: string,
   name: string,
 };
-export type Whitelist = {
+export type WhitelistCommon = {
   id: number,
   name: string,
   type: "WHITELIST",
@@ -134,7 +134,10 @@ export type Whitelist = {
   created_by: User,
   approvals: Approval[],
   status: string,
-  last_request?: Request,
+};
+
+export type Whitelist = WhitelistCommon & {
+  last_request?: Request<"WHITELIST">,
 };
 
 export type AccountType = "Ethereum" | "Bitcoin" | "Erc20" | "Ripple";
@@ -160,13 +163,13 @@ type AccountCommon = {
   settings: AccountSettings,
   security_scheme: SecurityScheme,
   balance: BigNumber,
+  currency: string,
   parent_balance?: BigNumber,
   created_on: Date,
   fresh_addresses: *,
   is_hsm_coin_app_updated: boolean,
   index: number,
-  status: string,
-  last_request?: Request,
+  status: AccountStatus,
   xpub: string,
   tx_approval_steps?: TxApprovalStepCollection,
   parent: ?number,
@@ -175,7 +178,7 @@ type AccountCommon = {
 };
 
 export type Account = AccountCommon & {
-  currency: string,
+  last_request?: Request<"ACCOUNT">,
 };
 
 export type TransactionRecipientIsValid = {
@@ -193,10 +196,6 @@ export type TransactionGetFees = {
   memo?: [],
 };
 
-export type AccountEntity = AccountCommon & {
-  currency: string,
-};
-
 type GroupCommon = {
   id: number,
   name: string,
@@ -204,19 +203,14 @@ type GroupCommon = {
   created_on: Date,
   created_by: User,
   description?: string,
-  last_request?: Request,
   status: string, // TODO create UNION type when different status are known
   is_internal: boolean,
+  members: User[],
   is_under_edit: boolean,
 };
 
-export type GroupEntity = GroupCommon & {
-  members: string[],
-};
-
 export type Group = GroupCommon & {
-  members: User[],
-  approvals: Approval[],
+  last_request?: Request<"GROUP">,
 };
 
 export type TransactionCreationNote = {
@@ -344,18 +338,17 @@ type TransactionCommon = {
   time?: Date,
   transaction?: RawTransaction | RawTransactionETH,
   exploreURL: ?string,
-  approvals: Approval[],
   tx_hash: ?string,
   status: TransactionStatus,
   error?: Object,
-  last_request?: Request,
   gas_price?: BigNumber,
+  notes: Note[],
   gas_limit?: BigNumber,
   destination_tag?: number,
 };
 
 export type Transaction = TransactionCommon & {
-  notes: Note[],
+  last_request?: Request<"TRANSACTION">,
 };
 
 export type TransactionEntity = TransactionCommon & {
@@ -380,7 +373,7 @@ export type ActivityGeneric = {
 export type ActivityEntityAccount = ActivityCommon & {
   business_action: {
     id: number,
-    account: AccountEntity,
+    account: Account,
     author: UserCommon,
     business_action_name: string,
     message: string,
@@ -440,94 +433,195 @@ export const RequestStatusMap = {
 };
 export type RequestStatus = $Keys<typeof RequestStatusMap>;
 
-export const RequestActivityTypeDefs = {
+const RequestActivityTypeDefsWhitelist = {
+  CREATE_GROUP: "CREATE_WHITELIST",
+  EDIT_GROUP: "EDIT_WHITELIST",
+  REVOKE_GROUP: "REVOKE_WHITELIST",
+};
+const RequestActivityTypeDefsGroup = {
   CREATE_GROUP: "CREATE_GROUP",
   EDIT_GROUP: "EDIT_GROUP",
   REVOKE_GROUP: "REVOKE_GROUP",
-  REVOKE_USER: "REVOKE_USER",
-  CREATE_ADMIN: "CREATE_ADMIN",
-  CREATE_OPERATOR: "CREATE_OPERATOR",
+};
+const RequestActivityTypeDefsAccount = {
   CREATE_ACCOUNT: "CREATE_ACCOUNT",
   EDIT_ACCOUNT: "EDIT_ACCOUNT",
   REVOKE_ACCOUNT: "REVOKE_ACCOUNT",
   MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
+};
+const RequestActivityTypeDefsUser = {
+  REVOKE_USER: "REVOKE_USER",
+  CREATE_ADMIN: "CREATE_ADMIN",
+  CREATE_OPERATOR: "CREATE_OPERATOR",
+};
+const RequestActivityTypeDefsOrganization = {
   UPDATE_QUORUM: "UPDATE_QUORUM",
+};
+const RequestActivityTypeDefsTransaction = {
   CREATE_TRANSACTION: "CREATE_TRANSACTION",
 };
 
+export const RequestActivityTypeDefs = {
+  ...RequestActivityTypeDefsWhitelist,
+  ...RequestActivityTypeDefsGroup,
+  ...RequestActivityTypeDefsAccount,
+  ...RequestActivityTypeDefsUser,
+  ...RequestActivityTypeDefsOrganization,
+  ...RequestActivityTypeDefsTransaction,
+};
 export type RequestActivityType = $Keys<typeof RequestActivityTypeDefs>;
 
 export const RequestActivityTypeList: RequestActivityType[] = Object.keys(
   RequestActivityTypeDefs,
 );
 
-export type RequestTargetType =
-  | "GROUP"
-  | "WHITELIST"
-  | "BITCOIN_ACCOUNT"
-  | "ETHEREUM_ACCOUNT"
-  | "RIPPLE_ACCOUNT"
-  | "ERC20_ACCOUNT"
-  | "BITCOIN_LIKE_TRANSACTION"
-  | "ETHEREUM_LIKE_TRANSACTION"
-  | "RIPPLE_LIKE_TRANSACTION"
-  | "PERSON"
-  | "ORGANIZATION";
+const TargetTypeUserDefs = {
+  PERSON: "PERSON",
+};
+const TargetTypeGroupDefs = {
+  GROUP: "GROUP",
+};
+const TargetTypeWhitelistDefs = {
+  WHITELIST: "WHITELIST",
+};
+export const GroupTargetTypeList: Array<
+  $Keys<typeof TargetTypeGroupDefs>,
+> = Object.keys(TargetTypeGroupDefs);
 
-type RequestCommon = {
+const TargetTypeAccountDefs = {
+  BITCOIN_ACCOUNT: "BITCOIN_ACCOUNT",
+  ETHEREUM_ACCOUNT: "ETHEREUM_ACCOUNT",
+  RIPPLE_ACCOUNT: "RIPPLE_ACCOUNT",
+  ERC20_ACCOUNT: "ERC20_ACCOUNT",
+};
+export const AccountTargetTypeList: Array<
+  $Keys<typeof TargetTypeAccountDefs>,
+> = Object.keys(TargetTypeAccountDefs);
+
+const TargetTypeTransactionDefs = {
+  BITCOIN_LIKE_TRANSACTION: "BITCOIN_LIKE_TRANSACTION",
+  ETHEREUM_LIKE_TRANSACTION: "ETHEREUM_LIKE_TRANSACTION",
+  RIPPLE_LIKE_TRANSACTION: "RIPPLE_LIKE_TRANSACTION",
+};
+export const TransactionTargetTypeList: Array<
+  $Keys<typeof TargetTypeTransactionDefs>,
+> = Object.keys(TargetTypeTransactionDefs);
+
+const TargetTypeOrganizationDefs = {
+  ORGANIZATION: "ORGANIZATION",
+};
+type TargetTypeUser = $Keys<typeof TargetTypeUserDefs>;
+export type TargetTypeGroup = $Keys<typeof TargetTypeGroupDefs>;
+type TargetTypeWhitelist = $Keys<typeof TargetTypeWhitelistDefs>;
+type TargetTypeAccount = $Keys<typeof TargetTypeAccountDefs>;
+type TargetTypeTransaction = $Keys<typeof TargetTypeTransactionDefs>;
+type TargetTypeOrganization = $Keys<typeof TargetTypeOrganizationDefs>;
+
+export type RequestTargetType =
+  | TargetTypeUser
+  | TargetTypeGroup
+  | TargetTypeWhitelist
+  | TargetTypeAccount
+  | TargetTypeTransaction
+  | TargetTypeOrganization;
+
+export type EditApprovalStep = {
+  group_id?: number,
+  quorum: number,
+  users?: number[],
+};
+
+type WhitelistEditData = {
+  name?: string,
+  addresses: number[],
+};
+
+type GroupEditData = {
+  name?: string,
+  members: number[],
+};
+type AccountEditData = {
+  name?: string,
+  governance_rules: {
+    tx_approval_steps: EditApprovalStep[],
+  },
+};
+
+type MapRequestType = {
+  entity: {
+    WHITELIST: Whitelist,
+    GROUP: Group,
+    ACCOUNT: Account,
+    USER: User,
+    TRANSACTION: Transaction,
+    ORGANIZATION: Organization,
+  },
+  targetType: {
+    WHITELIST: TargetTypeWhitelist,
+    GROUP: TargetTypeGroup,
+    ACCOUNT: TargetTypeAccount,
+    USER: TargetTypeUser,
+    TRANSACTION: TargetTypeTransaction,
+    ORGANIZATION: TargetTypeOrganization,
+  },
+  type: {
+    GROUP: $Keys<typeof RequestActivityTypeDefsGroup>,
+    WHITELIST: $Keys<typeof RequestActivityTypeDefsWhitelist>,
+    ACCOUNT: $Keys<typeof RequestActivityTypeDefsAccount>,
+    USER: $Keys<typeof RequestActivityTypeDefsUser>,
+    TRANSACTION: $Keys<typeof RequestActivityTypeDefsTransaction>,
+    ORGANIZATION: $Keys<typeof RequestActivityTypeDefsOrganization>,
+  },
+  editData: {
+    GROUP: GroupEditData,
+    ACCOUNT: AccountEditData,
+    WHITELIST: WhitelistEditData,
+    // can't edit person/transaction/orga but flow want them to be defined
+    USER: *,
+    TRANSACTION: *,
+    ORGANIZATION: *,
+  },
+};
+
+export type Request<T> = {
   created_by: User,
   created_on: string,
   id: number,
   status: string,
   type: string,
   approvals?: RequestApproval[],
-  // TODO type this
-  approvals_steps: any,
+  approvals_steps: Array<{
+    group: GroupCommon,
+    quorum: number,
+  }>,
   current_step: number,
   target_id: number,
   url_id?: string,
-  target_type: RequestTargetType,
-  type: RequestActivityType,
-  account?: RequestAccount,
-  user?: RequestUser,
-  transaction?: RequestTransaction,
-  group?: RequestGroup,
+  target_type: $ElementType<$PropertyType<MapRequestType, "targetType">, T>,
+  type: $ElementType<$PropertyType<MapRequestType, "type">, T>,
+  account?: AccountCommon,
+  user?: UserCommon,
+  transaction?: TransactionCommon,
+  group?: GroupCommon,
   quorum?: number,
   organization?: Organization,
   expired_at: Date,
-  edit_data?: *,
+  edit_data?: $ElementType<$PropertyType<MapRequestType, "editData">, T>,
 };
 
-export type Request = RequestCommon;
+export type GenericRequest =
+  | Request<"USER">
+  | Request<"ACCOUNT">
+  | Request<"GROUP">
+  | Request<"TRANSACTION">
+  | Request<"WHITELIST">
+  | Request<"ORGANIZATION">;
 
 type RequestApproval = {
   created_by: User,
   created_on: string,
   type: string,
   step: number,
-};
-
-type RequestUser = {
-  created_on: string,
-  id: number,
-  key_handle: string,
-  pub_key: string,
-  status: string,
-  user_id: string,
-  username: string,
-  role: UserRole,
-};
-
-type RequestTransaction = {
-  account_id: number,
-};
-
-type RequestGroup = {
-  name: string,
-};
-
-type RequestAccount = {
-  name: string,
 };
 
 export type FreshAddress = {

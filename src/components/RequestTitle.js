@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 import colors from "shared/colors";
 
 const ICON_SIZE = 16;
@@ -14,7 +14,7 @@ const newIcon = <MdCreateNewFolder size={ICON_SIZE} />;
 const deleteIcon = <MdDelete size={ICON_SIZE} />;
 
 type Props = {
-  request: Request,
+  request: GenericRequest,
 };
 
 function RequestTitle(props: Props) {

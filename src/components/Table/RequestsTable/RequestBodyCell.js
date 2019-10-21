@@ -6,12 +6,12 @@ import MUITableCell from "@material-ui/core/TableCell";
 import EntityStatus from "components/EntityStatus";
 import { TransactionCreationRequestTitle } from "components/lists/RequestsList";
 import DateFormat from "components/DateFormat";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 import RequestTitle from "components/RequestTitle";
 import type { TableItem } from "../types";
 
 type CellProps = {
-  request: Request,
+  request: GenericRequest,
   item: TableItem,
 };
 class RequestBodyCell extends PureComponent<CellProps> {

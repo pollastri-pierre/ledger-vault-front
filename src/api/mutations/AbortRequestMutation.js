@@ -1,13 +1,13 @@
 // @flow
 import Mutation from "restlay/Mutation";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 import { success } from "formatters/notification";
 
 type Input = {
   requestID: string,
 };
 
-type Response = Request;
+type Response = GenericRequest;
 
 export default class AbortRequestMutation extends Mutation<Input, Response> {
   method = "POST";
