@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
 
-import React from "react";
+import React, { useState } from "react";
+import { createGlobalStyle } from "styled-components";
 import { storiesOf } from "@storybook/react";
 import { FaHome, FaList, FaUser, FaUsers } from "react-icons/fa";
 
 import backendDecorator from "stories/backendDecorator";
 import { NotifComponent } from "containers/Admin/Dashboard/PendingBadge";
 import VaultLayout from "components/VaultLayout";
+import Modal from "components/base/Modal";
+import Box from "components/base/Box";
 import { AccountsSearch } from "components/DataSearch/stories";
 
 const fakeUser = {
@@ -16,6 +19,12 @@ const fakeUser = {
 const mockMatch = {
   params: {},
 };
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    padding: 0;
+  }
+`;
 
 const PendingBadge = () => <NotifComponent>5</NotifComponent>;
 
@@ -81,9 +90,25 @@ class Wrapper extends React.Component {
   render() {
     const { items } = this.state;
     return (
-      <VaultLayout menuItems={items} user={fakeUser} match={mockMatch}>
-        <AccountsSearch />
-      </VaultLayout>
+      <>
+        <GlobalStyle />
+        <VaultLayout menuItems={items} user={fakeUser} match={mockMatch}>
+          <FakeModal />
+          <AccountsSearch />
+        </VaultLayout>
+      </>
     );
   }
+}
+
+function FakeModal() {
+  const [isOpened, setOpened] = useState(false);
+  return (
+    <div>
+      <button onClick={() => setOpened(!isOpened)}>open modal</button>
+      <Modal isOpened={isOpened} onClose={() => setOpened(false)}>
+        <Box p={40}>I am the modal content</Box>
+      </Modal>
+    </div>
+  );
 }

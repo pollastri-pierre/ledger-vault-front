@@ -190,7 +190,6 @@ export default function connectData<
 
     _options = {
       ...defaultOpts,
-      ...this.props.restlayProvider.props.connectDataOptDefaults,
       ...opts,
     };
 
