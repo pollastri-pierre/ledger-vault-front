@@ -155,16 +155,13 @@ type AccountCommon = {
   // for xrp...
   address?: string,
   contract_address: string,
-  parent?: number,
   name: string,
   members: User[],
   settings: AccountSettings,
   security_scheme: SecurityScheme,
   balance: BigNumber,
   parent_balance?: BigNumber,
-  number_of_approvals: number,
   created_on: Date,
-  approvals: Approval[],
   fresh_addresses: *,
   is_hsm_coin_app_updated: boolean,
   index: number,
@@ -176,6 +173,7 @@ type AccountCommon = {
   derivation_path: string,
   extended_public_key: ExtendedPubKey,
 };
+
 export type Account = AccountCommon & {
   currency: string,
 };
