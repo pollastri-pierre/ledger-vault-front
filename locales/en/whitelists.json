@@ -1,0 +1,27 @@
+{
+  "add": "add whitelist",
+  "create": {
+    "title": "Create whitelist",
+    "editTitle": "Edit whitelist",
+    "details": "Details",
+    "no_address": "The whitelist is empty. Click <0>+ Add</0> to add addresses",
+    "add_addresses": "Add addresses",
+    "confirmation": "Confirmation",
+    "name_placeholder": "Enter a name for the whitelist",
+    "desc_placeholder": "Enter a description (optional)",
+    "add_addr": "Add addresses",
+    "addr_name_placeholder": "Enter a name for the address",
+    "addr_placeholder": "Enter the address",
+    "currency_placeholder": "Select a crypto asset",
+    "submit": "Create whitelist",
+    "no_edit": "No changes were made",
+    "finishTitle": "Whitelist Request was successfully created!",
+    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+    "no_hsm_validation": "Editing the description doesn't require the approval from other Administrators or your device"
+  },
+  "update": {
+    "finishTitle": "Update Whitelist Request was successfully created!",
+    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+    "submit": "Edit whitelist"
+  }
+}

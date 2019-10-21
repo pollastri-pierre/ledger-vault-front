@@ -7,15 +7,17 @@ import { Trans } from "react-i18next";
 import type { RestlayEnvironment } from "restlay/connectData";
 import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMutation";
 import Button from "components/base/Button";
+import type { GroupCreationPayload } from "./types";
 
 type Props = {
-  payload: *,
+  payload: GroupCreationPayload,
   restlay: RestlayEnvironment,
   onClose: Function,
 };
 class UpdateDescriptionButton extends Component<Props> {
   onSubmit = async () => {
     const { restlay, payload, onClose } = this.props;
+    if (!payload.id) return;
 
     await restlay.commitMutation(
       new EditGroupDescriptionMutation({

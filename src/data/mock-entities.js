@@ -346,9 +346,10 @@ export function genTransactions(nb, { accounts, users }) {
 
 export function genAddress() {
   return {
+    id: faker.random.number({ min: 1, max: 1000000000 }),
     currency: genCurrency(),
     address: faker.random.alphaNumeric(40),
-    alias: faker.random.alphaNumeric(10),
+    name: faker.random.alphaNumeric(10),
   };
 }
 export function genAddresses(nb) {
@@ -369,11 +370,15 @@ export function genWhitelists(nb, { users }) {
 
 export function genWhitelist({ users }) {
   const admins = users.filter(m => m.role === "admin");
+  const status = faker.random.arrayElement(["ACTIVE", "PENDING"]);
   return {
     id: faker.random.number({ min: 1, max: 1000000000 }),
     created_by: faker.random.arrayElement(admins),
     created_on: faker.date.past(1),
     name: faker.company.companyName(),
+    description: faker.company.catchPhrase(),
+    approvals: [],
+    status,
     addresses: genAddresses(3),
   };
 }

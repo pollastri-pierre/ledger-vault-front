@@ -23,9 +23,12 @@ import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess"
 
 import type { Group } from "data/types";
 
+import {
+  hasEditOccuredGeneric,
+  onlyDescriptionChangedGeneric,
+} from "utils/creationFlows";
 import GroupCreationInfos from "./GroupCreationInfos";
 import GroupCreationConfirmation from "./GroupCreationConfirmation";
-import { hasEditOccured, onlyDescriptionChanged } from "./utils";
 import type { GroupCreationPayload } from "./types";
 
 const initialPayload: GroupCreationPayload = {
@@ -62,7 +65,7 @@ const steps = [
       onSuccess: () => void,
     }) => {
       // if only description changed
-      if (onlyDescriptionChanged(payload, initialPayload)) {
+      if (onlyDescriptionChangedGeneric(payload, initialPayload, "members")) {
         return <UpdateDescriptionButton payload={payload} onClose={onClose} />;
       }
       const data = serializePayload(payload);
@@ -78,7 +81,7 @@ const steps = [
           onSuccess={() => {
             onSuccess();
           }}
-          disabled={!hasEditOccured(payload, initialPayload)}
+          disabled={!hasEditOccuredGeneric(payload, initialPayload, "members")}
           additionalFields={{
             type: isEditMode ? "EDIT_GROUP" : "CREATE_GROUP",
             data,
