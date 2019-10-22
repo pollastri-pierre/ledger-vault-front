@@ -82,7 +82,11 @@ class Status extends PureComponent<Props> {
         color={color}
         borderRadius={15}
       >
-        <Text semiBold small={size !== "big"} style={styles.text}>
+        <Text
+          fontWeight="semiBold"
+          size={size !== "big" ? "small" : null}
+          style={styles.text}
+        >
           {str}
         </Text>
       </Box>

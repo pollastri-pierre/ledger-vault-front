@@ -123,7 +123,7 @@ function FeesFieldRippleKind(props: Props) {
           <Label>
             <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
           </Label>
-          <Text small uppercase>
+          <Text size="small" uppercase>
             {feesStatus === "fetching" ? (
               <Spinner />
             ) : transaction.estimatedFees ? (

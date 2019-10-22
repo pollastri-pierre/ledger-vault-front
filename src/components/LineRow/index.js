@@ -39,7 +39,7 @@ class LineRow extends Component<{
         flow={!vertical ? 50 : 10}
       >
         <Box flow={5} horizontal align="center">
-          <Text small uppercase bold noWrap>
+          <Text size="small" uppercase fontWeight="bold" noWrap>
             {label}
           </Text>
           {tooltipInfoMessage && (

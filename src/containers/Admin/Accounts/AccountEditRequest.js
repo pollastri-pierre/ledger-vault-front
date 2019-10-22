@@ -57,7 +57,12 @@ class AccountEditRequest extends PureComponent<Props> {
       <Box flow={10} horizontal justify="space-between">
         <Box bg={opacity(colors.grenade, 0.05)} {...diffBoxProps}>
           <Box mb={20}>
-            <Text small uppercase bold color={opacity(colors.grenade, 0.8)}>
+            <Text
+              size="small"
+              uppercase
+              fontWeight="bold"
+              color={opacity(colors.grenade, 0.8)}
+            >
               BEFORE
             </Text>
           </Box>
@@ -72,7 +77,12 @@ class AccountEditRequest extends PureComponent<Props> {
         </Box>
         <Box bg={opacity(colors.ocean, 0.05)} {...diffBoxProps}>
           <Box mb={20}>
-            <Text small uppercase bold color={opacity(colors.ocean, 0.8)}>
+            <Text
+              size="small"
+              uppercase
+              fontWeight="bold"
+              color={opacity(colors.ocean, 0.8)}
+            >
               After
             </Text>
           </Box>

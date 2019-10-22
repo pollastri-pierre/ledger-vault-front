@@ -38,7 +38,11 @@ class MemberRow extends Component<{
           <Text color={colors.steel}>{member.role || "Administrator"}</Text>
         </Box>
         {editable && (
-          <Text small color={colors.steel} i18nKey="common:clickToEdit" />
+          <Text
+            size="small"
+            color={colors.steel}
+            i18nKey="common:clickToEdit"
+          />
         )}
         {onSelect && !editable && (
           <Checkbox

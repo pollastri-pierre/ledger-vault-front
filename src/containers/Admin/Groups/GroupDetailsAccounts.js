@@ -39,7 +39,7 @@ class GroupDetailsAccounts extends PureComponent<Props> {
             <AccountButton>
               <Box flow={3}>
                 <AccountName account={a} />
-                <Text small color="grey">
+                <Text size="small" color="grey">
                   <CurrencyAccountValue account={a} value={a.balance} />
                 </Text>
               </Box>

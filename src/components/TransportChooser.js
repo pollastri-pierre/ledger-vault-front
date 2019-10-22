@@ -73,11 +73,11 @@ export default function TransportChooser() {
       >
         <MenuItem onClick={choose("u2f")}>
           <Box>
-            <Text normal>U2F</Text>
+            <Text size="normal">U2F</Text>
           </Box>
         </MenuItem>
         <MenuItem onClick={choose("webusb")}>
-          <Text normal>WebUSB</Text>
+          <Text size="normal">WebUSB</Text>
         </MenuItem>
       </Menu>
     </Box>

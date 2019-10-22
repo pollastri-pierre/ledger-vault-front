@@ -209,7 +209,7 @@ class FeesFieldEthereumKind extends PureComponent<
             ) : status === "fetching" ? (
               <Spinner />
             ) : (
-              <Text small uppercase>
+              <Text size="small" uppercase>
                 <CurrencyAccountValue
                   account={account}
                   value={transaction.estimatedFees}

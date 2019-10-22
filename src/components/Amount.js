@@ -58,7 +58,7 @@ class Amount extends Component<Props> {
         <Text
           color={colors.black}
           data-test={dataTest}
-          bold={strong}
+          fontWeight={strong ? "bold" : null}
           lineHeight={1}
         >
           <CurrencyAccountValue
@@ -68,7 +68,7 @@ class Amount extends Component<Props> {
           />
         </Text>
         {!hideCountervalue && (
-          <Text small color={colors.steel} lineHeight={1}>
+          <Text size="small" color={colors.steel} lineHeight={1}>
             {"("}
             <CounterValue value={value} {...cvProps} />
             {")"}

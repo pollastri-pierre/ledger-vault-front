@@ -16,6 +16,7 @@ import OrganizationAppRouter from "containers/OrganizationAppRouter";
 
 import InterRegular from "assets/fonts/Inter-Regular.woff2";
 import InterBold from "assets/fonts/Inter-Bold.woff2";
+import InterSemiBold from "assets/fonts/Inter-SemiBold.woff2";
 
 import i18n from "./i18n";
 
@@ -33,6 +34,12 @@ jss
         "font-style": "normal",
         "font-weight": "bold",
         src: [`url('${InterBold}') format('woff2')`],
+      },
+      {
+        "font-family": "Inter",
+        "font-style": "normal",
+        "font-weight": 600,
+        src: [`url('${InterSemiBold}') format('woff2')`],
       },
     ],
   })

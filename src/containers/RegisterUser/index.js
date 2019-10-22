@@ -88,8 +88,8 @@ function RegisterUser(props: Props) {
             <ModalHeader>
               <Box horizontal align="center" flow={10}>
                 <Text
-                  header
-                  bold
+                  size="header"
+                  fontWeight="bold"
                   i18nKey="inviteUser:registration.title"
                   values={{ userRole: userRoleLabel }}
                 />

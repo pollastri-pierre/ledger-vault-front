@@ -40,7 +40,7 @@ function ConfirmModal(props: Props) {
           />
         </WarningIconWrapper>
         <Box flow={10} mt={20} align="center" justify="center">
-          <Text bold>{title}</Text>
+          <Text fontWeight="bold">{title}</Text>
           {children}
         </Box>
         <ModalFooter>

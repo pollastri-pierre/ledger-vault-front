@@ -29,10 +29,10 @@ function UserIdentifier({ username }: { username: string }) {
       <Box horizontal justify="center" flow={10} align="center">
         <UserAvatar />
         <Box>
-          <Text small color={colors.shark} bold>
+          <Text size="small" color={colors.shark} fontWeight="bold">
             {username}
           </Text>
-          <Text tiny color={colors.steel}>
+          <Text size="tiny" color={colors.steel}>
             {organization.workspace}
           </Text>
         </Box>

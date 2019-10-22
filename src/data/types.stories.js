@@ -104,7 +104,7 @@ function TableComponent(props: TableComponentProps) {
   return (
     <Box flow={10} m={15}>
       <Box align="center">
-        <Text uppercase bold color={colors.legacyViolet}>
+        <Text uppercase fontWeight="bold" color={colors.legacyViolet}>
           {label}
         </Text>
       </Box>

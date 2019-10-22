@@ -37,11 +37,11 @@ function OrganizationDetails({
         onClose={close}
       />
       <Box py={50} align="center" justify="center" horizontal flow={10}>
-        <Text large color={colors.grenade}>
+        <Text size="large" color={colors.grenade}>
           {request.organization.quorum}/{request.organization.number_of_admins}
         </Text>
         {arrowRight}
-        <Text large color={colors.ocean}>
+        <Text size="large" color={colors.ocean}>
           {request.quorum}/{request.organization.number_of_admins}
         </Text>
       </Box>

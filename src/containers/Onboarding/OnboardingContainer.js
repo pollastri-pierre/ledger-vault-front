@@ -113,7 +113,7 @@ class OnboardingContainer extends Component<Props, State> {
             <Box horizontal justify="space-between">
               <Logo />
               <HelpLink>
-                <Text small bold uppercase>
+                <Text size="small" fontWeight="bold" uppercase>
                   HELP
                 </Text>
               </HelpLink>

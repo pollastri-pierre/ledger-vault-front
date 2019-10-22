@@ -75,7 +75,7 @@ function QuorumWidget(props: Props) {
       <Card grow align="center" justify="center">
         {editBtn}
         <CircleProgress size={150} nb={org.quorum} total={org.number_of_admins}>
-          <Text header>
+          <Text size="header">
             <strong>{quorum}</strong>
             {` out of `}
             <strong>{org.number_of_admins}</strong>

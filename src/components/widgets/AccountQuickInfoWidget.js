@@ -95,7 +95,7 @@ const WidgetContent = ({ account }: Props) => {
                 {` #${account.index}`}
               </span>
             </Label>
-            <Text header select noWrap>
+            <Text size="header" selectable noWrap>
               {account.name}
             </Text>
           </InfoSquare>
@@ -105,12 +105,12 @@ const WidgetContent = ({ account }: Props) => {
                 <FaCoins />
                 <span>Balance</span>
               </Label>
-              <Text header select noWrap>
+              <Text size="header" selectable noWrap>
                 <CurrencyAccountValue
                   account={account}
                   value={account.balance}
                 />
-                <Text small color={colors.textLight}>
+                <Text size="small" color={colors.textLight}>
                   <CounterValue
                     value={account.balance}
                     fromAccount={account}
