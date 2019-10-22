@@ -13,7 +13,7 @@ export default class PendingTransactionsForAccountQuery extends ConnectionQuery<
   In,
   Node,
 > {
-  uri = `/transactions?status=PENDING&accounts=${this.props.accountId}`;
+  uri = `/transactions?status=PENDING&account=${this.props.accountId}`;
 
   nodeSchema = schema.Transaction;
 }
