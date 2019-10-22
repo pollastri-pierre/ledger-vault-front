@@ -14,6 +14,7 @@ import URL from "url";
 import isEqual from "lodash/isEqual";
 import { logout } from "redux/modules/auth";
 import type { Account, Currency } from "data/types";
+import { mapRestlayKeyToType } from "data/types";
 import ProfileQuery from "api/queries/ProfileQuery";
 import Mutation from "./Mutation";
 import Query from "./Query";
@@ -356,26 +357,45 @@ export const reducer = (state: * = initialState, action: Object) => {
   return state;
 };
 
+const noop = data => data;
+
+const _addType = type => {
+  if (!type) return noop;
+  return data => ({ ...data, type: mapRestlayKeyToType[type] });
+};
+
 function handleDeserialization(queryOrMutation, data) {
-  if (!queryOrMutation.getDeserialize || !queryOrMutation.getDeserialize()) {
-    return data;
+  let type;
+  if (queryOrMutation.nodeSchema) {
+    type = queryOrMutation.nodeSchema.key;
   }
-  const deserialize = queryOrMutation.getDeserialize();
+  if (queryOrMutation.responseSchema) {
+    type = queryOrMutation.responseSchema.key;
+  }
+  const deserialize =
+    (queryOrMutation.getDeserialize() && queryOrMutation.getDeserialize()) ||
+    noop;
+
   if (isPlainObject(deserialize)) {
     forOwn(deserialize, (deserialize, key) => {
+      const type = queryOrMutation.responseSchema[key].key;
       data[key] = Array.isArray(data[key])
-        ? data[key].map(deserialize)
-        : deserialize(data[key]);
+        ? data[key].map(deserialize(_addType(type)(data)))
+        : deserialize(_addType(type)(data[key]));
     });
   } else {
+    const deserializeAndAddType = data => deserialize(_addType(type)(data));
     data = Array.isArray(data)
-      ? data.map(deserialize)
+      ? data.map(deserializeAndAddType)
       : queryOrMutation instanceof ConnectionQuery
       ? {
           ...data,
-          edges: data.edges.map(el => ({ ...el, node: deserialize(el.node) })),
+          edges: data.edges.map(el => ({
+            ...el,
+            node: deserializeAndAddType(el.node),
+          })),
         }
-      : deserialize(data);
+      : deserializeAndAddType(data);
   }
   return data;
 }

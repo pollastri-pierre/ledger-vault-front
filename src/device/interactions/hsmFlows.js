@@ -32,6 +32,7 @@ import type {
   ApproveFlowConfigOptions,
 } from "components/DeviceInteraction";
 import type { RequestTargetType } from "data/types";
+import { TransactionTargetTypeList } from "data/types";
 import Text from "components/base/Text";
 
 type CustomTargetType = "ACCOUNT" | "TRANSACTION" | "ADDRESS";
@@ -245,10 +246,8 @@ const openSessionValidate: Interaction = {
       certificate,
     ]);
     const TransactionTargetsType = [
+      ...TransactionTargetTypeList,
       "CREATE_TRANSACTION",
-      "BITCOIN_LIKE_TRANSACTION",
-      "ETHEREUM_LIKE_TRANSACTION",
-      "RIPPLE_LIKE_TRANSACTION",
     ];
     await openSession()(
       transport,

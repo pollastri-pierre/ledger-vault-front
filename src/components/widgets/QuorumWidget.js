@@ -9,7 +9,7 @@ import { FaPen } from "react-icons/fa";
 
 import RequestsQuery from "api/queries/RequestsQuery";
 import type { Connection } from "restlay/ConnectionQuery";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 import { useOrganization } from "components/OrganizationContext";
 import CircleProgress from "components/base/CircleProgress";
 import Card from "components/base/Card";
@@ -21,7 +21,7 @@ import Widget, { connectWidget } from "./Widget";
 type Props = {
   history: MemoryHistory,
   location: Location,
-  requestsConnection: Connection<Request>,
+  requestsConnection: Connection<GenericRequest>,
 };
 
 function QuorumWidget(props: Props) {

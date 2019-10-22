@@ -5,7 +5,7 @@ import MUITableBody from "@material-ui/core/TableBody";
 import type { ObjectParameters } from "query-string";
 
 import NoDataPlaceholder from "components/NoDataPlaceholder";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 import RequestRow from "./RequestRow";
 
 import { Table, TableHeader } from "../TableBase";
@@ -14,11 +14,11 @@ import { requestsTableDefault } from "./tableDefinitions";
 import type { TableDefinition } from "../types";
 
 type Props = {
-  data: Request[],
+  data: GenericRequest[],
   customTableDef?: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  onRowClick: Request => void,
+  onRowClick: GenericRequest => void,
 };
 
 type State = {
@@ -34,7 +34,7 @@ class RequestsTable extends PureComponent<Props, State> {
     };
   }
 
-  Request = (request: Request) => {
+  Request = (request: GenericRequest) => {
     const { onRowClick } = this.props;
     const { tableDefinition } = this.state;
     return (

@@ -15,6 +15,7 @@ import type {
   User,
   Group,
   TxApprovalStepCollection,
+  EditApprovalStep,
 } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
@@ -22,12 +23,6 @@ type Props = {
   account: Account,
   users: Connection<User>,
   groups: Connection<Group>,
-};
-
-type EditApprovalStep = {
-  group_id?: number,
-  quorum: number,
-  users?: number[],
 };
 
 class AccountEditRequest extends PureComponent<Props> {
@@ -111,7 +106,7 @@ const RenderLoading = () => (
     <Spinner />
   </Box>
 );
-export default connectData(AccountEditRequest, {
+const C: React$ComponentType<$Shape<Props>> = connectData(AccountEditRequest, {
   RenderLoading,
   queries: {
     users: UsersQuery,
@@ -119,6 +114,7 @@ export default connectData(AccountEditRequest, {
   },
 });
 
+export default C;
 const resolveRules = (
   editRules: EditApprovalStep[],
   groups: Group[],

@@ -4,14 +4,14 @@ import React, { PureComponent } from "react";
 
 import MUITableRow from "@material-ui/core/TableRow";
 
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 
 import type { TableDefinition } from "../types";
 import RequestBodyCell from "./RequestBodyCell";
 
 type RequestRowProps = {
-  request: Request,
-  onClick: Request => void,
+  request: GenericRequest,
+  onClick: GenericRequest => void,
   tableDefinition: TableDefinition,
 };
 

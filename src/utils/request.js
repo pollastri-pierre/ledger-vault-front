@@ -6,7 +6,7 @@ import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import type { DeviceInteractionError } from "components/DeviceInteraction";
 import { DEVICE_REJECT_ERROR_CODE } from "device";
 
-import type { Request, User, RequestActivityType } from "data/types";
+import type { GenericRequest, User, RequestActivityType } from "data/types";
 
 export const handleCancelOnDevice = (
   restlay: RestlayEnvironment,
@@ -25,14 +25,14 @@ export const handleCancelOnDevice = (
   };
 };
 
-export const hasUserApprovedRequest = (request: Request, me: User) =>
+export const hasUserApprovedRequest = (request: GenericRequest, me: User) =>
   request.approvals &&
   request.approvals.filter(
     approval =>
       approval.created_by.pub_key === me.pub_key && approval.type === "APPROVE",
   ).length > 0;
 
-export const hasUserApprovedCurrentStep = (request: Request, me: User) =>
+export const hasUserApprovedCurrentStep = (request: GenericRequest, me: User) =>
   request.approvals &&
   request.approvals.filter(
     approval =>
@@ -41,7 +41,7 @@ export const hasUserApprovedCurrentStep = (request: Request, me: User) =>
       approval.step === request.current_step,
   ).length > 0;
 
-export const isUserInCurrentStep = (request: Request, me: User) => {
+export const isUserInCurrentStep = (request: GenericRequest, me: User) => {
   try {
     if (!request || !request.approvals_steps) return false;
     const currentStep = request.approvals_steps[request.current_step];
@@ -54,7 +54,7 @@ export const isUserInCurrentStep = (request: Request, me: User) => {
 };
 
 export const getModalTabLink = (
-  request: ?Request,
+  request: ?GenericRequest,
   url: string,
   // navigate to history tab and expand the given request
   expandRequestHistory: boolean = false,
@@ -69,7 +69,7 @@ export const getModalTabLink = (
     : defaultLink;
 };
 
-export const isRequestPending = (request: Request) =>
+export const isRequestPending = (request: GenericRequest) =>
   request.status !== "APPROVED" &&
   request.status !== "BLOCKED" &&
   request.status !== "ABORTED";
@@ -80,14 +80,17 @@ const EDIT_REQUEST_TYPE: RequestActivityType[] = [
   "MIGRATE_ACCOUNT",
 ];
 
-export const isEditRequest = (request: Request) =>
+export const isEditRequest = (request: GenericRequest) =>
   EDIT_REQUEST_TYPE.indexOf(request.type) > -1;
 
-export function isNotTransaction(request: Request) {
+export function isNotTransaction(request: GenericRequest) {
   return request.type !== "CREATE_TRANSACTION";
 }
 
-export function navigateToRequest(request: Request, history: MemoryHistory) {
+export function navigateToRequest(
+  request: GenericRequest,
+  history: MemoryHistory,
+) {
   if (request.target_type === "GROUP") {
     history.push(
       getModalTabLink(request, `dashboard/groups/details/${request.target_id}`),
@@ -125,16 +128,16 @@ export function navigateToRequest(request: Request, history: MemoryHistory) {
 }
 
 // FIXME REVOKE_USER is also triggered when revoking an operator which does not affect admin rules
-const ACTION_AFFECTING_ADMIN_RULES = [
+const ACTION_AFFECTING_ADMIN_RULES: RequestActivityType[] = [
   "REVOKE_USER",
   "CREATE_ADMIN",
   "UPDATE_QUORUM",
 ];
-export function isRequestAffectingAdminRules(request: Request) {
+export function isRequestAffectingAdminRules(request: GenericRequest) {
   return ACTION_AFFECTING_ADMIN_RULES.includes(request.type);
 }
 
-export function getCurrentStepProgress(request: Request) {
+export function getCurrentStepProgress(request: GenericRequest) {
   if (!request) return null;
   if (!request.approvals_steps) return null;
   const step = request.approvals_steps[request.current_step];

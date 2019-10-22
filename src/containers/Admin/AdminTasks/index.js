@@ -13,7 +13,7 @@ import PageHeaderActions from "components/base/PageHeaderActions";
 import Text from "components/base/Text";
 import { getModalTabLink } from "utils/request";
 
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 
 type Props = {
   history: MemoryHistory,
@@ -22,7 +22,7 @@ type Props = {
 const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
 
 class Users extends PureComponent<Props> {
-  handleRowClick = (request: Request) => {
+  handleRowClick = (request: GenericRequest) => {
     if (request.target_type === "GROUP") {
       this.props.history.push(
         getModalTabLink(
