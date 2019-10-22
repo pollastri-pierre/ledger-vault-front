@@ -162,7 +162,7 @@ const VaultLayoutMenuItem = styled.div`
 
   ${({ isActive, isMenuOpened, isDisabled, isMenuFloating }) => {
     const isInteractive = !isDisabled && (isMenuOpened || !isMenuFloating);
-    const isIcon = !isMenuOpened;
+    const isIcon = !isMenuOpened && isMenuFloating;
 
     const bg =
       (!isIcon || !isMenuFloating) && isActive
@@ -205,7 +205,9 @@ const VaultLayoutIconContainer = styled.div`
   }
   &:active {
     background-color: ${p =>
-      p.isMenuOpened ? "inherit" : colors.legacyTranslucentGrey8};
+      p.isMenuOpened || !p.isMenuFloating
+        ? "inherit"
+        : colors.legacyTranslucentGrey8};
   }
 `;
 
