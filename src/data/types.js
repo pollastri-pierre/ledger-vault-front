@@ -81,6 +81,7 @@ export type AccountSettings = {
 
 type UserCommon = {
   id: number,
+  type: "USER",
   pub_key: string,
   username: string,
   user_id?: string,
@@ -126,6 +127,7 @@ export type Address = {
 export type Whitelist = {
   id: number,
   name: string,
+  type: "WHITELIST",
   description: string,
   addresses: Address[],
   created_on: Date,
@@ -149,6 +151,7 @@ export type TxApprovalStepCollection = Array<TxApprovalStep | null>;
 type AccountCommon = {
   id: number,
   account_type: AccountType,
+  type: "ACCOUNT",
   // for xrp...
   address?: string,
   contract_address: string,
@@ -199,6 +202,7 @@ export type AccountEntity = AccountCommon & {
 type GroupCommon = {
   id: number,
   name: string,
+  type: "GROUP",
   created_on: Date,
   created_by: User,
   description?: string,
@@ -321,6 +325,7 @@ export type AccountStatus = $Keys<typeof AccountStatusMap>;
 
 type TransactionCommon = {
   id: number,
+  type: "TRANSACTION",
   created_by: User,
   currency_family: string,
   confirmations: number,
