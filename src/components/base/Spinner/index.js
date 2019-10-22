@@ -2,6 +2,7 @@
 
 import React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Absolute from "components/base/Absolute";
 
 import colors from "shared/colors";
 
@@ -26,5 +27,13 @@ export default function Spinner(props: Props) {
     <div style={{ color }}>
       <CircularProgress size={size} color="inherit" />
     </div>
+  );
+}
+
+export function SpinnerCentered(props: Props) {
+  return (
+    <Absolute top={0} left={0} right={0} bottom={0} center>
+      <Spinner {...props} />
+    </Absolute>
   );
 }

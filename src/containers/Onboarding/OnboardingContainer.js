@@ -6,7 +6,7 @@ import io from "socket.io-client";
 
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
-import SpinnerCard from "components/legacy/SpinnerCard";
+import { SpinnerCentered } from "components/base/Spinner";
 import HelpLink from "components/HelpLink";
 import Logo from "components/Logo";
 import CenteredLayout from "components/base/CenteredLayout";
@@ -104,7 +104,7 @@ class OnboardingContainer extends Component<Props, State> {
       history,
     } = this.props;
     if (!onboarding.state) {
-      return <SpinnerCard />;
+      return <SpinnerCentered />;
     }
     return (
       <CenteredLayout>
@@ -127,7 +127,7 @@ class OnboardingContainer extends Component<Props, State> {
             onboarding={onboarding}
           />
           <Box position="relative" flex={1}>
-            {onboarding.state === "LOADING" && <SpinnerCard />}
+            {onboarding.state === "LOADING" && <SpinnerCentered />}
             {onboarding.state === "EMPTY_PARTITION" && <Welcome />}
             {onboarding.state === "WRAPPING_KEY_PREREQUISITES" && (
               <WrappingKeyPrerequisite />
