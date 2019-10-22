@@ -128,7 +128,7 @@ const SharedOwnerValidation = ({
                       </span>
                     )}
                   </SigninButton>
-                  <Text small color={colors.steel}>
+                  <Text size="small" color={colors.steel}>
                     {onboarding.validating_shared_owner.admins.length}{" "}
                     {t("onboarding:master_seed_signin.signed_in")},{" "}
                     {onboarding.quorum -

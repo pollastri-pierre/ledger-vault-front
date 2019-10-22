@@ -190,7 +190,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
             ) : status === "fetching" ? (
               <Spinner />
             ) : (
-              <Text small uppercase>
+              <Text size="small" uppercase>
                 <CurrencyAccountValue
                   account={account}
                   value={BigNumber(transaction.estimatedFees)}

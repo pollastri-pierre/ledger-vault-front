@@ -16,7 +16,7 @@ export default function VaultCentered({ children }: { children: React$Node }) {
         {children}
       </div>
       <Box align="center" mt={40}>
-        <Text small>Vault - v{VAULT_FRONT_VERSION}</Text>
+        <Text size="small">Vault - v{VAULT_FRONT_VERSION}</Text>
       </Box>
     </CenteredLayout>
   );
@@ -30,7 +30,7 @@ const LogoRow = () => (
       role="OPERATOR"
       subLink="/Content/overview/signin.htm"
     >
-      <Text small uppercase i18nKey="welcome:help" />
+      <Text size="small" uppercase i18nKey="welcome:help" />
     </HelpLink>
   </Box>
 );

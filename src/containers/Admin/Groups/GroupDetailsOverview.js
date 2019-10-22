@@ -31,7 +31,7 @@ class GroupDetailsOverview extends PureComponent<Props> {
         <GroupDetailsDetails group={group} />
         <Box pt={20} flow={20} style={styles.borderTop}>
           <Box flow={0} horizontal align="center" justify="space-between">
-            <Text bold uppercase small>
+            <Text fontWeight="bold" uppercase size="small">
               Members
             </Text>
           </Box>

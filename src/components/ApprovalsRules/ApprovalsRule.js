@@ -334,7 +334,7 @@ const RemoveContainer = styled(Box).attrs({
 
 const NbOfUsers = ({ nb, isGroup }: { nb: number, isGroup: boolean }) => (
   <Box style={styles.nbOfUsers} p={10} pt={0}>
-    <Text small color={colors.textLight}>
+    <Text size="small" color={colors.textLight}>
       <Trans
         i18nKey={
           isGroup
@@ -372,7 +372,7 @@ const approvalsFrom = (
   >
     <Text
       lineHeight={0}
-      small
+      size="small"
       color={colors.legacyDarkGrey3}
       i18nKey="approvalsRules:approvalsFrom"
     />

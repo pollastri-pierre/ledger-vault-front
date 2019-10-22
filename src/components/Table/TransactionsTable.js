@@ -229,7 +229,7 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
         </MUITableCell>
 
         <MUITableCell align="right">
-          <Text bold={transaction.type === "RECEIVE"}>
+          <Text fontWeight={transaction.type === "RECEIVE" ? "bold" : null}>
             <CurrencyAccountValue
               account={account}
               value={amount}

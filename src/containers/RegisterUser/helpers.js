@@ -15,7 +15,7 @@ export function Row(props: { label: string, text: ?string }) {
   const { label, text } = props;
   return (
     <Box horizontal flow={5}>
-      <Text uppercase bold i18nKey={label} />
+      <Text uppercase fontWeight="bold" i18nKey={label} />
       <Text>{text || ""}</Text>
     </Box>
   );

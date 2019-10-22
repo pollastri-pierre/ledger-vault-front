@@ -40,7 +40,7 @@ const GenericRow = (props: GenericRowProps) => {
     <Box horizontal align="center" justify="space-between" py={5}>
       <AccountName account={account} />
       {withBalance && (
-        <Text small color={colors.mediumGrey}>
+        <Text size="small" color={colors.mediumGrey}>
           <CurrencyAccountValue account={account} value={account.balance} />
         </Text>
       )}

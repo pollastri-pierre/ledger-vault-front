@@ -64,7 +64,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
         )}
         <Modal isOpened={registering} onClose={this.onToggleRegisteringModal}>
           <Box flow={40} p={30} pb={80} width={500}>
-            <Text small uppercase>
+            <Text size="small" uppercase>
               Register Shared-Owner
             </Text>
             <Box align="center">

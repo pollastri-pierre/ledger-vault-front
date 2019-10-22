@@ -23,7 +23,7 @@ function PageHeaderActions(props: PageHeaderActionsProps) {
     <Box horizontal align="flex-start" justify="space-between" pb={20}>
       {title && (
         <Box px={5}>
-          <Text bold header>
+          <Text fontWeight="bold" size="header">
             {title}
           </Text>
         </Box>

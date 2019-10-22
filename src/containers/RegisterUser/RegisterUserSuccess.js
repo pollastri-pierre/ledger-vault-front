@@ -9,7 +9,12 @@ export default function RegisterUserSuccess() {
   return (
     <ModalBody width={550}>
       <MultiStepsSuccess
-        title={<Text bold i18nKey="inviteUser:registration.success.subtitle" />}
+        title={
+          <Text
+            fontWeight="bold"
+            i18nKey="inviteUser:registration.success.subtitle"
+          />
+        }
         desc={<Text i18nKey="inviteUser:registration.success.description" />}
       />
     </ModalBody>

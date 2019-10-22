@@ -22,7 +22,7 @@ class GroupEditRequest extends PureComponent<Props> {
       <Box flow={20}>
         <DiffName group={group} />
         <Box flow={15}>
-          <Text bold>Members</Text>
+          <Text fontWeight="bold">Members</Text>
           <ListGroupMembers
             allUsers={operators}
             users={group.members}
@@ -48,7 +48,7 @@ const DiffName = ({ group }: { group: Group }) => {
 
   return (
     <Box flow={15}>
-      <Text bold>Name</Text>
+      <Text fontWeight="bold">Name</Text>
       <Box horizontal align="center" flow={10}>
         <Text color={colors.grenade}>{group.name}</Text>
         {arrowRight}

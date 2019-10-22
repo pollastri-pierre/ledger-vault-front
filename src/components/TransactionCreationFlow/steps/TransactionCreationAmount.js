@@ -81,7 +81,7 @@ const TransactionCreationAmount = (
             <Trans i18nKey="transactionCreation:steps.amount.accountToDebit" />
           </Label>
           <Box horizontal align="center" height={40}>
-            <Text semiBold large>
+            <Text fontWeight="semiBold" size="large">
               <AccountName account={account} />
             </Text>
           </Box>
@@ -109,18 +109,10 @@ const TransactionCreationAmount = (
             <Trans i18nKey="transactionCreation:steps.amount.balance" />
           </Label>
           <Box style={{ maxWidth: 230 }} flow={5} py={5}>
-            <Text
-              semiBold
-              lineHeight={1}
-              style={{
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-              }}
-            >
+            <Text fontWeight="semiBold" lineHeight={1} ellipsis>
               <CurrencyAccountValue account={account} value={account.balance} />
             </Text>
-            <Text small>
+            <Text size="small">
               <CounterValue
                 smallerInnerMargin
                 value={account.balance}
@@ -138,7 +130,7 @@ const TransactionCreationAmount = (
             <Label>
               <Trans i18nKey="transactionCreation:steps.amount.amount" />
             </Label>
-            <Text small>
+            <Text size="small">
               <CounterValue
                 smallerInnerMargin
                 value={transaction.amount}

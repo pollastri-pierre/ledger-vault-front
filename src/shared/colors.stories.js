@@ -17,7 +17,7 @@ function getColorTile(cols, name) {
     }
     return (
       <Card height={140} width={140} key={c} grow m={15} align="center">
-        <Text mb={5}>
+        <Text>
           {name} {c}
         </Text>
         <Box

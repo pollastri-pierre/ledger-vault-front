@@ -18,7 +18,7 @@ export default function({ stepNumber }: { stepNumber: number }) {
       }}
     >
       <FaUserSecret size={16} />
-      <Text small uppercase>
+      <Text size="small" uppercase>
         approval step {stepNumber}
       </Text>
     </Box>

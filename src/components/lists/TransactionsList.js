@@ -83,11 +83,11 @@ function TransactionCard(props: TransactionCardProps) {
           <Box flow={5}>
             <Box horizontal flow={10}>
               <TransactionTypeIcon type={transaction.type} />
-              <Text bold>
+              <Text fontWeight="bold">
                 {transaction.type === "RECEIVE" ? "Received" : "Sent"}
               </Text>
             </Box>
-            <Text small italic color={colors.mediumGrey}>
+            <Text size="small" italic color={colors.mediumGrey}>
               <DateFormat
                 format="ddd D MMM, h:mmA"
                 date={transaction.created_on}
@@ -101,7 +101,7 @@ function TransactionCard(props: TransactionCardProps) {
           )}
         </Box>
         <Box flow={10} width={100} align="center" justify="center">
-          <Text small color={colors.mediumGrey}>
+          <Text size="small" color={colors.mediumGrey}>
             {transaction.recipient}
           </Text>
         </Box>
@@ -111,7 +111,7 @@ function TransactionCard(props: TransactionCardProps) {
           style={{ minWidth: 200, textAlign: "right" }}
         >
           <Text
-            bold={transaction.type === "RECEIVE"}
+            fontWeight={transaction.type === "RECEIVE" ? "bold" : null}
             color={transaction.type === "RECEIVE" ? colors.green : "inherit"}
           >
             <CurrencyAccountValue
@@ -121,7 +121,7 @@ function TransactionCard(props: TransactionCardProps) {
               alwaysShowSign
             />
           </Text>
-          <Text small>
+          <Text size="small">
             <CounterValue
               fromAccount={account}
               value={amount}

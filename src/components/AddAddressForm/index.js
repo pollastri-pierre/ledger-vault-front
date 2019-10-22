@@ -114,7 +114,7 @@ const AddressRow = ({
         >
           <Box horizontal flow={20} width={200} align="center">
             <AccountIcon currencyId={addr.currency.id} />
-            <Text bold uppercase>
+            <Text fontWeight="bold" uppercase>
               {addr.name}
             </Text>
           </Box>

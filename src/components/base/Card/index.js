@@ -17,7 +17,7 @@ export const CardTitle = ({
   i18nKey?: string,
 }) => (
   <Box mb={noMargin ? 0 : 20}>
-    <Text small bold uppercase i18nKey={i18nKey}>
+    <Text size="small" fontWeight="bold" uppercase i18nKey={i18nKey}>
       {children}
     </Text>
   </Box>
@@ -31,7 +31,7 @@ export const CardDesc = ({
   i18nKey?: string,
 }) => (
   <Box my={10}>
-    <Text small i18nKey={i18nKey}>
+    <Text size="small" i18nKey={i18nKey}>
       {children}
     </Text>
   </Box>

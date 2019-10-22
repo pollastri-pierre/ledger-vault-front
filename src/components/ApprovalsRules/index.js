@@ -143,7 +143,9 @@ class ApprovalsRules extends PureComponent<Props> {
 
     return (
       <Box flow={10}>
-        {!noTitle && <Text large i18nKey="approvalsRules:approval_flow" />}
+        {!noTitle && (
+          <Text size="large" i18nKey="approvalsRules:approval_flow" />
+        )}
         <Box horizontal style={styles.container}>
           {stepsLine}
           <Box grow pt={20}>
@@ -229,7 +231,7 @@ const stepsLine = (
       <StepBall>
         <FaCheck size={12} color={colors.green} />
       </StepBall>
-      <Text small uppercase i18nKey="approvalsRules:authorizedLabel" />
+      <Text size="small" uppercase i18nKey="approvalsRules:authorizedLabel" />
     </StepBallLabel>
     <StepBallLabel botter>
       <StepBall>
@@ -239,7 +241,7 @@ const stepsLine = (
           style={{ marginRight: 2 }}
         />
       </StepBall>
-      <Text small uppercase i18nKey="approvalsRules:lastStepLabel" />
+      <Text size="small" uppercase i18nKey="approvalsRules:lastStepLabel" />
     </StepBallLabel>
   </Box>
 );

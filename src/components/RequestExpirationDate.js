@@ -22,7 +22,7 @@ const RequestExpirationDate = ({ expirationDate, displayDayBefore }: Props) => {
   }
   const remainingTime = moment(expirationDate).toNow(true);
   return (
-    <Text small italic color={colors.grenade}>
+    <Text size="small" italic color={colors.grenade}>
       <Trans
         i18nKey="request:expire_in"
         count={remainingTime}
