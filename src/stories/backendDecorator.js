@@ -33,7 +33,7 @@ const me = {
   id: 5,
   pub_key: "abcd",
   username: "Vaulty",
-  type: "USER",
+  entityType: "USER",
   created_on: "2019-01-01",
   status: "ACTIVE",
   role: "ADMIN",
