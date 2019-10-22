@@ -361,7 +361,7 @@ const noop = data => data;
 
 const _addType = type => {
   if (!type) return noop;
-  return data => ({ ...data, type: mapRestlayKeyToType[type] });
+  return data => ({ ...data, entityType: mapRestlayKeyToType[type] });
 };
 
 function handleDeserialization(queryOrMutation, data) {

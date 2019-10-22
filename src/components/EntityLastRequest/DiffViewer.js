@@ -17,13 +17,15 @@ function DiffViewer(props: Props) {
 
   return (
     <Box flow={20}>
-      {entity.type === "GROUP" && (
+      {entity.entityType === "GROUP" && (
         <GroupEditRequest
           group={entity}
           operators={additionalFields && additionalFields.operators}
         />
       )}
-      {entity.type === "ACCOUNT" && <AccountEditRequest account={entity} />}
+      {entity.entityType === "ACCOUNT" && (
+        <AccountEditRequest account={entity} />
+      )}
     </Box>
   );
 }
