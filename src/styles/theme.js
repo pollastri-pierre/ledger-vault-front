@@ -11,3 +11,9 @@ export const vaultLayoutConfig = {
   COLLAPSED_MENU_WIDTH: 60,
   BREAKPOINT: 1280,
 };
+
+export const zIndex = {
+  TOOLTIPS: 400,
+  EMULATOR: 300,
+  MODALS: 200,
+};

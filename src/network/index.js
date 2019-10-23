@@ -29,7 +29,10 @@ export default function<T>(
   // /!\ TEMPORARY - LV-2129
   // -----------------------
   /* eslint-disable no-console */
-  if (uri.endsWith("/challenge")) {
+  if (
+    uri.endsWith("/challenge") &&
+    window.localStorage.getItem("DEBUG_LV2129") === "1"
+  ) {
     console.log("[DEBUG LV-2129] Getting challenge");
     console.log(`url: ${uri}`);
   }

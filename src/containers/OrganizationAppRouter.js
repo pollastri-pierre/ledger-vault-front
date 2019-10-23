@@ -21,6 +21,8 @@ import PrivateRoute from "components/PrivateRoute";
 import Logout from "components/Logout";
 import { LoginLoading } from "components/Login";
 import { checkLogin } from "redux/modules/auth";
+import { EmulatorProvider } from "components/Emulator/EmulatorContext";
+import EmulatorWrapper from "components/Emulator/EmulatorWrapper";
 
 import App from "./App/App";
 
@@ -88,8 +90,9 @@ const OrganizationAppRouter = ({
     [versions, update],
   );
   return (
-    <>
+    <EmulatorProvider>
       <GlobalStyle />
+      <EmulatorWrapper />
       <BrowserRouter>
         <VersionsContextProvider value={versionContextValue}>
           <AlertsContainer />
@@ -108,7 +111,7 @@ const OrganizationAppRouter = ({
         </VersionsContextProvider>
       </BrowserRouter>
       {process.env.NODE_ENV === "e2e" && <MockDevices />}
-    </>
+    </EmulatorProvider>
   );
 };
 

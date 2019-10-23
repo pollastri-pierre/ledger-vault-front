@@ -54,7 +54,6 @@ const Wrapper = ({ type, withFooter, ...props }) => (
   >
     <div
       style={{
-        fontFamily: "Open Sans",
         textTransform: "uppercase",
         fontWeight: "bold",
         fontSize: 12,

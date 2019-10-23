@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { animated, useSpring } from "react-spring";
 import { createPortal } from "react-dom";
 
+import * as theme from "styles/theme";
 import Box from "components/base/Box";
 import {
   ModalClose,
@@ -31,6 +32,7 @@ function Modal(props: ModalProps) {
     onClose,
     disableBackdropClick,
     children,
+    zIndex,
   } = props;
   const [isInDOM, setIsInDOM] = useState(false);
 
@@ -60,6 +62,7 @@ function Modal(props: ModalProps) {
       isOpened={isOpened}
       onDisappear={onDisappear}
       onBackdropClick={handleClickOnBackdrop}
+      zIndex={zIndex}
     >
       <ModalDialog>
         <ModalDialogInner
@@ -81,8 +84,9 @@ function AnimatedModal(props: {|
   onDisappear: () => void,
   onBackdropClick: () => void,
   children: React$Node,
+  zIndex?: number,
 |}) {
-  const { isOpened, onDisappear, onBackdropClick, children } = props;
+  const { isOpened, onDisappear, onBackdropClick, children, zIndex } = props;
   const [isFirstRender, setFirstRender] = useState(true);
 
   const isVisible = isOpened && !isFirstRender;
@@ -106,6 +110,7 @@ function AnimatedModal(props: {|
   const containerStyle = {
     ...CONTAINER_STYLE,
     pointerEvents: isVisible ? "auto" : "none",
+    ...(zIndex ? { zIndex } : {}),
   };
 
   const bodyWrapperAnim = useSpring({
@@ -143,7 +148,7 @@ const BACKDROP_STYLE = {
   right: 0,
   bottom: 0,
   background: "rgba(0, 0, 0, 0.5)",
-  zIndex: 100,
+  zIndex: theme.zIndex.MODALS,
 };
 
 const CONTAINER_STYLE = {

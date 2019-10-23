@@ -111,6 +111,9 @@
     "title": "Name already used",
     "description": "An account already uses this name. Please enter a different one"
   },
+  "CantOpenDevice": {
+    "title": "Can't communicate with device"
+  },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"

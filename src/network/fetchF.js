@@ -26,7 +26,10 @@ if (process.env.NODE_ENV === "test") {
     // /!\ TEMPORARY - LV-2129
     // -----------------------
     /* eslint-disable no-console */
-    if (uri.endsWith("/challenge")) {
+    if (
+      uri.endsWith("/challenge") &&
+      window.localStorage.getItem("DEBUG_LV2129") === "1"
+    ) {
       console.log(`params: ${JSON.stringify(params)}`);
       console.log(`location: ${JSON.stringify(location)}`);
       console.log(`prefix: ${prefix}`);

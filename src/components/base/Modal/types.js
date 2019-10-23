@@ -6,4 +6,5 @@ export type ModalProps = {
   transparent?: boolean,
   onClose?: () => void,
   disableBackdropClick?: boolean,
+  zIndex?: number,
 };
