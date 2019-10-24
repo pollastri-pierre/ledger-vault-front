@@ -282,6 +282,10 @@ export default function connectData<
       query: Query<any, Res> | ConnectionQuery<any, any>,
     ): Promise<Res> => this.execute(query);
 
+    getStore = () => {
+      return this.props.dataStore;
+    };
+
     updateQueryInstances(apiParams: Object, fetchParams: Object) {
       const instances: $ObjMap<A, ExtractQuery> = {};
       queriesKeys.forEach(key => {
@@ -487,6 +491,7 @@ export default function connectData<
       forceFetch: () => this.syncProps(this.props, {}, true).then(() => {}),
       getVariables: this.getVariables,
       setVariables: this.setVariables,
+      getStore: this.getStore,
     };
 
     render() {
