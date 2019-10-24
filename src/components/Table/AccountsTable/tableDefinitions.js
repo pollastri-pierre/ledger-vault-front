@@ -5,16 +5,6 @@ import { Trans } from "react-i18next";
 export const accountsTableDefault = [
   {
     header: {
-      label: "",
-      align: "left",
-    },
-    body: {
-      prop: "link",
-      align: "left",
-    },
-  },
-  {
-    header: {
       label: "Account name",
       align: "left",
       sortable: true,
@@ -70,16 +60,6 @@ export const accountsTableDefault = [
 ];
 
 export const accountsIsOperatorTableDefault = [
-  {
-    header: {
-      label: "",
-      align: "left",
-    },
-    body: {
-      prop: "link",
-      align: "left",
-    },
-  },
   {
     header: {
       label: "Account name",

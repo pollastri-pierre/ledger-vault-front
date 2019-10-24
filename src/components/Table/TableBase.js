@@ -150,9 +150,8 @@ export const OpenExternal = ({ url }: { url: string }) => (
 );
 
 const OpenExternalContainer = styled.div`
-  width: 40px;
+  width: 30px;
   height: 40px;
-  margin-left: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,10 +179,10 @@ function resolveDirection(
 }
 
 export function getExtraCellStyle(cellID: string) {
-  if (cellID === "link") {
+  if (cellID === "details") {
     return {
-      padding: 0,
-      width: 60,
+      padding: 10,
+      width: 50,
     };
   }
 }
