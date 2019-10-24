@@ -331,9 +331,7 @@ export default function connectData<
             (queryUpdated &&
               // FIXME later we might have a cache for ConnectionQuery actually,
               // not incompatible, just need to iterate step-by-step
-              (query instanceof Query
-                ? !queryCacheIsFresh(dataStore, query)
-                : true));
+              !queryCacheIsFresh(dataStore, query));
 
           if (query instanceof ConnectionQuery) {
             if (state.variables[key]) {

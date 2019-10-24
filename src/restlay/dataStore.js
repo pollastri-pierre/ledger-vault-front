@@ -55,7 +55,10 @@ export function getPendingQueryResult<R>(
   return store.results[query.getCacheKey()];
 }
 
-export function queryCacheIsFresh(store: Store, query: Query<*, *>): boolean {
+export function queryCacheIsFresh(
+  store: Store,
+  query: Query<*, *> | ConnectionQuery<*, *>,
+): boolean {
   const cache = getPendingQueryResult(store, query);
   if (!cache) return false;
   return Date.now() < cache.time + 1000 * query.cacheMaxAge;
