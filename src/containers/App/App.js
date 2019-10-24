@@ -1,11 +1,12 @@
 // @flow
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 import { FaArrowLeft } from "react-icons/fa";
 
 import type { Account, User, Transaction, Organization } from "data/types";
+import AccountQuery from "api/queries/AccountQuery";
 import connectData from "restlay/connectData";
 import SearchAccounts from "api/queries/SearchAccounts";
 import ProfileQuery from "api/queries/ProfileQuery";
@@ -46,6 +47,12 @@ const AppWrapper = ({ me, organization, restlay, ...props }: Props) => {
     const newOrg = await restlay.fetchQuery(new OrganizationQuery());
     setOrg(newOrg);
   };
+  useEffect(() => {
+    const allAccounts = props.accounts.edges.map(el => el.node);
+    allAccounts.forEach(account => {
+      restlay.fetchQuery(new AccountQuery({ accountId: `${account.id}` }));
+    });
+  }, [props.accounts.edges, restlay]);
   return (
     <UserContextProvider me={me}>
       <OrganizationContextProvider
