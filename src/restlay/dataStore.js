@@ -12,7 +12,7 @@ import isPlainObject from "lodash/isPlainObject";
 import forOwn from "lodash/forOwn";
 import URL from "url";
 import isEqual from "lodash/isEqual";
-import { logout } from "redux/modules/auth";
+import { logout, LOGOUT } from "redux/modules/auth";
 import type { Account, Currency } from "data/types";
 import { mapRestlayKeyToType } from "data/types";
 import ProfileQuery from "api/queries/ProfileQuery";
@@ -27,6 +27,7 @@ export const DATA_FETCHED = "@@restlay/DATA_FETCHED";
 export const DATA_FETCHED_FAIL = "@@restlay/DATA_FETCHED_FAIL";
 
 const DATA_CONNECTION_SPLICE = "@@restlay/DATA_CONNECTION_SPLICE";
+const RESET_ALL_CACHES = "@@restlay/RESET_ALL_CACHES";
 
 export type FetchParams = {
   prefix?: string,
@@ -190,6 +191,9 @@ export const executeQueryOrMutation =
     if (queryOrMutation instanceof Mutation) {
       method = queryOrMutation.method;
       body = queryOrMutation.getBody();
+      dispatch({
+        type: RESET_ALL_CACHES,
+      });
     } else {
       cacheKey = queryOrMutation.getCacheKey();
       const pendingPromise = ctx.getPendingQuery(queryOrMutation);
@@ -285,7 +289,16 @@ export const executeQueryOrMutation =
     return promise;
   };
 
+const clearAllCaches = store => {
+  Object.keys(store.results).forEach(k => {
+    store.results[k].time = 0;
+  });
+  return { ...store };
+};
+
 const reducers = {
+  [RESET_ALL_CACHES]: clearAllCaches,
+  [LOGOUT]: clearAllCaches,
   [DATA_CONNECTION_SPLICE]: (store, { size, cacheKey }) => {
     if (!cacheKey) {
       return store;
