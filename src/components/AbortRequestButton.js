@@ -15,7 +15,7 @@ import type { GateError } from "data/types";
 type Props = {
   requestID: string,
   restlay: RestlayEnvironment,
-  onSuccess: () => void,
+  onSuccess: ({ actionType: string }) => void,
   onError: ?(Error | GateError | typeof NetworkError) => void,
   disabled?: boolean,
 };
@@ -41,7 +41,7 @@ class AbortRequestButton extends PureComponent<Props, State> {
           order: "asc",
         }),
       );
-      onSuccess();
+      onSuccess({ actionType: "abort" });
     } catch (error) {
       this.setState({ error });
       onError && onError(error);
