@@ -33,6 +33,10 @@ const BG_BY_STATUS = {
   PENDING_REVOCATION: colors.paleBlue,
   PENDING_REGISTRATION: colors.paleBlue,
   VIEW_ONLY: colors.argile,
+
+  // Derived statuses
+  DERIVED_TX_CONFIRMED: colors.paleGreen,
+  DERIVED_TX_UNCONFIRMED: colors.paleRed,
 };
 
 function getColorByBg(status: any) {
@@ -42,7 +46,9 @@ function getColorByBg(status: any) {
 type Props = {
   t: Translate,
   status: string,
+  derivedStatus?: string,
   textOnly?: boolean,
+  children?: React$Node,
   size?: "big" | "normal",
 };
 
@@ -62,13 +68,14 @@ class Status extends PureComponent<Props> {
   };
 
   render() {
-    const { status, textOnly, size } = this.props;
-
+    const { status, textOnly, size, derivedStatus, children } = this.props;
     const str = this.getStr();
     if (textOnly) return str;
-
-    const bg = BG_BY_STATUS[status] || "white";
-    const color = getColorByBg(status);
+    const bg =
+      (derivedStatus && BG_BY_STATUS[derivedStatus]) ||
+      BG_BY_STATUS[status] ||
+      "white";
+    const color = getColorByBg(status || derivedStatus);
 
     return (
       <Box
@@ -85,19 +92,13 @@ class Status extends PureComponent<Props> {
         <Text
           fontWeight="semiBold"
           size={size !== "big" ? "small" : null}
-          style={styles.text}
+          noWrap
         >
-          {str}
+          {derivedStatus ? children : str}
         </Text>
       </Box>
     );
   }
 }
-
-const styles = {
-  text: {
-    whiteSpace: "nowrap",
-  },
-};
 
 export default withTranslation()(Status);
