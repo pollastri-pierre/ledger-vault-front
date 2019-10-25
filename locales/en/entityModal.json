@@ -14,6 +14,6 @@
   "successMessage": "The request has been successfully {{action}}",
   "actionType": {
     "rejected": "rejected",
-    "created": "created"
+    "approved": "approved"
   }
 }

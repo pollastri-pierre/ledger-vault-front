@@ -222,7 +222,7 @@ function SuccessFooter(props: SuccessFooterProps) {
             action:
               props.actionType === "abort"
                 ? t("entityModal:actionType.rejected")
-                : t("entityModal:actionType.created"),
+                : t("entityModal:actionType.approved"),
           }}
         />
       </Box>
