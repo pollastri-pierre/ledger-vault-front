@@ -1,7 +1,7 @@
 // @flow
 
-import React from "react";
-import { Trans } from "react-i18next";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FaPen } from "react-icons/fa";
 import { withRouter, matchPath } from "react-router";
 import { Link } from "react-router-dom";
@@ -24,10 +24,13 @@ import EntityLastRequest from "components/EntityLastRequest";
 import RequestActionButtons from "components/RequestActionButtons";
 import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 import Absolute from "components/base/Absolute";
 import { hasPendingRequest, hasPendingEdit } from "utils/entities";
 import { isRequestAffectingAdminRules } from "utils/request";
 import type { Entity, User } from "data/types";
+
+import colors, { lighten, darken } from "shared/colors";
 
 export const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
 
@@ -65,6 +68,9 @@ function EntityModal<T>(props: Props<T>) {
     footer,
     additionalFields,
   } = props;
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [actionType, setActionType] = useState(null);
+  const { t } = useTranslation();
 
   const fullEditURL =
     editURL && match.params["0"] ? `${match.params["0"]}${editURL}` : null;
@@ -78,7 +84,7 @@ function EntityModal<T>(props: Props<T>) {
   );
 
   const { refresh } = useOrganization();
-  const onSuccess = () => {
+  const onSuccess = (successRes?: { actionType: string }) => {
     // FIXME technically we should also check if the quorum has been reached
     if (
       entity.last_request &&
@@ -86,7 +92,9 @@ function EntityModal<T>(props: Props<T>) {
     ) {
       refresh();
     }
-    onClose();
+
+    setActionType(successRes ? successRes.actionType : null);
+    setSuccessMessage(true);
   };
 
   const childs = Array.isArray(children) ? children : [children];
@@ -120,7 +128,7 @@ function EntityModal<T>(props: Props<T>) {
                 to={child.key}
                 isActive={child === content}
               >
-                <Trans i18nKey={`entityModal:tabs.${child.key || ""}`} />
+                {t(`entityModal:tabs.${child.key || ""}`)}
               </RichModalTab>
             ) : null,
           )}
@@ -132,7 +140,7 @@ function EntityModal<T>(props: Props<T>) {
             isActive={content === lastRequest}
           >
             <Box horizontal align="center">
-              <Trans i18nKey="entityModal:tabs.editRequest" />
+              {t("entityModal:tabs.editRequest")}
               <Absolute top={-6} right={-8}>
                 <Badge>1</Badge>
               </Absolute>
@@ -152,7 +160,9 @@ function EntityModal<T>(props: Props<T>) {
 
       {showFooter && (
         <RichModalFooter>
-          {hasPendingReq || isEntityBlocked ? (
+          {successMessage ? (
+            <SuccessFooter actionType={actionType} onClose={onClose} />
+          ) : hasPendingReq || isEntityBlocked ? (
             <RequestActionButtons onSuccess={onSuccess} entity={entity} />
           ) : showRevoke ? (
             revokeButton || null
@@ -168,9 +178,10 @@ function EntityModal<T>(props: Props<T>) {
 }
 
 function EditButton({ url, disabled }: { url: string, disabled?: boolean }) {
+  const { t } = useTranslation();
   const inner = (
     <Link replace to={url} data-test="edit-button">
-      <Tooltip title={<Trans i18nKey="entityModal:edit" />} placement="left">
+      <Tooltip title={t("entityModal:edit")} placement="left">
         <Button>
           <FaPen />
         </Button>
@@ -186,3 +197,38 @@ function EditButton({ url, disabled }: { url: string, disabled?: boolean }) {
 }
 
 export default withRouter(withMe(EntityModal));
+
+type SuccessFooterProps = {
+  actionType: ?string,
+  onClose: () => void,
+};
+function SuccessFooter(props: SuccessFooterProps) {
+  const { t } = useTranslation();
+  return (
+    <Box horizontal grow justify="space-between">
+      <Box
+        justify="center"
+        align="center"
+        borderRadius={5}
+        bg={lighten(colors.paleGreen, 0.06)}
+        px={10}
+      >
+        <Text
+          fontWeight="semiBold"
+          textAlign="center"
+          color={darken(colors.paleGreen, 0.7)}
+          i18nKey="entityModal:successMessage"
+          values={{
+            action:
+              props.actionType === "abort"
+                ? t("entityModal:actionType.rejected")
+                : t("entityModal:actionType.created"),
+          }}
+        />
+      </Box>
+      <Button variant="primary" type="filled" onClick={props.onClose}>
+        {t("common:done")}
+      </Button>
+    </Box>
+  );
+}
