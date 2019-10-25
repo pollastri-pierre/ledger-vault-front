@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 
 import MUITableBody from "@material-ui/core/TableBody";
 
@@ -20,22 +20,10 @@ type Props = {
   customTableDef?: TableDefinition,
 };
 
-type State = {
-  tableDefinition: TableDefinition,
-};
-
-class ReasonsTable extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      tableDefinition: props.customTableDef || reasonsTableDefault,
-    };
-  }
-
-  Reason = (reason: BlockingReasonType, i: number) => {
-    const { onRowClick } = this.props;
-    const { tableDefinition } = this.state;
+function ReasonsTable(props: Props) {
+  const { data, onRowClick, customTableDef } = props;
+  const [tableDefinition] = useState(customTableDef || reasonsTableDefault);
+  const Reason = (reason: BlockingReasonType, i: number) => {
     return (
       <ReasonRow
         key={`${reason.type}_${i}_${reason.entity ? reason.entity.id : ""}`}
@@ -46,22 +34,17 @@ class ReasonsTable extends PureComponent<Props, State> {
     );
   };
 
-  render() {
-    const { data } = this.props;
-    const { tableDefinition } = this.state;
-
-    if (!data.length) {
-      return <NoDataPlaceholder title="No reasons found." />;
-    }
-    return (
-      <TableScroll>
-        <Table>
-          <TableHeader tableDefinition={tableDefinition} type="reasons" />
-          <MUITableBody>{data.map(this.Reason)}</MUITableBody>
-        </Table>
-      </TableScroll>
-    );
+  if (!data.length) {
+    return <NoDataPlaceholder title="No reasons found." />;
   }
+  return (
+    <TableScroll>
+      <Table>
+        <TableHeader tableDefinition={tableDefinition} type="reasons" />
+        <MUITableBody>{data.map(Reason)}</MUITableBody>
+      </Table>
+    </TableScroll>
+  );
 }
 
 export default ReasonsTable;

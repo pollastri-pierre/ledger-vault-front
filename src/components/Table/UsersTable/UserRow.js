@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 
 import MUITableRow from "@material-ui/core/TableRow";
 
@@ -17,27 +17,25 @@ type UserRowProps = {
 
 const userRowHover = { cursor: "pointer" };
 
-class UserRow extends PureComponent<UserRowProps> {
-  handleClick = () => {
-    this.props.onClick(this.props.user);
+function UserRow(props: UserRowProps) {
+  const { user, onClick, tableDefinition } = props;
+
+  const handleClick = () => {
+    onClick(user);
   };
 
-  render() {
-    const { user, onClick, tableDefinition } = this.props;
-
-    return (
-      <MUITableRow
-        key={user.id}
-        hover={!!onClick}
-        style={onClick ? userRowHover : undefined}
-        onClick={onClick ? this.handleClick : undefined}
-      >
-        {tableDefinition.map(item => (
-          <UserBodyCell user={user} item={item} key={item.body.prop} />
-        ))}
-      </MUITableRow>
-    );
-  }
+  return (
+    <MUITableRow
+      key={user.id}
+      hover={!!onClick}
+      style={onClick ? userRowHover : undefined}
+      onClick={onClick ? handleClick : undefined}
+    >
+      {tableDefinition.map(item => (
+        <UserBodyCell user={user} item={item} key={item.body.prop} />
+      ))}
+    </MUITableRow>
+  );
 }
 
 export default UserRow;

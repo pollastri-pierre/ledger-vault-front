@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 
 import MUITableCell from "@material-ui/core/TableCell";
 
@@ -13,9 +13,10 @@ type CellProps = {
   whitelist: Whitelist,
   item: TableItem,
 };
-class WhitelistBodyCell extends PureComponent<CellProps> {
-  renderCellMapper = () => {
-    const { whitelist, item } = this.props;
+function WhitelistBodyCell(props: CellProps) {
+  const { whitelist, item } = props;
+
+  const renderCellMapper = () => {
     switch (item.body.prop) {
       case "name":
         return <div>{whitelist.name}</div>;
@@ -33,14 +34,9 @@ class WhitelistBodyCell extends PureComponent<CellProps> {
     }
   };
 
-  render() {
-    const { item } = this.props;
-    return (
-      <MUITableCell align={item.body.align}>
-        {this.renderCellMapper()}
-      </MUITableCell>
-    );
-  }
+  return (
+    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
+  );
 }
 
 export default WhitelistBodyCell;

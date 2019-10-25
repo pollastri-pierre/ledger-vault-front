@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 import MUITableCell from "@material-ui/core/TableCell";
 
 import EntityStatus from "components/EntityStatus";
@@ -14,10 +14,9 @@ type CellProps = {
   request: GenericRequest,
   item: TableItem,
 };
-class RequestBodyCell extends PureComponent<CellProps> {
-  renderCellMapper = () => {
-    const { request, item } = this.props;
-
+function RequestBodyCell(props: CellProps) {
+  const { request, item } = props;
+  const renderCellMapper = () => {
     // FIXME
     // NOT SCALABLE. we should put directly React$Component
     // in table definition compared to add another level of
@@ -45,14 +44,9 @@ class RequestBodyCell extends PureComponent<CellProps> {
     }
   };
 
-  render() {
-    const { item } = this.props;
-    return (
-      <MUITableCell align={item.body.align}>
-        {this.renderCellMapper()}
-      </MUITableCell>
-    );
-  }
+  return (
+    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
+  );
 }
 
 export default RequestBodyCell;

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 
 import MUITableBody from "@material-ui/core/TableBody";
 
@@ -23,22 +23,11 @@ type Props = {
   onSortChange?: (string, ?string) => void,
 };
 
-type State = {
-  tableDefinition: TableDefinition,
-};
+function WhitelistsTable(props: Props) {
+  const { onRowClick, customTableDef, data, onSortChange, queryParams } = props;
+  const [tableDefinition] = useState(customTableDef || whitelistsTableDefault);
 
-class WhitelistsTable extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      tableDefinition: props.customTableDef || whitelistsTableDefault,
-    };
-  }
-
-  Whitelist = (whitelist: Whitelist) => {
-    const { onRowClick } = this.props;
-    const { tableDefinition } = this.state;
+  const WhitelistComponent = (whitelist: Whitelist) => {
     return (
       <WhitelistRow
         key={whitelist.id}
@@ -49,27 +38,22 @@ class WhitelistsTable extends PureComponent<Props, State> {
     );
   };
 
-  render() {
-    const { data, onSortChange, queryParams } = this.props;
-    const { tableDefinition } = this.state;
-
-    if (!data.length) {
-      return <NoDataPlaceholder title="No whitelists found." />;
-    }
-    return (
-      <TableScroll>
-        <Table>
-          <TableHeader
-            tableDefinition={tableDefinition}
-            type="whitelists"
-            onSortChange={onSortChange}
-            queryParams={queryParams}
-          />
-          <MUITableBody>{data.map(this.Whitelist)}</MUITableBody>
-        </Table>
-      </TableScroll>
-    );
+  if (!data.length) {
+    return <NoDataPlaceholder title="No whitelists found." />;
   }
+  return (
+    <TableScroll>
+      <Table>
+        <TableHeader
+          tableDefinition={tableDefinition}
+          type="whitelists"
+          onSortChange={onSortChange}
+          queryParams={queryParams}
+        />
+        <MUITableBody>{data.map(WhitelistComponent)}</MUITableBody>
+      </Table>
+    </TableScroll>
+  );
 }
 
 export default WhitelistsTable;
