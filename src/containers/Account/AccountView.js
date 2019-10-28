@@ -5,6 +5,7 @@ import styled from "styled-components";
 import type { Match } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
+import { useMe } from "components/UserContextProvider";
 import AccountWarning from "containers/Account/AccountWarning";
 import ResponsiveContainer from "components/base/ResponsiveContainer";
 import VaultLink from "components/VaultLink";
@@ -30,6 +31,7 @@ type Props = {
 
 function AccountView(props: Props) {
   const { account } = props;
+  const me = useMe();
   return (
     <Box flow={20} key={account.id}>
       <VaultLink withRole to="/accounts">
@@ -38,7 +40,7 @@ function AccountView(props: Props) {
           <Text i18nKey="accountView:backButton" />
         </AccountBackNav>
       </VaultLink>
-      <AccountWarning account={account} />
+      <AccountWarning account={account} me={me} />
       <ResponsiveContainer>
         <Box flow={20} grow>
           <AccountQuickInfoWidget account={account} />

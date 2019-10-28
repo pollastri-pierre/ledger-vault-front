@@ -10,6 +10,10 @@ export function deserializeAccount(account: Account): Account {
     console.warn('No "balance" in account. Default to 0.');
     account.balance = 0;
   }
+  if (account.balance === null) {
+    console.warn("account.balance is null. Default to 0.");
+    account.balance = 0;
+  }
   return {
     ...account,
     balance: BigNumber(account.balance),

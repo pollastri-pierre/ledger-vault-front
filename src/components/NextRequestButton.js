@@ -10,15 +10,19 @@ import type { RestlayEnvironment } from "restlay/connectData";
 type Props = {
   restlay: RestlayEnvironment,
   request: Request,
+  onSuccess?: () => any,
 };
 
 class NextRequestButton extends PureComponent<Props> {
   triggerNext = async () => {
-    const { request, restlay } = this.props;
+    const { request, restlay, onSuccess } = this.props;
     try {
       await restlay.commitMutation(
         new NextRequestMutation({ requestId: request.id }),
       );
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (err) {
       console.log(err); // eslint-disable-line no-console
     }
