@@ -46,12 +46,18 @@ test("restlay.commitMutation correctly redraw with new data", async () => {
       queries: { animals: AnimalsQuery },
     },
   );
-  const inst = renderer.create(render(<Animals />));
+  let inst;
+  renderer.act(() => {
+    inst = renderer.create(render(<Animals />));
+  });
   expect(net.tick()).toBe(1);
   await renderer.act(flushPromises);
   expect(inst.toJSON()).toBe("last=doge_5");
   invariant(rlay, "restlay is defined");
-  const p = rlay.commitMutation(new IncrementAgesMutation());
+  let p;
+  renderer.act(() => {
+    p = rlay.commitMutation(new IncrementAgesMutation());
+  });
   expect(net.tick()).toBe(1);
   await renderer.act(flushPromises);
   expect(p).toBeInstanceOf(Promise);
