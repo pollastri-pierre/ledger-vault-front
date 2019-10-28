@@ -6,15 +6,17 @@ import type { MemoryHistory } from "history";
 import styled from "styled-components";
 
 import { isAccountOutdated } from "utils/accounts";
+import NextRequestButton from "components/NextRequestButton";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import type { Account } from "data/types";
+import type { Account, User } from "data/types";
 import Button from "components/base/Button";
 import colors, { opacity, darken } from "shared/colors";
 
 type Props = {
   history: MemoryHistory,
   account: Account,
+  me: User,
 };
 
 class AccountWarning extends Component<Props> {
@@ -24,7 +26,7 @@ class AccountWarning extends Component<Props> {
   };
 
   render() {
-    const { account } = this.props;
+    const { account, me } = this.props;
 
     const showViewOnlyWarning =
       account.status === "VIEW_ONLY" &&
@@ -32,12 +34,29 @@ class AccountWarning extends Component<Props> {
         (account.last_request && account.last_request.status === "ABORTED") ||
         (account.last_request && account.last_request.status === "EXPIRED"));
 
+    const showAccountNotActiveWarning =
+      account.status === "APPROVED" && me.role === "ADMIN";
+
     const isOutdated = isAccountOutdated(account);
 
-    if (!showViewOnlyWarning && !isOutdated) return null;
-    // \o/
+    const onRetrySuccess = () => document.location.reload();
+
+    if (!showViewOnlyWarning && !isOutdated && !showAccountNotActiveWarning)
+      return null;
+
     return (
-      <Box align="center">
+      <Box align="center" flow={20}>
+        {showAccountNotActiveWarning && (
+          <Warning>
+            <Text>
+              <Trans i18nKey="accountView:not_active_warning" />
+            </Text>
+            <NextRequestButton
+              request={account.last_request}
+              onSuccess={onRetrySuccess}
+            />
+          </Warning>
+        )}
         {showViewOnlyWarning && (
           <Warning>
             <Text>
