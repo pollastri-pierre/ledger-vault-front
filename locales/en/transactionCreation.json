@@ -14,7 +14,7 @@
       "feesInfos": "To have your transaction confirmed faster, select a higher fee.",
       "estimatedFees": "Estimated fees",
       "destinationTag": "Destination tag",
-      "destinationTagDesc": "Up to 9 digits"
+      "destinationTagDesc": "e.g: 1234"
     },
     "note": {
       "title": "Comments",

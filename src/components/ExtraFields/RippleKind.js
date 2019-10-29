@@ -15,14 +15,19 @@ const isNumber = c => {
 
 export const hints = [
   {
-    key: "nbChars",
-    label: "Up to 9 digits",
-    check: (v: string) => v.length <= 9,
+    key: "number",
+    label: "32bit integer",
+    check: (v: string) => parseInt(v, 10) <= 4294967295,
   },
   {
     key: "onlyDigits",
     label: "Contains only numbers",
     check: (v: string) => v.split("").every(isNumber),
+  },
+  {
+    key: "max",
+    label: "Max 4,294,967,295",
+    check: (v: string) => parseInt(v, 10) <= 4294967295,
   },
 ];
 
@@ -42,7 +47,7 @@ const ExtraFieldsRipple = (props: EditProps<RippleTransaction>) => {
         value={transaction.destinationTag}
         onChange={handleChangeDestinationTag}
         placeholder={t("transactionCreation:steps.amount.destinationTagDesc")}
-        maxLength={9}
+        maxLength={10}
         hints={hints}
       />
     </Box>
