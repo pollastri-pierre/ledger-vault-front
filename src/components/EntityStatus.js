@@ -8,13 +8,13 @@ import Status from "components/Status";
 import RequestExpirationDate from "components/RequestExpirationDate";
 import Box from "components/base/Box";
 import { withMe } from "components/UserContextProvider";
-import type { User, Request } from "data/types";
+import type { User, GenericRequest } from "data/types";
 import { hasUserApprovedRequest, isUserInCurrentStep } from "utils/request";
 import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 
 type Props = {
   status: string,
-  request: ?Request,
+  request: ?GenericRequest,
   useRequestStatus?: boolean,
   me: User,
   size?: "big" | "normal",

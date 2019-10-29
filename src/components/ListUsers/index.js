@@ -34,7 +34,7 @@ const ICON_BY_HISTORY: { [_: History]: React$Node } = {
 const Item = ({ user }: { user: UserWithHistory }) => (
   <Box horizontal align="center" flow={5}>
     {ICON_BY_HISTORY[user.history]}
-    <Text small>{user.user.username}</Text>
+    <Text size="small">{user.user.username}</Text>
   </Box>
 );
 

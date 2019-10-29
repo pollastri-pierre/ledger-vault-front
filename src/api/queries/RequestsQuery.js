@@ -3,12 +3,12 @@
 import queryString from "query-string";
 
 import ConnectionQuery from "restlay/ConnectionQuery";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 
 type Input = {
   status?: string | string[],
 };
-type Node = Request;
+type Node = GenericRequest;
 
 const uri = (query: Input) => {
   let finalQuery = {};

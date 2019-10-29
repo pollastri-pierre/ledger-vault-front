@@ -9,9 +9,11 @@ import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import RequestsTable from "components/Table/RequestsTable";
 import { RequestsFilters } from "components/filters";
 import DataSearch from "components/DataSearch";
+import PageHeaderActions from "components/base/PageHeaderActions";
+import Text from "components/base/Text";
 import { getModalTabLink } from "utils/request";
 
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 
 type Props = {
   history: MemoryHistory,
@@ -20,7 +22,7 @@ type Props = {
 const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
 
 class Users extends PureComponent<Props> {
-  handleRowClick = (request: Request) => {
+  handleRowClick = (request: GenericRequest) => {
     if (request.target_type === "GROUP") {
       this.props.history.push(
         getModalTabLink(
@@ -70,14 +72,17 @@ class Users extends PureComponent<Props> {
   render() {
     const { history } = this.props;
     return (
-      <DataSearch
-        Query={RequestsQuery}
-        TableComponent={RequestsTable}
-        FilterComponent={RequestsFilters}
-        history={history}
-        onRowClick={this.handleRowClick}
-        listenMutations={mutationsToListen}
-      />
+      <>
+        <PageHeaderActions title={<Text i18nKey="menu:admin.tasks" />} />
+        <DataSearch
+          Query={RequestsQuery}
+          TableComponent={RequestsTable}
+          FilterComponent={RequestsFilters}
+          history={history}
+          onRowClick={this.handleRowClick}
+          listenMutations={mutationsToListen}
+        />
+      </>
     );
   }
 }

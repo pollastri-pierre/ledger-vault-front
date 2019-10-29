@@ -7,7 +7,6 @@ import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
 import { Redirect } from "react-router";
 import type { Match } from "react-router-dom";
-import GlobalLoading from "components/GlobalLoading";
 
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import InviteUserQuery from "api/queries/InviteUserQuery";
@@ -23,6 +22,7 @@ import LineRow from "components/LineRow";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";
+import { SpinnerCentered } from "components/base/Spinner";
 import Button from "components/base/Button";
 import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
 import Card from "components/base/Card";
@@ -84,12 +84,12 @@ function RegisterUser(props: Props) {
         {success ? (
           <RegisterUserSuccess />
         ) : (
-          <ModalBody>
+          <ModalBody width={550}>
             <ModalHeader>
               <Box horizontal align="center" flow={10}>
                 <Text
-                  header
-                  bold
+                  size="header"
+                  fontWeight="bold"
                   i18nKey="inviteUser:registration.title"
                   values={{ userRole: userRoleLabel }}
                 />
@@ -160,5 +160,5 @@ export default connectData(RegisterUser, {
     urlID: match.params.urlID,
   }),
   RenderError: TryAgain,
-  RenderLoading: GlobalLoading,
+  RenderLoading: SpinnerCentered,
 });

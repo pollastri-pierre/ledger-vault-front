@@ -4,12 +4,12 @@ import React, { PureComponent } from "react";
 import NextRequestMutation from "api/mutations/NextRequestMutation";
 import connectData from "restlay/connectData";
 import Button from "components/base/Button";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 type Props = {
   restlay: RestlayEnvironment,
-  request: Request,
+  request: GenericRequest,
   onSuccess?: () => any,
 };
 
@@ -30,7 +30,7 @@ class NextRequestButton extends PureComponent<Props> {
 
   render() {
     return (
-      <Button type="filled" small onClick={this.triggerNext}>
+      <Button type="filled" size="small" onClick={this.triggerNext}>
         RETRY
       </Button>
     );

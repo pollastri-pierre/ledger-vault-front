@@ -1,7 +1,7 @@
 // @flow
 
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
-import type { Account, TxApprovalStep } from "data/types";
+import type { Account, TxApprovalStepCollection } from "data/types";
 import type { ApprovalsRule } from "components/ApprovalsRules";
 
 export const STATUS_UPDATE_IN_PROGRESS = "PENDING_UPDATE";
@@ -35,7 +35,7 @@ export const isSupportedAccount = (account: Account) => {
 
 // from full object to arrays of id
 export const deserializeApprovalSteps = (
-  tx_approval_steps: TxApprovalStep[],
+  tx_approval_steps: TxApprovalStepCollection,
 ): Array<?ApprovalsRule> =>
   tx_approval_steps.map(rule =>
     rule

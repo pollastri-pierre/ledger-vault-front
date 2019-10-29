@@ -8,7 +8,7 @@ import Box from "components/base/Box";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import { connect } from "react-redux";
-import SpinnerCard from "components/legacy/SpinnerCard";
+import { SpinnerCentered } from "components/base/Spinner";
 import Fragment from "containers/Onboarding/Fragments";
 import {
   openWrappingChannel,
@@ -98,7 +98,7 @@ const WrappingKeys = ({
             ))}
         </Box>
       ) : (
-        <SpinnerCard />
+        <SpinnerCentered />
       )}
       <Footer
         render={(onNext, onPrevious) => (

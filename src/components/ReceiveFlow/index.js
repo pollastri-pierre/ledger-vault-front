@@ -96,7 +96,7 @@ const VerifyFreshAddress = connectData(
       <Box flow={20}>
         <Box horizontal flow={10} align="center">
           <Copy text={freshAddress.address} />
-          <Box grow="1">
+          <Box grow noShrink>
             <Button
               onClick={() => setVerifying(true)}
               type="filled"

@@ -46,7 +46,13 @@ export default function TransportChooser() {
 
   return (
     <Box position="relative">
-      <Button small type="link" variant="primary" onClick={toggle} ref={btnRef}>
+      <Button
+        size="small"
+        type="link"
+        variant="primary"
+        onClick={toggle}
+        ref={btnRef}
+      >
         <Box horizontal align="center" flow={5}>
           <FaUsb />
           <span>{FORCE_WEB_USB ? "WebUSB" : "U2F"}</span>
@@ -67,11 +73,11 @@ export default function TransportChooser() {
       >
         <MenuItem onClick={choose("u2f")}>
           <Box>
-            <Text normal>U2F</Text>
+            <Text size="normal">U2F</Text>
           </Box>
         </MenuItem>
         <MenuItem onClick={choose("webusb")}>
-          <Text normal>WebUSB</Text>
+          <Text size="normal">WebUSB</Text>
         </MenuItem>
       </Menu>
     </Box>

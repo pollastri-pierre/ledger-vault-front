@@ -18,7 +18,7 @@ export default ({
   <Box horizontal align="center" justify="space-between" p={20} noShrink>
     {children && children}
     {title && (
-      <Text header bold>
+      <Text size="header" fontWeight="bold">
         {title}
       </Text>
     )}

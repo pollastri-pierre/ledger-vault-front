@@ -282,6 +282,10 @@ export default function connectData<
       query: Query<any, Res> | ConnectionQuery<any, any>,
     ): Promise<Res> => this.execute(query);
 
+    getStore = () => {
+      return this.props.dataStore;
+    };
+
     updateQueryInstances(apiParams: Object, fetchParams: Object) {
       const instances: $ObjMap<A, ExtractQuery> = {};
       queriesKeys.forEach(key => {
@@ -331,9 +335,7 @@ export default function connectData<
             (queryUpdated &&
               // FIXME later we might have a cache for ConnectionQuery actually,
               // not incompatible, just need to iterate step-by-step
-              (query instanceof Query
-                ? !queryCacheIsFresh(dataStore, query)
-                : true));
+              !queryCacheIsFresh(dataStore, query));
 
           if (query instanceof ConnectionQuery) {
             if (state.variables[key]) {
@@ -489,6 +491,7 @@ export default function connectData<
       forceFetch: () => this.syncProps(this.props, {}, true).then(() => {}),
       getVariables: this.getVariables,
       setVariables: this.setVariables,
+      getStore: this.getStore,
     };
 
     render() {

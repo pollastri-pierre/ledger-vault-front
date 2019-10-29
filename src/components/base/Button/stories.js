@@ -23,7 +23,7 @@ const asyncAction = async () => delay(2000);
 storiesOf("components/base", module).add("Button", () => (
   <Box flow={20}>
     <Box flow={10}>
-      <Text bold uppercase>
+      <Text fontWeight="bold" uppercase>
         Buttons by Type
       </Text>
       <Box horizontal flow={15}>
@@ -76,7 +76,7 @@ storiesOf("components/base", module).add("Button", () => (
       </Box>
     </Box>
     <Box flow={10}>
-      <Text bold uppercase>
+      <Text fontWeight="bold" uppercase>
         Buttons by State
       </Text>
       <Box horizontal flow={15}>
@@ -86,7 +86,7 @@ storiesOf("components/base", module).add("Button", () => (
       </Box>
     </Box>
     <Box flow={10}>
-      <Text bold uppercase>
+      <Text fontWeight="bold" uppercase>
         Buttons with icons
       </Text>
       <Box horizontal flow={15}>
@@ -123,12 +123,15 @@ storiesOf("components/base", module).add("Button", () => (
       </Box>
     </Box>
     <Box flow={10}>
-      <Text bold uppercase>
+      <Text fontWeight="bold" uppercase>
         Buttons by size
       </Text>
       <Box horizontal flow={15}>
-        <Button type="filled" small onClick={asyncAction}>
+        <Button type="filled" size="small" onClick={asyncAction}>
           Small
+        </Button>
+        <Button type="filled" size="slim" onClick={asyncAction}>
+          Slim
         </Button>
         <Button type="outline" onClick={asyncAction}>
           Default

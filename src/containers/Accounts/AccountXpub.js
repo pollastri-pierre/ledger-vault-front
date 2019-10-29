@@ -32,11 +32,19 @@ function AccountXpub(props: Props) {
       </InfoBox>
       <Box horizontal align="center">
         <Box horizontal align="center" onClick={onCheck}>
-          <Text small i18nKey="accountSettings:advanced.understand_xpub" />
+          <Text
+            size="small"
+            i18nKey="accountSettings:advanced.understand_xpub"
+          />
           <Checkbox checked={checked} />
         </Box>
         <CopyToClipboard text={account.xpub} onCopy={onCopy}>
-          <Button small type="outline" variant="info" disabled={!checked}>
+          <Button
+            size="small"
+            type="outline"
+            variant="info"
+            disabled={!checked}
+          >
             <Text>{copied ? "Copied" : "Copy"} </Text>
           </Button>
         </CopyToClipboard>

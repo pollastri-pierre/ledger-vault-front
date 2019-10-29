@@ -4,13 +4,13 @@ import styled from "styled-components";
 import connectData from "restlay/connectData";
 import RequestsQuery from "api/queries/RequestsQuery";
 import type { Connection } from "restlay/ConnectionQuery";
-import type { Request, User } from "data/types";
+import type { GenericRequest, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
 import { hasUserApprovedRequest, isNotTransaction } from "utils/request";
 import colors from "shared/colors";
 
 type Props = {
-  data: Connection<Request>,
+  data: Connection<GenericRequest>,
   me: User,
 };
 

@@ -62,13 +62,13 @@ class ActivityLine extends Component<Props> {
               this.getSeenClass(activity.seen),
             )}
           >
-            <Text uppercase small>
+            <Text uppercase size="small">
               <DateFormat date={activity.created_on} />
             </Text>
           </Box>
         </Box>
         <Text
-          small
+          size="small"
           className={classnames(
             classes.activityMessage,
             this.getSeenClass(activity.seen),

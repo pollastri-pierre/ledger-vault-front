@@ -15,7 +15,7 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { useOrganization } from "components/OrganizationContext";
 import RequestActionButtons from "components/RequestActionButtons";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 
 const arrowRight = <FaArrowRight size={9} color={colors.ocean} />;
 
@@ -23,7 +23,7 @@ function OrganizationDetails({
   request,
   close,
 }: {
-  request: Request,
+  request: GenericRequest,
   close: () => void,
 }) {
   const { refresh } = useOrganization();
@@ -37,11 +37,11 @@ function OrganizationDetails({
         onClose={close}
       />
       <Box py={50} align="center" justify="center" horizontal flow={10}>
-        <Text large color={colors.grenade}>
+        <Text size="large" color={colors.grenade}>
           {request.organization.quorum}/{request.organization.number_of_admins}
         </Text>
         {arrowRight}
-        <Text large color={colors.ocean}>
+        <Text size="large" color={colors.ocean}>
           {request.quorum}/{request.organization.number_of_admins}
         </Text>
       </Box>

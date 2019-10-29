@@ -221,7 +221,7 @@ const UpdateApp = ({ history, location }: Props) => {
   return (
     <VaultCentered>
       <Card flow={20} width={520}>
-        <Text large bold i18nKey="update:title" />
+        <Text size="large" fontWeight="bold" i18nKey="update:title" />
         <UserExplanation />
         <Logs logs={logs} />
         <DisplayError error={error} onRetry={retry} />

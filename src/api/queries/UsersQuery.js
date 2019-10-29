@@ -1,4 +1,5 @@
 // @flow
+import omit from "lodash/omit";
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import queryString from "query-string";
@@ -23,7 +24,9 @@ const uri = (query: Input) => {
       role: ["ADMIN", "OPERATOR"],
     };
   }
-  const q = queryString.stringify(finalQuery);
+  // FIXME find a way in connectData to not forward all
+  // propsToQueryParams to all requests wrapped in the same ConnectData
+  const q = queryString.stringify(omit(finalQuery, "groupId"));
   return `/people${q ? "?" : ""}${q}`;
 };
 

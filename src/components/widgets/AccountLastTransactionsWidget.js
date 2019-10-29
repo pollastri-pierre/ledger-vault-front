@@ -11,21 +11,17 @@ import VaultLink from "components/VaultLink";
 import type { Account, Transaction } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 import { TransactionsTable } from "components/Table";
-import { defaultDefinition as defaultTableDefinition } from "components/Table/TransactionsTable";
+import { txAccountTableDefinition } from "components/Table/TransactionsTable/tableDefinitions";
 import Widget, { connectWidget } from "./Widget";
 
-type Props = {
+type AccuntWidgetProps = {
   account: Account,
   transactions: Connection<Transaction>,
   history: MemoryHistory,
   location: Location,
 };
 
-const tableDefinition = defaultTableDefinition.filter(
-  col => col.body.prop !== "name",
-);
-
-function AccountLastTransactionsWidget(props: Props) {
+function AccountLastTransactionsWidget(props: AccuntWidgetProps) {
   const { account, transactions, history, location } = props;
   const onRowClick = (transaction: Transaction) => {
     history.push(
@@ -41,7 +37,7 @@ function AccountLastTransactionsWidget(props: Props) {
     <Widget title="Last transactions" desc={desc}>
       <SoftCard style={{ padding: 0 }}>
         <TransactionsTable
-          customTableDef={tableDefinition}
+          customTableDef={txAccountTableDefinition}
           accounts={[account]}
           data={transactions.edges.map(e => e.node)}
           onRowClick={onRowClick}

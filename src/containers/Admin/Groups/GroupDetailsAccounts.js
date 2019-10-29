@@ -11,9 +11,9 @@ import CurrencyAccountValue from "components/CurrencyAccountValue";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 import AccountsInGroupQuery from "api/queries/AccountsInGroupQuery";
 import AccountName from "components/AccountName";
-import SpinnerCard from "components/legacy/SpinnerCard";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
+import { SpinnerCentered } from "components/base/Spinner";
 import VaultLink from "components/VaultLink";
 import type { Connection } from "restlay/ConnectionQuery";
 
@@ -39,7 +39,7 @@ class GroupDetailsAccounts extends PureComponent<Props> {
             <AccountButton>
               <Box flow={3}>
                 <AccountName account={a} />
-                <Text small color="grey">
+                <Text size="small" color="grey">
                   <CurrencyAccountValue account={a} value={a.balance} />
                 </Text>
               </Box>
@@ -71,10 +71,8 @@ const Container = styled(Box).attrs({
   }
 `;
 
-const RenderLoading = () => <SpinnerCard />;
-
 export default connectData(GroupDetailsAccounts, {
-  RenderLoading,
+  RenderLoading: SpinnerCentered,
   queries: {
     accounts: AccountsInGroupQuery,
   },

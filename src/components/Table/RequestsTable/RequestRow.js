@@ -1,43 +1,41 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 
 import MUITableRow from "@material-ui/core/TableRow";
 
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 
 import type { TableDefinition } from "../types";
 import RequestBodyCell from "./RequestBodyCell";
 
 type RequestRowProps = {
-  request: Request,
-  onClick: Request => void,
+  request: GenericRequest,
+  onClick: GenericRequest => void,
   tableDefinition: TableDefinition,
 };
 
 const requestRowHover = { cursor: "pointer" };
 
-class RequestRow extends PureComponent<RequestRowProps> {
-  handleClick = () => {
-    this.props.onClick(this.props.request);
+function RequestRow(props: RequestRowProps) {
+  const { request, onClick, tableDefinition } = props;
+
+  const handleClick = () => {
+    onClick(request);
   };
 
-  render() {
-    const { request, onClick, tableDefinition } = this.props;
-
-    return (
-      <MUITableRow
-        key={request.id}
-        hover={!!onClick}
-        style={onClick ? requestRowHover : undefined}
-        onClick={onClick ? this.handleClick : undefined}
-      >
-        {tableDefinition.map(item => (
-          <RequestBodyCell request={request} item={item} key={item.body.prop} />
-        ))}
-      </MUITableRow>
-    );
-  }
+  return (
+    <MUITableRow
+      key={request.id}
+      hover={!!onClick}
+      style={onClick ? requestRowHover : undefined}
+      onClick={onClick ? handleClick : undefined}
+    >
+      {tableDefinition.map(item => (
+        <RequestBodyCell request={request} item={item} key={item.body.prop} />
+      ))}
+    </MUITableRow>
+  );
 }
 
 export default RequestRow;

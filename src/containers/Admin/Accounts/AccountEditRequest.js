@@ -10,19 +10,19 @@ import Spinner from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity } from "shared/colors";
 import RulesViewer from "components/ApprovalsRules/RulesViewer";
-import type { Account, User, Group, TxApprovalStep } from "data/types";
+import type {
+  Account,
+  User,
+  Group,
+  TxApprovalStepCollection,
+  EditApprovalStep,
+} from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
   account: Account,
   users: Connection<User>,
   groups: Connection<Group>,
-};
-
-type EditApprovalStep = {
-  group_id?: number,
-  quorum: number,
-  users?: number[],
 };
 
 class AccountEditRequest extends PureComponent<Props> {
@@ -52,7 +52,12 @@ class AccountEditRequest extends PureComponent<Props> {
       <Box flow={10} horizontal justify="space-between">
         <Box bg={opacity(colors.grenade, 0.05)} {...diffBoxProps}>
           <Box mb={20}>
-            <Text small uppercase bold color={opacity(colors.grenade, 0.8)}>
+            <Text
+              size="small"
+              uppercase
+              fontWeight="bold"
+              color={opacity(colors.grenade, 0.8)}
+            >
               BEFORE
             </Text>
           </Box>
@@ -67,7 +72,12 @@ class AccountEditRequest extends PureComponent<Props> {
         </Box>
         <Box bg={opacity(colors.ocean, 0.05)} {...diffBoxProps}>
           <Box mb={20}>
-            <Text small uppercase bold color={opacity(colors.ocean, 0.8)}>
+            <Text
+              size="small"
+              uppercase
+              fontWeight="bold"
+              color={opacity(colors.ocean, 0.8)}
+            >
               After
             </Text>
           </Box>
@@ -96,7 +106,7 @@ const RenderLoading = () => (
     <Spinner />
   </Box>
 );
-export default connectData(AccountEditRequest, {
+const C: React$ComponentType<$Shape<Props>> = connectData(AccountEditRequest, {
   RenderLoading,
   queries: {
     users: UsersQuery,
@@ -104,11 +114,12 @@ export default connectData(AccountEditRequest, {
   },
 });
 
+export default C;
 const resolveRules = (
   editRules: EditApprovalStep[],
   groups: Group[],
   users: User[],
-): TxApprovalStep[] => {
+): TxApprovalStepCollection => {
   const newRules = [];
   editRules.forEach((r, i) => {
     const { users: ruleUsers } = r;

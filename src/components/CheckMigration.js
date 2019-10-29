@@ -70,9 +70,13 @@ const CheckMigration = (props: Props) => {
       <Box width={750} p={40}>
         <ModalClose onClick={onClose} />
         <Box flow={20}>
-          <Text large bold i18nKey="welcome:migration.title" />
+          <Text
+            size="large"
+            fontWeight="bold"
+            i18nKey="welcome:migration.title"
+          />
           {desc}
-          <Text bold>
+          <Text fontWeight="bold">
             <Trans i18nKey="welcome:migration.accounts" count={count} />
           </Text>
           <AccountsToMigrate>
@@ -164,7 +168,9 @@ const AccountToMigrate = ({
             <Absolute top={20} right={20}>
               <ApproveRequestButton
                 disabled={!isValid}
-                interactions={createAndApprove("ACCOUNT")}
+                interactions={createAndApprove("ACCOUNT", {
+                  successNotif: true,
+                })}
                 onSuccess={onMigrationSuccess}
                 additionalFields={{
                   type: isMigrated ? "MIGRATE_ACCOUNT" : "EDIT_ACCOUNT",

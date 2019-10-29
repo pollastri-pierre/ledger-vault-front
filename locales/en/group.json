@@ -31,12 +31,12 @@
     "no_edit": "No changes were made",
     "submit_edit": "Edit group",
     "finish": "Finish",
-    "finishTitle": "Group Request was successfully created!",
-    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme"
+    "finishTitle": "Group request successfully created!",
+    "finishDesc": "Your request to create a group has been submitted for approval."
   },
   "update": {
-    "finishTitle": "Update Group Request was successfully created!",
-    "finishDesc": "Your request to update this group was created and now it has a pending status until it is approved by your security scheme"
+    "finishTitle": "Group request successfully created!",
+    "finishDesc": "Your request to update this group has been submitted for approval."
   },
   "revokeWarning": {
     "content": "Once the request is approved, this group will be permanently deleted."

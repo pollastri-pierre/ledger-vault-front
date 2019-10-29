@@ -3,13 +3,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {
-  FaCoins,
-  FaWrench,
-  FaTicketAlt,
-  FaLink,
-  FaCheck,
-} from "react-icons/fa";
+import { FaCoins, FaInfo, FaTicketAlt, FaLink, FaCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -28,6 +22,7 @@ import { Label } from "components/base/form";
 import Button from "components/base/Button";
 import SyncButton from "components/SyncButton";
 import Text from "components/base/Text";
+import PageHeaderActions from "components/base/PageHeaderActions";
 import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
@@ -39,41 +34,57 @@ type Props = {
   account: Account,
 };
 
-function AccountQuickInfoWidget(props: Props) {
-  const { account } = props;
+const AccountQuickInfoWidget = (props: Props) => (
+  <div style={{ position: "relative" }}>
+    <AccountQuickInfoHeader {...props} />
+    <WidgetContent {...props} />
+    <DetailsLink {...props} />
+  </div>
+);
+
+const AccountQuickInfoHeader = ({ account }: Props) => {
+  const me = useMe();
+  const isSendDisabled = !isAccountSpendable(account);
+  const sendBtn = (
+    <Button size="small" type="filled" disabled={isSendDisabled}>
+      <Box horizontal flow={5} align="center">
+        <IconSend size={10} />
+        <Text i18nKey="accountView:sendButton" />
+      </Box>
+    </Button>
+  );
+  return (
+    <PageHeaderActions title={account.name}>
+      {me.role === "OPERATOR" ? (
+        <Box horizontal flow={10}>
+          {isSendDisabled ? (
+            sendBtn
+          ) : (
+            <Link to={`${account.id}/send/${account.id}`}>{sendBtn}</Link>
+          )}
+          <Link to={`${account.id}/receive/${account.id}`}>
+            <Button size="small" type="filled">
+              <Box horizontal flow={5} align="center">
+                <IconReceive size={10} />
+                <Text i18nKey="accountView:receiveButton" />
+              </Box>
+            </Button>
+          </Link>
+          <SyncButton account={account} />
+        </Box>
+      ) : (
+        <SyncButton account={account} />
+      )}
+    </PageHeaderActions>
+  );
+};
+
+const WidgetContent = ({ account }: Props) => {
   const me = useMe();
   const icon = getIcon(account);
   const displayName = getDisplayName(account);
-
-  const syncButton = <SyncButton account={account} />;
-
-  const title =
-    me.role === "OPERATOR" ? (
-      <Box horizontal flow={10}>
-        <Link to={`${account.id}/send/${account.id}`}>
-          <Button small type="filled" disabled={!isAccountSpendable(account)}>
-            <Box horizontal flow={5} align="center">
-              <IconSend size={10} />
-              <Text i18nKey="accountView:sendButton" />
-            </Box>
-          </Button>
-        </Link>
-        <Link to={`${account.id}/receive/${account.id}`}>
-          <Button small type="filled">
-            <Box horizontal flow={5} align="center">
-              <IconReceive size={10} />
-              <Text i18nKey="accountView:receiveButton" />
-            </Box>
-          </Button>
-        </Link>
-        {syncButton}
-      </Box>
-    ) : (
-      syncButton
-    );
-
-  const widget = (
-    <Widget titleRight={title} grow position="relative">
+  return (
+    <Widget grow position="relative">
       <SoftCard grow flow={20} style={{ padding: 0 }}>
         <Box horizontal flexWrap="wrap">
           <InfoSquare>
@@ -84,7 +95,7 @@ function AccountQuickInfoWidget(props: Props) {
                 {` #${account.index}`}
               </span>
             </Label>
-            <Text header select noWrap>
+            <Text size="header" selectable noWrap>
               {account.name}
             </Text>
           </InfoSquare>
@@ -94,12 +105,12 @@ function AccountQuickInfoWidget(props: Props) {
                 <FaCoins />
                 <span>Balance</span>
               </Label>
-              <Text header select noWrap>
+              <Text size="header" selectable noWrap>
                 <CurrencyAccountValue
                   account={account}
                   value={account.balance}
                 />
-                <Text small color={colors.textLight}>
+                <Text size="small" color={colors.textLight}>
                   <CounterValue
                     value={account.balance}
                     fromAccount={account}
@@ -162,24 +173,19 @@ function AccountQuickInfoWidget(props: Props) {
       </SoftCard>
     </Widget>
   );
+};
 
-  return (
-    <div style={{ position: "relative" }}>
-      {widget}
-      <Absolute top={50} right={10}>
-        <Tooltip title="Account settings" placement="left">
-          <Link
-            to={`${location.pathname}/accounts/details/${account.id}/overview`}
-          >
-            <Button>
-              <FaWrench />
-            </Button>
-          </Link>
-        </Tooltip>
-      </Absolute>
-    </div>
-  );
-}
+const DetailsLink = ({ account }: Props) => (
+  <Absolute top={60} right={10}>
+    <Tooltip title="Account details" placement="left">
+      <Link to={`${location.pathname}/accounts/details/${account.id}/overview`}>
+        <Button>
+          <FaInfo />
+        </Button>
+      </Link>
+    </Tooltip>
+  </Absolute>
+);
 
 const InfoSquare = styled(Box).attrs({
   mr: 50,

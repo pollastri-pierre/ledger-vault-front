@@ -207,7 +207,7 @@ class MockDevices extends PureComponent {
           {!collapseMock && (
             <>
               <div style={styles.rowContainer}>
-                <Text small uppercase style={styles.autoLogout}>
+                <Text size="small" uppercase style={styles.autoLogout}>
                   Auto logout ?
                 </Text>
                 <Switch
@@ -217,7 +217,7 @@ class MockDevices extends PureComponent {
                 />
               </div>
               <div style={styles.rowContainer}>
-                <Text small uppercase style={styles.autoLogout}>
+                <Text size="small" uppercase style={styles.autoLogout}>
                   Show wrapping / shared ?
                 </Text>
                 <Switch
@@ -227,7 +227,7 @@ class MockDevices extends PureComponent {
                 />
               </div>
               <div style={styles.rowContainer}>
-                <Text small uppercase style={styles.autoLogout}>
+                <Text size="small" uppercase style={styles.autoLogout}>
                   Reject next action
                 </Text>
                 <Switch
@@ -237,7 +237,7 @@ class MockDevices extends PureComponent {
                 />
               </div>
               <div style={styles.rowContainer}>
-                <Text small uppercase style={styles.autoLogout}>
+                <Text size="small" uppercase style={styles.autoLogout}>
                   force hardware
                 </Text>
                 <Switch
@@ -282,7 +282,7 @@ class MockDevices extends PureComponent {
 function DeviceGroup({ name, children }) {
   return (
     <div style={styles.group}>
-      <Text small uppercase>
+      <Text size="small" uppercase>
         {name}
       </Text>
       <div style={styles.devices}>{children}</div>

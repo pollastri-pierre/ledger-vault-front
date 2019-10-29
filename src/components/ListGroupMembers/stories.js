@@ -13,11 +13,11 @@ storiesOf("components", module).add("ListGroupMembers", () => (
   <div style={{ width: 400 }}>
     <Box flow={50}>
       <Box flow={10}>
-        <Text bold>Regular list of member</Text>
+        <Text fontWeight="bold">Regular list of member</Text>
         <ListGroupMembers allUsers={users} users={members} />
       </Box>
       <Box flow={10}>
-        <Text bold>List with diff</Text>
+        <Text fontWeight="bold">List with diff</Text>
         <ListGroupMembers
           allUsers={users}
           users={members}

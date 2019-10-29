@@ -12,7 +12,7 @@ import TriggerErrorNotification from "components/TriggerErrorNotification";
 import { FaPlus } from "react-icons/fa";
 import DeviceInteraction from "components/DeviceInteraction";
 import { validateOperation } from "device/interactions/hsmFlows";
-import SpinnerCard from "components/legacy/SpinnerCard";
+import { SpinnerCentered } from "components/base/Spinner";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { connect } from "react-redux";
@@ -128,7 +128,7 @@ const SharedOwnerValidation = ({
                       </span>
                     )}
                   </SigninButton>
-                  <Text small color={colors.steel}>
+                  <Text size="small" color={colors.steel}>
                     {onboarding.validating_shared_owner.admins.length}{" "}
                     {t("onboarding:master_seed_signin.signed_in")},{" "}
                     {onboarding.quorum -
@@ -141,7 +141,7 @@ const SharedOwnerValidation = ({
           </Box>
         </Box>
       ) : (
-        <SpinnerCard />
+        <SpinnerCentered />
       )}
 
       <Footer

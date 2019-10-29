@@ -126,8 +126,12 @@ class InputAmount extends PureComponent<Props, State> {
           />
           {!hideCV && (
             <Box alignSelf="flex-end">
-              <Text color={colors.textLight} small>
-                <CounterValue value={value} from={currency.id} />
+              <Text color={colors.textLight} size="small">
+                <CounterValue
+                  smallerInnerMargin
+                  value={value}
+                  from={currency.id}
+                />
               </Text>
             </Box>
           )}

@@ -8,8 +8,10 @@ type DeserializerMap<T> = { [_: string]: Deserializer<T> };
 
 // A mutation maps to another verb on the API and means a modification of the data.
 // it will allow us to define mutation response etc..
-export default class Mutation<Input, Response> {
+export default class Mutation<Input, Response, ConfigOptions = {}> {
   props: Input;
+
+  config: ?ConfigOptions;
 
   // define the URI to hit for the API. can also pass a template function
   uri: string;
@@ -22,8 +24,9 @@ export default class Mutation<Input, Response> {
 
   deserialize: ?Deserializer<Response> | ?DeserializerMap<Response>;
 
-  constructor(props: Input) {
+  constructor(props: Input, config: Object) {
     this.props = props;
+    this.config = config;
   }
 
   showError = true;

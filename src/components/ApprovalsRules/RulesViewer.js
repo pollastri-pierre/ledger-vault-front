@@ -6,11 +6,16 @@ import MemberName from "components/base/MemberName";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { FaArrowRight, FaUsers } from "react-icons/fa";
-import type { Group, TxApprovalStep, User } from "data/types";
+import type {
+  Group,
+  TxApprovalStep,
+  TxApprovalStepCollection,
+  User,
+} from "data/types";
 import colors from "shared/colors";
 
 type Props = {
-  rules: TxApprovalStep[] | null | typeof undefined,
+  rules: TxApprovalStepCollection | null | typeof undefined,
 };
 const arrowRight = <FaArrowRight size={8} />;
 const groupIcon = <FaUsers />;
@@ -21,9 +26,7 @@ const RulesViewer = ({ rules }: Props) => {
   }
   return (
     <Box flow={10}>
-      {rules.map(r => (
-        <RuleItem rule={r} key={r.group.id} />
-      ))}
+      {rules.map(r => (r ? <RuleItem rule={r} key={r.group.id} /> : null))}
     </Box>
   );
 };

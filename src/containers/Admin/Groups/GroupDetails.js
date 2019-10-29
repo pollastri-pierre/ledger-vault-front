@@ -43,9 +43,7 @@ function GroupDetails(props: Props) {
       withConfirm
       confirmLabel={<Trans i18nKey="group:delete" />}
       confirmContent={
-        <Box flow={15} align="flex-start">
-          <Text i18nKey="group:revokeWarning.content" />
-        </Box>
+        <Text textAlign="center" i18nKey="group:revokeWarning.content" />
       }
     />
   );

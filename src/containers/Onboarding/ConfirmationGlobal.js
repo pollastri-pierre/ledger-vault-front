@@ -31,7 +31,7 @@ const ConfirmationGlobal = ({
     <Box flow={40}>
       <Box align="center" flow={20}>
         <Validate color={colors.ocean} style={{ strokeWidth: 4 }} />
-        <Text bold i18nKey="onboarding:confirmation.description" />
+        <Text fontWeight="bold" i18nKey="onboarding:confirmation.description" />
         <Text i18nKey="onboarding:confirmation.members_can_signin" />
       </Box>
       <Sep />

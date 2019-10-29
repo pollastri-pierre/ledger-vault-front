@@ -158,7 +158,7 @@ const WidgetHeader = ({
   return (
     <StyledWidgetHeader>
       <div>
-        <Text inline bold mr={5}>
+        <Text inline fontWeight="bold">
           {title}
         </Text>
         {desc && (

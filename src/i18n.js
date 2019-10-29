@@ -5,6 +5,6 @@ i18n.init({
   lng: "en",
   fallbackLng: "en",
   resources,
-  debug: true,
+  debug: false,
 });
 export default i18n;

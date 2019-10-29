@@ -6,7 +6,7 @@ import { DEVICE_REJECT_ERROR_CODE } from "device";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import { generateSeed } from "device/interactions/hsmFlows";
-import SpinnerCard from "components/legacy/SpinnerCard";
+import { SpinnerCentered } from "components/base/Spinner";
 import type { Translate } from "data/types";
 import { withTranslation, Trans } from "react-i18next";
 import { connect } from "react-redux";
@@ -114,7 +114,7 @@ const Provisioning = ({
             ))}
         </Box>
       ) : (
-        <SpinnerCard />
+        <SpinnerCentered />
       )}
       <Footer
         nextState

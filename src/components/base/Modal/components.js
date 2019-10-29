@@ -74,7 +74,7 @@ export const ModalTitle = ({
   bold?: boolean,
 }) => (
   <Box mb={20} {...props}>
-    <Text header bold={bold}>
+    <Text size="header" fontWeight={bold ? "bold" : null}>
       {children}
     </Text>
   </Box>
@@ -137,7 +137,7 @@ export const RichModalHeader = ({
     <ModalClose onClick={onClose} />
     <Box horizontal flow={10} align="center">
       <Icon size={24} color={colors.legacyLightGrey7} />
-      <Text large>{title}</Text>
+      <Text size="large">{title}</Text>
     </Box>
     {children && (
       <RichModalHeaderButt>

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 
 import MUITableCell from "@material-ui/core/TableCell";
 
@@ -14,9 +14,10 @@ type CellProps = {
   group: Group,
   item: TableItem,
 };
-class GroupBodyCell extends PureComponent<CellProps> {
-  renderCellMapper = () => {
-    const { group, item } = this.props;
+function GroupBodyCell(props: CellProps) {
+  const { group, item } = props;
+
+  const renderCellMapper = () => {
     switch (item.body.prop) {
       case "name":
         return <div>{group.name}</div>;
@@ -31,14 +32,9 @@ class GroupBodyCell extends PureComponent<CellProps> {
     }
   };
 
-  render() {
-    const { item } = this.props;
-    return (
-      <MUITableCell align={item.body.align}>
-        {this.renderCellMapper()}
-      </MUITableCell>
-    );
-  }
+  return (
+    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
+  );
 }
 
 export default GroupBodyCell;

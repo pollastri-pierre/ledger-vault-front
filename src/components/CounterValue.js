@@ -15,6 +15,8 @@ import type { TransactionType, Account } from "data/types";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import counterValues from "data/counterValues";
 
+import colors from "shared/colors";
+
 type CurOrToken = {
   ticker: string,
 };
@@ -84,6 +86,7 @@ type Props = {
   alwaysShowSign?: boolean,
   type?: TransactionType,
   renderNA?: React$Node,
+  smallerInnerMargin?: boolean,
 };
 
 class CounterValue extends PureComponent<Props> {
@@ -96,6 +99,7 @@ class CounterValue extends PureComponent<Props> {
       renderNA,
       exchange,
       disableTooltip,
+      smallerInnerMargin,
     } = this.props;
     if (!countervalue) {
       return renderNA || "N/A";
@@ -128,13 +132,13 @@ class CounterValue extends PureComponent<Props> {
         <span
           style={{
             display: "inline-block",
-            marginLeft: 8,
+            marginLeft: smallerInnerMargin ? 4 : 8,
             verticalAlign: "middle",
             lineHeight: 1,
           }}
         >
           <Tooltip title={`Source: ${exchange}`}>
-            <FaInfoCircle size={12} />
+            <FaInfoCircle size={12} color={colors.mouse} />
           </Tooltip>
         </span>
       </span>

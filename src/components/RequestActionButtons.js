@@ -58,13 +58,16 @@ class RequestActionButtons extends PureComponent<Props> {
         <Box align="center" justify="center" flow={5}>
           <InfoBox withIcon type="info">
             <Box horizontal flow={5}>
-              <Text bold i18nKey={`request:type.${lastRequest.type}`} />
+              <Text
+                fontWeight="bold"
+                i18nKey={`request:type.${lastRequest.type}`}
+              />
               <Text>request is pending.</Text>
             </Box>
           </InfoBox>
           <Box horizontal align="center" flow={5}>
             <MdTimer />
-            <Text small>
+            <Text size="small">
               expires on <DateFormat date={lastRequest.expired_at} />
             </Text>
           </Box>
@@ -72,7 +75,7 @@ class RequestActionButtons extends PureComponent<Props> {
         {userApprovedCurrentStep ? (
           <Box horizontal align="center" justify="center" flow={10}>
             {checkedIcon}
-            <Text bold>You already approved this request</Text>
+            <Text fontWeight="bold">You already approved this request</Text>
           </Box>
         ) : userInCurrentStep || isUserCreationRequest ? (
           <Box pt={20} horizontal justify="space-between" align="flex-end">
@@ -82,7 +85,9 @@ class RequestActionButtons extends PureComponent<Props> {
             />
             {!isPendingRegistration && !userApprovedRequest && (
               <ApproveRequestButton
-                interactions={approveFlow(lastRequest.target_type)}
+                interactions={approveFlow(lastRequest.target_type, {
+                  successNotif: true,
+                })}
                 onSuccess={onSuccess}
                 onError={onError}
                 additionalFields={{

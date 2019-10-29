@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 
 import MUITableCell from "@material-ui/core/TableCell";
 import AccountName from "components/AccountName";
@@ -13,9 +13,9 @@ type CellProps = {
   reason: BlockingReasonType,
   item: TableItem,
 };
-class ReasonBodyCell extends PureComponent<CellProps> {
-  renderCellMapper = () => {
-    const { reason, item } = this.props;
+function ReasonBodyCell(props: CellProps) {
+  const { reason, item } = props;
+  const renderCellMapper = () => {
     switch (item.body.prop) {
       case "entity":
         if (reason.type === "Account") {
@@ -38,14 +38,9 @@ class ReasonBodyCell extends PureComponent<CellProps> {
     }
   };
 
-  render() {
-    const { item } = this.props;
-    return (
-      <MUITableCell align={item.body.align}>
-        {this.renderCellMapper()}
-      </MUITableCell>
-    );
-  }
+  return (
+    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
+  );
 }
 
 export default ReasonBodyCell;

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 
 import MUITableBody from "@material-ui/core/TableBody";
 
@@ -23,23 +23,13 @@ type Props = {
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
 };
-type State = {
-  tableDefinition: TableDefinition,
-};
 
-class UsersTable extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
+function UsersTable(props: Props) {
+  const { onRowClick, customTableDef, data, onSortChange, queryParams } = props;
 
-    this.state = {
-      tableDefinition: props.customTableDef || usersTableDefault,
-    };
-  }
+  const [tableDefinition] = useState(customTableDef || usersTableDefault);
 
-  User = (user: User) => {
-    const { onRowClick } = this.props;
-    const { tableDefinition } = this.state;
-
+  const UserComponent = (user: User) => {
     const key = `${user.id}`;
 
     return (
@@ -52,28 +42,23 @@ class UsersTable extends PureComponent<Props, State> {
     );
   };
 
-  render() {
-    const { data, onSortChange, queryParams } = this.props;
-    const { tableDefinition } = this.state;
-
-    if (!data.length) {
-      return <NoDataPlaceholder title="No users found." />;
-    }
-
-    return (
-      <TableScroll>
-        <Table>
-          <TableHeader
-            tableDefinition={tableDefinition}
-            type="users"
-            onSortChange={onSortChange}
-            queryParams={queryParams}
-          />
-          <MUITableBody>{data.map(this.User)}</MUITableBody>
-        </Table>
-      </TableScroll>
-    );
+  if (!data.length) {
+    return <NoDataPlaceholder title="No users found." />;
   }
+
+  return (
+    <TableScroll>
+      <Table>
+        <TableHeader
+          tableDefinition={tableDefinition}
+          type="users"
+          onSortChange={onSortChange}
+          queryParams={queryParams}
+        />
+        <MUITableBody>{data.map(UserComponent)}</MUITableBody>
+      </Table>
+    </TableScroll>
+  );
 }
 
 export default UsersTable;

@@ -114,7 +114,7 @@ const ItemContainer = styled(Box).attrs({
   ${({ selected, disabled }) => `
     color: ${
       selected
-        ? colors.ocean
+        ? colors.blue
         : disabled
         ? "rgba(0, 0, 0, 0.1)"
         : "rgba(0, 0, 0, 0.35)"

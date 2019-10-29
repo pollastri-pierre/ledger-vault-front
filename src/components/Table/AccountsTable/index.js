@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 import MUITableBody from "@material-ui/core/TableBody";
 import type { ObjectParameters } from "query-string";
 
@@ -27,27 +27,16 @@ type Props = {
   onRowClick: Account => void,
 };
 
-type State = {
-  tableDefinition: TableDefinition,
-};
+function AccountsTable(props: Props) {
+  const { data, onSortChange, queryParams, onRowClick } = props;
+  const isOperator = props.me.role === "OPERATOR";
+  const [tableDefinition] = useState(
+    props.customTableDef || isOperator
+      ? accountsIsOperatorTableDefault
+      : accountsTableDefault,
+  );
 
-class AccountsTable extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    const isOperator = props.me.role === "OPERATOR";
-
-    this.state = {
-      tableDefinition:
-        props.customTableDef || isOperator
-          ? accountsIsOperatorTableDefault
-          : accountsTableDefault,
-    };
-  }
-
-  Account = (account: Account) => {
-    const { onRowClick } = this.props;
-    const { tableDefinition } = this.state;
+  const Accnt = (account: Account) => {
     return (
       <AccountRow
         key={account.id}
@@ -58,27 +47,23 @@ class AccountsTable extends PureComponent<Props, State> {
     );
   };
 
-  render() {
-    const { data, onSortChange, queryParams } = this.props;
-    const { tableDefinition } = this.state;
-    if (!data.length) {
-      return <NoDataPlaceholder title="No accounts found." />;
-    }
-
-    return (
-      <TableScroll>
-        <Table>
-          <TableHeader
-            tableDefinition={tableDefinition}
-            type="accounts"
-            onSortChange={onSortChange}
-            queryParams={queryParams}
-          />
-          <MUITableBody>{data.map(this.Account)}</MUITableBody>
-        </Table>
-      </TableScroll>
-    );
+  if (!data.length) {
+    return <NoDataPlaceholder title="No accounts found." />;
   }
+
+  return (
+    <TableScroll>
+      <Table>
+        <TableHeader
+          tableDefinition={tableDefinition}
+          type="accounts"
+          onSortChange={onSortChange}
+          queryParams={queryParams}
+        />
+        <MUITableBody>{data.map(Accnt)}</MUITableBody>
+      </Table>
+    </TableScroll>
+  );
 }
 
 export default withMe(AccountsTable);

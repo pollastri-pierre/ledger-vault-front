@@ -2,8 +2,10 @@
 import React from "react";
 import ModalRoute from "components/ModalRoute";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
+import WhitelistDetails from "containers/Admin/Whitelists/WhitelistDetails";
 import AccountCreationFlow from "components/AccountCreationFlow";
 import GroupCreationFlow from "components/GroupCreationFlow";
+import WhitelistCreationFlow from "components/WhitelistCreationFlow";
 import TransactionCreationFlow from "components/TransactionCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
 import OrganizationDetails from "containers/Admin/OrganizationDetails";
@@ -44,6 +46,25 @@ export default () => (
       path="*/accounts/new"
       component={AccountCreationFlow}
       disableBackdropClick
+    />
+
+    {/* WHITELIST */}
+    <ModalRoute
+      transparent
+      path="*/whitelists/new"
+      component={WhitelistCreationFlow}
+      disableBackdropClick
+    />
+    <ModalRoute
+      transparent
+      path="*/whitelists/edit/:whitelistId"
+      component={WhitelistCreationFlow}
+      disableBackdropClick
+    />
+    <ModalRoute
+      transparent
+      path="*/whitelists/details/:whitelistId/:tab?"
+      component={WhitelistDetails}
     />
 
     {/* GROUP */}

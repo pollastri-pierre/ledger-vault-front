@@ -30,13 +30,13 @@ const TypographyRow = ({ children, label }) => (
 storiesOf("components/base", module).add("Text", () => (
   <>
     <TypographyRow label="large">
-      <Text large>{DUMMY_TEXT}</Text>
+      <Text size="large">{DUMMY_TEXT}</Text>
     </TypographyRow>
     <TypographyRow label="normal (default)">
       <Text>{DUMMY_TEXT}</Text>
     </TypographyRow>
     <TypographyRow label="small">
-      <Text small>{DUMMY_TEXT}</Text>
+      <Text size="small">{DUMMY_TEXT}</Text>
     </TypographyRow>
   </>
 ));

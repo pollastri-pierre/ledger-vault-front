@@ -1,1 +1,5 @@
-{ "VIEW_ONLY": "View-only" }
+{
+  "VIEW_ONLY": "View-only",
+  "confirmed": "Confirmed ({{nbConfirmations}})",
+  "unconfirmed": "Unconfirmed"
+}
