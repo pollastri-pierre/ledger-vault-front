@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
 import { FaQuestionCircle, FaPowerOff } from "react-icons/fa";
 
@@ -18,7 +17,6 @@ type Props = {
   user: User,
   onLogout: () => void,
   TopBarContent?: React$ComponentType<*>,
-  globalAnimation: Animated.Value,
 };
 
 function UserIdentifier({ username }: { username: string }) {
@@ -41,14 +39,10 @@ function UserIdentifier({ username }: { username: string }) {
   );
 }
 
-export default ({ user, onLogout, TopBarContent, globalAnimation }: Props) => {
+export default ({ user, onLogout, TopBarContent }: Props) => {
   return (
     <VaultLayoutTopBar>
-      {TopBarContent && (
-        <Animated.div style={getTopBarContentStyle(globalAnimation)}>
-          <TopBarContent />
-        </Animated.div>
-      )}
+      {TopBarContent && <TopBarContent />}
       <VaultLayoutTopBarRight>
         <UserIdentifier username={user.username} />
         <TopBarAction link={urlByRole[user.role]} Icon={FaQuestionCircle} />
@@ -57,21 +51,6 @@ export default ({ user, onLogout, TopBarContent, globalAnimation }: Props) => {
     </VaultLayoutTopBar>
   );
 };
-
-const getTopBarContentStyle = globalAnimation => ({
-  transform: [
-    {
-      translateX: globalAnimation.interpolate({
-        inputRange: [0, 1, 2],
-        outputRange: [
-          vaultLayoutConfig.MENU_WIDTH,
-          vaultLayoutConfig.COLLAPSED_MENU_WIDTH,
-          vaultLayoutConfig.MENU_WIDTH,
-        ],
-      }),
-    },
-  ],
-});
 
 const VaultLayoutTopBar = styled.div`
   flex-shrink: 0;

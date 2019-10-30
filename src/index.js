@@ -9,7 +9,6 @@ import { AppContainer } from "react-hot-loader";
 import { ThemeProvider } from "styled-components";
 import create from "redux/create";
 import RestlayProvider from "restlay/RestlayProvider";
-import GlobalLoading from "components/GlobalLoading";
 import network from "network";
 import theme, { styledTheme } from "styles/theme";
 import OrganizationAppRouter from "containers/OrganizationAppRouter";
@@ -55,10 +54,7 @@ const render = Component => {
     ReactDOM.render(
       <AppContainer>
         <Provider store={store}>
-          <RestlayProvider
-            network={network}
-            connectDataOptDefaults={{ RenderLoading: GlobalLoading }}
-          >
+          <RestlayProvider network={network}>
             <I18nextProvider i18n={i18n}>
               <MuiThemeProvider theme={muiTheme}>
                 <ThemeProvider theme={styledTheme}>

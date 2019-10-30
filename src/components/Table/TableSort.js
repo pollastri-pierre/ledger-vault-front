@@ -1,8 +1,7 @@
 // @flow
 
-import React, { PureComponent } from "react";
-import Animated from "animated/lib/targets/react-dom";
-import noop from "lodash/noop";
+import React from "react";
+import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 import { FaSort, FaArrowDown, FaArrowUp } from "react-icons/fa";
 
@@ -18,69 +17,45 @@ type Props = {
   onClick: () => void,
 };
 
-type State = {
-  anim: Animated.Value,
+const TableSortCell = (props: Props) => {
+  const { label, align, onClick, direction } = props;
+
+  const translate = getTranslate(direction);
+  const animation = useSpring({ transform: `translateY(-${translate}px)` });
+
+  const wrapperStyle = {
+    ...styles.iconsWrapper,
+    ...animation,
+  };
+
+  return (
+    <Container align={align} onClick={onClick}>
+      <span>{label}</span>
+      <div style={styles.iconsContainer}>
+        <animated.div style={wrapperStyle}>
+          <div style={styles.icon}>
+            <FaArrowUp color={colors.shark} />
+          </div>
+          <div style={styles.icon}>
+            <FaSort color={colors.lightGrey} />
+          </div>
+          <div style={styles.icon}>
+            <FaArrowDown color={colors.shark} />
+          </div>
+        </animated.div>
+      </div>
+    </Container>
+  );
 };
 
-function getAnimByDirection(d: Direction) {
-  return d === null ? 1 : d === "asc" ? 0 : 2;
-}
+const translateByDirection = {
+  asc: 0,
+  desc: 32,
+};
 
-class TableSortCell extends PureComponent<Props, State> {
-  static defaultProps = {
-    align: "left",
-    onClick: noop,
-  };
+const getTranslate = (direction: Direction) =>
+  direction ? translateByDirection[direction] : 16;
 
-  componentDidUpdate(prevProps: Props) {
-    const { direction } = this.props;
-    const hasChangedDirection = prevProps.direction !== direction;
-    if (hasChangedDirection) {
-      Animated.spring(this.state.anim, {
-        toValue: getAnimByDirection(direction),
-      }).start();
-    }
-  }
-
-  state = {
-    anim: new Animated.Value(getAnimByDirection(this.props.direction)),
-  };
-
-  render() {
-    const { label, align, onClick } = this.props;
-    const { anim } = this.state;
-
-    const wrapperStyle = {
-      ...styles.iconsWrapper,
-      transform: [
-        {
-          translateY: anim.interpolate({
-            inputRange: [0, 1, 2],
-            outputRange: [0, -16, -32],
-          }),
-        },
-      ],
-    };
-    return (
-      <Container align={align} onClick={onClick}>
-        <span>{label}</span>
-        <div style={styles.iconsContainer}>
-          <Animated.div style={wrapperStyle}>
-            <div style={styles.icon}>
-              <FaArrowUp color={colors.shark} />
-            </div>
-            <div style={styles.icon}>
-              <FaSort color={colors.lightGrey} />
-            </div>
-            <div style={styles.icon}>
-              <FaArrowDown color={colors.shark} />
-            </div>
-          </Animated.div>
-        </div>
-      </Container>
-    );
-  }
-}
 const styles = {
   iconsContainer: {
     position: "relative",
@@ -102,7 +77,7 @@ const styles = {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: ${p => (p.align === "left" ? "row-reverse" : "row")};
+  flex-direction: ${p => (p.align !== "left" ? "row" : "row-reverse")};
   justify-content: flex-end;
 
   &:hover {

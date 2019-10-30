@@ -15,6 +15,7 @@ export default function ConfirmationStatus(props: ConfirmationStatusProps) {
       <Status derivedStatus="DERIVED_TX_CONFIRMED">
         <Text
           i18nKey="status:confirmed"
+          noWrap
           values={{
             nbConfirmations:
               nbConfirmations >= threshold ? `${threshold}+` : nbConfirmations,
@@ -26,7 +27,7 @@ export default function ConfirmationStatus(props: ConfirmationStatusProps) {
 
   return (
     <Status derivedStatus="DERIVED_TX_UNCONFIRMED">
-      <Text i18nKey="status:unconfirmed" />
+      <Text noWrap i18nKey="status:unconfirmed" />
     </Status>
   );
 }

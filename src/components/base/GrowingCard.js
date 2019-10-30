@@ -1,18 +1,13 @@
 // @flow
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import Animated from "animated/lib/targets/react-dom";
+import { animated, useSpring } from "react-spring";
 
 import { boxShadow } from "components/base/Modal/components";
 import Measure from "components/base/Measure";
 import Spinner from "components/base/Spinner";
 
 const SIZE = 350;
-
-const SPEEDS = {
-  scaleX: { tension: 130, friction: 15 },
-  scaleY: { tension: 130, friction: 15 },
-};
 
 export function GrowingSpinner() {
   return (
@@ -25,22 +20,19 @@ export function GrowingSpinner() {
 }
 
 export default function GrowingCard({ children }: { children: React$Node }) {
-  const [isMeasured, setIsMeasured] = useState(false);
-  const [anims] = useState({
-    opacity: new Animated.Value(0),
-    scaleX: new Animated.Value(1),
-    scaleY: new Animated.Value(1),
-    translateY: new Animated.Value(0),
-  });
+  const [transforms, setTransforms] = useState<?Object>(null);
+  const [shouldShow, setShouldShow] = useState(false);
+  const prevTransforms = usePrevious(transforms);
 
-  const unmounted = useRef(false);
-
-  useEffect(
-    () => () => {
-      unmounted.current = true;
-    },
-    [],
-  );
+  useEffect(() => {
+    if (!prevTransforms && !!transforms) {
+      const transforms = { scaleX: 1, scaleY: 1, translateY: 0 };
+      setTransforms(transforms);
+    }
+    if (!shouldShow && !!transforms) {
+      setShouldShow(true);
+    }
+  }, [transforms, prevTransforms, shouldShow]);
 
   const onMeasure = useCallback(
     dimensions => {
@@ -52,53 +44,65 @@ export default function GrowingCard({ children }: { children: React$Node }) {
         offset = (height - innerHeight) / 2 + 40;
       }
 
-      anims.opacity.setValue(0);
-      anims.scaleX.setValue(SIZE / width);
-      anims.scaleY.setValue(SIZE / height);
-      anims.translateY.setValue(-offset);
+      const transforms = {
+        scaleX: SIZE / width,
+        scaleY: SIZE / height,
+        translateY: -offset,
+      };
 
-      Animated.stagger(100, [
-        Animated.parallel([
-          Animated.spring(anims.scaleX, { toValue: 1, ...SPEEDS.scaleX }),
-          Animated.spring(anims.scaleY, { toValue: 1, ...SPEEDS.scaleY }),
-          Animated.spring(anims.translateY, { toValue: 0 }),
-        ]),
-        Animated.spring(anims.opacity, { toValue: 1, ...SPEEDS.scaleY }),
-      ]).start();
-
-      setIsMeasured(true);
+      setTransforms(transforms);
     },
-    [anims],
+    [setTransforms],
   );
 
-  const wrapperStyle = {
-    ...modalStyle,
-    opacity: isMeasured ? 1 : 0,
-    transform: [
-      { scaleX: anims.scaleX },
-      { scaleY: anims.scaleY },
-      { translateY: anims.translateY },
-    ],
+  const opacityStyle = {
+    opacity: shouldShow ? 1 : 0,
   };
 
-  const contentStyle = {
-    opacity: anims.opacity,
-  };
+  const cssTransforms = transforms
+    ? `scaleX(${transforms.scaleX}) scaleY(${transforms.scaleY}) translateY(${transforms.translateY}px)`
+    : `scaleX(1) scaleY(1) translateY(0)`;
+
+  const wrapperStyle = useSpring({
+    position: "relative",
+    zIndex: 2,
+    transform: cssTransforms,
+    immediate: !!transforms && !prevTransforms,
+    ...modalStyle,
+    config: {
+      tension: 700,
+      friction: 50,
+    },
+  });
+
+  const contentStyle = useSpring({
+    opacity: transforms ? 1 : 0,
+  });
 
   return (
     <>
       <Measure onMeasure={onMeasure}>
-        <Animated.div style={wrapperStyle}>
-          <Animated.div style={contentStyle}>{children}</Animated.div>
-        </Animated.div>
+        <div style={opacityStyle}>
+          <animated.div style={wrapperStyle}>
+            <animated.div style={contentStyle}>{children}</animated.div>
+          </animated.div>
+        </div>
       </Measure>
-      {!isMeasured && (
+      {!shouldShow && (
         <div style={fixedStyle}>
           <div style={fakeModalStyle} />
         </div>
       )}
     </>
   );
+}
+
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
 }
 
 const modalStyle = {
