@@ -13,6 +13,7 @@ import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
+import InfoBox from "components/base/InfoBox";
 import SearchWhitelists from "api/queries/SearchWhitelists";
 import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
@@ -28,7 +29,11 @@ import {
   getCurrencyIdFromBlockchainName,
   getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
-import { serializeRulesSetsForPOST } from "components/MultiRules/helpers";
+import {
+  serializeRulesSetsForPOST,
+  isValidRulesSet,
+  isEmptyRulesSet,
+} from "components/MultiRules/helpers";
 import type { RulesSet } from "components/MultiRules/types";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 
@@ -80,6 +85,16 @@ const steps = [
     id: "rules",
     name: <Trans i18nKey="accountCreation:steps.rules.title" />,
     Step: AccountCreationRules,
+    WarningNext: ({ payload }: { payload: AccountCreationPayload }) => {
+      if (payload.rulesSets.length > 1 && hasEmptyRules(payload.rulesSets)) {
+        return (
+          <InfoBox type="warning">
+            <Trans i18nKey="accountCreation:multirules.delete_empty_rule" />
+          </InfoBox>
+        );
+      }
+      return null;
+    },
     requirements: (payload: AccountCreationPayload) => {
       if (payload.name === "") return false;
       if (payload.erc20token) {
@@ -366,6 +381,12 @@ export function serializePayload(
 
 export function areRulesSetsValid(rulesSets: RulesSet[]) {
   if (!rulesSets.length) return false;
-  // FIXME FIXME DO VALIDATION
-  return true;
+  if (rulesSets.length === 1 && isEmptyRulesSet(rulesSets[0])) return false;
+  return rulesSets
+    .map(r => isEmptyRulesSet(r) || isValidRulesSet(r))
+    .every(Boolean);
+}
+
+export function hasEmptyRules(rulesSets: RulesSet[]) {
+  return rulesSets.some(r => isEmptyRulesSet(r));
 }

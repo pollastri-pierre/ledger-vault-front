@@ -38,7 +38,7 @@ export const getWhitelistRule = (set: RulesSet): ?RuleWhitelist =>
 export function getRulesSetErrors(set: RulesSet): Error[] {
   const errors = [];
   const multiAuthRule = getMultiAuthRule(set);
-  if (!multiAuthRule) {
+  if (!multiAuthRule || multiAuthRule.data.length === 0) {
     errors.push(new Error("No MULTI_AUTHORIZATION rule"));
   } else {
     // eslint-disable-next-line no-lonely-if
@@ -54,6 +54,9 @@ export function getRulesSetErrors(set: RulesSet): Error[] {
 
 export function isValidRulesSet(set: RulesSet): boolean {
   return getRulesSetErrors(set).length === 0;
+}
+export function isEmptyRulesSet(set: RulesSet): boolean {
+  return set.rules.length === 1 && set.rules[0].data.length === 0;
 }
 
 export function serializeRulesSetsForPOST(sets: RulesSet[]) {

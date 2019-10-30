@@ -18,6 +18,7 @@ import colors, { darken } from "shared/colors";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
+import { getRulesSetErrors, isEmptyRulesSet } from "./helpers";
 
 import type { RulesSet as RulesSetType } from "./types";
 
@@ -61,6 +62,9 @@ const MultiRulesSideBar = (props: Props) => {
           index={i}
           onSelect={() => onChangeIndex(i)}
           rulesSet={rulesSet}
+          error={
+            getRulesSetErrors(rulesSet).length > 0 && !isEmptyRulesSet(rulesSet)
+          }
           isActive={i === activeIndex}
           isLast={i === rulesSets.length - 1}
           isFirst={i === 0}
@@ -98,6 +102,7 @@ type TabProps = {
   isActive: boolean,
   isLast: boolean,
   isFirst: boolean,
+  error: Boolean,
   onRemove?: () => void,
   onMove?: MoveHandler,
   readOnly?: boolean,
@@ -109,6 +114,7 @@ const RulesSetTab = SortableElement(
     onSelect,
     isActive,
     isLast,
+    error,
     isFirst,
     onRemove,
     onMove,
@@ -136,7 +142,7 @@ const RulesSetTab = SortableElement(
             <FaGripVertical />
           </GripAction>
         )}
-        <Text fontWeight="bold">{rulesSet.name}</Text>
+        <RuleTitle error={error}>{rulesSet.name}</RuleTitle>
         {!readOnly && (
           <Action
             pos="right"
@@ -151,6 +157,13 @@ const RulesSetTab = SortableElement(
     );
   },
 );
+
+const RuleTitle = styled(Text).attrs({
+  fontWeight: "bold",
+})`
+  border-bottom: ${p => (p.error ? "1px dotted" : "none")}
+  border-color: ${colors.grenade}
+`;
 
 const Triangle = styled.div`
   z-index: 2;

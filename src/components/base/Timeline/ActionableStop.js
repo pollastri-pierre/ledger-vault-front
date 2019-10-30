@@ -19,6 +19,7 @@ type Props<T, P> = {
   initialValue: T,
   isValid: T => boolean,
   isDisabled?: boolean,
+  isMandatory?: boolean,
 };
 
 const ActionableStop = <T, P>({
@@ -31,6 +32,7 @@ const ActionableStop = <T, P>({
   initialValue,
   isValid,
   isDisabled,
+  isMandatory,
   ...props
 }: Props<T, P>) => {
   const [isActive, setActive] = useState(false);
@@ -63,7 +65,20 @@ const ActionableStop = <T, P>({
         />
       )}
       <div>
-        <Inner isDisabled={isDisabled}>{label}</Inner>
+        <Inner isDisabled={isDisabled}>
+          {label}
+          {isMandatory && (
+            <span
+              style={{
+                color: colors.grenade,
+                marginLeft: 5,
+                display: "inline-block",
+              }}
+            >
+              *
+            </span>
+          )}
+        </Inner>
         {desc}
       </div>
     </TimelineStop>

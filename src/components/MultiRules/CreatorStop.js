@@ -70,6 +70,7 @@ const CreatorStop = (props: Props) => {
         initialValue={emptyStep}
         EditComponent={EditCreator}
         onSubmit={handleSubmit}
+        isMandatory
       />
     );
   }
