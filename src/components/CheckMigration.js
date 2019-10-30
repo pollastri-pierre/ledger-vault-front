@@ -9,9 +9,10 @@ import colors from "shared/colors";
 import AccountsToMigrateQuery from "api/queries/AccountsToMigrateQuery";
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
+import SearchWhitelists from "api/queries/SearchWhitelists";
 import connectData from "restlay/connectData";
 import { createAndApprove } from "device/interactions/hsmFlows";
-import type { User, Account, Group } from "data/types";
+import type { User, Account, Group, Whitelist } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
 import {
@@ -33,13 +34,14 @@ import { RestlayTryAgain } from "components/TryAgain";
 type Props = {
   allUsers: Connection<User>,
   allGroups: Connection<Group>,
+  allWhitelists: Connection<Whitelist>,
   accountsToMigrate: Connection<Account>,
 };
 
 const isAccountHSMAppUpdated = a => a.status === "HSM_COIN_UPDATED";
 
 const CheckMigration = (props: Props) => {
-  const { allUsers, allGroups, accountsToMigrate } = props;
+  const { allUsers, allGroups, allWhitelists, accountsToMigrate } = props;
 
   // used to close the modal without migrating
   const [hasForceClose, setForceClose] = useState(false);
@@ -51,6 +53,7 @@ const CheckMigration = (props: Props) => {
   const accounts = accountsToMigrate.edges.map(n => n.node);
   const users = allUsers.edges.map(n => n.node);
   const groups = allGroups.edges.map(n => n.node);
+  const whitelists = allWhitelists.edges.map(n => n.node);
 
   // view props
   const count = accounts.length;
@@ -91,6 +94,7 @@ const CheckMigration = (props: Props) => {
                   account={account}
                   users={users}
                   groups={groups}
+                  whitelists={whitelists}
                   onMigrationSuccess={onSuccess}
                 />
               );
@@ -123,12 +127,14 @@ const AccountToMigrate = ({
   account,
   users,
   groups,
+  whitelists,
   onMigrationSuccess,
   status,
 }: {
   account: Account,
   users: User[],
   groups: Group[],
+  whitelists: Whitelist[],
   onMigrationSuccess: () => void,
   status: "active" | "waiting" | "done",
 }) => {
@@ -162,6 +168,7 @@ const AccountToMigrate = ({
             rulesSets={payload.rulesSets}
             onChange={onRulesSetsChange}
             users={users}
+            whitelists={whitelists}
             groups={groups}
           />
           <Box height={80} position="relative">
@@ -192,5 +199,6 @@ export default connectData(CheckMigration, {
     accountsToMigrate: AccountsToMigrateQuery,
     allUsers: OperatorsForAccountCreationQuery,
     allGroups: GroupsForAccountCreationQuery,
+    allWhitelists: SearchWhitelists,
   },
 });

@@ -13,6 +13,7 @@ import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
+import SearchWhitelists from "api/queries/SearchWhitelists";
 import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
@@ -251,6 +252,7 @@ const AccountEdit = connectData(
       allAccounts: PotentialParentAccountsQuery,
       account: AccountQuery,
       users: OperatorsForAccountCreationQuery,
+      whitelists: SearchWhitelists,
       groups: GroupsForAccountCreationQuery,
     },
     propsToQueryParams: props => ({
@@ -279,6 +281,7 @@ const AccountCreation = connectData(
       allAccounts: PotentialParentAccountsQuery,
       users: OperatorsForAccountCreationQuery,
       groups: GroupsForAccountCreationQuery,
+      whitelists: SearchWhitelists,
     },
   },
 );

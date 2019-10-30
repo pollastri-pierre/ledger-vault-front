@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
 
 import pageDecorator from "stories/pageDecorator";
-import { genUsers, genGroups } from "data/mock-entities";
+import { genUsers, genGroups, genWhitelists } from "data/mock-entities";
 import MultiRules from "components/MultiRules";
 import { serializeRulesSetsForPOST } from "components/MultiRules/helpers";
 import Box from "components/base/Box";
@@ -13,6 +13,7 @@ import initialRulesSets from "data/mock-governance-rules.json";
 
 const users = genUsers(15).map(u => ({ ...u, role: "operator" }));
 const groups = genGroups(3, { users });
+const whitelists = genWhitelists(10, { users });
 
 initialRulesSets[0].rules[1].data[0].group = {
   is_internal: true,
@@ -51,6 +52,7 @@ const Wrapper = () => {
         onChange={setRulesSets}
         users={users}
         groups={groups}
+        whitelists={whitelists}
         readOnly={readOnly}
       />
       <Button type="filled" onClick={() => setReadOnly(!readOnly)}>

@@ -13,7 +13,7 @@ import Timeline, {
 } from "components/base/Timeline";
 import Status from "components/Status";
 
-import type { User, Group } from "data/types";
+import type { User, Group, Whitelist } from "data/types";
 import AddApprovalStep from "./AddApprovalStep";
 import ThresholdStop from "./ThresholdStop";
 import WhitelistStop from "./WhitelistStop";
@@ -41,11 +41,12 @@ type Props = {|
   onChange: RulesSetType => void,
   users: User[],
   groups: Group[],
+  whitelists: Whitelist[],
   readOnly?: boolean,
 |};
 
 const RulesSet = (props: Props) => {
-  const { rulesSet, onChange, users, groups, readOnly } = props;
+  const { rulesSet, onChange, users, whitelists, groups, readOnly } = props;
 
   const thresholdRule = getThresholdRule(rulesSet);
   const whitelistRule = getWhitelistRule(rulesSet);
@@ -103,6 +104,7 @@ const RulesSet = (props: Props) => {
         rule={whitelistRule}
         onRemove={onRemove("WHITELIST")}
         onEdit={replaceRule("WHITELIST")}
+        whitelists={whitelists}
         onAdd={onAddRule}
       />
 

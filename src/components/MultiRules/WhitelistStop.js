@@ -8,6 +8,7 @@ import {
   EditableStop,
   useReadOnly,
 } from "components/base/Timeline";
+import type { Whitelist } from "data/types";
 import Badge from "./Badge";
 import WhitelistParameters from "./WhitelistParameters";
 import type { RuleWhitelist } from "./types";
@@ -19,12 +20,19 @@ const emptyRule = {
 
 type Props = {
   onRemove: () => void,
+  whitelists: Whitelist[],
   onAdd: RuleWhitelist => void,
   onEdit: RuleWhitelist => void,
   rule: ?RuleWhitelist,
 };
 
-const WhitelistStop = ({ onRemove, onAdd, onEdit, rule }: Props) => {
+const WhitelistStop = ({
+  onRemove,
+  onAdd,
+  whitelists,
+  onEdit,
+  rule,
+}: Props) => {
   const readOnly = useReadOnly();
 
   if (readOnly && !rule) return null;
@@ -40,6 +48,7 @@ const WhitelistStop = ({ onRemove, onAdd, onEdit, rule }: Props) => {
       <ActionableStop
         {...stopProps}
         isValid={isRuleValid}
+        extraProps={{ whitelists }}
         label="Add whitelist"
         desc="The transaction can be sent to recipients who belong to specific whitelists"
         initialValue={emptyRule}
@@ -53,6 +62,7 @@ const WhitelistStop = ({ onRemove, onAdd, onEdit, rule }: Props) => {
     <EditableStop
       {...stopProps}
       value={rule}
+      extraProps={{ whitelists }}
       bulletVariant="plain"
       label="Edit whitelist"
       Icon={FaRegFileAlt}
@@ -72,25 +82,48 @@ const isRuleValid = (rule: RuleWhitelist) => {
   // return rule.data.length > 0;
 };
 
-const DisplayWhitelist = () => (
-  <div>
+const DisplayWhitelist = (props: {
+  value: RuleWhitelist,
+  extraProps?: {
+    whitelists: Whitelist[],
+  },
+}) => (
+  <div style={{ lineHeight: 2.5 }}>
     <div>
       <strong>Whitelist</strong>
     </div>
     {"Allowed recipients: "}
-    <Badge Icon={FaRegFileAlt}>
-      <strong>Europe customers</strong>
-    </Badge>
-    {" whitelist(s)"}
+    {props.value.data.map(v => {
+      if (!props.extraProps) return;
+      const { whitelists } = props.extraProps;
+      const whitelist = whitelists.find(w => w.id === v);
+      if (!whitelist) return;
+      return (
+        <Badge Icon={FaRegFileAlt} key={whitelist.id}>
+          {whitelist.name}
+        </Badge>
+      );
+    })}
   </div>
 );
 
 const EditWhitelist = ({
   value,
   onChange,
+  extraProps,
 }: {
   value: RuleWhitelist,
   onChange: RuleWhitelist => void,
-}) => <WhitelistParameters rule={value} onChange={onChange} />;
+  extraProps?: {
+    whitelists: Whitelist[],
+  },
+}) =>
+  extraProps ? (
+    <WhitelistParameters
+      rule={value}
+      onChange={onChange}
+      whitelists={extraProps && extraProps.whitelists}
+    />
+  ) : null;
 
 export default WhitelistStop;

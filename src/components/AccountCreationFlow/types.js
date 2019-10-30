@@ -3,7 +3,7 @@
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { Connection } from "restlay/ConnectionQuery";
-import type { ERC20Token, Account, User, Group } from "data/types";
+import type { ERC20Token, Account, User, Group, Whitelist } from "data/types";
 import type { RulesSet } from "components/MultiRules/types";
 import type { StepProps } from "components/base/MultiStepsFlow/types";
 
@@ -30,4 +30,5 @@ export type AccountCreationStepProps = GenericStepProps & {
   allAccounts: Connection<Account>,
   users: Connection<User>,
   groups: Connection<Group>,
+  whitelists: Connection<Whitelist>,
 };

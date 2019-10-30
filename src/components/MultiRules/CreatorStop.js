@@ -56,9 +56,7 @@ const CreatorStop = (props: Props) => {
   };
 
   const handleRemove = () => {
-    const newSteps = [...rule.data];
-    newSteps.splice(0, 1, emptyStep);
-    onChange({ ...rule, data: newSteps });
+    onChange({ ...rule, data: [] });
   };
 
   if (!creatorStep || !creatorStep.group.members.length) {

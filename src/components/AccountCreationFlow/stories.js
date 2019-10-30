@@ -11,11 +11,17 @@ import schema from "data/schema";
 import Modal from "components/base/Modal";
 import AccountCreationFlow from "components/AccountCreationFlow";
 
-import { genAccounts, genUsers, genGroups } from "data/mock-entities";
+import {
+  genAccounts,
+  genUsers,
+  genGroups,
+  genWhitelists,
+} from "data/mock-entities";
 
 const users = genUsers(20);
 const accounts = genAccounts(10, { users });
 const groups = genGroups(3, { users });
+const whitelists = genWhitelists(10, { users });
 
 const fakeNetwork = async url => {
   await delay(500);
@@ -27,6 +33,9 @@ const fakeNetwork = async url => {
   }
   if (url.startsWith("/people")) {
     return wrapConnection(users);
+  }
+  if (url.startsWith("/whitelists-mock")) {
+    return wrapConnection(whitelists);
   }
   if (url.startsWith("/groups")) {
     return wrapConnection(

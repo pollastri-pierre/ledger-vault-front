@@ -6,7 +6,7 @@ import arrayMove from "array-move";
 
 import colors from "shared/colors";
 import Box from "components/base/Box";
-import type { User, Group } from "data/types";
+import type { User, Group, Whitelist } from "data/types";
 import RulesSet from "./RulesSet";
 import MultiRulesSideBar from "./MultiRulesSideBar";
 import { isValidRulesSet } from "./helpers";
@@ -19,6 +19,7 @@ type Props = {|
   onChange: (RulesSetType[]) => void,
   users: User[],
   groups: Group[],
+  whitelists: Whitelist[],
   readOnly?: boolean,
 |};
 
@@ -29,6 +30,7 @@ const MultiRules = (props: Props) => {
     onChange,
     users,
     groups,
+    whitelists,
     readOnly,
   } = props;
 
@@ -117,6 +119,7 @@ const MultiRules = (props: Props) => {
           onChange={handleChangeRulesSet(safeActiveIndex)}
           users={users}
           groups={groups}
+          whitelists={whitelists}
           readOnly={readOnly}
         />
       </RulesSetContainer>

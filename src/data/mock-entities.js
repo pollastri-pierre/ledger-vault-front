@@ -372,6 +372,14 @@ export function genWhitelists(nb, { users }) {
 export function genWhitelist({ users }) {
   const admins = users.filter(m => m.role === "admin");
   const status = faker.random.arrayElement(["ACTIVE", "PENDING"]);
+  const randomly = faker.random.number({ min: 1, max: 10 });
+  let last_request = null;
+  if (status === "ACTIVE" && randomly % 2 === 0) {
+    last_request = genRequest("EDIT_WHITELIST", {
+      target_type: "WHITELIST",
+      status: "PENDING_APPROVAL",
+    });
+  }
   return {
     id: faker.random.number({ min: 1, max: 1000000000 }),
     created_by: faker.random.arrayElement(admins),
@@ -381,6 +389,7 @@ export function genWhitelist({ users }) {
     approvals: [],
     status,
     addresses: genAddresses(3),
+    last_request,
   };
 }
 

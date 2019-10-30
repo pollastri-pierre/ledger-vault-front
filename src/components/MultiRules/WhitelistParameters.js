@@ -1,7 +1,11 @@
 // @flow
 
 import React from "react";
+import SelectWhitelist from "components/SelectWhitelist";
 
+import { isRequestPending } from "utils/request";
+import EntityStatus from "components/EntityStatus";
+import type { Whitelist } from "data/types";
 import type { RuleWhitelist } from "./types";
 
 // TODO remove those lines
@@ -10,11 +14,37 @@ import type { RuleWhitelist } from "./types";
 
 type Props = {
   rule: RuleWhitelist,
+  whitelists: Whitelist[],
   onChange: RuleWhitelist => void,
 };
 
 const WhitelistParameters = (props: Props) => {
-  return <div>lets assume there is a whitelist here</div>;
+  const { onChange, rule, whitelists } = props;
+  const handleChange = data => {
+    onChange({ ...rule, data: data.map(d => d.id) });
+  };
+  return (
+    <div>
+      <SelectWhitelist
+        value={rule.data}
+        onChange={handleChange}
+        whitelists={whitelists}
+        renderIfDisabled={renderIfDisabled}
+      />
+    </div>
+  );
 };
+
+function renderIfDisabled(item: Whitelist) {
+  return (
+    item.last_request &&
+    isRequestPending(item.last_request) && (
+      <EntityStatus
+        request={item.last_request}
+        status={item.last_request.status}
+      />
+    )
+  );
+}
 
 export default WhitelistParameters;
