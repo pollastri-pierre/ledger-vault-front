@@ -15,5 +15,11 @@
   "actionType": {
     "rejected": "rejected",
     "approved": "approved"
+  },
+  "diff": {
+    "after": "after",
+    "before": "before",
+    "name": "Name",
+    "rules": "Rules"
   }
 }
