@@ -38,6 +38,7 @@ function VaultLayout(props: Props) {
         user={user}
         onLogout={onLogout}
         TopBarContent={TopBarContent}
+        isMenuOpened={isMenuOpened}
       />
       <VaultLayoutMainView isMenuOpened={isMenuOpened}>
         {children}

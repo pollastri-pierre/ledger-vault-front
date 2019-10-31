@@ -59,7 +59,7 @@ const AppWrapper = ({ me, organization, restlay, ...props }: Props) => {
 
 const TopBarContent = () => (
   <Route path="/:org/:role/accounts/view/:id">
-    <VaultLink withRole to="/accounts">
+    <VaultLink withRole to="/accounts?meta_status=APPROVED&meta_status=PENDING">
       <Box horizontal align="center" flow={5} py={10}>
         <FaArrowLeft />
         <Text i18nKey="accountView:backButton" />
