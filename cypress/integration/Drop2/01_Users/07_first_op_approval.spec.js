@@ -2,7 +2,7 @@ import {
   login,
   logout,
   route,
-  successfull_message,
+  successfull_message2,
 } from "../../../functions/actions";
 
 describe("Approve User as Operator with the first admin", function() {
@@ -17,45 +17,36 @@ describe("Approve User as Operator with the first admin", function() {
   it("Approve 6 new operator", () => {
     cy.server();
     route();
-
-    cy.get("[data-test=menuItem-users]").click();
-    cy.url().should("include", "/admin/users");
-    cy.wait(2000);
+    cy.url().should("include", "/admin/dashboard");
 
     // Laura operator
     cy.contains("Laura").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // Sally operator
     cy.contains("Sally").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // Claudia operator
     cy.contains("Claudia").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // Allison operator
     cy.contains("Allison").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // Tyler operator
     cy.contains("Tyler").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // Charles operator
     cy.contains("Charles").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
   });
 });

@@ -45,11 +45,11 @@ describe("Test on Operator ", function() {
     cy.wait(5000);
     cy.get("[data-test=success_msg]").should(
       "contain",
-      "Transaction Request was successfully created!",
+      "Transaction request successfully created!",
     );
     cy.get("[data-test=success_msg]").should(
       "contain",
-      "Your request to create a transaction was created and now it has a pending status",
+      "Your request to create a transaction has been submitted for approval.",
     );
     cy.contains("Done").click();
   });

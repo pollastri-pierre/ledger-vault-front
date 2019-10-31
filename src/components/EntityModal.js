@@ -214,6 +214,7 @@ function SuccessFooter(props: SuccessFooterProps) {
         px={10}
       >
         <Text
+          data-test="successfull_message"
           fontWeight="semiBold"
           textAlign="center"
           color={darken(colors.paleGreen, 0.7)}
@@ -226,7 +227,12 @@ function SuccessFooter(props: SuccessFooterProps) {
           }}
         />
       </Box>
-      <Button variant="primary" type="filled" onClick={props.onClose}>
+      <Button
+        data-test="done_button"
+        variant="primary"
+        type="filled"
+        onClick={props.onClose}
+      >
         {t("common:done")}
       </Button>
     </Box>

@@ -2,7 +2,8 @@ import {
   login,
   logout,
   route,
-  successfull_message,
+  successfull_message2,
+  successfull_msg_gp,
 } from "../../../functions/actions";
 
 describe("Test Case for Groups", function() {
@@ -55,7 +56,7 @@ describe("Test Case for Groups", function() {
     cy.contains("Next").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
+    successfull_msg_gp();
   });
 
   it("Edit Group Member", () => {
@@ -79,7 +80,7 @@ describe("Test Case for Groups", function() {
     cy.contains("Next").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
+    successfull_msg_gp();
   });
 
   it("Approve Edit Groups", () => {
@@ -89,13 +90,10 @@ describe("Test Case for Groups", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=1]").click();
-    cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.wait(1500);
+    successfull_message2();
     cy.get("[data-test=0]").click();
-    cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
+    successfull_message2();
   });
 });

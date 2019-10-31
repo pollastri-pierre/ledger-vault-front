@@ -4,7 +4,7 @@ import {
   route,
   create_account,
   success_creation_account,
-  successfull_message,
+  successfull_message2,
 } from "../../../functions/actions";
 
 describe("Test Case for Account", function() {
@@ -34,14 +34,12 @@ describe("Test Case for Account", function() {
     login(4);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=1]").click();
-    cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
     cy.wait(2500);
-    successfull_message();
+    successfull_message2();
     cy.get("[data-test=0]").click();
-    cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
     cy.wait(2500);
-    successfull_message();
+    successfull_message2();
   });
 });

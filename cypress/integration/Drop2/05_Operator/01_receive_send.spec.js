@@ -1,9 +1,4 @@
-import {
-  login,
-  logout,
-  route,
-  successfull_message,
-} from "../../../functions/actions";
+import { login, logout, route, success_tx } from "../../../functions/actions";
 
 describe("Test on Operator ", function() {
   beforeEach(function() {
@@ -69,16 +64,11 @@ describe("Test on Operator ", function() {
       cy.get("[data-test=note_comments]")
         .contains("Cypress is the best sending some money love")
         .should("be.visible");
-      cy.get("[data-test=name]")
-        .eq(4)
-        .contains("Amanda Wong")
-        .should("be.visible");
       cy.get("[data-test=note_title]")
         .contains("Cypress TX")
         .should("be.visible");
       cy.get("[data-test=approve_button]").click();
-      cy.wait(5000);
-      successfull_message();
+      success_tx();
     });
   });
 });

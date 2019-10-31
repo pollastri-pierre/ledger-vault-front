@@ -2,7 +2,7 @@ import {
   login,
   logout,
   route,
-  successfull_message,
+  successfull_message2,
   create_erc20_account_new_eth,
   success_creation_account,
   create_erc20_with_viewonly_eth_account,
@@ -34,9 +34,9 @@ describe("Test Case for Account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
-    cy.wait(2500);
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
+    cy.wait(2500);
+    successfull_message2();
   });
 
   it("Create the same erc20 account on the same eth account should fail", () => {
@@ -70,8 +70,8 @@ describe("Test Case for Account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
-    cy.wait(2500);
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
+    cy.wait(2500);
+    successfull_message2();
   });
 });

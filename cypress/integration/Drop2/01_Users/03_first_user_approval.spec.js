@@ -2,7 +2,7 @@ import {
   login,
   logout,
   route,
-  successfull_message,
+  successfull_message2,
 } from "../../../functions/actions";
 
 describe("Approve User as Operator and Admin with the first admin", function() {
@@ -18,37 +18,31 @@ describe("Approve User as Operator and Admin with the first admin", function() {
     cy.server();
     route();
 
-    cy.get("[data-test=menuItem-users]").click();
-    cy.url().should("include", "/admin/users");
+    cy.url().should("include", "/admin/dashboard");
 
     // Anna Wagner operator
     cy.contains("Anna").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // Aidan Fisher operator
     cy.contains("Aidan").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // Thomas Lebron operator
     cy.contains("Thomas").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // James Lepic operator
     cy.contains("James").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
 
     // John Clark admin
     cy.contains("John").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
   });
 });

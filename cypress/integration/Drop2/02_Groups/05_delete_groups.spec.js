@@ -2,7 +2,7 @@ import {
   login,
   logout,
   route,
-  successfull_message,
+  successfull_message2,
 } from "../../../functions/actions";
 
 describe("Test Case for Groups", function() {
@@ -22,14 +22,9 @@ describe("Test Case for Groups", function() {
     cy.url().should("include", "/admin/groups");
 
     cy.contains("NORTH Asia").click();
-    cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     cy.get("[data-test=Confirm]").click();
-    successfull_message();
-    cy.wait(2500);
-    cy.contains("You already approved this request");
-    cy.contains("request is pending");
-    cy.get("[data-test=close]").click();
+    cy.wait(1500);
   });
 
   it("Approve the Delete Group", () => {
@@ -40,7 +35,7 @@ describe("Test Case for Groups", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=0]").click();
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
+    successfull_message2();
   });
 
   it("Deletion Group", () => {
@@ -51,14 +46,9 @@ describe("Test Case for Groups", function() {
     cy.url().should("include", "/admin/groups");
 
     cy.contains("New EMEA").click();
-    cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     cy.get("[data-test=Confirm]").click();
-    successfull_message();
-    cy.wait(2500);
-    cy.contains("You already approved this request");
-    cy.contains("request is pending");
-    cy.get("[data-test=close]").click();
+    cy.wait(1500);
   });
 
   it("Reject the deletion of the group", () => {
