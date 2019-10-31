@@ -8,9 +8,14 @@ import GroupsQuery from "api/queries/GroupsQuery";
 import Box from "components/base/Box";
 import { SpinnerCentered } from "components/base/Spinner";
 import Text from "components/base/Text";
-import colors, { opacity } from "shared/colors";
+import colors, { opacity, darken } from "shared/colors";
 import RulesViewer from "components/ApprovalsRules/RulesViewer";
-import type { Account, User, Group } from "data/types";
+import type {
+  Account,
+  User,
+  Group,
+  TxApprovalStepCollection,
+} from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
 import { haveRulesChangedDiff, resolveRules } from "./helpers";
@@ -47,59 +52,23 @@ function AccountEditRequest(props: Props) {
     newRules && oldRules && haveRulesChangedDiff(newRules, oldRules);
   return (
     <Box flow={10} horizontal justify="space-between">
-      <Box bg={opacity(colors.grenade, 0.05)} {...diffBoxProps}>
-        <Box mb={20}>
-          <Text
-            size="small"
-            uppercase
-            fontWeight="bold"
-            color={opacity(colors.grenade, 0.8)}
-            i18nKey="entityModal:diff.before"
-          />
-        </Box>
-        {hasNameChanged && (
-          <Box mb={20}>
-            <Text fontWeight="bold" i18nKey="entityModal:diff.name" />
-            <Text>{account.name}</Text>
-          </Box>
-        )}
-        {haveRulesChanged && (
-          <Box mb={20}>
-            <Text fontWeight="bold" i18nKey="entityModal:diff.rules" />
-            <RulesViewer rules={oldRules} />
-          </Box>
-        )}
-      </Box>
-      <Box bg={opacity(colors.ocean, 0.05)} {...diffBoxProps}>
-        <Box mb={20}>
-          <Text
-            size="small"
-            uppercase
-            fontWeight="bold"
-            color={opacity(colors.ocean, 0.8)}
-            i18nKey="entityModal:diff.after"
-          />
-        </Box>
-        {hasNameChanged && editData && (
-          <Box mb={20}>
-            <Text fontWeight="bold" i18nKey="entityModal:diff.name" />
-            <Text>{editData.name}</Text>
-          </Box>
-        )}
-        {haveRulesChanged && (
-          <Box mb={20}>
-            <Text fontWeight="bold" i18nKey="entityModal:diff.rules" />
-            <RulesViewer rules={newRules} />
-          </Box>
-        )}
-      </Box>
+      <DiffBlock
+        name={hasNameChanged ? account.name : null}
+        rules={haveRulesChanged ? oldRules : null}
+        type="current"
+      />
+      <DiffBlock
+        name={hasNameChanged && editData ? editData.name : null}
+        rules={haveRulesChanged ? newRules : null}
+        type="proposed"
+      />
     </Box>
   );
 }
 
 const diffBoxProps = {
-  borderRadius: 2,
-  padding: 5,
+  borderRadius: 10,
+  padding: 10,
   flex: 1,
 };
 
@@ -110,3 +79,52 @@ export default connectData(AccountEditRequest, {
     groups: GroupsQuery,
   },
 });
+
+type DiffBlockProps = {
+  name: ?string,
+  rules: ?TxApprovalStepCollection,
+  type: string,
+};
+function DiffBlock(props: DiffBlockProps) {
+  const { name, rules, type } = props;
+  return (
+    <Box
+      bg={
+        type === "current"
+          ? opacity(colors.paleBlue, 0.2)
+          : opacity(colors.paleRed, 0.2)
+      }
+      {...diffBoxProps}
+    >
+      <Box mb={20}>
+        <Text
+          size="small"
+          uppercase
+          fontWeight="bold"
+          color={
+            type === "current"
+              ? darken(colors.paleBlue, 0.7)
+              : darken(colors.paleRed, 0.7)
+          }
+          i18nKey={
+            type === "current"
+              ? "entityModal:diff.before"
+              : "entityModal:diff.after"
+          }
+        />
+      </Box>
+      {name && (
+        <Box mb={20}>
+          <Text fontWeight="bold" i18nKey="entityModal:diff.name" />
+          <Text>{name}</Text>
+        </Box>
+      )}
+      {rules && (
+        <Box mb={20}>
+          <Text fontWeight="bold" i18nKey="entityModal:diff.rules" />
+          <RulesViewer rules={rules} />
+        </Box>
+      )}
+    </Box>
+  );
+}
