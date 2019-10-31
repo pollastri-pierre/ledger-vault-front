@@ -10,14 +10,10 @@ import Spinner from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity } from "shared/colors";
 import RulesViewer from "components/ApprovalsRules/RulesViewer";
-import type {
-  Account,
-  User,
-  Group,
-  TxApprovalStepCollection,
-  EditApprovalStep,
-} from "data/types";
+import type { Account, User, Group } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
+
+import { haveRulesChangedDiff, resolveRules } from "./helpers";
 
 type Props = {
   account: Account,
@@ -48,6 +44,8 @@ class AccountEditRequest extends PureComponent<Props> {
     const oldRules = isAccountMigration ? null : tx_approval_steps;
     const hasNameChanged = editData && account.name !== editData.name;
 
+    const haveRulesChanged =
+      newRules && oldRules && haveRulesChangedDiff(newRules, oldRules);
     return (
       <Box flow={10} horizontal justify="space-between">
         <Box bg={opacity(colors.grenade, 0.05)} {...diffBoxProps}>
@@ -67,8 +65,12 @@ class AccountEditRequest extends PureComponent<Props> {
               <span>{account.name}</span>
             </Box>
           )}
-          <b>Rules</b>
-          <RulesViewer rules={oldRules} />
+          {haveRulesChanged && (
+            <Box mb={20}>
+              <b>Rules</b>
+              <RulesViewer rules={oldRules} />
+            </Box>
+          )}
         </Box>
         <Box bg={opacity(colors.ocean, 0.05)} {...diffBoxProps}>
           <Box mb={20}>
@@ -87,8 +89,12 @@ class AccountEditRequest extends PureComponent<Props> {
               <span>{editData.name}</span>
             </Box>
           )}
-          <b>Rules</b>
-          <RulesViewer rules={newRules} />
+          {haveRulesChanged && (
+            <Box mb={20}>
+              <b>Rules</b>
+              <RulesViewer rules={newRules} />
+            </Box>
+          )}
         </Box>
       </Box>
     );
@@ -115,34 +121,3 @@ const C: React$ComponentType<$Shape<Props>> = connectData(AccountEditRequest, {
 });
 
 export default C;
-const resolveRules = (
-  editRules: EditApprovalStep[],
-  groups: Group[],
-  users: User[],
-): TxApprovalStepCollection => {
-  const newRules = [];
-  editRules.forEach((r, i) => {
-    const { users: ruleUsers } = r;
-    if (r.group_id) {
-      const group = groups.find(g => g.id === r.group_id);
-      if (group) {
-        newRules.push({
-          quorum: r.quorum,
-          group,
-        });
-      }
-    } else if (ruleUsers) {
-      const members = users.filter(u => ruleUsers.indexOf(u.id) > -1);
-      const group = {
-        id: i,
-        is_internal: true,
-        members,
-      };
-      newRules.push({
-        quorum: r.quorum,
-        group,
-      });
-    }
-  });
-  return newRules;
-};
