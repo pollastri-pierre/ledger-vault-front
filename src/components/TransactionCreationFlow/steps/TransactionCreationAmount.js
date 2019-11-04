@@ -37,6 +37,7 @@ const TransactionCreationAmount = (
   const { EditFees, ExtraFields } = bridge;
   const isERC20 = account.account_type === "Erc20";
   const currency = getCryptoCurrencyById(account.currency);
+  const transactionError = bridge.getTransactionError(account, transaction);
 
   const onChangeTransaction = transaction => updatePayload({ transaction });
 
@@ -58,9 +59,11 @@ const TransactionCreationAmount = (
       amountErrors.push(new RippleAmountExceedMinBalance());
     }
   } else {
-    const amountTooHigh = bridge
-      .getTotalSpent(account, transaction)
-      .isGreaterThan(account.balance);
+    const amountTooHigh =
+      bridge
+        .getTotalSpent(account, transaction)
+        .isGreaterThan(account.balance) ||
+      transactionError instanceof AmountTooHigh;
     if (amountTooHigh) {
       amountErrors.push(new AmountTooHigh());
     }
