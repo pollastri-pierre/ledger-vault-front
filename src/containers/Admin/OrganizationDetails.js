@@ -52,6 +52,7 @@ function OrganizationDetails({
               refresh();
               close();
             }}
+            // $FlowFixMe it's not a real entity
             entity={{ last_request: request }}
           />
         </RichModalFooter>
