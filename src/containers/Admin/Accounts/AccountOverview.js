@@ -9,7 +9,6 @@ import Box from "components/base/Box";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import colors from "shared/colors";
 import InfoBox from "components/base/InfoBox";
-import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
 import ParentAccount from "components/ParentAccount";
 import { isBalanceAvailable } from "utils/accounts";
 import type { Account } from "data/types";
@@ -84,7 +83,7 @@ const Rows = ({ account }: { account: Account }) => {
         </LineRow>
       )}
       {account.tx_approval_steps && isRuleVisible && (
-        <AccountTransactionRules account={account} noTitle />
+        <div>here are the rules</div>
       )}
     </div>
   );

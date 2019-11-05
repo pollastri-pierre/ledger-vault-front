@@ -11,7 +11,6 @@ import InfoBox from "components/base/InfoBox";
 import Box from "components/base/Box";
 import AccountName from "components/AccountName";
 import LineRow from "components/LineRow";
-import ApprovalsRules from "components/ApprovalsRules";
 import type { AccountCreationStepProps } from "../types";
 
 export default (props: AccountCreationStepProps) => {
@@ -55,22 +54,6 @@ export default (props: AccountCreationStepProps) => {
             <span className="info-value currency">{currency.name}</span>
           </LineRow>
         )}
-        <LineRow label={<Trans i18nKey="newAccount:confirmation.approvals" />}>
-          <Trans
-            i18nKey="accountCreation:rulesSumup"
-            count={payload.rules.length}
-            values={{ count: payload.rules.length }}
-          />
-        </LineRow>
-        <Box py={20}>
-          <ApprovalsRules
-            rules={payload.rules}
-            users={props.users.edges.map(u => u.node)}
-            onChange={() => {}}
-            groups={props.groups.edges.map(g => g.node)}
-            readOnly
-          />
-        </Box>
       </Box>
       <InfoBox type="info" withIcon>
         {accountStatus === "MIGRATED" ? (

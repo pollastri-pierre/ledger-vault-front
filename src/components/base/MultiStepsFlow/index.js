@@ -151,11 +151,12 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
     if (!step) return null;
 
-    const { Step, Cta, nextLabel, prevLabel, hideBack } = step;
+    const { Step, Cta, nextLabel, prevLabel, hideBack, WarningNext } = step;
 
     const stepProps = {
       payload,
       initialPayload,
+      WarningNext,
       hideBack,
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
@@ -188,13 +189,16 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
             </Button>
           )}
           {nextStep && !Cta && (
-            <Button
-              type="filled"
-              onClick={this.next}
-              disabled={!this.canTransitionTo(nextStep.id)}
-            >
-              {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
-            </Button>
+            <Box flow={20} horizontal align="center">
+              {WarningNext && <WarningNext payload={payload} />}
+              <Button
+                type="filled"
+                onClick={this.next}
+                disabled={!this.canTransitionTo(nextStep.id)}
+              >
+                {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
+              </Button>
+            </Box>
           )}
           {Cta && (
             <Cta

@@ -294,9 +294,10 @@ function genGroup({ users, status }) {
     users: admins,
   });
   return {
-    id: faker.random.alphaNumeric("10"),
+    id: faker.random.alphaNumeric(10),
     name: faker.random.arrayElement(FAKE_GROUP_NAMES),
     created_on: faker.date.past(1),
+    is_internal: false,
     created_by: admins[faker.random.number({ min: 0, max: admins.length })],
     description: faker.company.catchPhrase(),
     status:
@@ -371,6 +372,14 @@ export function genWhitelists(nb, { users }) {
 export function genWhitelist({ users }) {
   const admins = users.filter(m => m.role === "admin");
   const status = faker.random.arrayElement(["ACTIVE", "PENDING"]);
+  const randomly = faker.random.number({ min: 1, max: 10 });
+  let last_request = null;
+  if (status === "ACTIVE" && randomly % 2 === 0) {
+    last_request = genRequest("EDIT_WHITELIST", {
+      target_type: "WHITELIST",
+      status: "PENDING_APPROVAL",
+    });
+  }
   return {
     id: faker.random.number({ min: 1, max: 1000000000 }),
     created_by: faker.random.arrayElement(admins),
@@ -380,6 +389,7 @@ export function genWhitelist({ users }) {
     approvals: [],
     status,
     addresses: genAddresses(3),
+    last_request,
   };
 }
 

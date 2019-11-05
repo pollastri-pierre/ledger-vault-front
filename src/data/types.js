@@ -2,6 +2,7 @@
 
 import type { BigNumber } from "bignumber.js";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
+import type { RulesSet } from "components/MultiRules/types";
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
@@ -62,13 +63,6 @@ export type CurrencyEntity = Currency;
 export type RateLimiter = {
   max_transaction: number,
   time_slot: number,
-};
-
-export type SecurityScheme = {
-  quorum: number,
-  time_lock?: number,
-  rate_limiter?: RateLimiter,
-  auto_expire?: number | null,
 };
 
 export type AccountSettings = {
@@ -161,11 +155,11 @@ type AccountCommon = {
   name: string,
   members: User[],
   settings: AccountSettings,
-  security_scheme: SecurityScheme,
   balance: BigNumber,
   currency: string,
   parent_balance?: BigNumber,
   created_on: Date,
+  governance_rules: RulesSet[],
   fresh_addresses: *,
   is_hsm_coin_app_updated: boolean,
   index: number,
@@ -203,7 +197,7 @@ type GroupCommon = {
   created_on: Date,
   created_by: User,
   description?: string,
-  status: string, // TODO create UNION type when different status are known
+  status: GroupStatus,
   is_internal: boolean,
   members: User[],
   is_under_edit: boolean,

@@ -25,5 +25,8 @@
   "finishTitle": "Account request successfully created!",
   "finishDesc": "Your request to create an account has been submitted for approval.",
   "finishEditTitle": "Account request successfully created!",
-  "finishEditDesc": "Your request to edit an account has been submitted for approval."
+  "finishEditDesc": "Your request to edit an account has been submitted for approval.",
+  "multirules": {
+    "delete_empty_rule": "Empty rules will be removed"
+  }
 }

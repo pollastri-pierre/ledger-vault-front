@@ -8,6 +8,8 @@ export type MultiStepsFlowStep<T, P> = {|
   requirements?: (T, ?P) => boolean,
   onNext?: (T, PayloadUpdater<T>, ?P) => Promise<void>,
   nextLabel?: React$Node,
+  WarningNext?: React$ComponentType<{ payload: T }>,
+  requirements?: (T, ?P) => boolean,
   prevLabel?: React$Node,
   hideBack?: boolean,
 |};

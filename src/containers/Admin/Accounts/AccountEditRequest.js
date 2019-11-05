@@ -9,7 +9,6 @@ import Box from "components/base/Box";
 import { SpinnerCentered } from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity, darken } from "shared/colors";
-import RulesViewer from "components/ApprovalsRules/RulesViewer";
 import type {
   Account,
   User,
@@ -122,7 +121,7 @@ function DiffBlock(props: DiffBlockProps) {
       {rules && (
         <Box mb={20}>
           <Text fontWeight="bold" i18nKey="entityModal:diff.rules" />
-          <RulesViewer rules={rules} />
+          <Box>TODO DIFF RULES</Box>
         </Box>
       )}
     </Box>
