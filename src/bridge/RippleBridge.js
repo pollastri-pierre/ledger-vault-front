@@ -17,6 +17,7 @@ export type Transaction = {|
   amount: BigNumber,
   note: TransactionCreationNote,
   estimatedFees: ?BigNumber,
+  error: ?Error,
   destinationTag: string,
 |};
 
@@ -49,6 +50,7 @@ const RippleBridge: WalletBridge<Transaction> = {
     amount: BigNumber(0),
     recipient: "",
     estimatedFees: null,
+    error: null,
     destinationTag: "",
     note: {
       title: "",
@@ -69,6 +71,7 @@ const RippleBridge: WalletBridge<Transaction> = {
     estimatedFees: null,
   }),
 
+  getTransactionError: (a: Account, t: Transaction) => t.error,
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
 
   editTransactionRecipient: (

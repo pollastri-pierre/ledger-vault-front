@@ -19,6 +19,9 @@ class ConnectionQuery<In, Node> {
 
   fetchParams: FetchParams;
 
+  // on a GET, the maximum amount of time (seconds) will be considered fresh and we don't need to refetch. we want the front app to not always refetch the data (NB maybe we could use HTTP Cache-Control but this is a simpler take on the problem)
+  cacheMaxAge: number = 120;
+
   // define the URI to hit for the API. can also pass a template function
   uri: string;
 

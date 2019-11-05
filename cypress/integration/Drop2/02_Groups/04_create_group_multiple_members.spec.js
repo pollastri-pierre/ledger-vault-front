@@ -2,7 +2,7 @@ import {
   login,
   logout,
   route,
-  successfull_message,
+  successfull_message2,
 } from "../../../functions/actions";
 
 describe("Test Case for Create Groups with multiple member", function() {
@@ -55,8 +55,16 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("[data-test=group_name]").type("America Ops");
     cy.contains("Next").click();
     cy.get("[data-test=approve_button]").click();
-    cy.wait(2500);
-    successfull_message();
+    cy.get("[data-test=success_msg]").should(
+      "contain",
+      "Group request successfully created!",
+    );
+    cy.get("[data-test=success_msg]").should(
+      "contain",
+      "Your request to create a group has been submitted for approval.",
+    );
+
+    cy.contains("Done").click();
   });
 
   it("Approve America Ops Group", () => {
@@ -66,10 +74,8 @@ describe("Test Case for Create Groups with multiple member", function() {
     login(5);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=0]").click();
-    cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.get("[data-test=close]").click();
+    successfull_message2();
   });
 
   it("Create Group with 5 operators", () => {
@@ -101,7 +107,16 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.contains("Next").click();
     cy.get("[data-test=approve_button]").click();
     cy.wait(2500);
-    successfull_message();
+    cy.get("[data-test=success_msg]").should(
+      "contain",
+      "Group request successfully created!",
+    );
+    cy.get("[data-test=success_msg]").should(
+      "contain",
+      "Your request to create a group has been submitted for approval.",
+    );
+
+    cy.contains("Done").click();
   });
 
   it("Approve Key accounts Ops group", () => {
@@ -111,8 +126,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     login(5);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=0]").click();
-    cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    successfull_message();
+    successfull_message2();
   });
 });

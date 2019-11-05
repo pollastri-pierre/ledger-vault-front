@@ -1,6 +1,5 @@
 // @flow
 import Mutation from "restlay/Mutation";
-import { success } from "formatters/notification";
 import type { ApproveFlowConfigOptions } from "components/DeviceInteraction";
 
 type Input = {
@@ -21,12 +20,6 @@ export default class ApproveRequestMutation extends Mutation<
   method = "POST";
 
   // responseSchema = schema.Member;
-
-  getSuccessNotification = () => {
-    return this.config && this.config.successNotif
-      ? success("request", "created")
-      : null;
-  };
 
   getBody() {
     return {

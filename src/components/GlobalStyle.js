@@ -20,8 +20,6 @@ export default createGlobalStyle`
     font-size: 13px;
     line-height: 20px;
 
-    user-select: none;
-
     & ::selection {
       background: ${colors.legacyTranslucentGrey3};
     }

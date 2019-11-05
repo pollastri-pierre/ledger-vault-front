@@ -1,8 +1,7 @@
 // @flow
 
-import React, { PureComponent } from "react";
-import Animated from "animated/lib/targets/react-dom";
-import Easing from "animated/lib/Easing";
+import React, { useState, useEffect } from "react";
+import { animated, useSpring } from "react-spring";
 import { createPortal } from "react-dom";
 
 import Box from "components/base/Box";
@@ -25,140 +24,76 @@ const modalsContainer = document.createElement("div");
 modalsContainer.classList.add("modals-container");
 const modalRoot = document.body && document.body.appendChild(modalsContainer);
 
-const animShowHide = {
-  duration: 200,
-  easing: Easing.bezier(0.3, 1.0, 0.5, 0.8),
-};
+function Modal(props: ModalProps) {
+  const {
+    isOpened,
+    transparent,
+    onClose,
+    disableBackdropClick,
+    children,
+  } = props;
+  const [isInDOM, setIsInDOM] = useState(false);
 
-type State = {
-  isInDOM: boolean,
-  animShowHide: Animated.Value,
-};
-
-class Modal extends PureComponent<ModalProps, State> {
-  static defaultProps = {
-    centered: true,
-  };
-
-  state = {
-    isInDOM: false,
-    animShowHide: new Animated.Value(0),
-  };
-
-  static getDerivedStateFromProps = (props: ModalProps, state: State) => ({
-    isInDOM: state.isInDOM || props.isOpened,
-  });
-
-  componentDidMount() {
-    if (this.props.isOpened) {
-      this.animateEnter();
+  useEffect(() => {
+    if (!isInDOM && isOpened) {
+      setIsInDOM(true);
     }
+  }, [isOpened, isInDOM]);
 
-    this.state.animShowHide.addListener(({ value }) => {
-      if (value === 0) {
-        const { onHide } = this.props;
-        this.setState({ isInDOM: false });
-        if (onHide) {
-          onHide();
-        }
-      }
-      if (value === 1) this.setState({ isInDOM: true });
-    });
-  }
-
-  componentDidUpdate(prevProps: ModalProps) {
-    const didOpened = !prevProps.isOpened && this.props.isOpened;
-    const didClosed = prevProps.isOpened && !this.props.isOpened;
-
-    if (didOpened) {
-      this.animateEnter();
-    }
-
-    if (didClosed) {
-      this.animateLeave();
-    }
-  }
-
-  animateEnter = () => {
-    Animated.timing(this.state.animShowHide, {
-      ...animShowHide,
-      toValue: 1,
-    }).start();
-  };
-
-  animateLeave = () => {
-    Animated.timing(this.state.animShowHide, {
-      ...animShowHide,
-      toValue: 0,
-    }).start();
-  };
-
-  handleClickOnBackdrop = () => {
-    const { disableBackdropClick, onClose } = this.props;
+  const handleClickOnBackdrop = () => {
     if (!disableBackdropClick && onClose) {
       onClose();
     }
   };
 
-  swallowClick = (e: SyntheticInputEvent<HTMLInputElement>) => {
+  const swallowClick = (e: SyntheticInputEvent<HTMLInputElement>) =>
     e.stopPropagation();
+
+  const backdropStyle = useSpring({
+    ...BACKDROP_STYLE,
+    opacity: isOpened ? 0.7 : 0,
+    config: {
+      tension: 300,
+    },
+  });
+
+  const containerStyle = {
+    ...CONTAINER_STYLE,
+    pointerEvents: isOpened ? "auto" : "none",
   };
 
-  render() {
-    const { isOpened, transparent, children } = this.props;
-    const { isInDOM, animShowHide } = this.state;
+  const bodyWrapperStyle = useSpring({
+    ...BODY_WRAPPER_STYLE,
+    opacity: isOpened ? 1 : 0,
+    transform: `scale(${isOpened ? 1 : 0.95})`,
+    config: {
+      tension: 500,
+      friction: 38,
+    },
+  });
 
-    if (!isInDOM || !modalRoot) return null;
+  if (!modalRoot || !isInDOM) return null;
 
-    const backdropOpacity = animShowHide.interpolate({
-      inputRange: [0, 0.7],
-      outputRange: [0, 1],
-      clamp: true,
-    });
+  const modal = (
+    <>
+      <animated.div data-role="modal-backdrop" style={backdropStyle} />
+      <div style={containerStyle} onClick={handleClickOnBackdrop}>
+        <animated.div style={bodyWrapperStyle}>
+          <ModalDialog>
+            <ModalDialogInner
+              transparent={transparent}
+              onClick={swallowClick}
+              data-role="modal-inner"
+            >
+              <Box grow>{children}</Box>
+            </ModalDialogInner>
+          </ModalDialog>
+        </animated.div>
+      </div>
+    </>
+  );
 
-    const backdropStyle = {
-      ...BACKDROP_STYLE,
-      opacity: backdropOpacity,
-    };
-
-    const containerStyle = {
-      ...CONTAINER_STYLE,
-      pointerEvents: isOpened ? "auto" : "none",
-    };
-
-    const scale = animShowHide.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0.95, 1],
-      clamp: true,
-    });
-
-    const bodyWrapperStyle = {
-      ...BODY_WRAPPER_STYLE,
-      opacity: animShowHide,
-      transform: [{ scale }],
-    };
-
-    const modal = (
-      <>
-        <Animated.div data-role="modal-backdrop" style={backdropStyle} />
-        <div style={containerStyle} onClick={this.handleClickOnBackdrop}>
-          <Animated.div style={bodyWrapperStyle}>
-            <ModalDialog>
-              <ModalDialogInner
-                transparent={transparent}
-                onClick={this.swallowClick}
-                data-role="modal-inner"
-              >
-                <Box grow>{children}</Box>
-              </ModalDialogInner>
-            </ModalDialog>
-          </Animated.div>
-        </div>
-      </>
-    );
-
-    return createPortal(modal, modalRoot);
-  }
+  return createPortal(modal, modalRoot);
 }
 
 const BACKDROP_STYLE = {

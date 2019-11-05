@@ -2,11 +2,13 @@
 
 import React, { PureComponent } from "react";
 import styled from "styled-components";
+import { denormalize } from "normalizr-gre";
 import qs from "query-string";
 import omit from "lodash/omit";
 import type { ObjectParameters } from "query-string";
 import type { MemoryHistory } from "history";
 
+import { getPendingQueryResult, queryCacheIsFresh } from "restlay/dataStore";
 import Mutation from "restlay/Mutation";
 import Spinner from "components/base/Spinner";
 import colors, { darken } from "shared/colors";
@@ -109,8 +111,28 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
     try {
       const query = new Query(queryParams);
-      const response = await minWait(restlay.fetchQuery(query), 500);
-      patch = { status: "idle", response, error: null };
+      const dataStore = restlay.getStore();
+      const dataFromCache =
+        queryCacheIsFresh(dataStore, query) &&
+        getPendingQueryResult(dataStore, query);
+
+      let response;
+      if (!dataFromCache) {
+        response = await minWait(restlay.fetchQuery(query), 500);
+      } else {
+        const r = denormalize(
+          dataFromCache.result,
+          query.getResponseSchema(),
+          dataStore.entities,
+        );
+
+        response = await Promise.resolve(r);
+      }
+      patch = {
+        status: "idle",
+        response,
+        error: null,
+      };
     } catch (error) {
       patch = { status: "error", error };
     } finally {

@@ -3,6 +3,7 @@
 import React from "react";
 import type { Match } from "react-router-dom";
 
+import { useMe } from "components/UserContextProvider";
 import AccountWarning from "containers/Account/AccountWarning";
 import ResponsiveContainer from "components/base/ResponsiveContainer";
 import type { Account } from "data/types";
@@ -23,9 +24,10 @@ type Props = {
 
 function AccountView(props: Props) {
   const { account } = props;
+  const me = useMe();
   return (
     <Box flow={20} key={account.id}>
-      <AccountWarning account={account} />
+      <AccountWarning account={account} me={me} />
       <ResponsiveContainer>
         <Box flow={20} grow>
           <AccountQuickInfoWidget account={account} />

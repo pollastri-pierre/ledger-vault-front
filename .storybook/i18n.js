@@ -8,8 +8,6 @@ const resources = req.keys().reduce((result, file) => {
   return result;
 }, {});
 
-console.log(resources);
-
 i18n.init({
   lng: "en",
   fallbackLng: "en",

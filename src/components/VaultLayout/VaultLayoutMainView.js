@@ -7,7 +7,6 @@ import { vaultLayoutConfig } from "styles/theme";
 
 const VaultLayoutMainView = styled.div`
   position: relative;
-  z-index: 2;
   flex-grow: 1;
 
   padding: 0 20px 20px 20px;

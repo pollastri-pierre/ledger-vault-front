@@ -15,6 +15,7 @@ export type Transaction = {
   estimatedMaxAmount: ?BigNumber,
   feeLevel: Speed,
   label: string,
+  error: ?Error,
   note: TransactionCreationNote,
 };
 
@@ -52,6 +53,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     estimatedMaxAmount: null,
     feeLevel: "normal",
     label: "",
+    error: null,
     note: {
       title: "",
       content: "",
@@ -77,6 +79,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     estimatedMaxAmount: null,
   }),
 
+  getTransactionError: (a: Account, t: Transaction) => t.error,
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
 
   editTransactionRecipient: (

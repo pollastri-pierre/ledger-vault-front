@@ -4,7 +4,7 @@ import {
   route,
   create_account,
   success_creation_account,
-  successfull_message,
+  successfull_message2,
 } from "../../../functions/actions";
 
 describe("Test Case for Account", function() {
@@ -32,10 +32,9 @@ describe("Test Case for Account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
-    cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(3500);
-    successfull_message();
+    cy.wait(2500);
+    successfull_message2();
   });
 
   it("Create Ethereum Ropsten Account", () => {
@@ -59,9 +58,8 @@ describe("Test Case for Account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
-    cy.wait(2000);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(2500);
-    successfull_message();
+    cy.wait(3500);
+    successfull_message2();
   });
 });

@@ -29,6 +29,7 @@ export interface WalletBridge<Transaction> {
   ): Transaction;
 
   getTransactionRecipient(account: Account, transaction: Transaction): string;
+  getTransactionError(account: Account, transaction: Transaction): ?Error;
   getFees(account: Account, transaction: Transaction): ?BigNumber;
   getMaxAmount?: (account: Account, transaction: Transaction) => ?BigNumber;
   getTotalSpent(account: Account, transaction: Transaction): BigNumber;

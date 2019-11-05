@@ -112,11 +112,11 @@ export function create_user(username, userID, role) {
   cy.contains("Done").click();
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "User Invitation was successfully created!",
+    "User invitation request successfully created!",
   );
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Your request to create a user invitation was created. It can be now communicated to the user.",
+    "You can now share the registration URL with the new user.",
   );
   cy.get("[data-test=close]").click();
 }
@@ -141,11 +141,24 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.wait(2500);
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Group Request was successfully created!",
+    "Group request successfully created!",
   );
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+    "Your request to create a group has been submitted for approval.",
+  );
+
+  cy.contains("Done").click();
+}
+
+export function successfull_msg_gp() {
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Group request successfully created!",
+  );
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Your request to update this group has been submitted for approval.",
   );
 
   cy.contains("Done").click();
@@ -158,6 +171,14 @@ export function successfull_message() {
     .contains("request created");
 }
 
+export function successfull_message2() {
+  cy.get("[data-test=successfull_message]").should(
+    "contain",
+    "The request has been successfully approved",
+  );
+  cy.get("[data-test=done_button]").click();
+}
+
 export function error_message(title, message) {
   cy.get("[data-test=error-message-title]")
     .contains(title)
@@ -168,11 +189,34 @@ export function error_message(title, message) {
 export function success_creation_account() {
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Account creation request was successfully created!",
+    "Account request successfully created!",
   );
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Your request to create an account was created and now it has a pending status until it is approved by your security scheme",
+    "Your request to create an account has been submitted for approval.",
+  );
+  cy.contains("Done").click();
+}
+export function success_edit_account() {
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Account request successfully created!",
+  );
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Your request to edit an account has been submitted for approval.",
+  );
+  cy.contains("Done").click();
+}
+
+export function success_tx() {
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Transaction request successfully created!",
+  );
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Your request to create a transaction has been submitted for approval.",
   );
   cy.contains("Done").click();
 }

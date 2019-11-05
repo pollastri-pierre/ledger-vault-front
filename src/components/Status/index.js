@@ -11,13 +11,13 @@ import colors, { darken } from "shared/colors";
 import type { Translate } from "data/types";
 
 const BG_BY_STATUS = {
-  ABORTED: colors.paleRed,
-  REVOKED: colors.paleRed,
-  ACCESS_SUSPENDED: colors.paleRed,
-  DELETED: colors.paleRed,
+  ABORTED: colors.palePink,
+  REVOKED: colors.palePink,
+  ACCESS_SUSPENDED: colors.palePink,
+  DELETED: colors.palePink,
+  CREATION_ABORTED: colors.palePink,
   BLOCKED: colors.argile,
   EXPIRED: colors.argile,
-  CREATION_ABORTED: colors.paleRed,
   APPROVED: colors.paleGreen,
   SUBMITTED: colors.paleGreen,
   ACTIVE: colors.paleGreen,
@@ -36,11 +36,20 @@ const BG_BY_STATUS = {
 
   // Derived statuses
   DERIVED_TX_CONFIRMED: colors.paleGreen,
-  DERIVED_TX_UNCONFIRMED: colors.paleRed,
+  DERIVED_TX_UNCONFIRMED: colors.palePink,
+};
+
+const CUSTOM_COLOR = {
+  ABORTED: darken(colors.paleRed, 0.7),
+  REVOKED: darken(colors.paleRed, 0.7),
+  ACCESS_SUSPENDED: darken(colors.paleRed, 0.7),
+  DELETED: darken(colors.paleRed, 0.7),
+  CREATION_ABORTED: darken(colors.paleRed, 0.7),
+  DERIVED_TX_UNCONFIRMED: darken(colors.paleRed, 0.7),
 };
 
 function getColorByBg(status: any) {
-  return darken(BG_BY_STATUS[status], 0.7) || "inherit";
+  return CUSTOM_COLOR[status] || darken(BG_BY_STATUS[status], 0.7);
 }
 
 type Props = {
