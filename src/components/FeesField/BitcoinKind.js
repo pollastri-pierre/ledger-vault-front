@@ -85,6 +85,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
           ...transaction,
           estimatedFees: estimatedFees.fees,
           estimatedMaxAmount: estimatedFees.max_amount,
+          error: null,
         });
       } catch (err) {
         if (nonce !== this.nonce) return;
@@ -92,21 +93,14 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
         const error = remapError(err);
         console.error(err); // eslint-disable-line no-console
 
-        if (error instanceof AmountTooHigh) {
-          // HACK: to make the amount input display the correct error,
-          // we put the fees to account balance...
-          onChangeTransaction({
-            ...transaction,
-            estimatedFees: account.balance,
-            estimatedMaxAmount: null,
-          });
-          this.setState(() => ({ error }));
-        } else {
-          onChangeTransaction({
-            ...transaction,
-            estimatedFees: null,
-            estimatedMaxAmount: null,
-          });
+        onChangeTransaction({
+          ...transaction,
+          error,
+          estimatedFees: null,
+          estimatedMaxAmount: null,
+        });
+
+        if (!(error instanceof AmountTooHigh)) {
           this.setState(() => ({ error }));
         }
       } finally {
@@ -142,15 +136,11 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
       bridge.getTransactionFeeLevel &&
       bridge.getTransactionFeeLevel(account, transaction);
 
-    // HACK: because we receive an error when trying to fetch the
-    // fees with a too high amount, we need to identify this error
-    // and not display it in the fees error field.. (it should be
-    // displayed in the amount field)
-    const hasHackAmountTooHigh = error && error instanceof AmountTooHigh;
-
-    const shouldDisplayFeesField =
-      !hasHackAmountTooHigh &&
-      !!(status === "fetching" || transaction.estimatedFees || error);
+    const shouldDisplayFeesField = !!(
+      status === "fetching" ||
+      transaction.estimatedFees ||
+      error
+    );
 
     return (
       <Box horizontal flow={20}>
