@@ -91,15 +91,19 @@ const DisplayWhitelist = (props: {
   <div style={{ lineHeight: 2.5 }}>
     <div>
       <strong>Whitelist</strong>
+      {" - Allowed recipients:"}
     </div>
-    {"Allowed recipients: "}
     {props.value.data.map(v => {
       if (!props.extraProps) return;
       const { whitelists } = props.extraProps;
       const whitelist = whitelists.find(w => w.id === v);
       if (!whitelist) return;
       return (
-        <Badge Icon={FaRegFileAlt} key={whitelist.id}>
+        <Badge
+          Icon={FaRegFileAlt}
+          key={whitelist.id}
+          style={{ marginRight: 5 }}
+        >
           {whitelist.name}
         </Badge>
       );
