@@ -348,7 +348,7 @@ export function genTransactions(nb, { accounts, users }) {
 export function genAddress() {
   return {
     id: faker.random.number({ min: 1, max: 1000000000 }),
-    currency: genCurrency(),
+    currency: genCurrency().id,
     address: faker.random.alphaNumeric(40),
     name: faker.random.alphaNumeric(10),
   };

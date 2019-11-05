@@ -66,6 +66,8 @@ class Users extends PureComponent<Props> {
       );
     } else if (request.target_type === "ORGANIZATION") {
       this.props.history.push(`tasks/organization/details/${request.id}`);
+    } else if (request.target_type === "WHITELIST") {
+      this.props.history.push(`tasks/whitelists/details/${request.target_id}`);
     }
   };
 

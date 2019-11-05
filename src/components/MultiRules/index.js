@@ -151,4 +151,10 @@ function findNewActiveIndex(arr, activeIndex, oldIndex, newIndex) {
   return i;
 }
 
+MultiRules.defaultProps = {
+  users: [],
+  groups: [],
+  whitelists: [],
+  onChange: () => {},
+};
 export default MultiRules;

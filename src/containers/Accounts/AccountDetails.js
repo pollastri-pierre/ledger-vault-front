@@ -39,6 +39,7 @@ function AccountDetails(props: Props) {
       title={account.name}
       onClose={close}
       editURL={`/accounts/edit/${account.id}`}
+      customWidth={680}
       disableEdit={hasPendingTransactions || hasPendingEditGroup}
     >
       <AccountOverview

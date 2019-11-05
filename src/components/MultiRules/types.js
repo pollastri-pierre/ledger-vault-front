@@ -1,7 +1,7 @@
 // @flow
 
 import type { BigNumber } from "bignumber.js";
-import type { Group } from "data/types";
+import type { Group, Whitelist } from "data/types";
 
 export type RuleType = "MULTI_AUTHORIZATIONS" | "WHITELIST" | "THRESHOLD";
 
@@ -24,7 +24,7 @@ export type RuleMultiAuthStep = {|
 
 export type RuleWhitelist = {|
   type: "WHITELIST",
-  data: number[],
+  data: Array<number | Whitelist>,
 |};
 
 export type RuleThreshold = {|

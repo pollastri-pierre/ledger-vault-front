@@ -96,7 +96,12 @@ const DisplayWhitelist = (props: {
     {props.value.data.map(v => {
       if (!props.extraProps) return;
       const { whitelists } = props.extraProps;
-      const whitelist = whitelists.find(w => w.id === v);
+      let whitelist;
+      if (typeof v === "number") {
+        whitelist = whitelists.find(w => w.id === v);
+      } else {
+        whitelist = v;
+      }
       if (!whitelist) return;
       return (
         <Badge

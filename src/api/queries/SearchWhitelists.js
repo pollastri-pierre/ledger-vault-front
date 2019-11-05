@@ -13,7 +13,7 @@ type Node = Whitelist;
 
 const uri = (query: In) => {
   const q = queryString.stringify(query);
-  return `/whitelists-mocks{q ? "?" : ""}${q}`;
+  return `/whitelists${q ? "?" : ""}${q}`;
 };
 
 export default class WhitelistsQuery extends ConnectionQuery<In, Node> {

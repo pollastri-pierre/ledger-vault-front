@@ -61,9 +61,7 @@ export const WhitelistDetails = (props: WhitelistDetailsProps) => {
                 key={addr.id}
               >
                 <Box horizontal flow={10}>
-                  {addr.currency && (
-                    <AccountIcon currencyId={addr.currency.id} />
-                  )}
+                  {addr.currency && <AccountIcon currencyId={addr.currency} />}
                   <Text size="small" uppercase color={colors.shark}>
                     {addr.name}
                   </Text>

@@ -124,6 +124,8 @@ export function navigateToRequest(
     );
   } else if (request.target_type === "ORGANIZATION") {
     history.push(`dashboard/organization/details/${request.id}`);
+  } else if (request.target_type === "WHITELIST") {
+    history.push(`dashboard/whitelists/details/${request.target_id}`);
   }
 }
 

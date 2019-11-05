@@ -1,7 +1,6 @@
 // @flow
 
 import type { BigNumber } from "bignumber.js";
-import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import type { RulesSet } from "components/MultiRules/types";
 
 // This contains all the flow types for the Data Model (coming from the API)
@@ -114,7 +113,7 @@ export type Approval = {
 
 export type Address = {
   id: number,
-  currency: CryptoCurrency,
+  currency: string,
   address: string,
   name: string,
 };
