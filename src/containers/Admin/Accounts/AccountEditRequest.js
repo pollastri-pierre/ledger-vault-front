@@ -48,18 +48,20 @@ function AccountEditRequest(props: Props) {
   const oldRules = isAccountMigration ? null : tx_approval_steps;
   const hasNameChanged = editData && account.name !== editData.name;
 
-  const haveRulesChanged =
-    newRules && oldRules && haveRulesChangedDiff(newRules, oldRules);
+  const haveRulesChanged = haveRulesChangedDiff(newRules, oldRules);
+
   return (
     <Box flow={10} horizontal justify="space-between">
       <DiffBlock
         name={hasNameChanged ? account.name : null}
         rules={haveRulesChanged ? oldRules : null}
+        haveRulesChanged={haveRulesChanged}
         type="current"
       />
       <DiffBlock
         name={hasNameChanged && editData ? editData.name : null}
         rules={haveRulesChanged ? newRules : null}
+        haveRulesChanged={haveRulesChanged}
         type="proposed"
       />
     </Box>
@@ -84,9 +86,10 @@ type DiffBlockProps = {
   name: ?string,
   rules: ?TxApprovalStepCollection,
   type: string,
+  haveRulesChanged: ?boolean,
 };
 function DiffBlock(props: DiffBlockProps) {
-  const { name, rules, type } = props;
+  const { name, rules, type, haveRulesChanged } = props;
   return (
     <Box
       bg={
@@ -119,7 +122,7 @@ function DiffBlock(props: DiffBlockProps) {
           <Text>{name}</Text>
         </Box>
       )}
-      {rules && (
+      {haveRulesChanged && (
         <Box mb={20}>
           <Text fontWeight="bold" i18nKey="entityModal:diff.rules" />
           <RulesViewer rules={rules} />

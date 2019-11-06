@@ -99,7 +99,7 @@ const CheckMigration = (props: Props) => {
         </Box>
         {isFinished && (
           <Box height={40} position="relative">
-            <Absolute top={20} right={20}>
+            <Absolute top={20} right={0}>
               <Button type="filled" onClick={onClose}>
                 <Text>Access the Vault</Text>
               </Button>
