@@ -22,6 +22,7 @@ initialRulesSets[0].rules[1].data[0].group = {
 
 initialRulesSets[0].rules[1].data[1].group = groups[0];
 initialRulesSets[0].rules[1].data[2].group = groups[1];
+initialRulesSets[0].rules[0].data.push(whitelists[0].id);
 
 /* eslint-disable no-unused-vars */
 const emptyRulesSets = [
