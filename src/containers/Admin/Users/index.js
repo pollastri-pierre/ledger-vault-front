@@ -6,9 +6,8 @@ import SearchUsersQuery from "api/queries/SearchUsers";
 
 import { UsersTable } from "components/Table";
 import { UsersFilters } from "components/filters";
-import Box from "components/base/Box";
 import Text from "components/base/Text";
-import AddLink from "components/base/AddLink";
+import PageHeaderActions from "components/base/PageHeaderActions";
 import DataSearch from "components/DataSearch";
 import InviteUserMutation from "api/mutations/InviteUserMutation";
 import UpdateUserRegistrationMutation from "api/mutations/UpdateUserRegistrationMutation";
@@ -41,28 +40,25 @@ class Users extends PureComponent<Props> {
     this.props.history.push("users/new");
   };
 
-  ActionComponent = () => (
-    <Box noShrink>
-      <AddLink
-        onClick={this.inviteUser}
-        title={<Text i18nKey="inviteUser:inviteLink" />}
-      />
-    </Box>
-  );
-
   render() {
     const { history } = this.props;
 
     return (
-      <DataSearch
-        Query={SearchUsersQuery}
-        TableComponent={UsersTable}
-        FilterComponent={UsersFilters}
-        ActionComponent={this.ActionComponent}
-        history={history}
-        onRowClick={this.handleUserClick}
-        listenMutations={mutationsToListen}
-      />
+      <>
+        <PageHeaderActions
+          onClick={this.inviteUser}
+          title={<Text i18nKey="menu:admin.users" />}
+          label={<Text i18nKey="inviteUser:inviteLink" />}
+        />
+        <DataSearch
+          Query={SearchUsersQuery}
+          TableComponent={UsersTable}
+          FilterComponent={UsersFilters}
+          history={history}
+          onRowClick={this.handleUserClick}
+          listenMutations={mutationsToListen}
+        />
+      </>
     );
   }
 }

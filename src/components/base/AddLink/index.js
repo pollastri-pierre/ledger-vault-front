@@ -1,23 +1,25 @@
 // @flow
 
 import React from "react";
-import Tooltip from "@material-ui/core/Tooltip";
 import { FaPlus } from "react-icons/fa";
 
 import Button from "components/base/Button";
+import Text from "components/base/Text";
+import Box from "components/base/Box";
 
-const Icon = () => <FaPlus size={12} />;
+const Icon = () => <FaPlus size={10} />;
 
 export default ({
   onClick,
-  title,
+  label,
 }: {
   onClick: () => void,
-  title: React$Node,
+  label: React$Node,
 }) => (
-  <Tooltip title={title} placement="left">
-    <Button type="filled" circular data-test="add-button" onClick={onClick}>
+  <Button size="slim" type="filled" data-test="add-button" onClick={onClick}>
+    <Box horizontal flow={5} justify="center" align="center">
       <Icon />
-    </Button>
-  </Tooltip>
+      <Text>{label}</Text>
+    </Box>
+  </Button>
 );

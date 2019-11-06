@@ -13,6 +13,7 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
+import { remapError, AmountTooHigh } from "utils/errors";
 import Spinner from "components/base/Spinner";
 import TranslatedError from "components/TranslatedError";
 import Box from "components/base/Box";
@@ -57,7 +58,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
       bridge,
     } = this.props;
 
-    this.setState({ error: null });
+    this.setState(() => ({ error: null }));
     if (transaction.amount.isEqualTo(0)) return null;
     const feeLevel =
       bridge.getTransactionFeeLevel &&
@@ -71,7 +72,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
     );
     if (nonce !== this.nonce) return;
     if (!recipientError) {
-      this.setState({ status: "fetching" });
+      this.setState(() => ({ status: "fetching" }));
       try {
         const txGetFees = {
           fees_level: feeLevel || "normal",
@@ -84,18 +85,26 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
           ...transaction,
           estimatedFees: estimatedFees.fees,
           estimatedMaxAmount: estimatedFees.max_amount,
+          error: null,
         });
       } catch (err) {
-        console.error(err); // eslint-disable-line no-console
-        this.setState({ error: err });
         if (nonce !== this.nonce) return;
+
+        const error = remapError(err);
+        console.error(err); // eslint-disable-line no-console
+
         onChangeTransaction({
           ...transaction,
+          error,
           estimatedFees: null,
           estimatedMaxAmount: null,
         });
+
+        if (!(error instanceof AmountTooHigh)) {
+          this.setState(() => ({ error }));
+        }
       } finally {
-        this.setState({ status: "idle" });
+        this.setState(() => ({ status: "idle" }));
       }
     }
   }
@@ -126,14 +135,16 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
     const feeLevel =
       bridge.getTransactionFeeLevel &&
       bridge.getTransactionFeeLevel(account, transaction);
+
     const shouldDisplayFeesField = !!(
       status === "fetching" ||
       transaction.estimatedFees ||
       error
     );
+
     return (
       <Box horizontal flow={20}>
-        <Box width={370} noShrink>
+        <Box noShrink>
           <Label>
             <Trans i18nKey="send:details.fees.title" />
           </Label>
@@ -169,7 +180,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
             ) : status === "fetching" ? (
               <Spinner />
             ) : (
-              <Text small uppercase>
+              <Text size="small" uppercase>
                 <CurrencyAccountValue
                   account={account}
                   value={BigNumber(transaction.estimatedFees)}
@@ -177,6 +188,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>, State> {
                 <span>
                   {" ("}
                   <CounterValue
+                    smallerInnerMargin
                     value={transaction.estimatedFees}
                     from={account.currency}
                   />

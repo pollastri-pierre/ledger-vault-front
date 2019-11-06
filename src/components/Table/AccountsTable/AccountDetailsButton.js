@@ -12,6 +12,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import { FaEllipsisV } from "react-icons/fa";
 
+import { OpenExternal } from "components/Table/TableBase";
+import Box from "components/base/Box";
 import { EDIT_ALLOWED_STATUS } from "components/EntityModal";
 import type { Account } from "data/types";
 
@@ -58,13 +60,18 @@ function AccountTableSubmenu(props: Props) {
     !hasPendingReq;
 
   return (
-    <div>
+    <Box horizontal>
+      <OpenExternal
+        url={`/accounts/view/${account.id}`}
+        tooltipTitle={<Trans i18nKey="entityModal:edit" />}
+        tooltipPlacement="bottom"
+      />
       <Btn
         aria-controls={account.id}
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <FaEllipsisV />
+        <FaEllipsisV size={14} />
       </Btn>
       <Menu
         id={account.id}
@@ -82,7 +89,7 @@ function AccountTableSubmenu(props: Props) {
           </StyledMenuItem>
         )}
       </Menu>
-    </div>
+    </Box>
   );
 }
 

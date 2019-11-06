@@ -6,6 +6,8 @@
 #                   ╚██╗ ██╔╝██╔══██║██║   ██║██║     ██║
 #                    ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║
 #                     ╚═══╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝
+#
+#                       General purpose dev utility
 
 # exit on errors
 set -e
@@ -14,25 +16,53 @@ set -e
 VAULT_WORKSPACE=${VAULT_WORKSPACE:-$HOME/.vault}
 
 function usage() {
-  echo "usage:"
-  echo "  vault -h                             display this help message."
-  echo "  vault -e                             display vault env"
-  echo "  vault                                start vault-integration"
-  echo "  vault -i <scenario> [...scenarios]   init and start vault-integration, and eventually run given scenario(s)"
-  echo "  vault -s <scenario> [...scenarios]   run given scenario(s)"
+  echo -e "\033[2m"
+  echo "    \`8.\`888b           ,8' .8.       8 8888      88 8 8888   8888888 8888888888"
+  echo "     \`8.\`888b         ,8' .888.      8 8888      88 8 8888         8 8888      "
+  echo "      \`8.\`888b       ,8' :88888.     8 8888      88 8 8888         8 8888      "
+  echo "       \`8.\`888b     ,8' . \`88888.    8 8888      88 8 8888         8 8888      "
+  echo "        \`8.\`888b   ,8' .8. \`88888.   8 8888      88 8 8888         8 8888      "
+  echo "         \`8.\`888b ,8' .8\`8. \`88888.  8 8888      88 8 8888         8 8888      "
+  echo "          \`8.\`888b8' .8' \`8. \`88888. 8 8888      88 8 8888         8 8888      "
+  echo "           \`8.\`888' .8'   \`8. \`88888.\` 8888     ,8P 8 8888         8 8888      "
+  echo "            \`8.\`8' .888888888. \`88888. 8888   ,d8P  8 8888         8 8888      "
+  echo "             \`8.\` .8'       \`8. \`88888. \`Y88888P'   8 888888888888 8 8888      "
   echo ""
-  echo "available scenarios are:"
+  echo -e "\033[0m"
+
+  echo -e "\033[1m=> HELP COMMANDS\033[0m"
+  echo ""
+  echo "   yarn vault -h                                 display this help message."
+  echo "   yarn vault -e                                 display vault env"
+
+  echo ""
+  echo -e "\033[1m=> RUN & MANAGE BACKEND\033[0m"
+  echo ""
+  echo "   yarn vault                                    start (or restart) vault backend on previous state"
+  echo "   yarn vault -i                                 reset & restart vault backend"
+  echo -e "   yarn vault -i \033[34m<scenario> [...scenarios]\033[39m       reset vault backend and run given scenario(s)"
+  echo -e "   yarn vault -s \033[34m<scenario> [...scenarios]\033[39m       only run given scenario(s)"
+  echo ""
+  echo "  => Available scenarios are:"
+  echo ""
   list_scenarios
+
+  echo ""
+  echo -e "\033[1m=> MANAGE FIRMWARE & APPS ON BLUE DEVICE\033[0m"
+  echo ""
+  echo -e "   yarn vault -f \033[33m<prev-firm> <next-firm>\033[39m         install firmware on Blue device"
+  echo -e "                                                 \033[2me.g: yarn vault -f 2.2.4-ee 2.2.5-eed\033[0m"
+  echo ""
 }
 
 function main () {
-  create_default_scenarios
+  copy_scenarios
 
   SHOULD_RESET=0
   SHOULD_RUN=0
   ONLY_SCENARIO=0
 
-  while getopts ":heis" opt; do
+  while getopts ":heisf" opt; do
     case ${opt} in
       e )
         display_env
@@ -49,6 +79,10 @@ function main () {
       s )
         SHOULD_RUN=1
         ONLY_SCENARIO=1
+        ;;
+      f )
+        install_firmware "$2" "$3"
+        exit 0
         ;;
       \? )
         echo "invalid option: -$OPTARG. see vault -h" 1>&2
@@ -137,7 +171,7 @@ function sync_containers() {
 }
 
 function wait_up_gate() {
-  printf "\e[34m- waiting for gate... \e[0m"
+  printf "\033[34m- waiting for gate... \033[0m"
   while true; do
     if curl --connect-timeout 1 http://localhost:5000/ledger1/_health &>/dev/null ; then
       break
@@ -147,7 +181,7 @@ function wait_up_gate() {
   done
 
   # TODO we should not be forced to do that
-  printf "\n\e[34m- additional waiting time for gate to wake up... \e[0m"
+  printf "\n\033[34m- additional waiting time for gate to wake up... \033[0m"
   sleep 10
 
   echo "[OK]"
@@ -177,31 +211,26 @@ function ensure_env_fetched() {
   sync_repo ledger-vault-api          "$VAULT_API_VERSION"
 }
 
-function create_default_scenarios() {
+function copy_scenarios() {
   mkdir -p "$VAULT_WORKSPACE/scenarios"
-  echo "$SCENARIO_ONBOARDING" > "$VAULT_WORKSPACE/scenarios/onboarding"
-  echo "$SCENARIO_STATE_1" > "$VAULT_WORKSPACE/scenarios/state-1"
-  cp scripts/scenarios/real-world "$VAULT_WORKSPACE/scenarios/real-world"
-  cp scripts/scenarios/qa-setup "$VAULT_WORKSPACE/scenarios/qa-setup"
-  cp scripts/scenarios/lot-of-accounts "$VAULT_WORKSPACE/scenarios/lot-of-accounts"
-  cp scripts/scenarios/unrealistic-lot-of-accounts "$VAULT_WORKSPACE/scenarios/unrealistic-lot-of-accounts"
+  cp scripts/scenarios/* "$VAULT_WORKSPACE/scenarios"
 }
 
 function list_scenarios() {
   for filename in "$VAULT_WORKSPACE"/scenarios/*; do
-    printf "  %-22s%s\n" "$(basename "$filename")" "$(cat "$filename" | grep DESC | sed 's/^# DESC //g')"
+    printf "     \033[34m%-22s\033[39m%s\n" "$(basename "$filename")" "$(grep DESC "$filename" | sed 's/^# DESC //g')"
   done
 }
 
 function ensure_set() {
   if [[ "${!1}" == "" ]]; then
-    printf "\e[31merror: \$%s is not set\e[0m\n" "$1"
+    printf "\033[31merror: \$%s is not set\033[0m\n" "$1"
     exit 1
   fi
 }
 
 function sync_repo() {
-  printf "\e[34m- syncing %s on branch \e[35m%s\e[34m... \e[0m" "$1" "$2"
+  printf "\033[34m- syncing %s on branch \033[35m%s\033[34m... \033[0m" "$1" "$2"
   cd "$VAULT_WORKSPACE"
   if ! [[ -d "$1" ]]; then
     git clone "git@github.com:LedgerHQ/$1.git" >/dev/null
@@ -225,27 +254,53 @@ function show_env() {
   printf "%-25s\033[%sm%s\033[0m\n" "$1" "$2" "${!1}"
 }
 
-read -r -d '' SCENARIO_ONBOARDING << EOF || true
-# DESC Simple onboarding. Fresh start. 3 admins.
+function install_firmware() {
+  CURRENT_FIRMWARE=$1
+  EXPECTED_FIRMWARE=$2
+  [[ "$CURRENT_FIRMWARE" == "" ]] && echo "No current firm given" && exit 1
+  [[ "$EXPECTED_FIRMWARE" == "" ]] && echo "No expected firm given" && exit 1
+  echo ""
+  echo -e "\033[1m=> About to upgrade \033[33;1m$CURRENT_FIRMWARE\033[39;1m into \033[33;1m$EXPECTED_FIRMWARE\033[0m"
+  echo ""
+  cd "$VAULT_WORKSPACE"
+  if ! [[ -d ledgerblue ]]; then
+    virtualenv ledgerblue
+    # shellcheck disable=SC1091
+    source ledgerblue/bin/activate
+    pip install ledgerblue
+  else
+    # shellcheck disable=SC1091
+    source ledgerblue/bin/activate
+  fi
 
-python test_onboarding.py
-EOF
+  # shellcheck disable=SC2001
+  EXPECTED_FIRMWARE_SANITIZED=$(echo "$EXPECTED_FIRMWARE" | sed 's/-/_/g')
 
-read -r -d '' SCENARIO_STATE_1 << EOF || true
-# DESC Create & approve 12 operators.
+  echo "installing osu..."
+  do_install_firm "blue/${EXPECTED_FIRMWARE}/fw_${CURRENT_FIRMWARE}/upgrade_osu_${EXPECTED_FIRMWARE_SANITIZED}"
 
-python test_user_creation.py --user 3 --approve
-python test_user_creation.py --user 4 --approve
-python test_user_creation.py --user 5 --approve
-python test_user_creation.py --user 6 --approve
-python test_user_creation.py --user 7 --approve
-python test_user_creation.py --user 8 --approve
-python test_user_creation.py --user 9 --approve
-python test_user_creation.py --user 10 --approve
-python test_user_creation.py --user 11 --approve
-python test_user_creation.py --user 12 --approve
-python test_user_creation.py --user 13 --approve
-python test_user_creation.py --user 14 --approve
-EOF
+  echo "-------------------"
+  echo "DEVICE IS REBOOTING"
+  echo "-------------------"
+  read -r -p "Press enter to continue when device is up"
+
+  echo "installing firm..."
+  do_install_firm "blue/${EXPECTED_FIRMWARE}/fw_${CURRENT_FIRMWARE}/upgrade_${EXPECTED_FIRMWARE_SANITIZED}"
+
+  echo ""
+  echo "Finished. Congratz."
+}
+
+function do_install_firm() {
+  FIRM_TO_INST=$1
+  python \
+    -m ledgerblue.updateFirmware \
+    --perso perso_11 \
+    --url https://persov2.hsm.ledger.com/processUnsecured \
+    --targetId 0x31010004 \
+    --firmware "$FIRM_TO_INST" \
+    --firmwareKey "${FIRM_TO_INST}_key" \
+    --apdu
+}
 
 main "$@"

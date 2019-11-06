@@ -18,10 +18,11 @@ export default function<T>(
   fetchParams: Object,
 ): Promise<T> {
   const token = tokenParam || getCookieToken();
+  const noJson = !!fetchParams && !!fetchParams.noJson;
+  const noParse = !!fetchParams && !!fetchParams.noParse;
   const headers = {
     Accept: "application/json",
-    "Content-Type":
-      !fetchParams || !fetchParams.noJson ? "application/json" : "text/plain",
+    "Content-Type": !fetchParams || !noJson ? "application/json" : "text/plain",
     ...(token ? { "X-Ledger-Auth": token } : {}),
   };
   const options: Object = { headers, method };
@@ -46,7 +47,8 @@ export default function<T>(
         )
         .then(e => Promise.reject(e));
     }
-    return response.json();
+    // $FlowFixMe
+    return noParse ? response : response.json();
   });
 }
 

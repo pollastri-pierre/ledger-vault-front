@@ -18,14 +18,14 @@ import EntityStatus from "components/EntityStatus";
 import RequestTitle from "components/RequestTitle";
 import colors from "shared/colors";
 import { getCurrentStepProgress } from "utils/request";
-import type { Request, Account } from "data/types";
+import type { GenericRequest, Account } from "data/types";
 
 import { List, ListEmpty, ListItem } from "./List";
 
 type Props = {
   emptyState: React$Node,
-  requests: Request[],
-  onRequestClick: Request => void,
+  requests: GenericRequest[],
+  onRequestClick: GenericRequest => void,
   dataTest?: string,
 };
 
@@ -51,8 +51,8 @@ export default function RequestsList(props: Props) {
 }
 
 type RequestCardProps = {
-  request: Request,
-  onClick: Request => void,
+  request: GenericRequest,
+  onClick: GenericRequest => void,
   dataTest: number,
 };
 
@@ -93,7 +93,7 @@ function RequestCard(props: RequestCardProps) {
 export function TransactionCreationRequestTitle({
   request,
 }: {
-  request: Request,
+  request: GenericRequest,
 }) {
   const { transaction } = request;
   if (!transaction) return null;

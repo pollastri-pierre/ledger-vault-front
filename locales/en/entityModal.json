@@ -10,5 +10,16 @@
     "details": "Details",
     "permissions": "Access & permissions",
     "note": "Note"
+  },
+  "successMessage": "The request has been successfully {{action}}",
+  "actionType": {
+    "rejected": "rejected",
+    "approved": "approved"
+  },
+  "diff": {
+    "after": "after",
+    "before": "before",
+    "name": "Name",
+    "rules": "Rules"
   }
 }

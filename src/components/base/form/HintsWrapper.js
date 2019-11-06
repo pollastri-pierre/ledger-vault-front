@@ -31,7 +31,7 @@ function HintsWrapper(props: Props) {
             <Box position="relative" key={key} horizontal flow={5} noShrink>
               <Ball status={status} />
               <Text
-                small
+                size="small"
                 color={status === "unchecked" ? colors.textLight : undefined}
               >
                 {displayedLabel}

@@ -7,7 +7,7 @@ import type { MemoryHistory } from "history";
 import { withMe } from "components/UserContextProvider";
 import RequestsQuery from "api/queries/RequestsQuery";
 import type { Connection } from "restlay/ConnectionQuery";
-import type { Request, User } from "data/types";
+import type { GenericRequest, User } from "data/types";
 import { RequestsList } from "components/lists";
 import Box from "components/base/Box";
 import {
@@ -20,7 +20,7 @@ import {
 import Widget, { connectWidget } from "./Widget";
 
 type Props = {
-  data: Connection<Request>,
+  data: Connection<GenericRequest>,
   history: MemoryHistory,
   me: User,
 };
@@ -48,7 +48,7 @@ function RequestsWidget(props: Props) {
       !isUserInCurrentStep(request, me),
   );
 
-  const handleRequestClick = (request: Request) =>
+  const handleRequestClick = (request: GenericRequest) =>
     navigateToRequest(request, props.history);
 
   const prefix = isAdmin ? "adminDashboard" : "operatorDashboard";

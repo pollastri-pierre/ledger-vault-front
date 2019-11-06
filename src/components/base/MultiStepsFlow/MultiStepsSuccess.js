@@ -21,11 +21,11 @@ export default function MultiStepsSuccess(props: Props) {
         <Check color={colors.green} size={40} />
       </SuccessIconWrapper>
       <Box flow={10} align="center" data-test="success_msg" justify="center">
-        <Text header bold>
+        <Text size="header" fontWeight="bold" textAlign="center">
           {title}
         </Text>
         {desc && (
-          <Text large textAlign="center">
+          <Text size="large" textAlign="center">
             {desc}
           </Text>
         )}

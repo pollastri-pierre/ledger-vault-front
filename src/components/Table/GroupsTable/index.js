@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 
 import MUITableBody from "@material-ui/core/TableBody";
 
@@ -23,22 +23,10 @@ type Props = {
   onSortChange?: (string, ?string) => void,
 };
 
-type State = {
-  tableDefinition: TableDefinition,
-};
-
-class GroupsTable extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      tableDefinition: props.customTableDef || groupsTableDefault,
-    };
-  }
-
-  Group = (group: Group) => {
-    const { onRowClick } = this.props;
-    const { tableDefinition } = this.state;
+function GroupsTable(props: Props) {
+  const { data, onSortChange, queryParams, customTableDef, onRowClick } = props;
+  const [tableDefinition] = useState(customTableDef || groupsTableDefault);
+  const GroupComponent = (group: Group) => {
     return (
       <GroupRow
         key={group.id}
@@ -49,27 +37,22 @@ class GroupsTable extends PureComponent<Props, State> {
     );
   };
 
-  render() {
-    const { data, onSortChange, queryParams } = this.props;
-    const { tableDefinition } = this.state;
-
-    if (!data.length) {
-      return <NoDataPlaceholder title="No groups found." />;
-    }
-    return (
-      <TableScroll>
-        <Table>
-          <TableHeader
-            tableDefinition={tableDefinition}
-            type="groups"
-            onSortChange={onSortChange}
-            queryParams={queryParams}
-          />
-          <MUITableBody>{data.map(this.Group)}</MUITableBody>
-        </Table>
-      </TableScroll>
-    );
+  if (!data.length) {
+    return <NoDataPlaceholder title="No groups found." />;
   }
+  return (
+    <TableScroll>
+      <Table>
+        <TableHeader
+          tableDefinition={tableDefinition}
+          type="groups"
+          onSortChange={onSortChange}
+          queryParams={queryParams}
+        />
+        <MUITableBody>{data.map(GroupComponent)}</MUITableBody>
+      </Table>
+    </TableScroll>
+  );
 }
 
 export default GroupsTable;

@@ -44,11 +44,25 @@ type Props = {
   entityType: EntityType,
 };
 
+const createItemByEntity = {
+  user: <FaUserPlus color={colors.text} />,
+  account: null,
+  group: null,
+  transaction: null,
+};
 const itemIconsByType = {
-  CREATE: <FaPlus color={colors.text} />,
-  EDIT: <MdEdit color={colors.text} />,
-  DELETE: <MdDelete color={colors.text} />,
-  MIGRATE_ACCOUNT: <FaSyncAlt color={colors.text} />,
+  CREATE: entityType => {
+    return createItemByEntity[entityType] || <FaPlus color={colors.text} />;
+  },
+  EDIT: _entityType => {
+    return <MdEdit color={colors.text} />;
+  },
+  DELETE: _entityType => {
+    return <MdDelete color={colors.text} />;
+  },
+  MIGRATE_ACCOUNT: _entityType => {
+    return <FaSyncAlt color={colors.text} />;
+  },
 };
 
 const stepIconsByType = {
@@ -140,7 +154,7 @@ const HistoryItem = ({
         status={status}
       >
         <Box horizontal align="center" flow={10}>
-          {itemIconsByType[item.type]}
+          {itemIconsByType[item.type](entityType)}
           <span>
             <Trans i18nKey={`history:title.${item.type}.${entityType}`} />
           </span>

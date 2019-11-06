@@ -4,12 +4,14 @@ import React, { memo } from "react";
 import invariant from "invariant";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { Trans } from "react-i18next";
+import { FaArrowRight } from "react-icons/fa";
 
 import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import AccountName from "components/AccountName";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import CounterValue from "components/CounterValue";
 import InputAddress from "components/TransactionCreationFlow/InputAddress";
 import { Label, InputAmount, InputAmountNoUnits } from "components/base/form";
 import {
@@ -35,6 +37,7 @@ const TransactionCreationAmount = (
   const { EditFees, ExtraFields } = bridge;
   const isERC20 = account.account_type === "Erc20";
   const currency = getCryptoCurrencyById(account.currency);
+  const transactionError = bridge.getTransactionError(account, transaction);
 
   const onChangeTransaction = transaction => updatePayload({ transaction });
 
@@ -56,9 +59,11 @@ const TransactionCreationAmount = (
       amountErrors.push(new RippleAmountExceedMinBalance());
     }
   } else {
-    const amountTooHigh = bridge
-      .getTotalSpent(account, transaction)
-      .isGreaterThan(account.balance);
+    const amountTooHigh =
+      bridge
+        .getTotalSpent(account, transaction)
+        .isGreaterThan(account.balance) ||
+      transactionError instanceof AmountTooHigh;
     if (amountTooHigh) {
       amountErrors.push(new AmountTooHigh());
     }
@@ -71,10 +76,22 @@ const TransactionCreationAmount = (
       }),
     );
   }
-
   return (
     <Box flow={20}>
       <Box horizontal justify="space-between" flow={20}>
+        <Box>
+          <Label>
+            <Trans i18nKey="transactionCreation:steps.amount.accountToDebit" />
+          </Label>
+          <Box horizontal align="center" height={40}>
+            <Text fontWeight="semiBold" size="large">
+              <AccountName account={account} />
+            </Text>
+          </Box>
+        </Box>
+        <Box mt={30} justify="center">
+          <FaArrowRight color={colors.textLight} />
+        </Box>
         <Box grow style={{ maxWidth: 370 }}>
           <Label>
             <Trans i18nKey="transactionCreation:steps.amount.recipient" />
@@ -88,29 +105,42 @@ const TransactionCreationAmount = (
             bridge={bridge}
           />
         </Box>
-        <Box align="flex-end">
-          <Label>Sending from</Label>
-          <Box
-            horizontal
-            align="center"
-            flow={10}
-            style={{ height: 40, border: `1px solid ${colors.form.border}` }}
-            px={10}
-            borderRadius={4}
-            bg={colors.form.bg}
-          >
-            <AccountName account={account} />
-            <Text color={colors.textLight} mt={2} small>
+      </Box>
+      <Box horizontal flow={20} justify="space-between">
+        <Box>
+          <Label>
+            <Trans i18nKey="transactionCreation:steps.amount.balance" />
+          </Label>
+          <Box style={{ maxWidth: 230 }} flow={5} py={5}>
+            <Text fontWeight="semiBold" lineHeight={1} ellipsis>
               <CurrencyAccountValue account={account} value={account.balance} />
+            </Text>
+            <Text size="small">
+              <CounterValue
+                smallerInnerMargin
+                value={account.balance}
+                from={currency.id}
+              />
             </Text>
           </Box>
         </Box>
-      </Box>
-      <Box horizontal flow={20}>
-        <Box grow>
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.amount.amount" />
-          </Label>
+        <Box>
+          <Box
+            horizontal
+            justify="space-between"
+            width={isERC20 ? "inherit" : 240}
+          >
+            <Label>
+              <Trans i18nKey="transactionCreation:steps.amount.amount" />
+            </Label>
+            <Text size="small">
+              <CounterValue
+                smallerInnerMargin
+                value={transaction.amount}
+                from={currency.id}
+              />
+            </Text>
+          </Box>
           <Box grow horizontal>
             {isERC20 ? (
               <InputAmountNoUnits
@@ -127,6 +157,7 @@ const TransactionCreationAmount = (
                 value={transaction.amount}
                 onChange={onChangeAmount}
                 errors={amountErrors}
+                hideCV
               />
             )}
           </Box>

@@ -8,8 +8,7 @@ import SearchAccountsQuery from "api/queries/SearchAccounts";
 import { AccountsFilters } from "components/filters";
 import { AccountsTable } from "components/Table";
 import DataSearch from "components/DataSearch";
-import AddLink from "components/base/AddLink";
-import Box from "components/base/Box";
+import PageHeaderActions from "components/base/PageHeaderActions";
 import Text from "components/base/Text";
 import type { Account, User } from "data/types";
 
@@ -49,32 +48,24 @@ class AdminAccounts extends PureComponent<Props> {
     history.push(`accounts/new`);
   };
 
-  ActionComponent = () => {
-    const { me } = this.props;
-    return (
-      <Box noShrink>
-        {me.role === "ADMIN" && (
-          <AddLink
-            onClick={this.createAccount}
-            title={<Text i18nKey="accountCreation:cta" />}
-          />
-        )}
-      </Box>
-    );
-  };
-
   render() {
     const { history } = this.props;
     return (
-      <DataSearch
-        Query={SearchAccountsQuery}
-        TableComponent={AccountsTable}
-        FilterComponent={AccountsFilters}
-        onRowClick={this.handleAccountClick}
-        ActionComponent={this.ActionComponent}
-        history={history}
-        listenMutations={mutationsToListen}
-      />
+      <>
+        <PageHeaderActions
+          onClick={this.createAccount}
+          title={<Text i18nKey="menu:admin.accounts" />}
+          label={<Text i18nKey="accountCreation:cta" />}
+        />
+        <DataSearch
+          Query={SearchAccountsQuery}
+          TableComponent={AccountsTable}
+          FilterComponent={AccountsFilters}
+          onRowClick={this.handleAccountClick}
+          history={history}
+          listenMutations={mutationsToListen}
+        />
+      </>
     );
   }
 }

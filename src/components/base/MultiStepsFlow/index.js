@@ -127,7 +127,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
         onClick={onClick}
       >
         <CheckOrNumber isSuccess={isValid} nb={i + 1} />
-        <Text uppercase small>
+        <Text uppercase size="small">
           {step.name}
         </Text>
       </StepName>
@@ -254,7 +254,7 @@ export const RichModalHeader = <T, P>({
     <Box bg={colors.legacyLightGrey5} style={styles.header} p={40} flow={10}>
       <Box horizontal align="center" flow={10}>
         <Icon size={24} color={colors.legacyLightGrey7} />
-        <Text large color={colors.textLight}>
+        <Text size="large" color={colors.textLight}>
           {title}
         </Text>
       </Box>
@@ -278,11 +278,11 @@ const CheckOrNumber = ({
 }) => (
   <Box justify="center" align="center" style={styles.checkOrNumber}>
     {isSuccess ? (
-      <Text lineHeight={0} small>
+      <Text lineHeight={0} size="small">
         {checkSuccess}
       </Text>
     ) : (
-      <Text small>{`${nb}.`}</Text>
+      <Text size="small">{`${nb}.`}</Text>
     )}
   </Box>
 );

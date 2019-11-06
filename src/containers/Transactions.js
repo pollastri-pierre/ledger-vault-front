@@ -10,6 +10,8 @@ import SearchTransactionsQuery from "api/queries/SearchTransactions";
 import { TransactionsTable } from "components/Table";
 import { TransactionsFilters } from "components/filters";
 import { CardError } from "components/base/Card";
+import PageHeaderActions from "components/base/PageHeaderActions";
+import Text from "components/base/Text";
 import { WidgetLoading } from "components/widgets/Widget";
 
 import DataSearch from "components/DataSearch";
@@ -31,14 +33,17 @@ class TransactionsContainer extends PureComponent<Props> {
   render() {
     const { accounts, history } = this.props;
     return (
-      <DataSearch
-        Query={SearchTransactionsQuery}
-        TableComponent={TransactionsTable}
-        FilterComponent={TransactionsFilters}
-        extraProps={{ accounts: accounts.edges.map(e => e.node) }}
-        history={history}
-        onRowClick={this.handleTransactionClick}
-      />
+      <>
+        <PageHeaderActions title={<Text i18nKey="menu:admin.transactions" />} />
+        <DataSearch
+          Query={SearchTransactionsQuery}
+          TableComponent={TransactionsTable}
+          FilterComponent={TransactionsFilters}
+          extraProps={{ accounts: accounts.edges.map(e => e.node) }}
+          history={history}
+          onRowClick={this.handleTransactionClick}
+        />
+      </>
     );
   }
 }

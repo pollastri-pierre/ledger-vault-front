@@ -1,47 +1,33 @@
 // @flow
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React from "react";
+import Status from "components/Status";
+import Text from "components/base/Text";
 
-import colors from "shared/colors";
-import Check from "./icons/Check";
-
-const styles = {
-  text: {
-    marginLeft: "6px",
-  },
-  isConfirmed: {
-    color: colors.green,
-    whiteSpace: "nowrap",
-  },
-  isUnconfirmed: {
-    color: colors.grenade,
-    whiteSpace: "nowrap",
-  },
+type ConfirmationStatusProps = {
+  nbConfirmations: number,
+  threshold: number,
 };
-class ConfirmationStatus extends Component<*> {
-  props: {
-    nbConfirmations: number,
-    threshold: number,
-    classes: Object,
-  };
+export default function ConfirmationStatus(props: ConfirmationStatusProps) {
+  const { nbConfirmations, threshold } = props;
 
-  render() {
-    const { nbConfirmations, threshold, classes } = this.props;
-
-    if (nbConfirmations > 0) {
-      return (
-        <span className={classes.isConfirmed}>
-          <Check color={colors.green} size={11} />
-          <span className={classes.text}>
-            Confirmed (
-            {nbConfirmations >= threshold ? `${threshold}+` : nbConfirmations})
-          </span>
-        </span>
-      );
-    }
-
-    return <span className={classes.isUnconfirmed}>Unconfirmed</span>;
+  if (nbConfirmations > 0) {
+    return (
+      <Status derivedStatus="DERIVED_TX_CONFIRMED">
+        <Text
+          i18nKey="status:confirmed"
+          noWrap
+          values={{
+            nbConfirmations:
+              nbConfirmations >= threshold ? `${threshold}+` : nbConfirmations,
+          }}
+        />
+      </Status>
+    );
   }
-}
 
-export default withStyles(styles)(ConfirmationStatus);
+  return (
+    <Status derivedStatus="DERIVED_TX_UNCONFIRMED">
+      <Text noWrap i18nKey="status:unconfirmed" />
+    </Status>
+  );
+}

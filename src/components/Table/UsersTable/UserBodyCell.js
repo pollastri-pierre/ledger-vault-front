@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 
 import MUITableCell from "@material-ui/core/TableCell";
 
@@ -15,9 +15,10 @@ type CellProps = {
   user: User,
   item: TableItem,
 };
-class UserBodyCell extends PureComponent<CellProps> {
-  renderCellMapper = () => {
-    const { user, item } = this.props;
+function UserBodyCell(props: CellProps) {
+  const { user, item } = props;
+
+  const renderCellMapper = () => {
     switch (item.body.prop) {
       case "date":
         return <DateFormat format="ddd D MMM, h:mmA" date={user.created_on} />;
@@ -39,14 +40,9 @@ class UserBodyCell extends PureComponent<CellProps> {
     }
   };
 
-  render() {
-    const { item } = this.props;
-    return (
-      <MUITableCell align={item.body.align}>
-        {this.renderCellMapper()}
-      </MUITableCell>
-    );
-  }
+  return (
+    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
+  );
 }
 
 export default UserBodyCell;

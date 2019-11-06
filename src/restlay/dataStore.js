@@ -12,8 +12,9 @@ import isPlainObject from "lodash/isPlainObject";
 import forOwn from "lodash/forOwn";
 import URL from "url";
 import isEqual from "lodash/isEqual";
-import { logout } from "redux/modules/auth";
+import { logout, LOGOUT } from "redux/modules/auth";
 import type { Account, Currency } from "data/types";
+import { mapRestlayKeyToType } from "data/types";
 import ProfileQuery from "api/queries/ProfileQuery";
 import Mutation from "./Mutation";
 import Query from "./Query";
@@ -26,6 +27,7 @@ export const DATA_FETCHED = "@@restlay/DATA_FETCHED";
 export const DATA_FETCHED_FAIL = "@@restlay/DATA_FETCHED_FAIL";
 
 const DATA_CONNECTION_SPLICE = "@@restlay/DATA_CONNECTION_SPLICE";
+const RESET_ALL_CACHES = "@@restlay/RESET_ALL_CACHES";
 
 export type FetchParams = {
   prefix?: string,
@@ -54,7 +56,10 @@ export function getPendingQueryResult<R>(
   return store.results[query.getCacheKey()];
 }
 
-export function queryCacheIsFresh(store: Store, query: Query<*, *>): boolean {
+export function queryCacheIsFresh(
+  store: Store,
+  query: Query<*, *> | ConnectionQuery<*, *>,
+): boolean {
   const cache = getPendingQueryResult(store, query);
   if (!cache) return false;
   return Date.now() < cache.time + 1000 * query.cacheMaxAge;
@@ -186,6 +191,9 @@ export const executeQueryOrMutation =
     if (queryOrMutation instanceof Mutation) {
       method = queryOrMutation.method;
       body = queryOrMutation.getBody();
+      dispatch({
+        type: RESET_ALL_CACHES,
+      });
     } else {
       cacheKey = queryOrMutation.getCacheKey();
       const pendingPromise = ctx.getPendingQuery(queryOrMutation);
@@ -281,7 +289,16 @@ export const executeQueryOrMutation =
     return promise;
   };
 
+const clearAllCaches = store => {
+  Object.keys(store.results).forEach(k => {
+    store.results[k].time = 0;
+  });
+  return { ...store };
+};
+
 const reducers = {
+  [RESET_ALL_CACHES]: clearAllCaches,
+  [LOGOUT]: clearAllCaches,
   [DATA_CONNECTION_SPLICE]: (store, { size, cacheKey }) => {
     if (!cacheKey) {
       return store;
@@ -356,26 +373,45 @@ export const reducer = (state: * = initialState, action: Object) => {
   return state;
 };
 
+const noop = data => data;
+
+const _addType = type => {
+  if (!type) return noop;
+  return data => ({ ...data, entityType: mapRestlayKeyToType[type] });
+};
+
 function handleDeserialization(queryOrMutation, data) {
-  if (!queryOrMutation.getDeserialize || !queryOrMutation.getDeserialize()) {
-    return data;
+  let type;
+  if (queryOrMutation.nodeSchema) {
+    type = queryOrMutation.nodeSchema.key;
   }
-  const deserialize = queryOrMutation.getDeserialize();
+  if (queryOrMutation.responseSchema) {
+    type = queryOrMutation.responseSchema.key;
+  }
+  const deserialize =
+    (queryOrMutation.getDeserialize() && queryOrMutation.getDeserialize()) ||
+    noop;
+
   if (isPlainObject(deserialize)) {
     forOwn(deserialize, (deserialize, key) => {
+      const type = queryOrMutation.responseSchema[key].key;
       data[key] = Array.isArray(data[key])
-        ? data[key].map(deserialize)
-        : deserialize(data[key]);
+        ? data[key].map(deserialize(_addType(type)(data)))
+        : deserialize(_addType(type)(data[key]));
     });
   } else {
+    const deserializeAndAddType = data => deserialize(_addType(type)(data));
     data = Array.isArray(data)
-      ? data.map(deserialize)
+      ? data.map(deserializeAndAddType)
       : queryOrMutation instanceof ConnectionQuery
       ? {
           ...data,
-          edges: data.edges.map(el => ({ ...el, node: deserialize(el.node) })),
+          edges: data.edges.map(el => ({
+            ...el,
+            node: deserializeAndAddType(el.node),
+          })),
         }
-      : deserialize(data);
+      : deserializeAndAddType(data);
   }
   return data;
 }

@@ -88,7 +88,7 @@ function AccountSettings(props: Props) {
       <LineRow label={<Trans i18nKey="accountSettings:general.exchange" />}>
         <Box horizontal align="center" flow={5}>
           <FaExchangeAlt size={13} color={colors.lightGrey} />
-          <Text bold>
+          <Text fontWeight="bold">
             {exchange || <Trans i18nKey="common:not_applicable" />}
           </Text>
         </Box>
@@ -102,13 +102,13 @@ function AccountSettings(props: Props) {
                 <Trans i18nKey="accountSettings:advanced.derivation_path" />
               }
             >
-              <Text small>{account.derivation_path}</Text>
+              <Text size="small">{account.derivation_path}</Text>
             </LineRow>
             <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
               <Button
                 type="filled"
                 variant="danger"
-                small
+                size="small"
                 onClick={onXpubModal}
               >
                 <Box horizontal flow={5} align="center">

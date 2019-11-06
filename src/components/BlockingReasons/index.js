@@ -44,8 +44,8 @@ const BlockingReasons = ({ error, onClose, ...rest }: Props) => {
       <ModalClose onClick={onClose} />
       <Box p={40} flow={20} width={650}>
         <Box>
-          <Text header i18nKey={`reasons:${error.json.name}`} />
-          <Text small>{error.json.message}</Text>
+          <Text size="header" i18nKey={`reasons:${error.json.name}`} />
+          <Text size="small">{error.json.message}</Text>
         </Box>
         <ReasonsTable
           data={error.json.blocking_reasons}

@@ -4,6 +4,7 @@ import { Trans } from "react-i18next";
 import type { Match } from "react-router-dom";
 import type { ActivityEntityAccount } from "data/types";
 import Text from "components/base/Text";
+import { getCurrentStepProgress } from "utils/request";
 import Activity from "../legacy/Activity";
 import NoStyleLink from "../NoStyleLink";
 
@@ -16,6 +17,11 @@ class AccountQuorumIsReachedActivity extends Component<Props> {
   render() {
     const { activity, match } = this.props;
     const business_action = activity.business_action;
+    if (!business_action.account.last_request) return null;
+    const progress = getCurrentStepProgress(
+      business_action.account.last_request,
+    );
+    if (!progress) return null;
     return (
       <Text>
         <NoStyleLink
@@ -29,7 +35,7 @@ class AccountQuorumIsReachedActivity extends Component<Props> {
               i18nKey="activities:account.quorumReached"
               values={{
                 accountName: business_action.account.name,
-                approvalNumber: business_action.account.number_of_approvals,
+                approvalNumber: progress.nb,
               }}
               components={<b>0</b>}
             />

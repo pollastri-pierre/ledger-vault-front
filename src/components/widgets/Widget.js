@@ -10,6 +10,7 @@ import Spinner from "components/base/Spinner";
 import Absolute from "components/base/Absolute";
 import colors, { darken } from "shared/colors";
 import Text from "components/base/Text";
+import Box from "components/base/Box";
 
 type WidgetSettingsProps = {};
 
@@ -157,8 +158,8 @@ const WidgetHeader = ({
 }) => {
   return (
     <StyledWidgetHeader>
-      <div>
-        <Text inline bold mr={5}>
+      <Box flow={5} horizontal>
+        <Text inline fontWeight="bold">
           {title}
         </Text>
         {desc && (
@@ -166,8 +167,8 @@ const WidgetHeader = ({
             {desc}
           </Text>
         )}
-      </div>
-      <div>{titleRight}</div>
+      </Box>
+      {titleRight && <Box>{titleRight}</Box>}
       {!!SettingsComponent && (
         <Absolute top={-5} right={-5}>
           <SettingsButton>

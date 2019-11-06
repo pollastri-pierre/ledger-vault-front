@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 import MUITableRow from "@material-ui/core/TableRow";
 
 import type { BlockingReasonType } from "components/BlockingReasons";
@@ -16,26 +16,22 @@ type ReasonRowProps = {
 
 const reasonRowHover = { cursor: "pointer" };
 
-class ReasonRow extends PureComponent<ReasonRowProps> {
-  handleClick = () => {
-    this.props.onClick(this.props.reason);
+function ReasonRow(props: ReasonRowProps) {
+  const { reason, onClick, tableDefinition } = props;
+  const handleClick = () => {
+    onClick(reason);
   };
-
-  render() {
-    const { reason, onClick, tableDefinition } = this.props;
-
-    return (
-      <MUITableRow
-        hover={!!onClick}
-        style={onClick ? reasonRowHover : undefined}
-        onClick={onClick ? this.handleClick : undefined}
-      >
-        {tableDefinition.map(item => (
-          <ReasonBodyCell reason={reason} item={item} key={item.body.prop} />
-        ))}
-      </MUITableRow>
-    );
-  }
+  return (
+    <MUITableRow
+      hover={!!onClick}
+      style={onClick ? reasonRowHover : undefined}
+      onClick={onClick ? handleClick : undefined}
+    >
+      {tableDefinition.map(item => (
+        <ReasonBodyCell reason={reason} item={item} key={item.body.prop} />
+      ))}
+    </MUITableRow>
+  );
 }
 
 export default ReasonRow;

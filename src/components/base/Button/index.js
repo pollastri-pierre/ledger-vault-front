@@ -4,10 +4,18 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { space, color } from "styled-system";
 import Loader from "components/base/Loader";
-import { getStyles } from "./helpers";
+import {
+  getStyles,
+  getFontSize,
+  getButtonHeight,
+  getPaddingX,
+  getPaddingY,
+  getLoaderSize,
+} from "./helpers";
 
 type ButtonType = "filled" | "outline" | "link";
 type ButtonVariant = "primary" | "danger" | "warning" | "info";
+type ButtonSize = "tiny" | "small" | "slim";
 
 export type ButtonProps = {|
   children?: React$Node,
@@ -15,22 +23,22 @@ export type ButtonProps = {|
   variant?: ButtonVariant,
   disabled?: boolean,
   onClick?: Function,
-  small?: boolean,
+  size?: ButtonSize,
   circular?: boolean,
   "data-test"?: string,
   style?: Object,
 |};
 
 export const ButtonBase = styled.div.attrs(p => ({
-  px: p.circular ? 12 : p.small ? 16 : 25,
-  py: p.circular ? 12 : p.small ? 5 : 8,
+  px: getPaddingX(p),
+  py: getPaddingY(p),
   color: "grey",
   bg: "transparent",
   tabIndex: 0,
 }))`
   ${space};
   ${color};
-  font-size: ${p => p.fontSize || (p.small ? "11px" : "13px")};
+  font-size: ${p => getFontSize(p)}px;
   font-weight: bold;
   border: none;
   display: flex;
@@ -42,7 +50,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   pointer-events: ${p => (p.disabled || p.isLoading ? "none" : "auto")};
   text-decoration: ${p => (p.link ? "underline" : "none")};
   outline: none;
-  height: ${p => (!p.circular ? (p.small ? "30px" : "40px") : "inherit")};
+  height: ${p => getButtonHeight(p)}px;
 
   ${p => getStyles(p, "default")};
 
@@ -59,7 +67,7 @@ export const ButtonBase = styled.div.attrs(p => ({
 
 function Button(props: ButtonProps, ref: any) {
   const isUnmounted = useRef(false);
-  const { onClick, children, small, ...rest } = props;
+  const { onClick, children, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
@@ -83,16 +91,10 @@ function Button(props: ButtonProps, ref: any) {
   };
 
   return (
-    <ButtonBase
-      {...rest}
-      small={small}
-      isLoading={isLoading}
-      onClick={handleClick}
-      ref={ref}
-    >
+    <ButtonBase {...rest} isLoading={isLoading} onClick={handleClick} ref={ref}>
       <Container isLoading={isLoading}>{children}</Container>
       {isLoading && (
-        <Loader size={small ? 12 : 16} style={{ position: "absolute" }} />
+        <Loader size={getLoaderSize(props)} style={{ position: "absolute" }} />
       )}
     </ButtonBase>
   );

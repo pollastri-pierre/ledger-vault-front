@@ -16,6 +16,8 @@ import { urlByRole } from "components/HelpLink";
 type Props = {
   user: User,
   onLogout: () => void,
+  TopBarContent?: React$ComponentType<*>,
+  isMenuOpened: boolean,
 };
 
 function UserIdentifier({ username }: { username: string }) {
@@ -26,10 +28,10 @@ function UserIdentifier({ username }: { username: string }) {
       <Box horizontal justify="center" flow={10} align="center">
         <UserAvatar />
         <Box>
-          <Text small color={colors.shark} bold>
+          <Text size="small" color={colors.shark} fontWeight="bold">
             {username}
           </Text>
-          <Text tiny color={colors.steel}>
+          <Text size="tiny" color={colors.steel}>
             {organization.workspace}
           </Text>
         </Box>
@@ -37,9 +39,11 @@ function UserIdentifier({ username }: { username: string }) {
     </Box>
   );
 }
-export default ({ user, onLogout }: Props) => {
+
+export default ({ user, onLogout, TopBarContent, isMenuOpened }: Props) => {
   return (
-    <VaultLayoutTopBar>
+    <VaultLayoutTopBar isMenuOpened={isMenuOpened}>
+      {TopBarContent && <TopBarContent />}
       <VaultLayoutTopBarRight>
         <UserIdentifier username={user.username} />
         <TopBarAction link={urlByRole[user.role]} Icon={FaQuestionCircle} />
@@ -54,10 +58,17 @@ const VaultLayoutTopBar = styled.div`
   display: flex;
   position: relative;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 20px 0 ${vaultLayoutConfig.MENU_WIDTH + 20}px;
   height: ${vaultLayoutConfig.TOP_BAR_HEIGHT}px;
   background: white;
   box-shadow: 0 -2px 5px 0 ${colors.legacyTranslucentGrey2};
+
+  @media (max-width: ${vaultLayoutConfig.BREAKPOINT}px) {
+    padding-left: ${p =>
+      (p.isMenuOpened
+        ? vaultLayoutConfig.MENU_WIDTH
+        : vaultLayoutConfig.COLLAPSED_MENU_WIDTH) + 20}px;
+  }
 `;
 
 const VaultLayoutTopBarRight = styled.div`

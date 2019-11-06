@@ -15,6 +15,7 @@ export type Transaction = {
   gasLimit: ?BigNumber,
   note: TransactionCreationNote,
   estimatedFees: ?BigNumber,
+  error: ?Error,
 };
 
 const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
@@ -65,6 +66,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
     recipient: "",
     gasPrice: null,
     gasLimit: null,
+    error: null,
     label: "",
     note: {
       title: "",
@@ -94,6 +96,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
 
+  getTransactionError: (a: Account, t: Transaction) => t.error,
   editTransactionRecipient: (
     account: Account,
     t: Transaction,

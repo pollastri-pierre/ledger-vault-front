@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Button from "components/base/Button";
-import Box from "components/base/Box";
 import SyncAccountMutation from "api/mutations/SyncAccountMutation";
 import SearchTransactions from "api/queries/SearchTransactions";
 import connectData from "restlay/connectData";
@@ -29,19 +28,17 @@ const SyncButton = (props: Props) => {
     setSynced(true);
     return promise;
   };
-  // had to wrap in a fixed width box  because outline button are slightly larger than filled button
+
   return (
-    <Box width={40}>
-      <Button
-        type={synced ? "outline" : "filled"}
-        variant="info"
-        small
-        onClick={forceSync}
-        disabled={synced}
-      >
-        {synced ? <FaCheck /> : <FaSync />}
-      </Button>
-    </Box>
+    <Button
+      type="outline"
+      variant="primary"
+      size="small"
+      onClick={forceSync}
+      disabled={synced}
+    >
+      {synced ? <FaCheck /> : <FaSync />}
+    </Button>
   );
 };
 

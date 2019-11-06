@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 
 import MUITableRow from "@material-ui/core/TableRow";
 
@@ -17,27 +17,24 @@ type GroupRowProps = {
 
 const groupRowHover = { cursor: "pointer" };
 
-class GroupRow extends PureComponent<GroupRowProps> {
-  handleClick = () => {
-    this.props.onClick(this.props.group);
+function GroupRow(props: GroupRowProps) {
+  const { group, onClick, tableDefinition } = props;
+  const handleClick = () => {
+    onClick(group);
   };
 
-  render() {
-    const { group, onClick, tableDefinition } = this.props;
-
-    return (
-      <MUITableRow
-        key={group.id}
-        hover={!!onClick}
-        style={onClick ? groupRowHover : undefined}
-        onClick={onClick ? this.handleClick : undefined}
-      >
-        {tableDefinition.map(item => (
-          <GroupBodyCell group={group} item={item} key={item.body.prop} />
-        ))}
-      </MUITableRow>
-    );
-  }
+  return (
+    <MUITableRow
+      key={group.id}
+      hover={!!onClick}
+      style={onClick ? groupRowHover : undefined}
+      onClick={onClick ? handleClick : undefined}
+    >
+      {tableDefinition.map(item => (
+        <GroupBodyCell group={group} item={item} key={item.body.prop} />
+      ))}
+    </MUITableRow>
+  );
 }
 
 export default GroupRow;

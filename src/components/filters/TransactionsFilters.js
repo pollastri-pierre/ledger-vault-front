@@ -38,6 +38,7 @@ export default function TransactionsFilters(props: Props) {
   const { t } = useTranslation();
   return (
     <FiltersCard
+      exportEntityType="transaction"
       title="Find transactions"
       subtitle="Find transactions"
       {...props}

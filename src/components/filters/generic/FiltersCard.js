@@ -8,6 +8,8 @@ import isEqual from "lodash/isEqual";
 import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
+import ExportToCSV from "components/ExportToCSV";
+import type { ExportEntityType } from "components/ExportToCSV";
 
 import type { QueryUpdater } from "../types";
 
@@ -24,6 +26,7 @@ type Props = {
   onChange: ObjectParameters => void,
   paginator: ?React$Node,
   withNoAction?: boolean,
+  exportEntityType?: ExportEntityType,
 };
 
 const fieldsToExclude = ["page", "pageSize"];
@@ -69,6 +72,7 @@ class FiltersCard extends PureComponent<Props> {
       paginator,
       onChange: _onChange,
       withNoAction,
+      exportEntityType,
       ...props
     } = this.props;
 
@@ -105,6 +109,12 @@ class FiltersCard extends PureComponent<Props> {
                 ? `${nbResults || 0} result(s) found`
                 : "Loading..."}
             </Text>
+            {showNbResults && exportEntityType && (
+              <ExportToCSV
+                queryParams={queryParams}
+                entityType={exportEntityType}
+              />
+            )}
           </Box>
           {paginator}
         </Box>

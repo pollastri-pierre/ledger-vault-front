@@ -101,14 +101,23 @@ const fuseOptions = {
 const fuseCurrencies = new Fuse(currenciesOptions, fuseOptions);
 const fuseTokens = new Fuse(erc20TokensOptions, fuseOptions);
 
-const fetchOptions = (inputValue: string) =>
+const fetchOptions = (inputValue: string, options?: { noToken?: boolean }) =>
   new Promise(resolve => {
     window.requestAnimationFrame(() => {
-      if (!inputValue) return resolve(fullOptions);
+      if (!inputValue) {
+        if (options && options.noToken) {
+          return resolve(currenciesOptions);
+        }
+        return resolve(fullOptions);
+      }
       const resultCurrencies = fuseCurrencies.search(inputValue);
-      const resultTokens = fuseTokens.search(inputValue);
-      const results = [...resultCurrencies, ...resultTokens];
-      resolve(results);
+      if (options && options.noToken) {
+        resolve(resultCurrencies);
+      } else {
+        const resultTokens = fuseTokens.search(inputValue);
+        const results = [...resultCurrencies, ...resultTokens];
+        resolve(results);
+      }
     });
   });
 
@@ -243,6 +252,7 @@ type MultipleHandler = (Item[]) => void;
 type Props<T, H> = {
   t: Translate,
   value: T,
+  noToken?: boolean,
   onChange: H,
 };
 
@@ -257,7 +267,7 @@ class Multiple extends PureComponent<Props<MultipleValue, MultipleHandler>> {
   };
 
   render() {
-    const { value, t, ...props } = this.props;
+    const { value, t, noToken, ...props } = this.props;
 
     // find the currency OR erc20token inside all options
     const resolvedValues =
@@ -271,7 +281,7 @@ class Multiple extends PureComponent<Props<MultipleValue, MultipleHandler>> {
         defaultOptions
         isMulti
         isClearable
-        loadOptions={fetchOptions}
+        loadOptions={str => fetchOptions(str, { noToken })}
         components={customComponents}
         {...props}
         onChange={this.handleChange}
@@ -288,7 +298,7 @@ class SelectCurrency extends PureComponent<Props<SingleValue, SingleHandler>> {
   };
 
   render() {
-    const { value, t, ...props } = this.props;
+    const { value, t, noToken, ...props } = this.props;
 
     // find the currency OR erc20token inside all options
     const resolvedValue = value ? getValueOption(value) : null;
@@ -300,7 +310,7 @@ class SelectCurrency extends PureComponent<Props<SingleValue, SingleHandler>> {
         placeholder={t("newAccount:currency.placeholder")}
         defaultOptions
         isClearable
-        loadOptions={fetchOptions}
+        loadOptions={str => fetchOptions(str, { noToken })}
         components={customComponents}
         {...props}
         onChange={this.handleChange}

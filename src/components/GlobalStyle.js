@@ -5,6 +5,7 @@ export default createGlobalStyle`
   * {
     color: inherit;
     box-sizing: border-box;
+    min-width: 0;
   }
 
   input {
@@ -18,8 +19,6 @@ export default createGlobalStyle`
     color: ${colors.text};
     font-size: 13px;
     line-height: 20px;
-
-    user-select: none;
 
     & ::selection {
       background: ${colors.legacyTranslucentGrey3};

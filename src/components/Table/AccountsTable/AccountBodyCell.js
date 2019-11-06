@@ -1,9 +1,10 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
 
 import MUITableCell from "@material-ui/core/TableCell";
 
+import { getExtraCellStyle } from "components/Table/TableBase";
 import CounterValue from "components/CounterValue";
 import AccountName from "components/AccountName";
 import EntityStatus from "components/EntityStatus";
@@ -20,9 +21,10 @@ type CellProps = {
   account: Account,
   item: TableItem,
 };
-class AccountBodyCell extends PureComponent<CellProps> {
-  renderCellMapper = () => {
-    const { account, item } = this.props;
+function AccountBodyCell(props: CellProps) {
+  const { account, item } = props;
+
+  const renderCellMapper = () => {
     switch (item.body.prop) {
       case "name":
         return <AccountName account={account} />;
@@ -56,14 +58,15 @@ class AccountBodyCell extends PureComponent<CellProps> {
     }
   };
 
-  render() {
-    const { item } = this.props;
-    return (
-      <MUITableCell align={item.body.align} size={item.body.size}>
-        {this.renderCellMapper()}
-      </MUITableCell>
-    );
-  }
+  return (
+    <MUITableCell
+      align={item.body.align}
+      size={item.body.size}
+      style={getExtraCellStyle(item.body.prop)}
+    >
+      {renderCellMapper()}
+    </MUITableCell>
+  );
 }
 
 export default AccountBodyCell;

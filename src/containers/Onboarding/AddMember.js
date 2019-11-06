@@ -36,7 +36,7 @@ const AddMember = ({ finish, organization }: Props) => {
   return (
     <Box p={40} pb={20} flow={20} width={500}>
       {error && <TriggerErrorNotification error={error} />}
-      <Text large>Add new admin</Text>
+      <Text size="large">Add new admin</Text>
       <Box horizontal flow={30} mt={80} align="center">
         <ProfileIconContainer>
           <ProfileIcon color="white" />

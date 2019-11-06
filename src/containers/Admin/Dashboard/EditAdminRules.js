@@ -15,12 +15,12 @@ import { useOrganization } from "components/OrganizationContext";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import { CardError } from "components/base/Card";
 import type { Connection } from "restlay/ConnectionQuery";
-import type { Request } from "data/types";
+import type { GenericRequest } from "data/types";
 import ApprovalSlider from "containers/Onboarding/ApprovalSlider";
 
 type Props = {
   close: () => void,
-  requestsConnection: Connection<Request>,
+  requestsConnection: Connection<GenericRequest>,
 };
 
 function EditAdminRules(props: Props) {

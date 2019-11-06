@@ -18,17 +18,19 @@ describe("reject invitation", function() {
     // Reject Operator Invitation
     cy.contains("Nicole Smith").click();
     cy.get("[data-test=reject-button]").click();
-    cy.get(".top-message-body")
-      .contains("The request has been successfully rejected")
-      .get(".top-message-title")
-      .contains("request rejected");
+    cy.get("[data-test=successfull_message]").should(
+      "contain",
+      "The request has been successfully rejected",
+    );
+    cy.get("[data-test=done_button]").click();
 
     // Reject Admin Invitation
     cy.contains("Admin 4").click();
     cy.get("[data-test=reject-button]").click();
-    cy.get(".top-message-body")
-      .contains("The request has been successfully rejected")
-      .get(".top-message-title")
-      .contains("request rejected");
+    cy.get("[data-test=successfull_message]").should(
+      "contain",
+      "The request has been successfully rejected",
+    );
+    cy.get("[data-test=done_button]").click();
   });
 });

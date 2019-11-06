@@ -138,7 +138,11 @@ class WrappableField extends Component<Props, State> {
           width={inPlace ? width || undefined : undefined}
         >
           <Box horizontal align="center" overflow="hidden" flow={5} grow>
-            <Text bold={isActive} noWrap>
+            <Text
+              fontWeight={isActive ? "bold" : null}
+              noWrap
+              style={{ flexShrink: 0 }}
+            >
               {label}
               {isActive ? ": " : ""}
             </Text>

@@ -31,11 +31,14 @@ export default (props: UserCreationStepProps) => {
         >
           <Box flow={10}>
             <Title>
-              <Text bold i18nKey="inviteUser:steps.role.admin.title" />
+              <Text
+                fontWeight="bold"
+                i18nKey="inviteUser:steps.role.admin.title"
+              />
               <AdminIcon color={colors.green} size={20} />
             </Title>
             <Text
-              small
+              size="small"
               color={colors.mediumGrey}
               i18nKey="inviteUser:steps.role.admin.desc"
             />
@@ -48,11 +51,14 @@ export default (props: UserCreationStepProps) => {
         >
           <Box flow={10}>
             <Title>
-              <Text bold i18nKey="inviteUser:steps.role.operator.title" />
+              <Text
+                fontWeight="bold"
+                i18nKey="inviteUser:steps.role.operator.title"
+              />
               <OperatorIcon color={colors.ocean} size={20} />
             </Title>
             <Text
-              small
+              size="small"
               color={colors.mediumGrey}
               i18nKey="inviteUser:steps.role.operator.desc"
             />

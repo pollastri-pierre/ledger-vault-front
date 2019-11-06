@@ -5,7 +5,10 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import LineRow from "components/LineRow";
 import ListGroupMembers from "components/ListGroupMembers";
-import { hasEditOccured, onlyDescriptionChanged } from "./utils";
+import {
+  hasEditOccuredGeneric,
+  onlyDescriptionChangedGeneric,
+} from "utils/creationFlows";
 
 import type { GroupCreationStepProps } from "./types";
 
@@ -38,12 +41,12 @@ class GroupCreationConfirmation extends PureComponent<Props> {
             </div>
           </LineRow>
         </Box>
-        {!hasEditOccured(payload, initialPayload) ? (
+        {!hasEditOccuredGeneric(payload, initialPayload, "members") ? (
           <InfoBox type="info" withIcon>
             <Trans i18nKey="group:create.no_edit" />
           </InfoBox>
         ) : (
-          onlyDescriptionChanged(payload, initialPayload) && (
+          onlyDescriptionChangedGeneric(payload, initialPayload, "members") && (
             <InfoBox type="info" withIcon>
               <Trans i18nKey="group:create.no_hsm_validation" />
             </InfoBox>
