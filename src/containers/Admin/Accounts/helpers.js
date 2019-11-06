@@ -9,11 +9,12 @@ import type {
 } from "data/types";
 
 export function haveRulesChangedDiff(
-  newRules: TxApprovalStepCollection,
-  oldRules: TxApprovalStepCollection,
+  newRules: ?TxApprovalStepCollection,
+  oldRules: ?TxApprovalStepCollection,
 ) {
   let result;
-  if ((!newRules && !oldRules) || newRules.length !== oldRules.length)
+
+  if (!newRules || !oldRules || newRules.length !== oldRules.length)
     return (result = true);
 
   newRules.forEach(rule => {
