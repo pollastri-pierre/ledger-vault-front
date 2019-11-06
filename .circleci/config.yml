@@ -128,10 +128,16 @@ workflows:
       - e2e_tests:
           requires:
             - run_tests
+          filters:
+            tags:
+              only: /.*/
       - build:
           requires:
             - run_tests
             - e2e_tests
+          filters:
+            tags:
+              only: /.*/
       - publish:
           name: publish_dev
           s3_bucket: *dev_s3_bucket
@@ -143,6 +149,8 @@ workflows:
             branches:
               only:
                 - develop
+            tags:
+              only: /.*/
       - publish:
           name: publish_prod
           s3_bucket: *prod_s3_bucket
@@ -154,3 +162,5 @@ workflows:
             branches:
               only:
                 - master
+            tags:
+              only: /.*/
