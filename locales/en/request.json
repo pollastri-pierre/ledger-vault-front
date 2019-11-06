@@ -1,8 +1,10 @@
 {
   "type": {
     "CREATE_GROUP": "Create group",
+    "CREATE_WHITELIST": "Create whitelist",
     "CREATE_TRANSACTION": "Create transaction",
     "EDIT_GROUP": "Edit group",
+    "EDIT_WHITELIST": "Edit whitelist",
     "EDIT_ACCOUNT": "Edit account",
     "MIGRATE_ACCOUNT": "Update account",
     "REVOKE_GROUP": "Delete group",
@@ -17,7 +19,9 @@
   "richType": {
     "CREATE_TRANSACTION": "Create transaction",
     "CREATE_GROUP": "Create <0>{{extra}}</0> group",
+    "CREATE_WHITELIST": "Create <0>{{extra}}</0> whitelist",
     "EDIT_GROUP": "Edit <0>{{extra}}</0> group",
+    "EDIT_WHITELIST": "Edit <0>{{extra}}</0> whitelist",
     "REVOKE_GROUP": "Delete <0>{{extra}}</0> group",
     "REVOKE_USER": "Revoke <0>{{extra}}</0>",
     "EDIT_ACCOUNT": "Edit <0>{{extra}}</0> account",
@@ -30,6 +34,7 @@
   },
   "statusDot": {
     "EDIT_GROUP": "<0>Edit group</0> request in progress",
+    "EDIT_WHITELIST": "<0>Edit whitelist</0> request in progress",
     "EDIT_ACCOUNT": "<0>Edit account</0> request in progress",
     "MIGRATE_ACCOUNT": "<0>Update account</0> request in progress",
     "REVOKE_GROUP": "<0>Delete group</0> request in progress",
@@ -39,7 +44,9 @@
   },
   "approve": {
     "CREATE_GROUP": "Approve group creation",
+    "CREATE_WHITELIST": "Approve whitelist creation",
     "EDIT_GROUP": "Approve group edition",
+    "EDIT_WHITELIST": "Approve whitelist edition",
     "EDIT_ACCOUNT": "Approve account edition",
     "REVOKE_GROUP": "Approve group deletion",
     "CREATE_ACCOUNT": "Approve account creation",

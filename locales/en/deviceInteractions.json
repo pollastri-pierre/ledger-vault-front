@@ -1,5 +1,6 @@
 {
   "GROUP": "Verify the group on your device",
+  "WHITELIST": "Verify the whitelist on your device",
   "BITCOIN_ACCOUNT": "Verify the account on your device",
   "ETHEREUM_ACCOUNT": "Verify the account on your device",
   "RIPPLE_ACCOUNT": "Verify the account on your device",

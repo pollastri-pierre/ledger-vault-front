@@ -88,7 +88,7 @@ type DiffBlockProps = {
   haveRulesChanged: ?boolean,
 };
 function DiffBlock(props: DiffBlockProps) {
-  const { name, rules, type, haveRulesChanged } = props;
+  const { name, type, haveRulesChanged } = props;
   return (
     <Box
       bg={

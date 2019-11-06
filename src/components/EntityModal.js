@@ -48,6 +48,7 @@ type Props<T> = {
   footer?: React$Node,
   editURL?: string,
   disableEdit?: boolean,
+  customWidth?: number,
   additionalFields?: T,
 };
 
@@ -66,6 +67,7 @@ function EntityModal<T>(props: Props<T>) {
     disableEdit,
     revokeButton,
     footer,
+    customWidth,
     additionalFields,
   } = props;
   const [successMessage, setSuccessMessage] = useState(false);
@@ -154,7 +156,7 @@ function EntityModal<T>(props: Props<T>) {
         ) : null}
       </RichModalHeader>
 
-      <Box width={600} p={40} style={{ minHeight: 300 }}>
+      <Box width={customWidth || 600} p={40} style={{ minHeight: 300 }}>
         {content}
       </Box>
 
