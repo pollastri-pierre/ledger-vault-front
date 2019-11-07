@@ -52,7 +52,9 @@ class ApprovalsRule extends PureComponent<Props, State> {
   };
 
   handleChangeQuorum = (quorum: number) => {
-    this.props.onChange({ ...this.props.rule, quorum });
+    if (this.props.rule) {
+      this.props.onChange({ ...this.props.rule, quorum });
+    }
   };
 
   handleClose = () => {
@@ -79,6 +81,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
         ? groups[groups.length - 1].id
         : null,
       users: justAddedGroup ? [] : users.map(u => u.id),
+      quorum: 1,
     };
 
     // ensure quorum > groups length, etc.
@@ -89,8 +92,6 @@ class ApprovalsRule extends PureComponent<Props, State> {
       }
     } else if (newRule.users.length && newRule.quorum > newRule.users.length) {
       newRule.quorum = newRule.users.length;
-    } else {
-      newRule.quorum = 1;
     }
 
     onChange(newRule);

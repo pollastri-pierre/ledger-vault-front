@@ -20,6 +20,6 @@ export type StepProps<T> = {
   updatePayload: PayloadUpdater<T>,
   transitionTo: string => void,
   isEditMode?: boolean,
-  onClose: () => void,
+  onClose?: () => void,
   onSuccess?: () => void,
 };

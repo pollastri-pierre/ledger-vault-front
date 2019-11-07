@@ -160,7 +160,6 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
-      ...additionalProps,
     };
 
     return (
@@ -173,7 +172,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
           renderStep={this.StepName}
         />
         <Box grow p={40} style={styles.content}>
-          <Step {...stepProps} />
+          <Step {...stepProps} {...additionalProps} />
         </Box>
         <RichModalFooter
           style={

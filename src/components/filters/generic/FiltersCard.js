@@ -48,7 +48,7 @@ class FiltersCard extends PureComponent<Props> {
 
   handleClear = () => {
     const patch = fieldsToExclude.reduce(
-      (acc, field) => ({
+      (acc, field: string) => ({
         ...acc,
         [field]: this.props.queryParams[field],
       }),
