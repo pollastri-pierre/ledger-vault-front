@@ -14,7 +14,16 @@ export default merge(webpackConfig, {
     rules: [
       {
         test: /\.js$/,
-        use: ["thread-loader", "babel-loader?sourceMap"],
+        use: [
+          {
+            loader: "thread-loader",
+            options: {
+              workers:
+                process.env.CIRCLE_NODE_TOTAL || require("os").cpus().length,
+            },
+          },
+          "babel-loader?sourceMap",
+        ],
         exclude: /node_modules/,
       },
     ],
