@@ -117,7 +117,7 @@ class FeesFieldEthereumKind extends PureComponent<
     error: null,
   };
 
-  createMutation = field => (value: string) => {
+  createMutation = (field: string) => (value: string) => {
     const { transaction, onChangeTransaction } = this.props;
     const patch = { ...transaction, [field]: BigNumber(value) };
     if (patch.gasPrice && patch.gasLimit) {

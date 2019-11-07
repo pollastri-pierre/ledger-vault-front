@@ -1,6 +1,12 @@
 [ignore]
 <PROJECT_ROOT>/node_modules/@ledgerhq/live-common/lib/helpers/currencies/localeUtility.js.flow
 <PROJECT_ROOT>/node_modules/@ledgerhq/hw-transport-webusb/lib/webusb.js.flow
+<PROJECT_ROOT>/node_modules/@ledgerhq/live-common/lib/currencies/formatCurrencyUnit.js.flow
+<PROJECT_ROOT>/node_modules/@ledgerhq/live-common/lib/derivation.js.flow
+<PROJECT_ROOT>/node_modules/@ledgerhq/live-common/lib/account/accountId.js.flow
+<PROJECT_ROOT>/node_modules/@ledgerhq/live-common/lib/types/bridge.js.flow
+<PROJECT_ROOT>/node_modules/jss/.*
+<PROJECT_ROOT>/node_modules/react-window/.*
 .*/core-js/.*
 
 [untyped]
@@ -19,6 +25,7 @@ node_modules/@ledgerhq/hw-transport-webusb/flow
 [lints]
 
 [options]
+module.system.node.allow_root_relative=true
+module.system.node.root_relative_dirname=./src
 module.system.node.resolve_dirname=node_modules
-module.system.node.resolve_dirname=./src
 server.max_workers=1

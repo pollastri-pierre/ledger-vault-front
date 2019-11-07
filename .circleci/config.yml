@@ -1,7 +1,7 @@
 version: 2.1
 
 aliases:
-  - &docker_image circleci/node:8.11.3-stretch
+  - &docker_image circleci/node:lts
   - &dev_s3_bucket ledger-vault-artifacts-dev
   - &prod_s3_bucket ledger-vault-artifacts-prod
 
