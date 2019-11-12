@@ -22,7 +22,7 @@ describe("Test Case for Groups", function() {
     cy.url().should("include", "/admin/groups");
 
     cy.contains("NORTH Asia").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.get("[data-test=Confirm]").click();
     cy.wait(1500);
   });
@@ -34,7 +34,7 @@ describe("Test Case for Groups", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=0]").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
   });
 
@@ -46,7 +46,7 @@ describe("Test Case for Groups", function() {
     cy.url().should("include", "/admin/groups");
 
     cy.contains("New EMEA").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.get("[data-test=Confirm]").click();
     cy.wait(1500);
   });

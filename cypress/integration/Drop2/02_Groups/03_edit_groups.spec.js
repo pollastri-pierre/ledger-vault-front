@@ -55,7 +55,7 @@ describe("Test Case for Groups", function() {
     cy.get("[data-test=group_name]").type("New EMEA");
     cy.contains("Next").click();
     cy.wait(1500);
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_msg_gp();
   });
 
@@ -79,7 +79,7 @@ describe("Test Case for Groups", function() {
     cy.get("[data-test=group_name]").click();
     cy.contains("Next").click();
     cy.wait(1500);
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_msg_gp();
   });
 
@@ -90,10 +90,10 @@ describe("Test Case for Groups", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=1]").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
     cy.get("[data-test=0]").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
   });
 });
