@@ -40,8 +40,8 @@ const configByEntityType = {
       { name: "hash", isEnabled: true },
       { name: "sender", isEnabled: true },
       { name: "recipient", isEnabled: true },
-      { name: "label", isEnabled: false },
-      { name: "note", isEnabled: false },
+      { name: "label", isEnabled: true },
+      { name: "note", isEnabled: true },
     ],
   },
 };
