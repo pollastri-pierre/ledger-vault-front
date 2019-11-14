@@ -13,5 +13,6 @@
   "PERSON": "Verify the user on your device",
   "ORGANIZATION": "Verify the admin rule on your device",
   "u2f_authenticate": "Tap sign-in on the device",
-  "ADDRESS": "Verify the address on the device"
+  "ADDRESS": "Verify the address on the device",
+  "webusb_reconnect": "Please click again to pair the device"
 }

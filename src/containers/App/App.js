@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Route } from "react-router-dom";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
@@ -42,10 +42,10 @@ type Props = {
 
 const AppWrapper = ({ me, organization, restlay, ...props }: Props) => {
   const [org, setOrg] = useState(organization);
-  const update = async () => {
+  const update = useCallback(async () => {
     const newOrg = await restlay.fetchQuery(new OrganizationQuery());
     setOrg(newOrg);
-  };
+  }, [setOrg, restlay]);
   return (
     <UserContextProvider me={me}>
       <OrganizationContextProvider

@@ -36,6 +36,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   bg: "transparent",
   tabIndex: 0,
 }))`
+  user-select: none;
   ${space};
   ${color};
   font-size: ${p => getFontSize(p)}px;
@@ -47,7 +48,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   border-radius: ${p => (p.circular ? "50%" : "2px")};
   cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
   opacity: ${p => (p.disabled ? "0.6" : "1")};
-  pointer-events: ${p => (p.disabled || p.isLoading ? "none" : "auto")};
+  pointer-events: ${p => (p.disabled || p.isLoading ? "none" : "inherit")};
   text-decoration: ${p => (p.link ? "underline" : "none")};
   outline: none;
   height: ${p => getButtonHeight(p)}px;

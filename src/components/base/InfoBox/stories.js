@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import React from "react";
-import Button from "@material-ui/core/Button";
 
 import { storiesOf } from "@storybook/react";
 import { boolean } from "@storybook/addon-knobs";
@@ -9,6 +8,7 @@ import { action } from "@storybook/addon-actions";
 
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
+import Button from "components/base/Button";
 
 import colors from "shared/colors";
 
@@ -40,7 +40,7 @@ storiesOf("components", module).add("InfoBox", () => {
 });
 
 const Footer = () => (
-  <Button color="primary" variant="outlined" onClick={action("click")}>
+  <Button type="filled" onClick={action("click")}>
     Take action
   </Button>
 );

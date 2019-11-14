@@ -70,7 +70,7 @@ function genCurrency() {
   return faker.random.arrayElement(listCryptoCurrencies(false));
 }
 
-function genApprovals(nb = 0, { users }) {
+export function genApprovals(nb = 0, { users }) {
   const approvals = [];
   const usersCopy = [...users];
   for (let i = 0; i < nb; i++) {
@@ -119,6 +119,7 @@ function genAccount({ users = [] } = {}, extra = {}) {
     : "PENDING_APPROVAL";
   return {
     id: faker.random.number({ min: 1, max: 100000000 }),
+    entityType: "ACCOUNT",
     index: faker.random.number({ min: 1, max: 10 }),
     name: faker.random.arrayElement(FAKE_ACCOUNT_NAMES),
     status,
@@ -204,6 +205,7 @@ function genUser() {
     "PENDING_REVOCATION",
   ]);
   return {
+    entityType: "USER",
     id: faker.random.alphaNumeric(12),
     pub_key: `0x${faker.random.alphaNumeric(40)}`,
     user_id: `${faker.random.alphaNumeric(16)}`,
@@ -242,6 +244,7 @@ const genTransaction = ({ account, users }) => {
 
   return {
     id: faker.random.number({ min: 1, max: 1000000000 }),
+    entityType: "TRANSACTION",
 
     created_by: faker.random.arrayElement(operators),
     currency_family: currency.family,
@@ -295,6 +298,7 @@ function genGroup({ users, status }) {
   });
   return {
     id: faker.random.alphaNumeric("10"),
+    entityType: "GROUP",
     name: faker.random.arrayElement(FAKE_GROUP_NAMES),
     created_on: faker.date.past(1),
     created_by: admins[faker.random.number({ min: 0, max: admins.length })],
