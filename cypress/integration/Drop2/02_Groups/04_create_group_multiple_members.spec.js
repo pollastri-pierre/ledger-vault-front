@@ -54,7 +54,7 @@ describe("Test Case for Create Groups with multiple member", function() {
       .type("{enter}");
     cy.get("[data-test=group_name]").type("America Ops");
     cy.contains("Next").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.get("[data-test=success_msg]").should(
       "contain",
       "Group request successfully created!",
@@ -74,7 +74,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     login(5);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=0]").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
   });
 
@@ -105,7 +105,7 @@ describe("Test Case for Create Groups with multiple member", function() {
       .type("{enter}");
     cy.get("[data-test=group_name]").type("Key accounts Ops");
     cy.contains("Next").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.wait(2500);
     cy.get("[data-test=success_msg]").should(
       "contain",
@@ -126,7 +126,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     login(5);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=0]").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
   });
 });

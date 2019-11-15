@@ -57,10 +57,10 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
           type: resolveStepType(gateStep),
           createdBy: gateStep.created_by,
           createdOn: gateStep.created_on,
-          ...(gateStep.blocker_request
-            ? { blockerRequest: gateStep.blocker_request }
-            : {}),
         };
+        if (gateStep.blocker_request) {
+          step.blockerRequest = gateStep.blocker_request;
+        }
         if (gateStep.approvals_steps) {
           Object.assign(step, {
             approvalsSteps: gateStep.approvals_steps

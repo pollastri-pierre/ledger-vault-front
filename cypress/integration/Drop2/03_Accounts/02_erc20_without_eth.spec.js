@@ -38,7 +38,7 @@ describe("Test Case for Account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.wait(1500);
     successfull_message2();
   });

@@ -78,7 +78,7 @@ const steps = [
         />
       );
     },
-    Cta: ({ onClose }: { onClose: () => void }) => {
+    Cta: ({ onClose }: { onClose?: () => void }) => {
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>

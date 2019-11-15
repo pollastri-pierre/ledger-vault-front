@@ -15,7 +15,7 @@ describe("Test on Operator ", function() {
     cy.url().should("include", "/operator/dashboard");
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/operator/accounts");
-    cy.wait(2500);
+    cy.wait(4500);
     cy.contains("Coinhy.pe").click();
     cy.contains("Balance").should("be.visible");
     cy.contains("Bitcoin").should("be.visible");
@@ -67,7 +67,7 @@ describe("Test on Operator ", function() {
       cy.get("[data-test=note_title]")
         .contains("Cypress TX")
         .should("be.visible");
-      cy.get("[data-test=approve_button]").click();
+      cy.get("[data-test=approve_button]").click({ force: true });
       success_tx();
     });
   });
