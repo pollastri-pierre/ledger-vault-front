@@ -34,7 +34,7 @@ const fakeNetwork = async url => {
   if (url.startsWith("/people")) {
     return wrapConnection(users);
   }
-  if (url.startsWith("/whitelists-mock")) {
+  if (url.startsWith("/whitelists")) {
     return wrapConnection(whitelists);
   }
   if (url.startsWith("/groups")) {
