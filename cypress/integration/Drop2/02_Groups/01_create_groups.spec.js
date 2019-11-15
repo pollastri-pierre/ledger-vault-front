@@ -63,7 +63,7 @@ describe("Test Case for Create Groups", function() {
       .type("{enter}");
     cy.get("[data-test=group_description]").type("Group for EMEA");
     cy.contains("Next").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.wait(1500);
 
     error_message("Error 10202", "Group already exists");

@@ -20,19 +20,19 @@ describe("Test Case for Approve the creation of Groups", function() {
     cy.url().should("include", "/admin/dashboard");
 
     cy.contains("NORTH Asia").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
 
     cy.contains("EMEA").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
 
     cy.contains("APAC").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
 
     cy.contains("South Africa").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
   });
 });

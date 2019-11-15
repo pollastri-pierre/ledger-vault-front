@@ -41,7 +41,7 @@ describe("Test on Operator ", function() {
     cy.get("[data-test=note_title]")
       .contains("Cypress TX for XRP")
       .should("be.visible");
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.wait(5000);
     cy.get("[data-test=success_msg]").should(
       "contain",

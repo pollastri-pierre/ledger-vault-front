@@ -60,11 +60,11 @@ const fetchVaultApp = deviceInfo =>
       }),
   );
 
-type InstallParams = {
+type InstallParams = {|
   setStep: Step => void,
   addLog: Object => void,
   subscribeProgress: Step => (e: { progress: number }) => void,
-};
+|};
 
 export function installEverything(params: InstallParams): Observable<*> {
   const { addLog } = params;

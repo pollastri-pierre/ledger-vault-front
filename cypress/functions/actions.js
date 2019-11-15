@@ -137,7 +137,7 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.get("[data-test=group_description]").type(description);
 
   cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
   cy.wait(2500);
   cy.get("[data-test=success_msg]").should(
     "contain",
@@ -239,7 +239,7 @@ export function create_account(currency, name, group, user1) {
     .type(user1, { force: true })
     .type("{enter}");
   cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
   cy.wait(3500);
 }
 
@@ -269,7 +269,7 @@ export function create_erc20_account(
     .type(user1, { force: true })
     .type("{enter}");
   cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
   cy.wait(3500);
 }
 
@@ -292,7 +292,7 @@ export function create_erc20_account_new_eth(erc20, childname, group, user1) {
     .type(user1, { force: true })
     .type("{enter}");
   cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
   cy.wait(3500);
 }
 
@@ -323,7 +323,7 @@ export function create_erc20_with_viewonly_eth_account(
     .type(user1, { force: true })
     .type("{enter}");
   cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
   cy.wait(3500);
 }
 
@@ -342,27 +342,27 @@ export function provide_viewonly_rule(name, groups, user1) {
     .type(user1, { force: true })
     .type("{enter}");
   cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
   cy.wait(3500);
 }
 
 export function approve_tx() {
   cy.url().should("include", "/operator/dashboard");
   cy.get("[data-test=awaiting-approval]").click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
   cy.wait(4500);
-  successfull_message();
+  successfull_message2();
 }
 
 export function revoke_users(name) {
   cy.get("[data-test=menuItem-users]").click();
   cy.url().should("include", "/admin/users");
   cy.contains(name).click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
   cy.get("[data-test=Confirm]").click();
   cy.wait(2500);
   login(5);
   cy.get("[data-test=menuItem-users]").click();
   cy.contains(name).click();
-  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=approve_button]").click({ force: true });
 }

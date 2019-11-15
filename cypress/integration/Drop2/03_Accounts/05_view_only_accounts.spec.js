@@ -48,11 +48,11 @@ describe("Provide transaction rules for View Only account", function() {
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=1]").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.wait(3500);
     successfull_message2();
     cy.get("[data-test=0]").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     cy.wait(2500);
     successfull_message2();
   });

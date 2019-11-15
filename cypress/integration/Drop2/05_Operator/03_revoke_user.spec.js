@@ -3,7 +3,7 @@ import {
   logout,
   route,
   revoke_users,
-  successfull_message,
+  successfull_message2,
 } from "../../../functions/actions";
 
 describe("Test Revoke User", function() {
@@ -19,13 +19,13 @@ describe("Test Revoke User", function() {
     cy.server();
     route();
     revoke_users("Aidan Fisher");
-    successfull_message();
+    successfull_message2();
   });
 
   it("Revoke Admin", () => {
     cy.server();
     route();
     revoke_users("John Clark");
-    successfull_message();
+    successfull_message2();
   });
 });

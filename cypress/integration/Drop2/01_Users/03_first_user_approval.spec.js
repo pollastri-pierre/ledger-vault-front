@@ -22,27 +22,27 @@ describe("Approve User as Operator and Admin with the first admin", function() {
 
     // Anna Wagner operator
     cy.contains("Anna").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
 
     // Aidan Fisher operator
     cy.contains("Aidan").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
 
     // Thomas Lebron operator
     cy.contains("Thomas").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
 
     // James Lepic operator
     cy.contains("James").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
 
     // John Clark admin
     cy.contains("John").click();
-    cy.get("[data-test=approve_button]").click();
+    cy.get("[data-test=approve_button]").click({ force: true });
     successfull_message2();
   });
 });

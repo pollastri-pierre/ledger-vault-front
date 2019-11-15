@@ -24,7 +24,7 @@ const ThresholdParameters = (props: Props) => {
     throw new Error("No condition in threshold rule");
   }
 
-  const handleChange = key => v =>
+  const handleChange = (key: string) => v =>
     onChange({ ...rule, data: [{ ...threshold, [key]: v }] });
 
   return (
