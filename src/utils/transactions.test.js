@@ -19,6 +19,7 @@ test("should return false if accounts length is 0", () => {
 test("should return false if there is 1 account with one pending", () => {
   const accounts = genAccounts(1, { users }, { status: "ACTIVE" });
   const transactions = genTransactions(1, { accounts, users });
+  transactions.forEach(tx => (tx.status = "PENDING_APPROVAL"));
   expect(isCreateTransactionEnabled(accounts, transactions)).toBe(false);
 });
 
@@ -51,6 +52,35 @@ test("should return false if there are 2 accounts without funds", () => {
 test("should return false if operator is not in first step of approval flow", () => {
   const accounts = genAccounts(1, { users }, { status: "ACTIVE" });
   const transactions = genTransactions(1, { accounts, users });
-  accounts[0].tx_approval_steps = [null, {}];
+  transactions.forEach(tx => (tx.status = "SUBMITTED"));
+  accounts[0].governance_rules = [
+    {
+      name: "Rule 1",
+      rules: [
+        {
+          type: "MULTI_AUTHORIZATIONS",
+          data: [null, {}],
+        },
+      ],
+    },
+  ];
   expect(isCreateTransactionEnabled(accounts, transactions)).toBe(false);
+});
+
+test("should return true if operator is in first step of approval flow", () => {
+  const accounts = genAccounts(1, { users }, { status: "ACTIVE" });
+  const transactions = genTransactions(1, { accounts, users });
+  transactions.forEach(tx => (tx.status = "SUBMITTED"));
+  accounts[0].governance_rules = [
+    {
+      name: "Rule 1",
+      rules: [
+        {
+          type: "MULTI_AUTHORIZATIONS",
+          data: [{}, null],
+        },
+      ],
+    },
+  ];
+  expect(isCreateTransactionEnabled(accounts, transactions)).toBe(true);
 });

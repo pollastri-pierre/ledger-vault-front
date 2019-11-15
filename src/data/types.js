@@ -106,7 +106,7 @@ export type UserInvite = {
 };
 
 export type Approval = {
-  created_on: Date,
+  created_on: string,
   created_by: User,
   type: "APPROVE" | "ABORT",
 };
@@ -123,7 +123,7 @@ export type WhitelistCommon = {
   entityType: "WHITELIST",
   description: string,
   addresses: Address[],
-  created_on: Date,
+  created_on: string,
   created_by: User,
   approvals: Approval[],
   status: string,
@@ -140,10 +140,6 @@ type ExtendedPubKey = {
   chain_code: string,
 };
 
-export type TxApprovalStep = { quorum: number, group: $Shape<Group> };
-
-export type TxApprovalStepCollection = Array<TxApprovalStep | null>;
-
 type AccountCommon = {
   id: number,
   account_type: AccountType,
@@ -152,19 +148,17 @@ type AccountCommon = {
   address?: string,
   contract_address: string,
   name: string,
-  members: User[],
   settings: AccountSettings,
   balance: BigNumber,
   currency: string,
   parent_balance?: BigNumber,
-  created_on: Date,
-  governance_rules: RulesSet[],
+  created_on: string,
+  governance_rules: ?(RulesSet[]),
   fresh_addresses: *,
   is_hsm_coin_app_updated: boolean,
   index: number,
   status: AccountStatus,
   xpub: string,
-  tx_approval_steps?: TxApprovalStepCollection,
   parent: ?number,
   derivation_path: string,
   extended_public_key: ExtendedPubKey,
@@ -193,7 +187,7 @@ type GroupCommon = {
   id: number,
   name: string,
   entityType: "GROUP",
-  created_on: Date,
+  created_on: string,
   created_by: User,
   description?: string,
   status: GroupStatus,
@@ -316,7 +310,7 @@ type TransactionCommon = {
   confirmations: number,
   min_confirmations: number,
   tx_hash: ?string,
-  created_on: Date,
+  created_on: string,
   price?: Price,
   fees: BigNumber,
   approvedTime: ?string,
@@ -352,14 +346,14 @@ export type ActivityCommon = {
   id: number,
   seen: boolean,
   show: boolean,
-  created_on: Date,
+  created_on: string,
 };
 
 export type ActivityGeneric = {
   id: number,
   seen: boolean,
   show: boolean,
-  created_on: Date,
+  created_on: string,
   business_action: ActivityEntityAccount | ActivityEntityTransaction,
 };
 
@@ -427,11 +421,11 @@ export const RequestStatusMap = {
 export type RequestStatus = $Keys<typeof RequestStatusMap>;
 
 const RequestActivityTypeDefsWhitelist = {
-  CREATE_GROUP: "CREATE_WHITELIST",
-  EDIT_GROUP: "EDIT_WHITELIST",
-  REVOKE_GROUP: "REVOKE_WHITELIST",
+  CREATE_WHITELIST: "CREATE_WHITELIST",
+  EDIT_WHITELIST: "EDIT_WHITELIST",
+  REVOKE_WHITELIST: "REVOKE_WHITELIST",
 };
-const RequestActivityTypeDefsGroup = {
+export const RequestActivityTypeDefsGroup = {
   CREATE_GROUP: "CREATE_GROUP",
   EDIT_GROUP: "EDIT_GROUP",
   REVOKE_GROUP: "REVOKE_GROUP",
@@ -535,9 +529,7 @@ type GroupEditData = {
 };
 type AccountEditData = {
   name?: string,
-  governance_rules: {
-    tx_approval_steps: EditApprovalStep[],
-  },
+  governance_rules: RulesSet[],
 };
 
 type MapRequestType = {
