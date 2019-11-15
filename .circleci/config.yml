@@ -103,10 +103,13 @@ jobs:
           name: Upload on AWS S3
           command: |
             s3_path="s3://<< parameters.s3_bucket >>/ledger-vault-front"
-            artifact_with_sha1="ledger-vault-front_${CIRCLE_SHA1}.tar.gz"
-            aws s3 cp --quiet ~/workspace/ledger-vault-front.tar.gz ${s3_path}/${artifact_with_sha1}
+            artifact_name="ledger-vault-front_${CIRCLE_SHA1}.tar.gz"
+            if [ -n "${CIRCLE_TAG}" ]; then
+              artifact_name="ledger-vault-front_${CIRCLE_TAG}.tar.gz"
+            fi
+            aws s3 cp --quiet ~/workspace/ledger-vault-front.tar.gz ${s3_path}/${artifact_name}
             eval echo 'export s3_path="${s3_path}"' >> $BASH_ENV
-            eval echo 'export latest_artifact="${artifact_with_sha1}"' >> $BASH_ENV
+            eval echo 'export latest_artifact="${artifact_name}"' >> $BASH_ENV
       - run:
           name: Update the pointer "LATEST"
           command: |
