@@ -259,7 +259,8 @@ const openSessionValidate: Interaction = {
         : ACCOUNT_MANAGER_SESSION,
     );
 
-    return Promise.resolve(channel.w_actions);
+    // TODO remove || check when backend will support streaming
+    return Promise.resolve(channel.w_actions || channel.blob);
   },
 };
 const openSessionVerifyAddress: Interaction = {
@@ -292,8 +293,8 @@ const openSessionVerifyAddress: Interaction = {
       certif,
       ACCOUNT_MANAGER_SESSION,
     );
-
-    return Promise.resolve(address_channel.blob);
+    // TODO remove || check when backend will support streaming
+    return Promise.resolve(address_channel.w_actions || address_channel.blob);
   },
 };
 
@@ -303,7 +304,14 @@ const validateDevice = (entity: ?TargetType): Interaction => ({
   responseKey: "validate_device",
   tooltip: entity ? <Text i18nKey={`deviceInteractions:${entity}`} /> : null,
   action: ({ transport, channel_blob }) =>
-    validateVaultOperation()(transport, VALIDATION_PATH, channel_blob),
+    // TODO remove isArray() check when backend will support streaming
+    validateVaultOperation()(
+      transport,
+      VALIDATION_PATH,
+      Array.isArray(channel_blob)
+        ? channel_blob
+        : Buffer.from(channel_blob, "base64"),
+    ),
 });
 
 export const validateOperation = (entity: ?TargetType) => [
