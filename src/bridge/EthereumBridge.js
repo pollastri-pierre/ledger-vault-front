@@ -122,8 +122,16 @@ const EthereumBridge: WalletBridge<Transaction> = {
     if (!estimatedFees) return false;
     if (!estimatedFees.isGreaterThan(0)) return false;
     if (a.account_type === "Erc20") {
-      if (!a.parent_balance) return false;
-      if (estimatedFees.isGreaterThan(a.parent_balance)) return false;
+      //
+      // FIXME FIXME FIXME
+      // cf - https://ledgerhq.atlassian.net/browse/LV-2050
+      //    - https://ledgerhq.atlassian.net/browse/LV-2050
+      //
+      // Put back those lines when the gate fixes the regression:
+      //
+      // if (!a.parent_balance) return false;
+      // if (estimatedFees.isGreaterThan(a.parent_balance)) return false;
+      //
     } else if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) {
       return false;
     }
