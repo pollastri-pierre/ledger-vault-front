@@ -34,7 +34,7 @@ const fakeNetwork = async url => {
   if (url.startsWith("/people")) {
     return wrapConnection(users);
   }
-  if (url.startsWith("/whitelists-mock")) {
+  if (url.startsWith("/whitelists")) {
     return wrapConnection(whitelists);
   }
   if (url.startsWith("/groups")) {
@@ -50,15 +50,19 @@ const fakeNetwork = async url => {
   }
   if (url.startsWith("/accounts")) {
     const acc = accounts[0];
-    acc.tx_approval_steps = [
-      {
-        quorum: 2,
-        group: denormalize(groups[0].id, schema.Group, {
-          users: keyBy(users, "id"),
-          groups: keyBy(groups, "id"),
-        }),
-      },
-    ];
+
+    // FIXME we need a coherent governance_rules in the account
+    //       before, we used to do this:
+    //
+    // acc.tx_approval_steps = [
+    //   {
+    //     quorum: 2,
+    //     group: denormalize(groups[0].id, schema.Group, {
+    //       users: keyBy(users, "id"),
+    //       groups: keyBy(groups, "id"),
+    //     }),
+    //   },
+    // ];
     // acc.status = "VIEW_ONLY";
     return acc;
   }
