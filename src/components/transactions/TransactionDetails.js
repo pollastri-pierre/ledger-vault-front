@@ -16,7 +16,6 @@ import { CardError } from "components/base/Card";
 import Button from "components/base/Button";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import Absolute from "components/base/Absolute";
 import EntityModal from "components/EntityModal";
 import { FetchEntityHistory } from "components/EntityHistory";
 import type { Transaction, Account } from "data/types";
@@ -49,7 +48,7 @@ function TransactionDetails(props: Props) {
     : null;
 
   const footer = url ? (
-    <Absolute top={25} right={20}>
+    <Box horizontal>
       <a target="_blank" rel="noopener noreferrer" href={url}>
         <Button type="outline" variant="info">
           <Box horizontal align="center" flow={5}>
@@ -60,7 +59,7 @@ function TransactionDetails(props: Props) {
           </Box>
         </Button>
       </a>
-    </Absolute>
+    </Box>
   ) : null;
 
   return (

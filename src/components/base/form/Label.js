@@ -8,7 +8,7 @@ import Box from "components/base/Box";
 export default styled(Box)`
   font-size: 11px;
   text-transform: uppercase;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   white-space: no-wrap;
   color: ${colors.textLight};
 `;

@@ -3,7 +3,7 @@ import Mutation from "restlay/Mutation";
 import type { GenericRequest } from "data/types";
 
 type Input = {
-  requestID: string,
+  requestID: string | number,
 };
 
 type Response = GenericRequest;

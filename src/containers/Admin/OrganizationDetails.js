@@ -10,11 +10,10 @@ import RequestQuery from "api/queries/RequestQuery";
 import connectData from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import Status from "components/Status";
-import { RichModalHeader, RichModalFooter } from "components/base/Modal";
+import { RichModalHeader } from "components/base/Modal";
+import EntityFooter from "components/EntityFooter";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import { useOrganization } from "components/OrganizationContext";
-import RequestActionButtons from "components/RequestActionButtons";
 import type { GenericRequest } from "data/types";
 
 const arrowRight = <FaArrowRight size={9} color={colors.ocean} />;
@@ -26,7 +25,6 @@ function OrganizationDetails({
   request: GenericRequest,
   close: () => void,
 }) {
-  const { refresh } = useOrganization();
   invariant(request.organization, "No organization found!");
 
   const inner = (
@@ -46,16 +44,11 @@ function OrganizationDetails({
         </Text>
       </Box>
       {request.status !== "ABORTED" && request.status !== "APPROVED" ? (
-        <RichModalFooter>
-          <RequestActionButtons
-            onSuccess={() => {
-              refresh();
-              close();
-            }}
-            // $FlowFixMe it's not a real entity
-            entity={{ last_request: request }}
-          />
-        </RichModalFooter>
+        <EntityFooter
+          captureRefs
+          entity={{ last_request: request }}
+          onFinish={close}
+        />
       ) : (
         <Box align="flex-end" height={35} pr={20}>
           <Status status={request.status} />

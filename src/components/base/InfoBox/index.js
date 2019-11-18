@@ -29,9 +29,9 @@ const Container = styled(Box).attrs({})`
   }
   color: ${p =>
     p.type === "info"
-      ? darken(colors.ocean, 0.3)
+      ? colors.bLive
       : p.type === "warning"
-      ? colors.light_orange
+      ? darken(colors.blue_orange, 0.4)
       : p.type === "error"
       ? colors.grenade
       : p.type === "success"
@@ -39,7 +39,7 @@ const Container = styled(Box).attrs({})`
       : "black"};
   background-color: ${p =>
     p.type === "info"
-      ? opacity(colors.ocean, 0.05)
+      ? opacity(colors.bLive, 0.05)
       : p.type === "warning"
       ? opacity(colors.blue_orange, 0.1)
       : p.type === "error"
@@ -56,7 +56,7 @@ const FooterContainer = styled(Box).attrs({
   background: rgba(0, 0, 0, 0.1);
   background-color: ${p =>
     p.type === "info"
-      ? opacity(colors.ocean, 0.1)
+      ? opacity(colors.bLive, 0.1)
       : p.type === "warning"
       ? opacity(colors.blue_orange, 0.1)
       : p.type === "error"
@@ -73,7 +73,7 @@ const IconContainer = styled(Box).attrs({
   line-height: 0;
   color: ${p =>
     p.type === "info"
-      ? opacity(darken(colors.ocean, 0.3), 0.3)
+      ? opacity(darken(colors.bLive, 0.3), 0.3)
       : p.type === "warning"
       ? opacity(colors.light_orange, 0.4)
       : p.type === "success"
