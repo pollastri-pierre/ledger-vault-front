@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useMemo } from "react";
 import invariant from "invariant";
 import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
@@ -150,9 +150,10 @@ export default connectData(
     const cursor = 0;
     let payload = initialPayload;
 
-    const filteredAccounts = accounts.edges
-      .map(el => el.node)
-      .filter(isAccountSpendable);
+    const filteredAccounts = useMemo(
+      () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
+      [accounts],
+    );
     const acc =
       match.params && match.params.id
         ? filteredAccounts.find(a => a.id === parseInt(match.params.id, 10))

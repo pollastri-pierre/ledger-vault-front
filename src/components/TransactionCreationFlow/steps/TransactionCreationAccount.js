@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import invariant from "invariant";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { Trans } from "react-i18next";
@@ -49,9 +49,10 @@ const TransactionCreationAccount = (
     [updatePayload],
   );
 
-  const filteredAccounts = accounts.edges
-    .map(el => el.node)
-    .filter(isAccountSpendable);
+  const filteredAccounts = useMemo(
+    () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
+    [accounts],
+  );
 
   return (
     <Box>
