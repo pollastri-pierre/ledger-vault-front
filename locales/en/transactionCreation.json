@@ -3,18 +3,23 @@
   "steps": {
     "account": {
       "title": "Account",
-      "desc": "Account to debit"
-    },
-    "amount": {
-      "title": "Details",
       "accountToDebit": "Sending from",
       "balance": "Balance",
       "amount": "Amount",
+      "total": "Total",
+      "fees": { "title": "Transaction fees" },
+      "select": "Select address",
       "recipient": "Recipient address",
       "feesInfos": "To have your transaction confirmed faster, select a higher fee.",
       "estimatedFees": "Estimated fees",
+      "gasLimit": "Gas Limit",
+      "gasPrice": "Gas Price",
       "destinationTag": "Destination tag",
-      "destinationTagDesc": "e.g: 1234"
+      "destinationTagDesc": "e.g: 1234",
+      "tooltip": {
+        "whitelist": "Select from the whitelist",
+        "customAddress": "Type in the address"
+      }
     },
     "note": {
       "title": "Comments",
@@ -23,7 +28,13 @@
       "noteDesc": "Comments are optional. They allow you to add details on the transaction."
     },
     "confirmation": {
-      "title": "Confirmation"
+      "title": "Confirmation",
+      "account": "Account to Debit",
+      "desc": "A transaction request will be sent to the members of the account. It won't be broadcasted to the blockchain until it's approved.",
+      "fees": "Confirmation fees",
+      "identifier": "Recipient address",
+      "total": "Total amount",
+      "totalERC20Info": "Excluding confirmation fees"
     }
   },
   "cta": "Create transaction",

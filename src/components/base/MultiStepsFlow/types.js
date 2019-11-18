@@ -12,6 +12,7 @@ export type MultiStepsFlowStep<T, P> = {|
   requirements?: (T, ?P) => boolean,
   prevLabel?: React$Node,
   hideBack?: boolean,
+  CustomFooterElementLeft?: React$ComponentType<StepProps<T> & P>,
 |};
 
 export type PayloadUpdater<T> = ($Shape<T>, ?() => void) => void;

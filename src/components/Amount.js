@@ -32,6 +32,7 @@ type Props = {
   strong?: boolean,
   disableERC20?: boolean,
   hideCountervalue?: boolean,
+  smallerInnerMargin?: boolean,
   classes: { [_: $Keys<typeof styles>]: string },
 };
 
@@ -44,6 +45,7 @@ class Amount extends Component<Props> {
       dataTest,
       disableERC20,
       hideCountervalue,
+      smallerInnerMargin,
     } = this.props;
 
     const cvProps = {};
@@ -52,9 +54,9 @@ class Amount extends Component<Props> {
     } else {
       Object.assign(cvProps, { fromAccount: account });
     }
-
+    Object.assign(cvProps, { smallerInnerMargin });
     return (
-      <Box horizontal align="center" flow={5}>
+      <Box horizontal align="center" justify="center" flow={5}>
         <Text
           color={colors.black}
           data-test={dataTest}

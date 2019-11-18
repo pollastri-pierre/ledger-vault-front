@@ -151,13 +151,22 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
     if (!step) return null;
 
-    const { Step, Cta, nextLabel, prevLabel, hideBack, WarningNext } = step;
+    const {
+      Step,
+      Cta,
+      nextLabel,
+      prevLabel,
+      hideBack,
+      CustomFooterElementLeft,
+      WarningNext,
+    } = step;
 
     const stepProps = {
       payload,
       initialPayload,
       WarningNext,
       hideBack,
+      CustomFooterElementLeft,
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
@@ -177,11 +186,14 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
         </Box>
         <RichModalFooter
           style={
-            cursor === 0 || hideBack
+            CustomFooterElementLeft === undefined && (cursor === 0 || hideBack)
               ? { justifyContent: "flex-end" }
               : { justifyContent: "space-between" }
           }
         >
+          {CustomFooterElementLeft && (
+            <CustomFooterElementLeft payload={payload} {...additionalProps} />
+          )}
           {prevStep && !hideBack && (
             <Button onClick={this.prev}>
               {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}

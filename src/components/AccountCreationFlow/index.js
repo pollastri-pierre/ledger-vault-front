@@ -315,7 +315,7 @@ export const deserialize: Account => AccountCreationPayload = account => {
     id: account.id,
     accountStatus: account.status,
     name: account.name,
-    rulesSets: account.governance_rules || [],
+    rulesSets: account.governance_rules,
     currency:
       account.account_type === "Bitcoin" ||
       account.account_type === "Ethereum" ||
