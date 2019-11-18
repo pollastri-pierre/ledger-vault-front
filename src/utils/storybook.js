@@ -138,12 +138,17 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
   }
   if (url.match(/accounts\/[^/]*/g)) {
     const account = accounts[0];
-    account.tx_approval_steps.forEach((rule, i) => {
-      const a = denormalize(rule.group, schema.Group, {
-        users: keyBy(users, "id"),
-      });
-      account.tx_approval_steps[i].group = a;
-    });
+
+    // FIXME we need a coherent governance_rules in the account
+    //       before, we used to do this:
+    //
+    // account.tx_approval_steps.forEach((rule, i) => {
+    //   const a = denormalize(rule.group, schema.Group, {
+    //     users: keyBy(users, "id"),
+    //   });
+    //   account.tx_approval_steps[i].group = a;
+    // });
+
     return wrapWithRequest({ entity: account, request_type, approved });
   }
   if (url.startsWith("/groups")) {

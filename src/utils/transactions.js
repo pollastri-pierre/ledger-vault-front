@@ -6,8 +6,11 @@ import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 export const hasPending = (account: Account, transactions: Transaction[]) =>
-  transactions.filter(transaction => transaction.account_id === account.id)
-    .length > 0;
+  transactions.filter(
+    transaction =>
+      transaction.status === "PENDING_APPROVAL" &&
+      transaction.account_id === account.id,
+  ).length > 0;
 
 // transaction creation is not allowed if there is no accounts obviously.
 // If there are accounts, we need at least one account with 0 pending operation and uptodate

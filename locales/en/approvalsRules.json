@@ -17,5 +17,6 @@
   "role_creator": "Create & Approve",
   "role_approver": "approver",
   "approvalStepDesc": "<0>1 approval</0> from:",
-  "approvalStepDesc_plural": "<0>{{nb}} approvals</0> from:"
+  "approvalStepDesc_plural": "<0>{{nb}} approvals</0> from:",
+  "reset_quorum": "The number of required approvals will be reset to 1."
 }
