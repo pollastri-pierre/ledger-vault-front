@@ -6,7 +6,6 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { Trans } from "react-i18next";
 
 import { getBridgeForCurrency } from "bridge";
-import { withMe } from "components/UserContextProvider";
 import Box from "components/base/Box";
 import { Label } from "components/base/form";
 import SelectAccount from "components/SelectAccount";
@@ -30,7 +29,7 @@ export const getBridgeAndTransactionFromAccount = (account: Account) => {
 const TransactionCreationAccount = (
   props: TransactionCreationStepProps<any>,
 ) => {
-  const { payload, updatePayload, transitionTo, accounts } = props;
+  const { payload, updatePayload, accounts } = props;
 
   const handleChange = useCallback(
     acc => {
@@ -41,15 +40,13 @@ const TransactionCreationAccount = (
           bridge,
         } = getBridgeAndTransactionFromAccount(acc);
         if (transaction) {
-          updatePayload({ account, transaction, bridge }, () =>
-            transitionTo("amount"),
-          );
+          updatePayload({ account, transaction, bridge });
         }
       } else {
         updatePayload({ transaction: null, account: null });
       }
     },
-    [transitionTo, updatePayload],
+    [updatePayload],
   );
 
   const filteredAccounts = accounts.edges
@@ -59,16 +56,16 @@ const TransactionCreationAccount = (
   return (
     <Box>
       <Label>
-        <Trans i18nKey="transactionCreation:steps.account.desc" />
+        <Trans i18nKey="transactionCreation:steps.account.title" />
       </Label>
       <SelectAccount
         value={payload.account}
         accounts={filteredAccounts}
         autoFocus
-        openMenuOnFocus
         onChange={handleChange}
+        openMenuOnFocus
       />
     </Box>
   );
 };
-export default withMe(TransactionCreationAccount);
+export default TransactionCreationAccount;

@@ -1,7 +1,8 @@
 // @flow
 
-import type { Account } from "data/types";
-
-// operators receive Null as a step if he is not part of it
-export const isMemberOfFirstApprovalStep = (account: Account) =>
-  !!account.tx_approval_steps && !!account.tx_approval_steps[0];
+export const isMemberOfFirstApprovalStep = () => {
+  console.warn(
+    "isMemberOfFirstApprovalStep set to true, transitioning from tx_approval_steps to governance_rules",
+  );
+  return true;
+};
