@@ -8,9 +8,13 @@ import {
   EditableStop,
   useReadOnly,
 } from "components/base/Timeline";
+import InfoBox from "components/base/InfoBox";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import type { User, Group } from "data/types";
 import { StepMembers } from "./MultiAuthStop";
 import SelectApprovals from "./SelectApprovals";
+import Badge from "./Badge";
 import type { RuleMultiAuth, RuleMultiAuthStep } from "./types";
 
 type Props = {
@@ -110,24 +114,36 @@ const EditCreator = (props: EditProps) => {
   if (!extraProps) return null;
   const { rule, users, groups } = extraProps;
   return (
-    <div>
+    <Box flow={20}>
       <SelectApprovals
         rule={rule}
         step={step}
         groups={groups}
         users={users}
-        onChange={onChange}
+        onChange={data => onChange({ ...data, quorum: 1 })} // enforce quorum to 1 for first step
         autoFocus={extraProps.shouldAutofocus}
       />
-    </div>
+      {step.quorum > 1 && (
+        <InfoBox type="warning">
+          <Text i18nKey="approvalsRules:reset_quorum" />
+        </InfoBox>
+      )}
+    </Box>
   );
 };
 
 const DisplayCreator = ({ value }: { value: RuleMultiAuthStep }) => {
+  const isOldAccount = value.quorum > 1;
   return (
     <div style={{ lineHeight: 2.5 }}>
       <div>
-        <strong>Transaction creator:</strong>
+        {isOldAccount ? (
+          <>
+            <Badge type="primary">{value.quorum} approvals</Badge> from:
+          </>
+        ) : (
+          <strong>Transaction creator:</strong>
+        )}
       </div>
       <StepMembers step={value} />
     </div>
