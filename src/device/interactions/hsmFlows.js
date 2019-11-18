@@ -259,7 +259,7 @@ const openSessionValidate: Interaction = {
         : ACCOUNT_MANAGER_SESSION,
     );
 
-    return Promise.resolve(channel.blob);
+    return Promise.resolve(channel.w_actions);
   },
 };
 const openSessionVerifyAddress: Interaction = {
@@ -303,11 +303,7 @@ const validateDevice = (entity: ?TargetType): Interaction => ({
   responseKey: "validate_device",
   tooltip: entity ? <Text i18nKey={`deviceInteractions:${entity}`} /> : null,
   action: ({ transport, channel_blob }) =>
-    validateVaultOperation()(
-      transport,
-      VALIDATION_PATH,
-      Buffer.from(channel_blob, "base64"),
-    ),
+    validateVaultOperation()(transport, VALIDATION_PATH, channel_blob),
 });
 
 export const validateOperation = (entity: ?TargetType) => [

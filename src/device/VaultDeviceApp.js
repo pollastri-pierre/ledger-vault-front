@@ -1,9 +1,14 @@
 // @flow
 import type Transport from "@ledgerhq/hw-transport";
-import { fromStringRoleToBytes } from "device";
+import {
+  fromStringRoleToBytes,
+  STREAMING_RESPONSE,
+  STREAMING_NEXT_ACTION,
+} from "device";
 import invariant from "invariant";
 
 const STATUS_LENGTH = 2;
+const MAX_CHUNK_LENGTH = 250;
 const removeStatus = (result: Buffer): Buffer =>
   result.slice(0, result.length - STATUS_LENGTH);
 
@@ -107,12 +112,30 @@ export const getVersion = async (
   };
 };
 
+// FIXME we should check that the first chunk contains at least the length of all the data
+export const sendByChunk = async (
+  transport: Transport<*>,
+  command: number[], // eg [0xe0, 0x45, 0x00, 0x00]
+  data: Buffer,
+  chunkSize: number = MAX_CHUNK_LENGTH,
+) => {
+  const chunks = splits(chunkSize, data);
+  let response = Buffer.from([]);
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
+    const apdu = [...command];
+    // command is 0xe0,0x45,0x00,0x00 for first chunk, then it's 0xe0,0x45, 0x80,0x00
+    apdu[2] = i && 0x80;
+    response = await transport.send(apdu[0], apdu[1], apdu[2], apdu[3], chunk);
+  }
+  return response;
+};
+
 export const validateVaultOperation = async (
   transport: Transport<*>,
   path: number[],
-  operation: Buffer,
+  operation: Buffer[],
 ) => {
-  const maxLength = 200;
   const paths = Buffer.concat([
     Buffer.from([path.length]),
     ...path.map(derivation => {
@@ -122,22 +145,30 @@ export const validateVaultOperation = async (
     }),
   ]);
 
-  const length = Buffer.alloc(2);
-  length.writeUInt16BE(operation.length, 0);
-  let chunks = [operation];
+  let nextActionId = 1;
+  let finalResponse;
 
-  if (maxLength < operation.length) {
-    chunks = splits(maxLength, operation);
+  while (!finalResponse) {
+    const screen = operation[nextActionId - 1];
+    const length = Buffer.alloc(2);
+    length.writeUInt16BE(screen.length, 0);
+    const data = Buffer.concat([paths, length, screen]);
+    const response = await sendByChunk(
+      transport,
+      [0xe0, 0x45, 0x00, 0x00],
+      data,
+    );
+    const responseType = response.readInt8(0);
+    if (responseType === STREAMING_NEXT_ACTION) {
+      nextActionId = response.readUIntBE(1, 2);
+    } else if (responseType === STREAMING_RESPONSE) {
+      finalResponse = response.slice(1, response.length);
+    } else {
+      throw Error(`${responseType}`);
+    }
   }
 
-  const data = Buffer.concat([paths, length, chunks.shift()]);
-  let lastResponse = await transport.send(0xe0, 0x45, 0x00, 0x00, data);
-
-  for (let i = 0; i < chunks.length; i++) {
-    lastResponse = await transport.send(0xe0, 0x45, 0x80, 0x00, chunks[i]);
-  }
-
-  return removeStatus(lastResponse);
+  return removeStatus(finalResponse);
 };
 
 export const openSession = async (
@@ -159,28 +190,19 @@ export const openSession = async (
   const lengthAttestation = Buffer.alloc(2);
   lengthAttestation.writeUInt16BE(attestation.length, 0);
 
-  const maxLength = 150;
-
-  const chunks = splits(maxLength, attestation);
   const data = Buffer.concat([
     dataDerivation,
     pubKey,
     lengthAttestation,
-    chunks.shift(),
+    attestation,
   ]);
 
-  let lastResponse = await transport.send(0xe0, 0x42, 0x00, scriptHash, data);
-
-  for (let i = 0; i < chunks.length; i++) {
-    lastResponse = await transport.send(
-      0xe0,
-      0x42,
-      0x80,
-      scriptHash,
-      chunks[i],
-    );
-  }
-  return lastResponse;
+  const response = await sendByChunk(
+    transport,
+    [0xe0, 0x42, 0x00, scriptHash],
+    data,
+  );
+  return response;
 };
 
 export const registerData = async (
@@ -220,9 +242,7 @@ export const register = async (
   const userNameBuff = Buffer.from(userName);
   const hsmDataBuff = Buffer.from(hsmData, "hex");
 
-  const maxLength = 200;
-
-  const bigChunk = Buffer.concat([
+  const keyHandleData = Buffer.concat([
     fromStringRoleToBytes[userRole.toLowerCase()],
     Buffer.from([userNameBuff.length]),
     userNameBuff,
@@ -230,33 +250,27 @@ export const register = async (
     hsmDataBuff,
   ]);
 
-  const length = Buffer.alloc(2);
-  length.writeUInt16BE(bigChunk.length, 0);
-
-  const chunks = splits(maxLength, bigChunk);
+  const keyHandleDataLength = Buffer.alloc(2);
+  keyHandleDataLength.writeUInt16BE(keyHandleData.length, 0);
 
   const data = Buffer.concat([
     challenge,
     applicationBuf,
-    length,
-    chunks.shift(),
+    keyHandleDataLength,
+    keyHandleData,
   ]);
 
-  let lastResponse = await await transport.send(0xe0, 0x01, 0x00, 0x00, data);
-
-  for (let i = 0; i < chunks.length; i++) {
-    lastResponse = await transport.send(0xe0, 0x01, 0x80, 0x00, chunks[i]);
-  }
+  const response = await sendByChunk(transport, [0xe0, 0x01, 0x00, 0x00], data);
 
   let i = 0;
-  const rfu = lastResponse.slice(i, (i += 1))[0];
-  const pubKey = lastResponse.slice(i, (i += 65)).toString("hex");
-  const keyHandleLength = lastResponse.slice(i, ++i)[0];
-  const keyHandle = lastResponse.slice(i, (i += keyHandleLength));
+  const rfu = response.slice(i, (i += 1))[0];
+  const pubKey = response.slice(i, (i += 65)).toString("hex");
+  const keyHandleLength = response.slice(i, ++i)[0];
+  const keyHandle = response.slice(i, (i += keyHandleLength));
   // const attestationSignature = lastResponse.slice(i, ++i)[0];
   // const signature = lastResponse.slice(i).toString("hex");
   return {
-    u2f_register: removeStatus(lastResponse),
+    u2f_register: removeStatus(response),
     keyHandle,
     rfu,
     pubKey,
@@ -317,14 +331,12 @@ export const authenticate = async (
     applicationBuf.length === 32,
     "application hex is expected to have 32 bytes",
   );
-  const maxLength = 150;
-
   const nameBuf = Buffer.from(name);
   const workspaceBuf = Buffer.from(workspace);
 
   const roleBuf = fromStringRoleToBytes[role.toLowerCase()];
 
-  const bigChunk = Buffer.concat([
+  const keyHandleData = Buffer.concat([
     roleBuf,
     Buffer.from([nameBuf.length]),
     nameBuf,
@@ -332,34 +344,29 @@ export const authenticate = async (
     workspaceBuf,
   ]);
 
-  const length = Buffer.alloc(2);
-  length.writeUInt16BE(bigChunk.length, 0);
-
-  const chunks = splits(maxLength, bigChunk);
+  const keyHandleDataLength = Buffer.alloc(2);
+  keyHandleDataLength.writeUInt16BE(keyHandleData.length, 0);
 
   const data = Buffer.concat([
     challenge,
     applicationBuf,
     Buffer.from([keyHandle.length]),
     keyHandle,
-    length,
-    chunks.shift(),
+    keyHandleDataLength,
+    keyHandleData,
   ]);
 
-  let lastResponse = await transport.send(0xe0, 0x02, 0x00, 0x00, data);
+  const response = await sendByChunk(transport, [0xe0, 0x02, 0x00, 0x00], data);
 
-  for (let i = 0; i < chunks.length; i++) {
-    lastResponse = await transport.send(0xe0, 0x02, 0x80, 0x00, chunks[i]);
-  }
-  const userPresence = lastResponse.slice(0, 1);
-  const counter = lastResponse.slice(1, 5);
-  const signature = lastResponse
-    .slice(5, lastResponse.length - STATUS_LENGTH)
+  const userPresence = response.slice(0, 1);
+  const counter = response.slice(1, 5);
+  const signature = response
+    .slice(5, response.length - STATUS_LENGTH)
     .toString("hex");
   return {
     userPresence,
     counter,
     signature,
-    rawResponse: removeStatus(lastResponse).toString("hex"),
+    rawResponse: removeStatus(response).toString("hex"),
   };
 };
