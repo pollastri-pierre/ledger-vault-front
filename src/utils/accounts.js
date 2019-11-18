@@ -1,8 +1,7 @@
 // @flow
 
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
-import type { Account, TxApprovalStepCollection } from "data/types";
-import type { ApprovalsRule } from "components/ApprovalsRules";
+import type { Account } from "data/types";
 
 export const STATUS_UPDATE_IN_PROGRESS = "PENDING_UPDATE";
 export const VISIBLE_MENU_STATUS = ["ACTIVE", "PENDING_UPDATE", "VIEW_ONLY"];
@@ -32,33 +31,6 @@ export const isSupportedAccount = (account: Account) => {
   }
   return true;
 };
-
-// from full object to arrays of id
-export const deserializeApprovalSteps = (
-  tx_approval_steps: TxApprovalStepCollection,
-): Array<?ApprovalsRule> =>
-  tx_approval_steps.map(rule =>
-    rule
-      ? {
-          quorum: rule.quorum,
-          group_id: rule.group.is_internal ? null : rule.group.id,
-          users: rule.group.is_internal
-            ? rule.group.members.map(m => m.id)
-            : [],
-
-          // /!\ Hack
-          //
-          // the gate send us the whole users objects, which is good news
-          // in this specific case, because operator can't normally see
-          // them (because of access control). For some reason they are here.
-          //
-          // see https://ledgerhq.atlassian.net/browse/LV-1798
-          // for more infos
-          //
-          rawUsers: rule.group.is_internal ? rule.group.members : [],
-        }
-      : null,
-  );
 
 export const isBalanceAvailable = (account: Account) => {
   // This seems to work for eth/token/btc like account, what about XRP?

@@ -23,18 +23,24 @@ type GenericRowProps = OptionProps & {
   withBalance?: boolean,
 };
 
+const SelectedRow = (props: OptionProps) => {
+  const { data: account } = props;
+
+  return (
+    <Box horizontal align="center" justify="space-between">
+      <AccountName account={account} />
+      <Text fontWeight="bold">
+        <CurrencyAccountValue account={account} value={account.balance} />
+      </Text>
+    </Box>
+  );
+};
+
 const GenericRow = (props: GenericRowProps) => {
   const { withBalance } = props;
-  let { data: account } = props;
-
-  // this is ridiculous, but true. react-select is either wrapping the
-  // data in { label, value } object or directly passing it, depending if
-  // render in the menu or render in the input. this line is here to
-  // unify this behaviour. btw it's happening here and not in SelectCurrency
-  // because (i guess) the the SelectCurrency is async (only diff..)
-  if ("label" in account && "data" in account) {
-    account = account.data;
-  }
+  const {
+    data: { data: account },
+  } = props;
 
   return (
     <Box horizontal align="center" justify="space-between" py={5}>
@@ -56,9 +62,18 @@ const OptionComponent = (props: OptionProps) => (
 
 const ValueComponent = (props: OptionProps) => (
   <components.SingleValue {...props}>
-    <GenericRow {...props} />
+    <SelectedRow {...props} />
   </components.SingleValue>
 );
+
+const customValueStyle = {
+  singleValue: styles => ({
+    ...styles,
+    color: "inherit",
+    width: "100%",
+    paddingRight: 10,
+  }),
+};
 
 const customComponents = {
   Option: OptionComponent,
@@ -90,6 +105,7 @@ class SelectAccount extends PureComponent<Props> {
       <Select
         options={accounts.map(buildOption)}
         components={customComponents}
+        styles={customValueStyle}
         placeholder="Select an account"
         inputId="input_account"
         {...props}

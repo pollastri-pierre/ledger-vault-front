@@ -155,12 +155,14 @@ const buttonStyles: { [_: string]: Object } = {
   },
 
   default: {
-    default: () => ``,
-    active: () => `
+    default: () => `
       background: ${opacity(colors.argile, 0.8)};
     `,
+    active: () => `
+      background: ${colors.argile};
+    `,
     hover: () => `
-      background: ${opacity(colors.argile, 0.5)};
+      background: ${colors.argile};
     `,
     focus: () => `
       box-shadow: 0 0 0 1px ${rgba(colors.argile, 0.5)} inset,

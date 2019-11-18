@@ -13,6 +13,7 @@ import AccountOverview from "containers/Admin/Accounts/AccountOverview";
 import AccountSettings from "containers/Accounts/AccountSettings";
 import { FetchEntityHistory } from "components/EntityHistory";
 import EntityModal from "components/EntityModal";
+import { getMultiAuthRule } from "components/MultiRules/helpers";
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Account, User, Transaction } from "data/types";
 
@@ -27,9 +28,12 @@ function AccountDetails(props: Props) {
   const { close, account, me, pendingTransactions } = props;
 
   const hasPendingTransactions = pendingTransactions.edges.length > 0;
-  const hasPendingEditGroup =
-    account.tx_approval_steps &&
-    account.tx_approval_steps.some(s => s && s.group.is_under_edit);
+  const hasPendingEditGroup = account.governance_rules.some(rulesSet => {
+    const multiAuthRule = getMultiAuthRule(rulesSet);
+    if (!multiAuthRule) return false;
+    const { data: steps } = multiAuthRule;
+    return steps.some(step => step.group.is_under_edit);
+  });
 
   return (
     <EntityModal
@@ -39,6 +43,7 @@ function AccountDetails(props: Props) {
       title={account.name}
       onClose={close}
       editURL={`/accounts/edit/${account.id}`}
+      customWidth={680}
       disableEdit={hasPendingTransactions || hasPendingEditGroup}
     >
       <AccountOverview

@@ -9,8 +9,8 @@ import Box from "components/base/Box";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import colors from "shared/colors";
 import InfoBox from "components/base/InfoBox";
-import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
 import ParentAccount from "components/ParentAccount";
+import MultiRules from "components/MultiRules";
 import { isBalanceAvailable } from "utils/accounts";
 import type { Account } from "data/types";
 
@@ -63,7 +63,7 @@ const Rows = ({ account }: { account: Account }) => {
           </LineRow>
         </>
       )}
-      {account.tx_approval_steps && (
+      {account.governance_rules.length && (
         <LineRow label={<Trans i18nKey="entityModal:tabs.transactionRules" />}>
           <Box
             onClick={toggleRuleVisible}
@@ -75,16 +75,16 @@ const Rows = ({ account }: { account: Account }) => {
             <div>
               <Trans
                 i18nKey="accountCreation:rulesSumup"
-                count={account.tx_approval_steps.length}
-                values={{ count: account.tx_approval_steps.length }}
+                count={account.governance_rules.length}
+                values={{ count: account.governance_rules.length }}
               />
             </div>
             {isRuleVisible ? iconUp : iconDown}
           </Box>
         </LineRow>
       )}
-      {account.tx_approval_steps && isRuleVisible && (
-        <AccountTransactionRules account={account} noTitle />
+      {account.governance_rules && isRuleVisible && (
+        <MultiRules readOnly rulesSets={account.governance_rules} />
       )}
     </div>
   );

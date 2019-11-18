@@ -40,13 +40,13 @@ const ExtraFieldsRipple = (props: EditProps<RippleTransaction>) => {
   };
 
   return (
-    <Box width={240}>
-      <Label>{t("transactionCreation:steps.amount.destinationTag")}</Label>
+    <Box width={280}>
+      <Label>{t("transactionCreation:steps.account.destinationTag")}</Label>
       <InputText
         data-test="tag"
         value={transaction.destinationTag}
         onChange={handleChangeDestinationTag}
-        placeholder={t("transactionCreation:steps.amount.destinationTagDesc")}
+        placeholder={t("transactionCreation:steps.account.destinationTagDesc")}
         maxLength={10}
         hints={hints}
       />

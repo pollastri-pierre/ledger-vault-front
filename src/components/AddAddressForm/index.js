@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { RestlayEnvironment } from "restlay/connectData";
-import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import { FaAddressBook, FaPlus } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import SelectCurrency from "components/SelectCurrency";
@@ -113,7 +113,7 @@ const AddressRow = ({
           style={{ padding: 10 }}
         >
           <Box horizontal flow={20} width={200} align="center">
-            <AccountIcon currencyId={addr.currency.id} />
+            <AccountIcon currencyId={addr.currency} />
             <Text fontWeight="bold" uppercase>
               {addr.name}
             </Text>
@@ -152,7 +152,7 @@ type NewAddForm = {
   id: ?number,
   address: string,
   name: string,
-  currency: CryptoCurrency,
+  currency: string,
 };
 const FormAdd = connectData(
   ({
@@ -167,7 +167,7 @@ const FormAdd = connectData(
     restlay: RestlayEnvironment,
   }) => {
     const [addressError, setAddressError] = useState(null);
-    const [currency, setCurrency] = useState<?CryptoCurrency>(
+    const [currency, setCurrency] = useState<?string>(
       (addr && addr.currency) || null,
     );
     const [name, setName] = useState((addr && addr.name) || "");
@@ -180,10 +180,12 @@ const FormAdd = connectData(
       const effect = async () => {
         if (address && currency) {
           try {
-            const bridge = getBridgeForCurrency(currency);
+            const curr = getCryptoCurrencyById(currency);
+            if (!curr) return;
+            const bridge = getBridgeForCurrency(curr);
             const errors = await bridge.getRecipientError(
               restlay,
-              currency,
+              curr,
               address,
             );
             if (!unsub) {
@@ -213,6 +215,7 @@ const FormAdd = connectData(
       onSubmit(data);
     };
     const { t } = useTranslation();
+    const curr = currency ? getCryptoCurrencyById(currency) : null;
     return (
       <Box flow={20}>
         <Box flow={20}>
@@ -222,8 +225,8 @@ const FormAdd = connectData(
                 autoFocus
                 noToken
                 placeholder={t("whitelists:create.currency_placeholder")}
-                value={currency}
-                onChange={val => setCurrency(val ? val.value : null)}
+                value={curr}
+                onChange={val => setCurrency(val ? val.value.id : null)}
                 noOptionsMessage="no-options"
               />
             </Box>

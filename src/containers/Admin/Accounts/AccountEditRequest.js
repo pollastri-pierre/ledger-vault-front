@@ -9,26 +9,22 @@ import Box from "components/base/Box";
 import { SpinnerCentered } from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity, darken } from "shared/colors";
-import RulesViewer from "components/ApprovalsRules/RulesViewer";
-import type {
-  Account,
-  User,
-  Group,
-  TxApprovalStepCollection,
-} from "data/types";
-import type { Connection } from "restlay/ConnectionQuery";
+// import type { Account, User, Group } from "data/types";
+import type { Account } from "data/types";
+import type { RulesSet } from "components/MultiRules/types";
+// import type { Connection } from "restlay/ConnectionQuery";
 
-import { haveRulesChangedDiff, resolveRules } from "./helpers";
+import { haveRulesChangedDiff } from "./helpers";
 
 type Props = {
   account: Account,
-  users: Connection<User>,
-  groups: Connection<Group>,
+  // users: Connection<User>,
+  // groups: Connection<Group>,
 };
 
 function AccountEditRequest(props: Props) {
-  const { account, groups, users } = props;
-  const { tx_approval_steps, last_request } = account;
+  const { account } = props;
+  const { governance_rules, last_request } = account;
 
   if (!last_request) return null;
 
@@ -36,16 +32,12 @@ function AccountEditRequest(props: Props) {
   const editData = last_request.edit_data || null;
 
   const newRules = isAccountMigration
-    ? tx_approval_steps
+    ? governance_rules
     : editData
-    ? resolveRules(
-        editData.governance_rules.tx_approval_steps,
-        groups.edges.map(e => e.node),
-        users.edges.map(e => e.node),
-      )
+    ? editData.governance_rules
     : null;
 
-  const oldRules = isAccountMigration ? null : tx_approval_steps;
+  const oldRules = isAccountMigration ? null : governance_rules;
   const hasNameChanged = editData && account.name !== editData.name;
 
   const haveRulesChanged = haveRulesChangedDiff(newRules, oldRules);
@@ -84,12 +76,12 @@ export default connectData(AccountEditRequest, {
 
 type DiffBlockProps = {
   name: ?string,
-  rules: ?TxApprovalStepCollection,
+  rules: ?(RulesSet[]),
   type: string,
   haveRulesChanged: ?boolean,
 };
 function DiffBlock(props: DiffBlockProps) {
-  const { name, rules, type, haveRulesChanged } = props;
+  const { name, type, haveRulesChanged } = props;
   return (
     <Box
       bg={
@@ -125,7 +117,7 @@ function DiffBlock(props: DiffBlockProps) {
       {haveRulesChanged && (
         <Box mb={20}>
           <Text fontWeight="bold" i18nKey="entityModal:diff.rules" />
-          <RulesViewer rules={rules} />
+          <Box>TODO DIFF RULES</Box>
         </Box>
       )}
     </Box>

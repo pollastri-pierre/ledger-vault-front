@@ -151,12 +151,22 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
     if (!step) return null;
 
-    const { Step, Cta, nextLabel, prevLabel, hideBack } = step;
+    const {
+      Step,
+      Cta,
+      nextLabel,
+      prevLabel,
+      hideBack,
+      CustomFooterElementLeft,
+      WarningNext,
+    } = step;
 
     const stepProps = {
       payload,
       initialPayload,
+      WarningNext,
       hideBack,
+      CustomFooterElementLeft,
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
@@ -176,24 +186,30 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
         </Box>
         <RichModalFooter
           style={
-            cursor === 0 || hideBack
+            CustomFooterElementLeft === undefined && (cursor === 0 || hideBack)
               ? { justifyContent: "flex-end" }
               : { justifyContent: "space-between" }
           }
         >
+          {CustomFooterElementLeft && (
+            <CustomFooterElementLeft payload={payload} {...additionalProps} />
+          )}
           {prevStep && !hideBack && (
             <Button onClick={this.prev}>
               {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
             </Button>
           )}
           {nextStep && !Cta && (
-            <Button
-              type="filled"
-              onClick={this.next}
-              disabled={!this.canTransitionTo(nextStep.id)}
-            >
-              {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
-            </Button>
+            <Box flow={20} horizontal align="center">
+              {WarningNext && <WarningNext payload={payload} />}
+              <Button
+                type="filled"
+                onClick={this.next}
+                disabled={!this.canTransitionTo(nextStep.id)}
+              >
+                {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
+              </Button>
+            </Box>
           )}
           {Cta && (
             <Cta

@@ -8,9 +8,6 @@ export {
   default as AssetsDistributionWidget,
 } from "./AssetsDistributionWidget";
 export { default as TransactionsGraphWidget } from "./TransactionsGraph";
-export {
-  default as AccountTransactionRulesWidget,
-} from "./AccountTransactionRulesWidget";
 export { default as AccountQuickInfoWidget } from "./AccountQuickInfoWidget";
 export {
   default as AccountLastTransactionsWidget,
