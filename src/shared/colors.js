@@ -57,6 +57,7 @@ const colors = {
   form,
   // STATUSES
   paleGreen: "#d7f5ea",
+  paleGreenAlt: "#89e1c1",
   paleYellow: "#fbf8de",
   paleRed: "#f1c8cf",
   paleViolet: "#f0eaf3",

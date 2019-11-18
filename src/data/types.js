@@ -272,17 +272,17 @@ export type TransactionStatus = $Keys<typeof TransactionStatusMap>;
 export const UserStatusMap = {
   ACTIVE: "ACTIVE",
   ABORTED: "ABORTED",
+  ACCESS_SUSPENDED: "ACCESS_SUSPENDED",
   REVOKED: "REVOKED",
   PENDING_APPROVAL: "PENDING_APPROVAL",
   PENDING_REVOCATION: "PENDING_REVOCATION",
   PENDING_REGISTRATION: "PENDING_REGISTRATION",
-  ACCESS_SUSPENDED: "ACCESS_SUSPENDED",
 };
 export type UserStatus = $Keys<typeof UserStatusMap>;
 
 export const GroupStatusMap = {
-  PENDING: "PENDING",
   ACTIVE: "ACTIVE",
+  PENDING: "PENDING",
   REVOKED: "REVOKED",
   ABORTED: "ABORTED",
 };
@@ -292,12 +292,12 @@ export const AccountStatusMap = {
   ACTIVE: "ACTIVE",
   VIEW_ONLY: "VIEW_ONLY",
   REVOKED: "REVOKED",
+  // FIXME does this status is a thing?
   MIGRATED: "MIGRATED",
   HSM_COIN_UPDATED: "HSM_COIN_UPDATED",
   PENDING: "PENDING",
   PENDING_UPDATE: "PENDING_UPDATE",
   PENDING_VIEW_ONLY: "PENDING_VIEW_ONLY",
-  PENDING_CREATION_APPROVAL: "PENDING_CREATION_APPROVAL",
   PENDING_MIGRATED: "PENDING_MIGRATED",
 };
 export type AccountStatus = $Keys<typeof AccountStatusMap>;

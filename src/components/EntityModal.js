@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaPen } from "react-icons/fa";
 import { withRouter, matchPath } from "react-router";
@@ -10,31 +10,26 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 import {
   RichModalHeader,
-  RichModalFooter,
   RichModalTabsContainer,
   RichModalTab,
 } from "components/base/Modal";
 
-import { useOrganization } from "components/OrganizationContext";
 import Disabled from "components/Disabled";
 import { withMe } from "components/UserContextProvider";
 import Button from "components/base/Button";
 import GrowingCard from "components/base/GrowingCard";
 import EntityLastRequest from "components/EntityLastRequest";
-import RequestActionButtons from "components/RequestActionButtons";
+import EntityFooter from "components/EntityFooter";
 import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 import Box from "components/base/Box";
-import Text from "components/base/Text";
 import Absolute from "components/base/Absolute";
 import { hasPendingRequest, hasPendingEdit } from "utils/entities";
-import { isRequestAffectingAdminRules } from "utils/request";
+import type { RevokeParams } from "components/EntityFooter";
 import type { Entity, User } from "data/types";
-
-import colors, { lighten, darken } from "shared/colors";
 
 export const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
 
-type Props<T> = {
+type Props<T> = {|
   entity: Entity,
   title: React$Node,
   Icon: React$ComponentType<*>,
@@ -44,13 +39,13 @@ type Props<T> = {
   children: React$Element<*>[],
   growing?: boolean,
   me: User,
-  revokeButton?: React$Node,
   footer?: React$Node,
   editURL?: string,
   disableEdit?: boolean,
   customWidth?: number,
   additionalFields?: T,
-};
+  revokeParams?: RevokeParams,
+|};
 
 function EntityModal<T>(props: Props<T>) {
   const {
@@ -65,13 +60,11 @@ function EntityModal<T>(props: Props<T>) {
     entity,
     editURL,
     disableEdit,
-    revokeButton,
     footer,
     customWidth,
     additionalFields,
+    revokeParams,
   } = props;
-  const [successMessage, setSuccessMessage] = useState(false);
-  const [actionType, setActionType] = useState(null);
   const { t } = useTranslation();
 
   const fullEditURL =
@@ -85,20 +78,6 @@ function EntityModal<T>(props: Props<T>) {
     />
   );
 
-  const { refresh } = useOrganization();
-  const onSuccess = (successRes?: { actionType: string }) => {
-    // FIXME technically we should also check if the quorum has been reached
-    if (
-      entity.last_request &&
-      isRequestAffectingAdminRules(entity.last_request)
-    ) {
-      refresh();
-    }
-
-    setActionType(successRes ? successRes.actionType : null);
-    setSuccessMessage(true);
-  };
-
   const childs = Array.isArray(children) ? children : [children];
 
   const content =
@@ -110,14 +89,6 @@ function EntityModal<T>(props: Props<T>) {
 
   const hasPendingReq = hasPendingRequest(entity);
   const isPendingEdit = hasPendingEdit(entity);
-  const isEntityBlocked = entity.status === "BLOCKED";
-  const isLastRequestBlocked =
-    entity.last_request && entity.last_request.status === "BLOCKED";
-  const showRevoke =
-    (entity.status === "ACTIVE" || entity.status === "ACCESS_SUSPENDED") &&
-    revokeButton;
-  const showFooter =
-    hasPendingReq || showRevoke || footer || isLastRequestBlocked;
 
   const inner = (
     <>
@@ -160,19 +131,13 @@ function EntityModal<T>(props: Props<T>) {
         {content}
       </Box>
 
-      {showFooter && (
-        <RichModalFooter>
-          {successMessage ? (
-            <SuccessFooter actionType={actionType} onClose={onClose} />
-          ) : hasPendingReq || isEntityBlocked ? (
-            <RequestActionButtons onSuccess={onSuccess} entity={entity} />
-          ) : showRevoke ? (
-            revokeButton || null
-          ) : (
-            footer || null
-          )}
-        </RichModalFooter>
-      )}
+      <EntityFooter
+        captureRefs
+        entity={entity}
+        onFinish={onClose}
+        customContent={footer}
+        revokeParams={revokeParams}
+      />
     </>
   );
 
@@ -199,44 +164,3 @@ function EditButton({ url, disabled }: { url: string, disabled?: boolean }) {
 }
 
 export default withRouter(withMe(EntityModal));
-
-type SuccessFooterProps = {
-  actionType: ?string,
-  onClose: () => void,
-};
-function SuccessFooter(props: SuccessFooterProps) {
-  const { t } = useTranslation();
-  return (
-    <Box horizontal grow justify="space-between">
-      <Box
-        justify="center"
-        align="center"
-        borderRadius={5}
-        bg={lighten(colors.paleGreen, 0.06)}
-        px={10}
-      >
-        <Text
-          data-test="successfull_message"
-          fontWeight="semiBold"
-          textAlign="center"
-          color={darken(colors.paleGreen, 0.7)}
-          i18nKey="entityModal:successMessage"
-          values={{
-            action:
-              props.actionType === "abort"
-                ? t("entityModal:actionType.rejected")
-                : t("entityModal:actionType.approved"),
-          }}
-        />
-      </Box>
-      <Button
-        data-test="done_button"
-        variant="primary"
-        type="filled"
-        onClick={props.onClose}
-      >
-        {t("common:done")}
-      </Button>
-    </Box>
-  );
-}

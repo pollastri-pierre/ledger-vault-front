@@ -84,7 +84,7 @@ function genCurrency() {
   return faker.random.arrayElement(listCryptoCurrencies(false));
 }
 
-function genApprovals(nb = 0, { users }) {
+export function genApprovals(nb = 0, { users }) {
   const approvals = [];
   const usersCopy = [...users];
   for (let i = 0; i < nb; i++) {
@@ -279,6 +279,7 @@ const genTransaction = ({
 
   return {
     id: faker.random.number({ min: 1, max: 1000000000 }),
+    entityType: "TRANSACTION",
 
     created_by: faker.random.arrayElement(operators),
     currency_family: currency.family,

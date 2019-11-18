@@ -44,6 +44,26 @@ const Container = styled(Box).attrs({
   color: ${colors.legacyDarkGrey3};
 `;
 
+const fadeIn = keyframes`
+ from {
+    opacity: 0;
+    transform: translateY(20px);
+ }
+ to {
+    opacity: 1;
+    transform: translateY(0);
+ }
+`;
+
+const FadeIn = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 8px;
+  opacity: 0;
+  animation: ${fadeIn} 800ms cubic-bezier(0.17, 1.52, 0.18, 1.01) forwards;
+  animation-delay: 100ms;
+`;
+
 const FallbackContainer = styled(Box).attrs({
   align: "center",
   justify: "center",
@@ -88,14 +108,11 @@ const Tooltip = styled(Box)`
   color: ${colors.white};
   user-select: none;
   border-radius: 5px;
-  top: 100%;
-  left: 8px;
   z-index: 1;
   box-shadow: 0 2px 8px 0 ${colors.legacyTranslucentGrey5};
   font-weight: bold;
   text-align: center;
   padding: 12px;
-  position: absolute;
   width: 200px;
   &:before {
     position: absolute;
@@ -199,9 +216,11 @@ class DeviceInteractionAnimation extends PureComponent<Props> {
       return (
         <FallbackContainer>
           <WebUSBClickFallback onClick={onWebUSBReconnect} />
-          <Tooltip right>
-            <Text>Please click again to pair the device</Text>
-          </Tooltip>
+          <FadeIn>
+            <Tooltip right>
+              <Text i18nKey="deviceInteractions:webusb_reconnect" />
+            </Tooltip>
+          </FadeIn>
         </FallbackContainer>
       );
     }
@@ -216,9 +235,11 @@ class DeviceInteractionAnimation extends PureComponent<Props> {
         />
         <RightIcon type={currentActionType} />
         {(needsUserInput || currentStep === 0) && (
-          <Tooltip right>
-            {tooltip || <Text i18nKey="common:approve_device" />}
-          </Tooltip>
+          <FadeIn>
+            <Tooltip right>
+              {tooltip || <Text i18nKey="common:approve_device" />}
+            </Tooltip>
+          </FadeIn>
         )}
       </Container>
     );
