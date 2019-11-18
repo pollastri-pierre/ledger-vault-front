@@ -20,7 +20,7 @@ export const isAccountSpendable = (account: Account) =>
   account.balance.isGreaterThan(0) &&
   account.status === "ACTIVE" &&
   !isAccountOutdated(account) &&
-  isMemberOfFirstApprovalStep() &&
+  isMemberOfFirstApprovalStep(account) &&
   !isAccountBeingUpdated(account);
 
 export const isCreateTransactionEnabled = (

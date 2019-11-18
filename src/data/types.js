@@ -153,7 +153,7 @@ type AccountCommon = {
   currency: string,
   parent_balance?: BigNumber,
   created_on: string,
-  governance_rules: ?(RulesSet[]),
+  governance_rules: RulesSet[],
   fresh_addresses: *,
   is_hsm_coin_app_updated: boolean,
   index: number,
