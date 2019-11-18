@@ -38,6 +38,7 @@ export default function GrowingCard({ children }: { children: React$Node }) {
 
   const onMeasure = useCallback(
     dimensions => {
+      if (prevTransforms) return;
       const { width, height } = dimensions;
 
       const { innerHeight } = window;
