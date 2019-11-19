@@ -1,88 +1,41 @@
 // @flow
 
 import React, { useState, useMemo } from "react";
-import { components } from "react-select";
-import type { Account } from "data/types";
+import type { Account, Whitelist } from "data/types";
 import Tooltip from "@material-ui/core/Tooltip";
-import type { OptionProps } from "react-select/src/types";
 
 import { useTranslation } from "react-i18next";
 import { FaList, FaPen } from "react-icons/fa";
 import Box from "components/base/Box";
-import Select from "components/base/Select";
+import { hasPendingRequest } from "utils/entities";
 import Button from "components/base/Button";
 import { Label } from "components/base/form";
 import InputAddress from "components/TransactionCreationFlow/InputAddress";
+import SelectAddress from "./SelectAddress";
 
 type WhitelistProps = {
   account: Account,
   transaction: any,
   onChangeTransaction: Function,
+  whitelists: Whitelist[],
   bridge: any,
-};
-
-const customValueStyle = {
-  singleValue: styles => ({
-    ...styles,
-    color: "inherit",
-    width: "100%",
-    paddingRight: 10,
-  }),
-};
-
-const GenericRow = (props: OptionProps) => {
-  const {
-    data: { data: address },
-  } = props;
-
-  return (
-    <Box horizontal justify="space-between">
-      <Box>{address.name}</Box>
-      <Box>{address.address}</Box>
-    </Box>
-  );
-};
-
-const OptionComponent = (props: OptionProps) => (
-  <components.Option {...props}>
-    <GenericRow {...props} />
-  </components.Option>
-);
-const ValueComponent = (props: OptionProps) => (
-  <components.SingleValue {...props}>
-    <GenericRow {...props} />
-  </components.SingleValue>
-);
-
-const customComponents = {
-  Option: OptionComponent,
-  SingleValue: ValueComponent,
 };
 
 function WhitelistField(props: WhitelistProps) {
   const [inputToggle, setInputToggle] = useState(false);
   const { t } = useTranslation();
 
-  const { account, transaction, onChangeTransaction, bridge } = props;
+  const {
+    account,
+    transaction,
+    onChangeTransaction,
+    bridge,
+    whitelists,
+  } = props;
 
-  const addressArray = account.governance_rules
-    .map(governanceRule => governanceRule.rules)
-    .reduce((res, rules) => {
-      rules.map(rule => {
-        if (rule.type === "WHITELIST") {
-          rule.data.map(item => {
-            if (typeof item === "number") return res;
-            return item.addresses.map(address => {
-              return res.push(address);
-            });
-          });
-          return res;
-        }
-        return res;
-      });
+  // extract all active whitelist from the nested structure multiRules
+  const allWhitelistsForAccount = resolveWhitelists(account, whitelists);
 
-      return res;
-    }, []);
   const isWhiteListOnly =
     account.governance_rules.filter(governanceRule =>
       governanceRule.rules.find(rule => rule.type === "WHITELIST"),
@@ -99,14 +52,11 @@ function WhitelistField(props: WhitelistProps) {
   };
 
   const findInAddressArray = (recipient: string) => {
-    const address = addressArray.find(item => item.address === recipient);
-    return address
-      ? {
-          value: address.name,
-          label: address.address,
-          data: address,
-        }
-      : null;
+    // $FlowFixMe flat exist on Array but Flow doesnt know yet
+    const allAddresses = options.map(o => o.options).flat();
+
+    const address = allAddresses.find(item => item.value === recipient);
+    return address || null;
   };
   const getWhitelistValue = () => {
     return transaction.recipient === ""
@@ -114,28 +64,43 @@ function WhitelistField(props: WhitelistProps) {
       : findInAddressArray(transaction.recipient);
   };
 
-  const options = useMemo(
-    () =>
-      addressArray.map(address => ({
-        label: address.name,
-        value: address.address,
-        data: address,
-      })),
-    [addressArray],
-  );
+  const isWhitelistDisabled = (w: Whitelist) =>
+    w.status !== "ACTIVE" || hasPendingRequest(w);
 
+  const options = useMemo(() => {
+    const options = [];
+    allWhitelistsForAccount.forEach(w => {
+      const data = w.addresses
+        .filter(w => w.currency === account.currency)
+        .map(address => ({
+          label: address.name,
+          value: address.address,
+          data: address,
+          isDisabled: isWhitelistDisabled(w),
+        }));
+      if (data.length) {
+        options.push({
+          label: w.name,
+          options: data,
+          isDisabled: isWhitelistDisabled(w),
+          whitelist: w,
+        });
+      }
+    });
+    return options;
+  }, [allWhitelistsForAccount, account]);
+
+  const hasAddressToSelect =
+    options.length > 0 && options.some(o => o.options.length > 0);
   return (
     <Box>
       <Label>{t("transactionCreation:steps.account.recipient")}</Label>
       <Box horizontal justify="space-between" flow={10}>
         <Box grow>
-          {isWhiteListOnly || (addressArray.length > 0 && !inputToggle) ? (
-            <Select
+          {isWhiteListOnly || (hasAddressToSelect && !inputToggle) ? (
+            <SelectAddress
               options={options}
-              components={customComponents}
-              placeholder={t("transactionCreation:steps.account.select")}
               onChange={handleChange}
-              styles={customValueStyle}
               value={getWhitelistValue()}
             />
           ) : (
@@ -149,7 +114,7 @@ function WhitelistField(props: WhitelistProps) {
             />
           )}
         </Box>
-        {addressArray.length > 0 && !isWhiteListOnly && (
+        {hasAddressToSelect && !isWhiteListOnly && (
           <Tooltip
             placement="top"
             title={
@@ -169,3 +134,26 @@ function WhitelistField(props: WhitelistProps) {
 }
 
 export default WhitelistField;
+
+function resolveWhitelists(
+  account: Account,
+  whitelists: Whitelist[],
+): Whitelist[] {
+  return (
+    account.governance_rules
+      .map(g => g.rules)
+      // $FlowFixMe flat exist on Array but Flow doesnt know yet
+      .flat()
+      .filter(r => r.type === "WHITELIST")
+      .map(r => r.data)
+      // $FlowFixMe flat exist on Array but Flow doesnt know yet
+      .flat()
+      .map(w => {
+        if (typeof w === "number") return whitelists.find(w2 => w2.id === w);
+
+        // we don't use whitelist from account.gov_rule on purpose because we are not sure it will contain last_request
+        return whitelists.find(w2 => w2.id === w.id);
+      })
+      .filter(Boolean)
+  );
+}
