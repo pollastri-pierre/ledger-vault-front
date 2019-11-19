@@ -5,6 +5,8 @@ import type { Group, Whitelist } from "data/types";
 
 export type RuleType = "MULTI_AUTHORIZATIONS" | "WHITELIST" | "THRESHOLD";
 
+export type GovernanceRules = RulesSet[];
+
 export type RulesSet = {|
   name: string,
   rules: Rule[],

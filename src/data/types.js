@@ -1,7 +1,7 @@
 // @flow
 
 import type { BigNumber } from "bignumber.js";
-import type { RulesSet } from "components/MultiRules/types";
+import type { GovernanceRules } from "components/MultiRules/types";
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
@@ -153,7 +153,7 @@ type AccountCommon = {
   currency: string,
   parent_balance?: BigNumber,
   created_on: string,
-  governance_rules: RulesSet[],
+  governance_rules: GovernanceRules,
   fresh_addresses: *,
   is_hsm_coin_app_updated: boolean,
   index: number,
@@ -529,7 +529,7 @@ type GroupEditData = {
 };
 type AccountEditData = {
   name?: string,
-  governance_rules: RulesSet[],
+  governance_rules: GovernanceRules,
 };
 
 type MapRequestType = {
