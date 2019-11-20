@@ -181,7 +181,6 @@ function FeesFieldEthereumKind(props: Props) {
               <InputAmount
                 hideUnit
                 unitLeft
-                unitsWidth={80}
                 width="100%"
                 hideCV
                 unit={last(currency.units)}

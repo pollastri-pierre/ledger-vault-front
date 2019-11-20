@@ -121,7 +121,6 @@ const TransactionCreationAmount = (
                   errors={amountErrors}
                   hideCV
                   unitLeft
-                  unitsWidth={90}
                 />
               )}
             </Box>

@@ -146,7 +146,7 @@ class InputAmount extends PureComponent<Props, State> {
         width={width || 370}
         style={{ flexDirection: unitLeft ? "row-reverse" : "row" }}
       >
-        <Box grow flow={8} ml={unitLeft || hideUnit ? 0 : 10}>
+        <Box grow flow={8} mr={unitLeft ? 0 : 10}>
           <InputText
             placeholder="0"
             align="right"
