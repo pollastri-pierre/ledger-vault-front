@@ -27,7 +27,7 @@ export const getBridgeAndTransactionFromAccount = (account: Account) => {
 };
 
 const TransactionCreationAccount = (
-  props: TransactionCreationStepProps<any>,
+  props: $Shape<TransactionCreationStepProps<any>>,
 ) => {
   const { payload, updatePayload, accounts } = props;
 

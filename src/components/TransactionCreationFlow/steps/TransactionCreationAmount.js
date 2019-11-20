@@ -93,6 +93,7 @@ const TransactionCreationAmount = (
           account={account}
           transaction={transaction}
           onChangeTransaction={onChangeTransaction}
+          whitelists={props.whitelists.edges.map(n => n.node)}
           bridge={bridge}
         />
       </Box>

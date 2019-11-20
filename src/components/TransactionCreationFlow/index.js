@@ -9,6 +9,7 @@ import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
+import SearchWhitelists from "api/queries/SearchWhitelists";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -181,7 +182,11 @@ export default connectData(
     RenderError: CardError,
     queries: {
       accounts: AccountsQuery,
+      whitelists: SearchWhitelists,
     },
+    propsToQueryParams: () => ({
+      pageSize: -1,
+    }),
   },
 );
 

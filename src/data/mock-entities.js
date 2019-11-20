@@ -128,6 +128,7 @@ function genAccount(
   const approvals = genApprovals(nbApprovalsToGenerate, {
     users: administrators,
   });
+  const whitelists = genWhitelists(3, { users });
   const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
   const status = approvals.find(a => a.type === "ABORT")
     ? "REVOKED"
@@ -151,6 +152,12 @@ function genAccount(
               { quorum: 2, group: genGroup({ users, status: "ACTIVE" }) },
               { quorum: 1, group: genGroup({ users, status: "ACTIVE" }) },
             ],
+          },
+          {
+            type: "WHITELIST",
+            data: extra.whitelists
+              ? extra.whitelists.map(w => w.id)
+              : whitelists,
           },
         ],
       },
@@ -444,7 +451,7 @@ export function genWhitelist({ users }: { users: User[] }) {
     description: faker.company.catchPhrase(),
     approvals: [],
     status,
-    addresses: genAddresses(3),
+    addresses: genAddresses(10),
     last_request,
   };
 }
