@@ -2,7 +2,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
-import { NonEIP55Address, NonEIP55AddressWhitelist } from "utils/errors";
+import {
+  NonEIP55Address,
+  NonEIP55AddressWhitelist,
+  AddressDuplicateNameCurrency,
+  AddressDuplicateNameAddress,
+} from "utils/errors";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { FaAddressBook, FaPlus } from "react-icons/fa";
@@ -51,6 +56,7 @@ const AddAddressForm = (props: Props) => {
                   setForm(false);
                   onAddAddress(addr);
                 }}
+                addresses={addresses}
                 onCancel={() => setForm(false)}
               />
             </FormContainer>
@@ -66,6 +72,7 @@ const AddAddressForm = (props: Props) => {
               key={addr.id}
               addr={addr}
               onEditAddress={onEditAddress}
+              addresses={addresses}
               onDeleteAddress={onDeleteAddress}
             />
           ))
@@ -78,10 +85,12 @@ const AddAddressForm = (props: Props) => {
 const AddressRow = ({
   addr,
   onEditAddress,
+  addresses,
   onDeleteAddress,
 }: {
   addr: Address,
   onEditAddress: Address => void,
+  addresses: Address[],
   onDeleteAddress: Address => void,
 }) => {
   const [editMode, setEditMode] = useState(false);
@@ -100,6 +109,7 @@ const AddressRow = ({
             <FormAdd
               addr={addr}
               onSubmit={editAddr}
+              addresses={addresses}
               onCancel={() => setEditMode(false)}
             />
           </FormContainer>
@@ -158,16 +168,19 @@ type NewAddForm = {
 const FormAdd = connectData(
   ({
     addr,
+    addresses,
     onSubmit,
     onCancel,
     restlay,
   }: {
     addr?: Address,
     onCancel: () => void,
+    addresses: Address[],
     onSubmit: NewAddForm => void,
     restlay: RestlayEnvironment,
   }) => {
     const [addressError, setAddressError] = useState(null);
+    const [nameError, setNameError] = useState(null);
     const [warning, setWarning] = useState(null);
 
     const [currency, setCurrency] = useState<?string>(
@@ -181,6 +194,18 @@ const FormAdd = connectData(
     useEffect(() => {
       let unsub = false;
       const effect = async () => {
+        const errorName =
+          checkNameCurrencyDuplicate(
+            { name, currency, id: addr && addr.id },
+            addresses,
+          ) ||
+          checkNameAddressDuplicate(
+            { name, address, id: addr && addr.id },
+            addresses,
+          );
+
+        setNameError(errorName);
+
         if (address && currency) {
           try {
             const curr = getCryptoCurrencyById(currency);
@@ -194,6 +219,7 @@ const FormAdd = connectData(
             const recipientWarning = bridge.getRecipientWarning
               ? await bridge.getRecipientWarning(address)
               : null;
+
             if (!unsub) {
               setAddressError(errors);
               setWarning(recipientWarning);
@@ -209,7 +235,7 @@ const FormAdd = connectData(
       return () => {
         unsub = true;
       };
-    }, [currency, name, address, restlay]);
+    }, [currency, name, address, restlay, addresses, addr]);
 
     const submit = async () => {
       if (!isAddressFilled() || addressError || !currency) return null;
@@ -243,6 +269,7 @@ const FormAdd = connectData(
                 maxLength={19}
                 onChange={setName}
                 value={name}
+                errors={nameError ? [nameError] : null}
                 onlyAscii
                 fullWidth
               />
@@ -270,7 +297,7 @@ const FormAdd = connectData(
           <Button
             size="small"
             onClick={submit}
-            disabled={!isAddressFilled}
+            disabled={!isAddressFilled || !!addressError || !!nameError}
             type="outline"
           >
             OK
@@ -319,3 +346,29 @@ function remapWarningError(w: Error) {
   }
   return w;
 }
+
+const checkNameCurrencyDuplicate = (
+  current: { name: ?string, currency: ?string, id: ?number },
+  addresses: Address[],
+) =>
+  addresses.some(
+    a =>
+      a.name === current.name &&
+      a.currency === current.currency &&
+      current.id !== a.id,
+  )
+    ? new AddressDuplicateNameCurrency()
+    : null;
+
+const checkNameAddressDuplicate = (
+  current: { name: ?string, address: ?string, id: ?number },
+  addresses: Address[],
+) =>
+  addresses.some(
+    a =>
+      a.name === current.name &&
+      a.address === current.address &&
+      current.id !== a.id,
+  )
+    ? new AddressDuplicateNameAddress()
+    : null;
