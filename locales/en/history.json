@@ -6,19 +6,22 @@
       "user": "User creation request",
       "group": "Group creation request",
       "account": "Account creation request",
-      "transaction": "Transaction creation request"
+      "transaction": "Transaction creation request",
+      "whitelist": "Whitelist creation request"
     },
     "EDIT": {
       "user": "User edition request",
       "group": "Group edition request",
       "account": "Account edition request",
-      "transaction": "Transaction edition request"
+      "transaction": "Transaction edition request",
+      "whitelist": "Whitelist edition request"
     },
     "DELETE": {
       "user": "User deletion request",
       "group": "Group deletion request",
       "account": "Account deletion request",
-      "transaction": "Transaction deletion request"
+      "transaction": "Transaction deletion request",
+      "whitelist": "Whitelist deletion request"
     },
     "MIGRATE_ACCOUNT": {
       "account": "Update account"
