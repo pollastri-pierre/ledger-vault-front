@@ -64,7 +64,7 @@ const TransactionCreationAccount = (
         accounts={filteredAccounts}
         autoFocus
         onChange={handleChange}
-        openMenuOnFocus
+        openMenuOnFocus={filteredAccounts.length > 1}
       />
     </Box>
   );

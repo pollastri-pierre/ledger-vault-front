@@ -10,7 +10,7 @@ import arrayMove from "array-move";
 import { Bar } from "components/base/Timeline";
 import type { User, Group } from "data/types";
 import MultiAuthStop from "./MultiAuthStop";
-import type { RuleMultiAuth, RuleMultiAuthStep } from "./types";
+import type { RuleMultiAuth } from "./types";
 
 type Props = {
   rule: RuleMultiAuth,

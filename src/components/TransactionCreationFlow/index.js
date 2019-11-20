@@ -17,6 +17,7 @@ import Button from "components/base/Button";
 import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import { handleCancelOnDevice } from "utils/request";
+import { getMatchingRulesSet } from "utils/multiRules";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
 import { createAndApprove } from "device/interactions/hsmFlows";
@@ -76,7 +77,16 @@ const steps = [
     requirements: (payload: TransactionCreationPayload<any>) => {
       const { bridge, transaction, account } = payload;
       if (!bridge || !transaction || !account) return false;
-      return bridge.checkValidTransactionSync(account, transaction);
+      const isValidTx = bridge.checkValidTransactionSync(account, transaction);
+      const matchingRulesSet = getMatchingRulesSet({
+        transaction: {
+          currency: account.currency,
+          amount: transaction.amount,
+          recipient: transaction.recipient,
+        },
+        governanceRules: account.governance_rules,
+      });
+      return isValidTx && !!matchingRulesSet;
     },
   },
   {

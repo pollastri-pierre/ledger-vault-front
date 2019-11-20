@@ -10,6 +10,7 @@ const DEFAULT_COLOR = colors.spinner;
 
 const SIZES = {
   normal: 16,
+  small: 12,
 };
 
 type Size = $Keys<typeof SIZES>;
@@ -25,7 +26,11 @@ export default function Spinner(props: Props) {
   const color = colorProp || DEFAULT_COLOR;
   return (
     <div style={{ color }}>
-      <CircularProgress size={size} color="inherit" />
+      <CircularProgress
+        size={size}
+        color="inherit"
+        style={{ display: "block" }}
+      />
     </div>
   );
 }

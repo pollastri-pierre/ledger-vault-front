@@ -8,6 +8,7 @@ import DoubleTilde from "components/icons/DoubleTilde";
 import FakeInputContainer from "components/base/FakeInputContainer";
 
 import Box from "components/base/Box";
+import InfoBox from "components/base/InfoBox";
 import CounterValue from "components/CounterValue";
 import { Label, InputAmount, InputAmountNoUnits } from "components/base/form";
 import {
@@ -15,6 +16,7 @@ import {
   AmountExceedMax,
   RippleAmountExceedMinBalance,
 } from "utils/errors";
+import { getMatchingRulesSet } from "utils/multiRules";
 import { currencyUnitValueFormat } from "components/CurrencyUnitValue";
 import { MIN_RIPPLE_BALANCE } from "bridge/RippleBridge";
 import colors from "shared/colors";
@@ -76,6 +78,21 @@ const TransactionCreationAmount = (
       }),
     );
   }
+
+  const matchingRulesSet = getMatchingRulesSet({
+    transaction: {
+      currency: currency.id,
+      amount: transaction.amount,
+      recipient: transaction.recipient,
+    },
+    governanceRules: account.governance_rules,
+  });
+
+  const showMatchingRulesSet =
+    transaction.amount &&
+    transaction.amount.isGreaterThan(0) &&
+    transaction.recipient;
+
   return (
     <Box flow={20}>
       <Box grow>
@@ -153,6 +170,18 @@ const TransactionCreationAmount = (
           onChangeTransaction={onChangeTransaction}
           bridge={bridge}
         />
+      )}
+      {showMatchingRulesSet && (
+        <InfoBox type={matchingRulesSet ? "success" : "error"} withIcon>
+          {matchingRulesSet ? (
+            <span>
+              {"Amount & recipient are matching "}
+              <strong>{matchingRulesSet.name}</strong>
+            </span>
+          ) : (
+            "No rules matched for this amount & recipient"
+          )}
+        </InfoBox>
       )}
     </Box>
   );

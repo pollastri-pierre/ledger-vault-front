@@ -159,7 +159,7 @@ function FeesBitcoinKind(props: Props) {
                       value={BigNumber(transaction.estimatedFees)}
                     />
                   ) : feesStatus === "fetching" ? (
-                    <Spinner />
+                    <Spinner size="small" />
                   ) : (
                     <Text
                       color={colors.textLight}
@@ -178,7 +178,7 @@ function FeesBitcoinKind(props: Props) {
                       from={account.currency}
                     />
                   ) : feesStatus === "fetching" ? (
-                    <Spinner />
+                    <Spinner size="small" />
                   ) : (
                     <Text
                       color={colors.textLight}
