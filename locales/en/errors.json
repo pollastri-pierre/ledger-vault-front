@@ -51,6 +51,10 @@
     "title": "Auto-verification unavailable",
     "description": "Auto-verification not available: This address isn't EIP-55 compliant. Verify it carefully before creating the transaction."
   },
+  "NonEIP55AddressWhitelist": {
+    "title": "Auto-verification unavailable",
+    "description": "Auto-verification not available: This address isn't EIP-55 compliant. Verify it carefully before continuing."
+  },
   "InvalidAddressBecauseDestinationIsAlsoSource": {
     "title": "It's not possible to send funds to yourself.",
     "description": "It's not possible to send funds to yourself."

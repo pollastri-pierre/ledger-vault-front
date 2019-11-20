@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
+import { NonEIP55Address, NonEIP55AddressWhitelist } from "utils/errors";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { FaAddressBook, FaPlus } from "react-icons/fa";
@@ -167,6 +168,8 @@ const FormAdd = connectData(
     restlay: RestlayEnvironment,
   }) => {
     const [addressError, setAddressError] = useState(null);
+    const [warning, setWarning] = useState(null);
+
     const [currency, setCurrency] = useState<?string>(
       (addr && addr.currency) || null,
     );
@@ -188,8 +191,12 @@ const FormAdd = connectData(
               curr,
               address,
             );
+            const recipientWarning = bridge.getRecipientWarning
+              ? await bridge.getRecipientWarning(address)
+              : null;
             if (!unsub) {
               setAddressError(errors);
+              setWarning(recipientWarning);
             }
           } catch (err) {
             if (!unsub) {
@@ -246,6 +253,7 @@ const FormAdd = connectData(
             value={address}
             onChange={setAddress}
             errors={addressError ? [addressError] : null}
+            warnings={warning ? [remapWarningError(warning)] : null}
             fullWidth
           />
         </Box>
@@ -304,3 +312,10 @@ const NoAddressPlaceholder = () => (
     </Text>
   </Box>
 );
+
+function remapWarningError(w: Error) {
+  if (w instanceof NonEIP55Address) {
+    return new NonEIP55AddressWhitelist();
+  }
+  return w;
+}

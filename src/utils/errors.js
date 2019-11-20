@@ -26,6 +26,9 @@ export const AddressShouldNotBeSegwit = createCustomErrorClass(
 export const AmountTooHigh = createCustomErrorClass("AmountTooHigh");
 export const AmountExceedMax = createCustomErrorClass("AmountExceedMax");
 export const NonEIP55Address = createCustomErrorClass("NonEIP55Address");
+export const NonEIP55AddressWhitelist = createCustomErrorClass(
+  "NonEIP55AddressWhitelist",
+);
 export const RippleAmountExceedMinBalance = createCustomErrorClass(
   "RippleAmountExceedMinBalance",
 );
