@@ -172,6 +172,11 @@ const StyledInput = styled.input`
         : colors.form.shadow.focus};
   }
 
+  &:disabled {
+    // taken from react-select style, so we are unified
+    background: hsl(0, 0%, 95%);
+  }
+
   ::placeholder {
     color: ${colors.form.placeholder};
   }

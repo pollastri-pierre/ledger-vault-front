@@ -84,6 +84,15 @@ export function serializeRulesSetsForPOST(sets: RulesSet[]) {
           })),
         };
       }
+      if (rule.type === "WHITELIST") {
+        return {
+          type: rule.type,
+          data: rule.data.map(w => {
+            if (typeof w === "number") return w;
+            return w.id;
+          }),
+        };
+      }
       return rule;
     }),
   }));

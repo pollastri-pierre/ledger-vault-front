@@ -55,7 +55,7 @@ export default function GrowingCard({ children }: { children: React$Node }) {
 
       setTransforms(transforms);
     },
-    [setTransforms],
+    [setTransforms, prevTransforms],
   );
 
   const opacityStyle = {

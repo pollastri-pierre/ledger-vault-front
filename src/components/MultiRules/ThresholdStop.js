@@ -91,26 +91,40 @@ const DisplayThreshold = ({ value }: { value: RuleThreshold }) => {
       <div>
         <strong>Amount range</strong>
       </div>
-      <span>
-        {"Applies to transactions between "}
-        <Badge>
-          <strong>
-            <CurrencyUnitValue
-              unit={FIXME_FORCE_CURRENCY.units[0]}
-              value={threshold.min}
-            />
-          </strong>
-        </Badge>
-        {" and "}
-        <Badge>
-          <strong>
-            <CurrencyUnitValue
-              unit={FIXME_FORCE_CURRENCY.units[0]}
-              value={threshold.max}
-            />
-          </strong>
-        </Badge>
-      </span>
+      {threshold.max ? (
+        <span>
+          {"Applies to transactions with amount between "}
+          <Badge>
+            <strong>
+              <CurrencyUnitValue
+                unit={FIXME_FORCE_CURRENCY.units[0]}
+                value={threshold.min}
+              />
+            </strong>
+          </Badge>
+          {" and "}
+          <Badge>
+            <strong>
+              <CurrencyUnitValue
+                unit={FIXME_FORCE_CURRENCY.units[0]}
+                value={threshold.max}
+              />
+            </strong>
+          </Badge>
+        </span>
+      ) : (
+        <span>
+          {"Applies to transactions with amount greater than "}
+          <Badge>
+            <strong>
+              <CurrencyUnitValue
+                unit={FIXME_FORCE_CURRENCY.units[0]}
+                value={threshold.min}
+              />
+            </strong>
+          </Badge>
+        </span>
+      )}
     </div>
   );
 };
@@ -128,11 +142,8 @@ function isRuleValid(rule: RuleThreshold) {
   if (!threshold) return false;
   return (
     !!threshold.min &&
-    !!threshold.max &&
-    !threshold.min.isEqualTo(threshold.max) &&
-    threshold.max.isGreaterThan(threshold.min) &&
     threshold.min.isGreaterThanOrEqualTo(0) &&
-    threshold.max.isGreaterThanOrEqualTo(0)
+    (threshold.max === null || threshold.max.isGreaterThan(threshold.min))
   );
 }
 

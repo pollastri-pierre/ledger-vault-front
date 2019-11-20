@@ -67,7 +67,7 @@ const FooterContainer = styled(Box).attrs({
 const IconContainer = styled(Box).attrs({
   noShrink: true,
   pl: 10,
-  pt: 12,
+  pt: 10,
   justify: "center",
 })`
   line-height: 0;

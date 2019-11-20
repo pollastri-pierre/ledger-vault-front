@@ -118,7 +118,6 @@ function FeesFieldRippleKind(props: Props) {
             <InputAmount
               width="100%"
               unitLeft
-              unitsWidth={80}
               hideCV
               unit={last(currency.units)}
               currency={currency}

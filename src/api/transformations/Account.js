@@ -2,6 +2,7 @@
 
 import { BigNumber } from "bignumber.js";
 
+import { getThresholdRule } from "components/MultiRules/helpers";
 import type { Account } from "data/types";
 
 // flow don't even understand it was not an exact account.
@@ -14,14 +15,19 @@ export function deserializeAccount(account: Account): Account {
     console.warn("account.balance is null. Default to 0.");
     account.balance = 0;
   }
-  if (!("governance_rules" in account)) {
-    console.warn(`account.governance_rules is not set. Defaulting to []`);
-    account.governance_rules = [];
+  if (account.governance_rules) {
+    // convert thresholds to BigNumber
+    account.governance_rules.forEach(rulesSet => {
+      const thresholdRule = getThresholdRule(rulesSet);
+      if (thresholdRule) {
+        const [threshold] = thresholdRule.data;
+        threshold.min = BigNumber(threshold.min);
+        threshold.max =
+          threshold.max === null ? null : BigNumber(threshold.max);
+      }
+    });
   }
-  if (account.governance_rules === null) {
-    console.warn(`account.governance_rules is null. Defaulting to []`);
-    account.governance_rules = [];
-  }
+
   return {
     ...account,
     balance: BigNumber(account.balance),

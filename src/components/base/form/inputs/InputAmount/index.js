@@ -23,6 +23,7 @@ type Props = {
   unit?: Unit,
   width?: number,
   unitsWidth?: number,
+  isDisabled?: boolean,
 };
 
 type State = {
@@ -137,6 +138,7 @@ class InputAmount extends PureComponent<Props, State> {
       width,
       unitLeft,
       unitsWidth,
+      isDisabled,
       ...props
     } = this.props;
     const { displayValue, unit, options } = this.state;
@@ -146,7 +148,7 @@ class InputAmount extends PureComponent<Props, State> {
         width={width || 370}
         style={{ flexDirection: unitLeft ? "row-reverse" : "row" }}
       >
-        <Box grow flow={8} ml={unitLeft || hideUnit ? 0 : 10}>
+        <Box grow flow={8} mr={unitLeft ? 0 : 5}>
           <InputText
             placeholder="0"
             align="right"
@@ -154,6 +156,7 @@ class InputAmount extends PureComponent<Props, State> {
             data-test="input_amount"
             value={displayValue}
             inputRef={this.inputRef}
+            disabled={isDisabled}
             {...props}
             onChange={this.onChange}
             onFocus={this.onFocus}
@@ -172,12 +175,13 @@ class InputAmount extends PureComponent<Props, State> {
           )}
         </Box>
         {!hideUnit && (
-          <Box width={unitsWidth || 120} mr={unitLeft ? 10 : 0}>
+          <Box width={unitsWidth || 120} mr={unitLeft ? 5 : 0}>
             <Select
               tabIndex={-1}
               value={option}
               options={options}
               onChange={this.onChangeUnit}
+              isDisabled={isDisabled}
             />
           </Box>
         )}
