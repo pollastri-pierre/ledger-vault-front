@@ -26,7 +26,7 @@ const WhitelistParameters = (props: Props) => {
   return (
     <div>
       <SelectWhitelist
-        value={rule.data}
+        value={rule.data.map(w => (typeof w === "number" ? w : w.id))}
         onChange={handleChange}
         whitelists={whitelists}
         renderIfDisabled={renderIfDisabled}
