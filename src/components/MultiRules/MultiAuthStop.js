@@ -2,11 +2,18 @@
 
 import React from "react";
 import styled from "styled-components";
-import { FaGripVertical, FaUserCheck, FaUser, FaUsers } from "react-icons/fa";
+import {
+  FaGripVertical,
+  FaUserCheck,
+  FaUser,
+  FaUsers,
+  FaUserSecret,
+} from "react-icons/fa";
 import { Trans } from "react-i18next";
 import { SortableHandle, SortableElement } from "react-sortable-hoc";
 
 import { EditableStop, useReadOnly } from "components/base/Timeline";
+import Box from "components/base/Box";
 import type { User, Group } from "data/types";
 import { EditApprovalStep } from "./AddApprovalStep";
 import { isStepValid } from "./ApprovalStepParameters";
@@ -15,7 +22,7 @@ import type { RuleMultiAuthStep, RuleMultiAuth } from "./types";
 
 type Props = {|
   rule: RuleMultiAuth,
-  step: RuleMultiAuthStep,
+  step: RuleMultiAuthStep | null,
   hideHandler: boolean,
   disableActions: boolean,
   onRemove: () => void,
@@ -25,6 +32,9 @@ type Props = {|
   users: User[],
   groups: Group[],
   isLast: boolean,
+
+  // used for drag & drop
+  index: number, // eslint-disable-line react/no-unused-prop-types
 |};
 
 const UserIcon = p => (
@@ -45,6 +55,7 @@ const MultiAuthStop = ({
   isLast,
 }: Props) => {
   const handleSubmit = step => {
+    if (!step) return;
     onStopEdit();
     onEdit(step);
   };
@@ -82,7 +93,7 @@ const DisplayApprovalStep = ({
   value,
   extraProps,
 }: {
-  value: RuleMultiAuthStep,
+  value: RuleMultiAuthStep | null,
   extraProps?: ExtraProps,
 }) => {
   if (!extraProps) return null;
@@ -90,14 +101,23 @@ const DisplayApprovalStep = ({
   return (
     <div style={{ lineHeight: 2.5 }}>
       <Grip isVisible={!hideHandler} />
-      <Trans
-        i18nKey="approvalsRules:approvalStepDesc"
-        count={value.quorum}
-        values={{ nb: value.quorum }}
-        components={[<Badge type="primary" />]}
-      />
-      <span> </span>
-      <StepMembers step={value} />
+      {value ? (
+        <>
+          <Trans
+            i18nKey="approvalsRules:approvalStepDesc"
+            count={value.quorum}
+            values={{ nb: value.quorum }}
+            components={[<Badge type="primary" />]}
+          />
+          <span> </span>
+          <StepMembers step={value} />
+        </>
+      ) : (
+        <Box horizontal flow={10} align="center">
+          <FaUserSecret size={16} />
+          <span>Anonymized</span>
+        </Box>
+      )}
     </div>
   );
 };
@@ -145,4 +165,8 @@ const GripContainer = styled.div`
   transition-property: opacity transform;
 `;
 
-export default SortableElement(MultiAuthStop);
+const SortableMultiAuthStop: React$ComponentType<Props> = SortableElement(
+  MultiAuthStop,
+);
+
+export default SortableMultiAuthStop;

@@ -14,7 +14,7 @@ export type Rule = RuleMultiAuth | RuleWhitelist | RuleThreshold;
 
 export type RuleMultiAuth = {|
   type: "MULTI_AUTHORIZATIONS",
-  data: RuleMultiAuthStep[],
+  data: Array<RuleMultiAuthStep | null>,
 |};
 
 export type RuleMultiAuthStep = {|

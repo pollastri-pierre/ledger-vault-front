@@ -45,7 +45,9 @@ export function getRulesSetErrors(set: RulesSet): Error[] {
     if (multiAuthRule.data.length === 0) {
       errors.push(new Error("No step defined in MULTI_AUTHORIZATIONS rule"));
     }
-    if (multiAuthRule.data.some(step => step.group.members.length === 0)) {
+    if (
+      multiAuthRule.data.some(step => step && step.group.members.length === 0)
+    ) {
       errors.push(new Error("Some approval steps are invalid"));
     }
   }
@@ -66,12 +68,16 @@ export function serializeRulesSetsForPOST(sets: RulesSet[]) {
       if (rule.type === "MULTI_AUTHORIZATIONS") {
         return {
           type: rule.type,
-          data: rule.data.map(step => ({
-            quorum: step.quorum,
-            ...(step.group.is_internal
-              ? { users: step.group.members.map(u => u.id) }
-              : { group_id: step.group.id }),
-          })),
+          data: rule.data.map(step =>
+            step
+              ? {
+                  quorum: step.quorum,
+                  ...(step.group.is_internal
+                    ? { users: step.group.members.map(u => u.id) }
+                    : { group_id: step.group.id }),
+                }
+              : null,
+          ),
         };
       }
       if (rule.type === "THRESHOLD") {
