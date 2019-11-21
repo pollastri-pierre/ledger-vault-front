@@ -95,6 +95,7 @@ function FeesBitcoinKind(props: Props) {
           estimatedMaxAmount: estimatedFees.max_amount,
           error: null,
         });
+        setFeesStatus("idle");
       } catch (err) {
         console.error(err); // eslint-disable-line no-console
 
