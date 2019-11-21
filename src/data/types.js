@@ -592,6 +592,7 @@ export type Request<T> = {
   type: $ElementType<$PropertyType<MapRequestType, "type">, T>,
   account?: AccountCommon,
   user?: UserCommon,
+  whitelist?: WhitelistCommon,
   transaction?: TransactionCommon,
   group?: GroupCommon,
   quorum?: number,
