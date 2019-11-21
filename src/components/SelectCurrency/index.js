@@ -198,7 +198,8 @@ const ValueComponent = (props: OptionProps) => (
     <GenericRow {...props} />
   </components.SingleValue>
 );
-const WindowList = (props: MenuListComponentProps) => {
+
+const MenuList = (props: MenuListComponentProps) => {
   const height = 40;
   const { options, children, maxHeight, getValue } = props;
   const [value] = getValue();
@@ -226,13 +227,6 @@ const WindowList = (props: MenuListComponentProps) => {
         <div style={{ ...style, overflow: "hidden" }}>{children[index]}</div>
       )}
     </List>
-  );
-};
-const MenuList = (props: MenuListComponentProps) => {
-  return (
-    <components.MenuList {...props}>
-      <WindowList {...props} />
-    </components.MenuList>
   );
 };
 
