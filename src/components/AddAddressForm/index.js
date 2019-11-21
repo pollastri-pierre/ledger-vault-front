@@ -139,11 +139,9 @@ const AddressRow = ({
         >
           <Box horizontal flow={20} width={200} align="center">
             <AccountIcon currencyId={addr.currency} />
-            <Text fontWeight="bold" uppercase>
-              {addr.name}
-            </Text>
+            <Text fontWeight="bold">{addr.name}</Text>
           </Box>
-          <Text>{addr.address}</Text>
+          <Text style={{ fontFamily: "monospace" }}>{addr.address}</Text>
           <div onClick={e => e.stopPropagation()}>
             <Button
               type="link"
