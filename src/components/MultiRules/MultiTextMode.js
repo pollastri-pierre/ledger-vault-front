@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { Fragment } from "react";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { FaUser, FaUsers, FaRegFileAlt, FaArrowsAltH } from "react-icons/fa";
 import { BigNumber } from "bignumber.js";
@@ -32,17 +32,16 @@ function MultiTextMode(props: MultiTextModeProps) {
   const { rulesSets, whitelists, groups, users } = props;
   return (
     <Box>
-      {rulesSets.map((ruleSet, i) => (
-        <>
+      {rulesSets.map((rulesSet, i) => (
+        <Fragment key={rulesSet.name}>
           <ResolveRuleSet
-            ruleSet={ruleSet}
+            rulesSet={rulesSet}
             whitelists={whitelists}
             groups={groups}
             users={users}
-            key={ruleSet.name}
           />
           {rulesSets[i + 1] ? <LineSeparator /> : null}
-        </>
+        </Fragment>
       ))}
     </Box>
   );
@@ -51,16 +50,16 @@ function MultiTextMode(props: MultiTextModeProps) {
 export default MultiTextMode;
 
 type ResolveRulesProps = {
-  ruleSet: RulesSetType,
+  rulesSet: RulesSetType,
   whitelists: Whitelist[],
   groups: Group[],
   users: User[],
 };
 function ResolveRuleSet(props: ResolveRulesProps) {
-  const { ruleSet, whitelists, users, groups } = props;
-  const thresholdRule = getThresholdRule(ruleSet);
-  const whitelistRule = getWhitelistRule(ruleSet);
-  const multiAuthRule = getMultiAuthRule(ruleSet);
+  const { rulesSet, whitelists, users, groups } = props;
+  const thresholdRule = getThresholdRule(rulesSet);
+  const whitelistRule = getWhitelistRule(rulesSet);
+  const multiAuthRule = getMultiAuthRule(rulesSet);
   const creatorStep = multiAuthRule && multiAuthRule.data[0];
   const threshold = thresholdRule && thresholdRule.data[0];
   const approvalSteps = multiAuthRule && multiAuthRule.data.slice(1);
@@ -100,10 +99,10 @@ function ResolveRuleSet(props: ResolveRulesProps) {
     if (step.group_id || (step.group && !step.group.is_internal)) {
       const groupId = step.group_id || step.group.id;
       if (type === "creator" && step.quorum < 2) {
-        return <StyledUl>{resolveGroup(groupId)}</StyledUl>;
+        return <StyledUl key={groupId}>{resolveGroup(groupId)}</StyledUl>;
       }
       return (
-        <StyledUl>
+        <StyledUl key={groupId}>
           <StyledLi>
             <Text
               i18nKey="approvalsRules:textMode.quorum"
@@ -116,11 +115,15 @@ function ResolveRuleSet(props: ResolveRulesProps) {
     }
     if (step.users || (step.group && step.group.is_internal)) {
       const userList = step.users || step.group.members;
+      // note sure it is the best solution, there is no id, step is varying in shape
+      // but it is a direct descendant of the map and it needs a key
+      // once users are eliminated on the gate, we can use group id
+      const key = userList.length + step.quorum;
       if (type === "creator" && step.quorum < 2) {
-        return <StyledUl>{resolveUsers(userList)}</StyledUl>;
+        return <StyledUl key={key}>{resolveUsers(userList)}</StyledUl>;
       }
       return (
-        <StyledUl>
+        <StyledUl key={key}>
           <StyledLi>
             <Text
               i18nKey="approvalsRules:textMode.quorum"
@@ -148,7 +151,7 @@ function ResolveRuleSet(props: ResolveRulesProps) {
     <Box flow={10}>
       <Box align="flex-end">
         <Box bg={colors.argile} borderRadius={15} py={2} px={10}>
-          <Text fontWeight="bold">{ruleSet.name}</Text>
+          <Text fontWeight="bold">{rulesSet.name}</Text>
         </Box>
       </Box>
       <Box justify="center">
