@@ -32,7 +32,7 @@ function AccountDetails(props: Props) {
     const multiAuthRule = getMultiAuthRule(rulesSet);
     if (!multiAuthRule) return false;
     const { data: steps } = multiAuthRule;
-    return steps.some(step => step.group.is_under_edit);
+    return steps.some(step => step && step.group.is_under_edit);
   });
 
   return (

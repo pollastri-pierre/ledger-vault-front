@@ -67,10 +67,11 @@ export const EditApprovalStep = ({
   extraProps,
 }: {
   extraProps?: ExtraProps,
-  value: RuleMultiAuthStep,
+  value: RuleMultiAuthStep | null,
   onChange: RuleMultiAuthStep => void,
 }) => {
   if (!extraProps) return null;
+  if (!value) return null;
   const { rule, users, groups } = extraProps;
   return (
     <ApprovalStepParameters

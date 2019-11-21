@@ -96,6 +96,7 @@ function filterAvailableOptions(
   const usedGroupIDS = {};
   const usedUserIDS = {};
   rule.data.forEach(s => {
+    if (!s) return;
     if (s.group.is_internal) {
       s.group.members.forEach(user => {
         if (
