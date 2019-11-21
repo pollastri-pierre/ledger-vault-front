@@ -126,7 +126,7 @@ export type WhitelistCommon = {
   created_on: string,
   created_by: User,
   approvals: Approval[],
-  status: string,
+  status: WhitelistStatus,
 };
 
 export type Whitelist = WhitelistCommon & {
@@ -287,6 +287,12 @@ export const GroupStatusMap = {
   ABORTED: "ABORTED",
 };
 export type GroupStatus = $Keys<typeof GroupStatusMap>;
+
+export const WhitelistStatusMap = {
+  ACTIVE: "ACTIVE",
+  PENDING: "PENDING",
+};
+export type WhitelistStatus = $Keys<typeof WhitelistStatusMap>;
 
 export const AccountStatusMap = {
   ACTIVE: "ACTIVE",

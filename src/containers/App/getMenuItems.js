@@ -30,6 +30,7 @@ import { defaultStatuses as groupsStatuses } from "components/filters/GroupsFilt
 import { defaultStatuses as usersStatuses } from "components/filters/UsersFilters";
 import { defaultStatuses as accountsStatuses } from "components/filters/AccountsFilters";
 import { defaultStatuses as transactionsStatuses } from "components/filters/TransactionsFilters";
+import { defaultStatuses as whitelistsStatuses } from "components/filters/WhitelistsFilters";
 
 const SendIcon = () => <IconSend size={11} />;
 const ReceiveIcon = () => <IconReceive size={11} />;
@@ -83,7 +84,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-whitelists",
         label: <Trans i18nKey="menu:admin.whitelists" />,
         url: `${match.url}/admin/whitelists`,
-        query: { status: transactionsStatuses },
+        query: { status: whitelistsStatuses },
         Icon: FaAddressBook,
       },
       {
