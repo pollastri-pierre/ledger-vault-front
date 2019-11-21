@@ -45,20 +45,22 @@ import AccountCreationConfirmation from "./steps/AccountCreationConfirmation";
 
 import type { AccountCreationPayload } from "./types";
 
+const emptyRulesSets = [
+  {
+    name: "Rule 1",
+    rules: [
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [],
+      },
+    ],
+  },
+];
+
 const initialPayload: AccountCreationPayload = {
   name: "",
   accountStatus: "",
-  rulesSets: [
-    {
-      name: "Rule 1",
-      rules: [
-        {
-          type: "MULTI_AUTHORIZATIONS",
-          data: [],
-        },
-      ],
-    },
-  ],
+  rulesSets: emptyRulesSets,
   currency: null,
   erc20token: null,
   parentAccount: null,
@@ -315,7 +317,7 @@ export const deserialize: Account => AccountCreationPayload = account => {
     id: account.id,
     accountStatus: account.status,
     name: account.name,
-    rulesSets: account.governance_rules,
+    rulesSets: account.governance_rules || emptyRulesSets,
     currency:
       account.account_type === "Bitcoin" ||
       account.account_type === "Ethereum" ||
