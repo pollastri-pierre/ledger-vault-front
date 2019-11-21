@@ -6,7 +6,7 @@ import {
   NonEIP55Address,
   NonEIP55AddressWhitelist,
   AddressDuplicateNameCurrency,
-  AddressDuplicateNameAddress,
+  AddressDuplicateCurrencyAddress,
 } from "utils/errors";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -139,11 +139,9 @@ const AddressRow = ({
         >
           <Box horizontal flow={20} width={200} align="center">
             <AccountIcon currencyId={addr.currency} />
-            <Text fontWeight="bold" uppercase>
-              {addr.name}
-            </Text>
+            <Text fontWeight="bold">{addr.name}</Text>
           </Box>
-          <Text>{addr.address}</Text>
+          <Text style={{ fontFamily: "monospace" }}>{addr.address}</Text>
           <div onClick={e => e.stopPropagation()}>
             <Button
               type="link"
@@ -208,15 +206,10 @@ const FormAdd = connectData(
     useEffect(() => {
       let unsub = false;
       const effect = async () => {
-        const errorName =
-          checkNameCurrencyDuplicate(
-            { name, currency, id: addr && addr.id },
-            addresses,
-          ) ||
-          checkNameAddressDuplicate(
-            { name, address, id: addr && addr.id },
-            addresses,
-          );
+        const errorName = checkNameCurrencyDuplicate(
+          { name, currency, id: addr && addr.id },
+          addresses,
+        );
 
         setNameError(errorName);
 
@@ -225,11 +218,12 @@ const FormAdd = connectData(
             const curr = getCryptoCurrencyById(currency);
             if (!curr) return;
             const bridge = getBridgeForCurrency(curr);
-            const errors = await bridge.getRecipientError(
-              restlay,
-              curr,
-              address,
-            );
+            const errors =
+              (await bridge.getRecipientError(restlay, curr, address)) ||
+              checkCurrencyAddressDuplicate(
+                { name, address, currency, id: addr && addr.id },
+                addresses,
+              );
             const recipientWarning = bridge.getRecipientWarning
               ? await bridge.getRecipientWarning(address)
               : null;
@@ -365,24 +359,19 @@ const checkNameCurrencyDuplicate = (
   current: { name: ?string, currency: ?string, id: ?number },
   addresses: Address[],
 ) =>
-  addresses.some(
-    a =>
-      a.name === current.name &&
-      a.currency === current.currency &&
-      current.id !== a.id,
-  )
+  addresses
+    .filter(a => (current.id ? a.id !== current.id : true))
+    .some(a => a.name === current.name && a.currency === current.currency)
     ? new AddressDuplicateNameCurrency()
     : null;
 
-const checkNameAddressDuplicate = (
-  current: { name: ?string, address: ?string, id: ?number },
+const checkCurrencyAddressDuplicate = (
+  current: { name: ?string, address: ?string, id: ?number, currency: string },
   addresses: Address[],
-) =>
-  addresses.some(
-    a =>
-      a.name === current.name &&
-      a.address === current.address &&
-      current.id !== a.id,
-  )
-    ? new AddressDuplicateNameAddress()
+) => {
+  return addresses
+    .filter(a => (current.id ? a.id !== current.id : true))
+    .some(a => a.currency === current.currency && a.address === current.address)
+    ? new AddressDuplicateCurrencyAddress()
     : null;
+};
