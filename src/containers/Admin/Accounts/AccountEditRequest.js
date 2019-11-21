@@ -1,61 +1,78 @@
 // @flow
 
 import React from "react";
+import styled from "styled-components";
+import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
-import UsersQuery from "api/queries/UsersQuery";
+import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
+import SearchWhitelists from "api/queries/SearchWhitelists";
 import Box from "components/base/Box";
+import LineSeparator from "components/LineSeparator";
+import MultiRules from "components/MultiRules";
 import { SpinnerCentered } from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity, darken } from "shared/colors";
-// import type { Account, User, Group } from "data/types";
-import type { Account } from "data/types";
-import type { RulesSet } from "components/MultiRules/types";
-// import type { Connection } from "restlay/ConnectionQuery";
-
-import { haveRulesChangedDiff } from "./helpers";
+import type { Account, User, Group, Whitelist } from "data/types";
+import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
   account: Account,
-  // users: Connection<User>,
-  // groups: Connection<Group>,
+  users: Connection<User>,
+  groups: Connection<Group>,
+  whitelists: Connection<Whitelist>,
 };
 
 function AccountEditRequest(props: Props) {
-  const { account } = props;
+  const { account, users, whitelists, groups } = props;
   const { governance_rules, last_request } = account;
 
   if (!last_request) return null;
 
   const isAccountMigration = last_request.type === "MIGRATE_ACCOUNT";
   const editData = last_request.edit_data || null;
+  const hasNameChanged = editData && account.name !== editData.name;
 
   const newRules = isAccountMigration
     ? governance_rules
     : editData
     ? editData.governance_rules
     : null;
-
   const oldRules = isAccountMigration ? null : governance_rules;
-  const hasNameChanged = editData && account.name !== editData.name;
-
-  const haveRulesChanged = haveRulesChangedDiff(newRules, oldRules);
 
   return (
     <Box flow={10} horizontal justify="space-between">
-      <DiffBlock
-        name={hasNameChanged ? account.name : null}
-        rules={haveRulesChanged ? oldRules : null}
-        haveRulesChanged={haveRulesChanged}
-        type="current"
-      />
-      <DiffBlock
-        name={hasNameChanged && editData ? editData.name : null}
-        rules={haveRulesChanged ? newRules : null}
-        haveRulesChanged={haveRulesChanged}
-        type="proposed"
-      />
+      {oldRules && (
+        <DiffBlock
+          type="current"
+          hasNameChanged={hasNameChanged}
+          accountName={account.name}
+        >
+          <MultiRules
+            textMode
+            users={users.edges.map(n => n.node)}
+            whitelists={whitelists.edges.map(n => n.node)}
+            groups={groups.edges.map(n => n.node)}
+            rulesSets={oldRules}
+          />
+        </DiffBlock>
+      )}
+      {newRules && (
+        <DiffBlock
+          type="previous"
+          hasNameChanged={hasNameChanged}
+          accountName={editData ? editData.name : ""}
+        >
+          <MultiRules
+            textMode
+            users={users.edges.map(n => n.node)}
+            whitelists={whitelists.edges.map(n => n.node)}
+            groups={groups.edges.map(n => n.node)}
+            rulesSets={newRules}
+          />
+        </DiffBlock>
+      )}
     </Box>
   );
 }
@@ -69,31 +86,24 @@ const diffBoxProps = {
 export default connectData(AccountEditRequest, {
   RenderLoading: () => <SpinnerCentered />,
   queries: {
-    users: UsersQuery,
+    users: OperatorsForAccountCreationQuery,
     groups: GroupsQuery,
+    whitelists: SearchWhitelists,
   },
 });
 
 type DiffBlockProps = {
-  name: ?string,
-  rules: ?(RulesSet[]),
   type: string,
-  haveRulesChanged: ?boolean,
+  hasNameChanged?: ?boolean,
+  accountName?: string,
+  children: React$Node,
 };
 function DiffBlock(props: DiffBlockProps) {
-  const { name, type, haveRulesChanged } = props;
+  const { type, children, hasNameChanged, accountName } = props;
   return (
-    <Box
-      bg={
-        type === "current"
-          ? opacity(colors.paleBlue, 0.2)
-          : opacity(colors.paleRed, 0.2)
-      }
-      {...diffBoxProps}
-    >
-      <Box mb={20}>
+    <Box noShrink flex={1}>
+      <Box m={5}>
         <Text
-          size="small"
           uppercase
           fontWeight="bold"
           color={
@@ -108,18 +118,47 @@ function DiffBlock(props: DiffBlockProps) {
           }
         />
       </Box>
-      {name && (
-        <Box mb={20}>
-          <Text fontWeight="bold" i18nKey="entityModal:diff.name" />
-          <Text>{name}</Text>
-        </Box>
-      )}
-      {haveRulesChanged && (
-        <Box mb={20}>
-          <Text fontWeight="bold" i18nKey="entityModal:diff.rules" />
-          <Box>TODO DIFF RULES</Box>
-        </Box>
-      )}
+      <Box
+        mb={20}
+        flow={10}
+        p={5}
+        bg={
+          type === "current"
+            ? opacity(colors.paleBlue, 0.2)
+            : opacity(colors.paleRed, 0.2)
+        }
+        {...diffBoxProps}
+      >
+        <>
+          {hasNameChanged && (
+            <>
+              <Text
+                fontWeight="bold"
+                i18nKey="approvalsRules:textMode.accountName"
+              />
+              <StyledUl>
+                <StyledLi>
+                  <Box horizontal flow={5} align="center">
+                    <FaMoneyCheck />
+                    <Text>{accountName}</Text>
+                  </Box>
+                </StyledLi>
+              </StyledUl>
+              <LineSeparator />
+            </>
+          )}
+        </>
+        {children}
+      </Box>
     </Box>
   );
 }
+
+// as a separate story - TODO: create our own li and ul to control the bullet points better
+const StyledUl = styled.ul`
+  margin: 0;
+`;
+
+const StyledLi = styled.li`
+  word-break: break-all;
+`;

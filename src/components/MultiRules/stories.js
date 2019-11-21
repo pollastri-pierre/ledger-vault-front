@@ -11,7 +11,7 @@ import Box from "components/base/Box";
 import Button from "components/base/Button";
 import initialRulesSets from "data/mock-governance-rules.json";
 
-const users = genUsers(15).map(u => ({ ...u, role: "operator" }));
+const users = genUsers(15).map(u => ({ ...u, role: "OPERATOR" }));
 const groups = genGroups(3, { users });
 const whitelists = genWhitelists(10, { users });
 
@@ -45,6 +45,8 @@ storiesOf("components", module)
 const Wrapper = () => {
   const [rulesSets, setRulesSets] = useState(initialRulesSets);
   const [readOnly, setReadOnly] = useState(false);
+  const [textMode, setTextMode] = useState(false);
+
   const serialized = serializeRulesSetsForPOST(rulesSets);
   return (
     <Box flow={20} align="flex-start">
@@ -55,9 +57,13 @@ const Wrapper = () => {
         groups={groups}
         whitelists={whitelists}
         readOnly={readOnly}
+        textMode={textMode}
       />
       <Button type="filled" onClick={() => setReadOnly(!readOnly)}>
         toggle read only
+      </Button>
+      <Button type="filled" onClick={() => setTextMode(!textMode)}>
+        toggle text mode
       </Button>
       <Box>
         <pre
