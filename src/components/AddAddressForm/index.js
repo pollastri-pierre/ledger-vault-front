@@ -277,7 +277,7 @@ const FormAdd = connectData(
                 maxLength={19}
                 onChange={setName}
                 value={name}
-                errors={nameError ? [nameError] : null}
+                errors={nameError ? [nameError] : undefined}
                 onlyAscii
                 fullWidth
               />
@@ -287,8 +287,8 @@ const FormAdd = connectData(
             placeholder={t("whitelists:create.addr_placeholder")}
             value={address}
             onChange={setAddress}
-            errors={addressError ? [addressError] : null}
-            warnings={warning ? [remapWarningError(warning)] : null}
+            errors={addressError ? [addressError] : undefined}
+            warnings={warning ? [remapWarningError(warning)] : undefined}
             fullWidth
           />
         </Box>

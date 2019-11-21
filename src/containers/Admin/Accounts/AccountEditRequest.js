@@ -11,6 +11,7 @@ import SearchWhitelists from "api/queries/SearchWhitelists";
 import Box from "components/base/Box";
 import LineSeparator from "components/LineSeparator";
 import MultiRules from "components/MultiRules";
+import { getAccountCurrencyOrToken } from "utils/accounts";
 import { SpinnerCentered } from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity, darken } from "shared/colors";
@@ -40,6 +41,7 @@ function AccountEditRequest(props: Props) {
     ? editData.governance_rules
     : null;
   const oldRules = isAccountMigration ? null : governance_rules;
+  const currencyOrToken = getAccountCurrencyOrToken(account);
 
   return (
     <Box flow={10} horizontal justify="space-between">
@@ -55,6 +57,7 @@ function AccountEditRequest(props: Props) {
             whitelists={whitelists.edges.map(n => n.node)}
             groups={groups.edges.map(n => n.node)}
             rulesSets={oldRules}
+            currencyOrToken={currencyOrToken}
           />
         </DiffBlock>
       )}
@@ -70,6 +73,7 @@ function AccountEditRequest(props: Props) {
             whitelists={whitelists.edges.map(n => n.node)}
             groups={groups.edges.map(n => n.node)}
             rulesSets={newRules}
+            currencyOrToken={currencyOrToken}
           />
         </DiffBlock>
       )}

@@ -21,7 +21,6 @@ type Alignment = "left" | "right";
 
 type Props = InputProps<string> & {
   IconLeft?: React$ComponentType<Icon>,
-  label: string,
   autoFocus?: boolean,
   maxLength?: number,
   onlyAscii?: boolean,

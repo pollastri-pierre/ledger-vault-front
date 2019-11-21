@@ -16,6 +16,8 @@ export default (props: AccountCreationStepProps) => {
     .map(w => w.node)
     .filter(w => w.status === "ACTIVE");
 
+  const { currency, erc20token } = payload;
+
   return (
     <MultiRules
       rulesSets={payload.rulesSets}
@@ -23,6 +25,8 @@ export default (props: AccountCreationStepProps) => {
       users={usersArray}
       groups={groupsArray}
       whitelists={whitelistsArray}
+      // $FlowFixMe
+      currencyOrToken={erc20token || currency}
     />
   );
 };

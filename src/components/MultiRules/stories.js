@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState } from "react";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { storiesOf } from "@storybook/react";
 
 import pageDecorator from "stories/pageDecorator";
@@ -10,6 +11,8 @@ import { serializeRulesSetsForPOST } from "components/MultiRules/helpers";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
 import initialRulesSets from "data/mock-governance-rules.json";
+
+const BITCOIN = getCryptoCurrencyById("bitcoin");
 
 const users = genUsers(15).map(u => ({ ...u, role: "OPERATOR" }));
 const groups = genGroups(3, { users });
@@ -58,6 +61,7 @@ const Wrapper = () => {
         whitelists={whitelists}
         readOnly={readOnly}
         textMode={textMode}
+        currencyOrToken={BITCOIN}
       />
       <Button type="filled" onClick={() => setReadOnly(!readOnly)}>
         toggle read only

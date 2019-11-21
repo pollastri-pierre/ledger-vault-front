@@ -32,10 +32,10 @@ const EthereumCurIconSrc = getCryptoCurrencyIcon(ethereumCurrency);
 const RopstenCurIconSrc = getCryptoCurrencyIcon(ropstenCurrency);
 const EthereumCurIcon = EthereumCurIconSrc
   ? () => <EthereumCurIconSrc size={15} color={ethereumCurrency.color} />
-  : null;
+  : undefined;
 const RopstenCurIcon = RopstenCurIconSrc
   ? () => <RopstenCurIconSrc size={15} color={ropstenCurrency.color} />
-  : null;
+  : undefined;
 
 const inputProps = {
   maxLength: 19,

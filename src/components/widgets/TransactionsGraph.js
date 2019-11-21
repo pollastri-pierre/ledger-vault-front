@@ -6,11 +6,13 @@ import colors, { opacity } from "shared/colors";
 import * as d3 from "d3";
 
 import SearchTransactions from "api/queries/SearchTransactions";
-import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import {
+  getERC20TokenByContractAddress,
+  getCurrencyLikeUnit,
+} from "utils/cryptoCurrencies";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { Connection } from "restlay/ConnectionQuery";
 import { getAccountCurrencyUnit } from "data/currency";
-import { getCurrencyLikeUnit } from "components/CurrencyAccountValue";
 import { currencyUnitValueFormat } from "components/CurrencyUnitValue";
 import { SoftCard } from "components/base/Card";
 import type { Transaction, Account } from "data/types";

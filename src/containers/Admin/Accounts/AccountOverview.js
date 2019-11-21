@@ -11,7 +11,7 @@ import colors from "shared/colors";
 import InfoBox from "components/base/InfoBox";
 import ParentAccount from "components/ParentAccount";
 import MultiRules from "components/MultiRules";
-import { isBalanceAvailable } from "utils/accounts";
+import { isBalanceAvailable, getAccountCurrencyOrToken } from "utils/accounts";
 import type { Account } from "data/types";
 
 const iconDown = <FaChevronDown size={12} color={colors.lightGrey} />;
@@ -39,6 +39,7 @@ const Rows = ({ account }: { account: Account }) => {
   const toggleRuleVisible = () => {
     return setRule(!isRuleVisible);
   };
+  const currencyOrToken = getAccountCurrencyOrToken(account);
   return (
     <div>
       <LineRow label={<Trans i18nKey="accountDetails:name" />}>
@@ -84,7 +85,11 @@ const Rows = ({ account }: { account: Account }) => {
         </LineRow>
       )}
       {account.governance_rules && isRuleVisible && (
-        <MultiRules readOnly rulesSets={account.governance_rules} />
+        <MultiRules
+          readOnly
+          rulesSets={account.governance_rules}
+          currencyOrToken={currencyOrToken}
+        />
       )}
     </div>
   );

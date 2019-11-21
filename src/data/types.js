@@ -2,6 +2,7 @@
 
 import type { BigNumber } from "bignumber.js";
 import type { GovernanceRules } from "components/MultiRules/types";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
@@ -410,6 +411,8 @@ export type ERC20Token = {
   hsm_account_parameters: string,
   disable_countervalue?: boolean,
 };
+
+export type CurrencyOrToken = CryptoCurrency | ERC20Token;
 
 export const MetaStatusMap = {
   APPROVED: "APPROVED",

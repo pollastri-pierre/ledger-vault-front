@@ -21,7 +21,7 @@ type Props = {
   unitLeft?: boolean,
   hideCV?: boolean,
   unit?: Unit,
-  width?: number,
+  width?: number | string,
   unitsWidth?: number,
   isDisabled?: boolean,
 };

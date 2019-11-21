@@ -3,7 +3,6 @@
 import React from "react";
 import { BigNumber } from "bignumber.js";
 import { FaArrowsAltH } from "react-icons/fa";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import CurrencyUnitValue from "components/CurrencyUnitValue";
 import {
@@ -11,11 +10,15 @@ import {
   EditableStop,
   useReadOnly,
 } from "components/base/Timeline";
+import {
+  currencyOrNull,
+  tokenOrNull,
+  getCurrencyLikeUnit,
+} from "utils/cryptoCurrencies";
+import type { CurrencyOrToken } from "data/types";
 import Badge from "./Badge";
 import ThresholdParameters from "./ThresholdParameters";
 import type { RuleThreshold } from "./types";
-
-const FIXME_FORCE_CURRENCY = getCryptoCurrencyById("bitcoin");
 
 const emptyRule = {
   type: "THRESHOLD",
@@ -32,9 +35,16 @@ type Props = {
   onAdd: RuleThreshold => void,
   onEdit: RuleThreshold => void,
   onRemove: () => void,
+  currencyOrToken: CurrencyOrToken,
 };
 
-const ThresholdStop = ({ rule, onRemove, onAdd, onEdit }: Props) => {
+const ThresholdStop = ({
+  rule,
+  currencyOrToken,
+  onRemove,
+  onAdd,
+  onEdit,
+}: Props) => {
   const readOnly = useReadOnly();
 
   if (!rule && readOnly) return null;
@@ -45,10 +55,15 @@ const ThresholdStop = ({ rule, onRemove, onAdd, onEdit }: Props) => {
     pt: readOnly ? 0 : 30,
   };
 
+  const extraProps = {
+    currencyOrToken,
+  };
+
   if (!rule) {
     return (
       <ActionableStop
         {...stopProps}
+        extraProps={extraProps}
         isValid={isRuleValid}
         label="Add amount range"
         desc="This rule applies to transactions between two amounts"
@@ -68,6 +83,7 @@ const ThresholdStop = ({ rule, onRemove, onAdd, onEdit }: Props) => {
   return (
     <EditableStop
       {...stopProps}
+      extraProps={extraProps}
       value={rule}
       bulletVariant="plain"
       label="Edit threshold"
@@ -81,11 +97,29 @@ const ThresholdStop = ({ rule, onRemove, onAdd, onEdit }: Props) => {
   );
 };
 
-const DisplayThreshold = ({ value }: { value: RuleThreshold }) => {
+type ExtraProps = {
+  currencyOrToken: CurrencyOrToken,
+};
+
+const DisplayThreshold = ({
+  value,
+  extraProps,
+}: {
+  value: RuleThreshold,
+  extraProps?: ExtraProps,
+}) => {
   const threshold = value.data[0];
   if (!threshold) {
     return "Invalid threshold";
   }
+  if (!extraProps) return null;
+  const { currencyOrToken } = extraProps;
+
+  const currency = currencyOrNull(currencyOrToken);
+  const token = tokenOrNull(currencyOrToken);
+
+  const unit = currency ? currency.units[0] : getCurrencyLikeUnit(token);
+
   return (
     <div>
       <div>
@@ -96,19 +130,13 @@ const DisplayThreshold = ({ value }: { value: RuleThreshold }) => {
           {"Applies to transactions with amount between "}
           <Badge>
             <strong>
-              <CurrencyUnitValue
-                unit={FIXME_FORCE_CURRENCY.units[0]}
-                value={threshold.min}
-              />
+              <CurrencyUnitValue unit={unit} value={threshold.min} />
             </strong>
           </Badge>
           {" and "}
           <Badge>
             <strong>
-              <CurrencyUnitValue
-                unit={FIXME_FORCE_CURRENCY.units[0]}
-                value={threshold.max}
-              />
+              <CurrencyUnitValue unit={unit} value={threshold.max} />
             </strong>
           </Badge>
         </span>
@@ -117,10 +145,7 @@ const DisplayThreshold = ({ value }: { value: RuleThreshold }) => {
           {"Applies to transactions with amount greater than "}
           <Badge>
             <strong>
-              <CurrencyUnitValue
-                unit={FIXME_FORCE_CURRENCY.units[0]}
-                value={threshold.min}
-              />
+              <CurrencyUnitValue unit={unit} value={threshold.min} />
             </strong>
           </Badge>
         </span>
@@ -132,10 +157,21 @@ const DisplayThreshold = ({ value }: { value: RuleThreshold }) => {
 const EditThreshold = ({
   value,
   onChange,
+  extraProps,
 }: {
   value: RuleThreshold,
   onChange: RuleThreshold => void,
-}) => <ThresholdParameters rule={value} onChange={onChange} />;
+  extraProps?: ExtraProps,
+}) => {
+  if (!extraProps) return null;
+  return (
+    <ThresholdParameters
+      rule={value}
+      currencyOrToken={extraProps.currencyOrToken}
+      onChange={onChange}
+    />
+  );
+};
 
 function isRuleValid(rule: RuleThreshold) {
   const threshold = rule.data[0];

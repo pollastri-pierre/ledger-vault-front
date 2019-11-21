@@ -1,4 +1,19 @@
 // @flow
+
+/* ================================================= */
+/* ==                                             == */
+/* ==         TODO : this component makes         == */
+/* ==         absolutely no sense, it's an        == */
+/* ==         input but it's taking the           == */
+/* ==         bridge and account and tx as        == */
+/* ==         prop. this.. ah yes I wrote it.     == */
+/* ==                                             == */
+/* ==     For now I will just create a new fresh  == */
+/* ==     one: InputTokenAmount. Will remove      == */
+/* ==     this one later.                         == */
+/* ==                                             == */
+/* ================================================= */
+
 import React, { PureComponent } from "react";
 import { BigNumber } from "bignumber.js";
 

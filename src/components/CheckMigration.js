@@ -12,6 +12,7 @@ import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQ
 import SearchWhitelists from "api/queries/SearchWhitelists";
 import connectData from "restlay/connectData";
 import { createAndApprove } from "device/interactions/hsmFlows";
+import { getAccountCurrencyOrToken } from "utils/accounts";
 import type { User, Account, Group, Whitelist } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
@@ -145,6 +146,7 @@ const AccountToMigrate = ({
   const isEditMode = true;
   const data = isValid ? serializePayload(payload, isEditMode) : null;
   const isOpened = status === "active";
+  const currencyOrToken = getAccountCurrencyOrToken(account);
   return (
     <Box key={account.id} p={20} flow={10} position="relative">
       <Box horizontal align="center" justify="space-between">
@@ -170,6 +172,7 @@ const AccountToMigrate = ({
             users={users}
             whitelists={whitelists}
             groups={groups}
+            currencyOrToken={currencyOrToken}
           />
           <Box height={80} position="relative">
             <Absolute top={20} right={20}>
