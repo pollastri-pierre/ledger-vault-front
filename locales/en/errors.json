@@ -81,11 +81,11 @@
   },
   "AddressDuplicateNameCurrency": {
     "title": "AddressDuplicateNameCurrency",
-    "description": "Address name already used in this currency."
+    "description": "This name is already used by an address in the same currency."
   },
-  "AddressDuplicateNameAddress": {
-    "title": "AddressDuplicateNameAddress",
-    "description": "Name already used for this address"
+  "AddressDuplicateCurrencyAddress": {
+    "title": "AddressDuplicateCurrencyAddress",
+    "description": "Address already used in this currency."
   },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",

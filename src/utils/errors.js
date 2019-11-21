@@ -47,8 +47,8 @@ export const TargetXRPNotActive = createCustomErrorClass("tecNO_DST_INSUF_XRP");
 export const AddressDuplicateNameCurrency = createCustomErrorClass(
   "AddressDuplicateNameCurrency",
 );
-export const AddressDuplicateNameAddress = createCustomErrorClass(
-  "AddressDuplicateNameAddress",
+export const AddressDuplicateCurrencyAddress = createCustomErrorClass(
+  "AddressDuplicateCurrencyAddress",
 );
 
 export function remapError(err: Error) {
