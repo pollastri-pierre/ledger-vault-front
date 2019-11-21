@@ -4,6 +4,7 @@ import { withTranslation } from "react-i18next";
 import Box from "components/base/Box";
 import type { Translate, Address } from "data/types";
 import AddAddressForm from "components/AddAddressForm";
+import { generateID } from "utils/idGenerator";
 import type { WhitelistCreationStepProps } from "./types";
 
 type Props = WhitelistCreationStepProps & {
@@ -13,8 +14,7 @@ type Props = WhitelistCreationStepProps & {
 const WhitelistCreationAddresses = (props: Props) => {
   const { payload, updatePayload } = props;
   const addAddress = addr => {
-    const lastItem = payload.addresses[payload.addresses.length - 1];
-    const nextId = lastItem ? lastItem.id + 1 : 0;
+    const nextId = generateID();
 
     updatePayload({
       addresses: [{ ...addr, id: nextId }, ...payload.addresses],
