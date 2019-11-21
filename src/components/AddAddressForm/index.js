@@ -2,6 +2,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
+import {
+  NonEIP55Address,
+  NonEIP55AddressWhitelist,
+  AddressDuplicateNameCurrency,
+  AddressDuplicateNameAddress,
+} from "utils/errors";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { FaAddressBook, FaPlus } from "react-icons/fa";
@@ -13,6 +19,7 @@ import type { Address } from "data/types";
 import colors from "shared/colors";
 import connectData from "restlay/connectData";
 import Box from "components/base/Box";
+import InfoBox from "components/base/InfoBox";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
 import AccountIcon from "components/AccountIcon";
@@ -24,6 +31,7 @@ type Props = {
   onEditAddress: Address => void,
   onDeleteAddress: Address => void,
 };
+const NB_MAX_ADDRESSES = 100;
 const AddAddressForm = (props: Props) => {
   const { addresses, onAddAddress, onEditAddress, onDeleteAddress } = props;
   const [form, setForm] = useState(false);
@@ -31,15 +39,27 @@ const AddAddressForm = (props: Props) => {
     <Box flow={20}>
       <Box flow={20}>
         {!form && (
-          <Box width={80}>
-            <Button
-              onClick={() => setForm(true)}
-              type="link"
-              variant="info"
-              size="small"
-            >
-              <FaPlus style={{ marginRight: 10 }} /> Add
-            </Button>
+          <Box horizontal align="center">
+            <Box width={80}>
+              <Button
+                onClick={() => setForm(true)}
+                type="link"
+                variant="info"
+                disabled={addresses.length === NB_MAX_ADDRESSES}
+                size="small"
+              >
+                <FaPlus style={{ marginRight: 10 }} /> Add
+              </Button>
+            </Box>
+            {addresses.length === NB_MAX_ADDRESSES && (
+              <InfoBox type="info">
+                <Trans
+                  i18nKey="whitelists:create.max_nb_addresses"
+                  count={NB_MAX_ADDRESSES}
+                  values={{ count: NB_MAX_ADDRESSES }}
+                />
+              </InfoBox>
+            )}
           </Box>
         )}
         <Box position="relative">
@@ -50,6 +70,7 @@ const AddAddressForm = (props: Props) => {
                   setForm(false);
                   onAddAddress(addr);
                 }}
+                addresses={addresses}
                 onCancel={() => setForm(false)}
               />
             </FormContainer>
@@ -65,6 +86,7 @@ const AddAddressForm = (props: Props) => {
               key={addr.id}
               addr={addr}
               onEditAddress={onEditAddress}
+              addresses={addresses}
               onDeleteAddress={onDeleteAddress}
             />
           ))
@@ -77,10 +99,12 @@ const AddAddressForm = (props: Props) => {
 const AddressRow = ({
   addr,
   onEditAddress,
+  addresses,
   onDeleteAddress,
 }: {
   addr: Address,
   onEditAddress: Address => void,
+  addresses: Address[],
   onDeleteAddress: Address => void,
 }) => {
   const [editMode, setEditMode] = useState(false);
@@ -99,6 +123,7 @@ const AddressRow = ({
             <FormAdd
               addr={addr}
               onSubmit={editAddr}
+              addresses={addresses}
               onCancel={() => setEditMode(false)}
             />
           </FormContainer>
@@ -157,16 +182,21 @@ type NewAddForm = {
 const FormAdd = connectData(
   ({
     addr,
+    addresses,
     onSubmit,
     onCancel,
     restlay,
   }: {
     addr?: Address,
     onCancel: () => void,
+    addresses: Address[],
     onSubmit: NewAddForm => void,
     restlay: RestlayEnvironment,
   }) => {
     const [addressError, setAddressError] = useState(null);
+    const [nameError, setNameError] = useState(null);
+    const [warning, setWarning] = useState(null);
+
     const [currency, setCurrency] = useState<?string>(
       (addr && addr.currency) || null,
     );
@@ -178,6 +208,18 @@ const FormAdd = connectData(
     useEffect(() => {
       let unsub = false;
       const effect = async () => {
+        const errorName =
+          checkNameCurrencyDuplicate(
+            { name, currency, id: addr && addr.id },
+            addresses,
+          ) ||
+          checkNameAddressDuplicate(
+            { name, address, id: addr && addr.id },
+            addresses,
+          );
+
+        setNameError(errorName);
+
         if (address && currency) {
           try {
             const curr = getCryptoCurrencyById(currency);
@@ -188,8 +230,13 @@ const FormAdd = connectData(
               curr,
               address,
             );
+            const recipientWarning = bridge.getRecipientWarning
+              ? await bridge.getRecipientWarning(address)
+              : null;
+
             if (!unsub) {
               setAddressError(errors);
+              setWarning(recipientWarning);
             }
           } catch (err) {
             if (!unsub) {
@@ -202,7 +249,7 @@ const FormAdd = connectData(
       return () => {
         unsub = true;
       };
-    }, [currency, name, address, restlay]);
+    }, [currency, name, address, restlay, addresses, addr]);
 
     const submit = async () => {
       if (!isAddressFilled() || addressError || !currency) return null;
@@ -236,6 +283,7 @@ const FormAdd = connectData(
                 maxLength={19}
                 onChange={setName}
                 value={name}
+                errors={nameError ? [nameError] : null}
                 onlyAscii
                 fullWidth
               />
@@ -246,6 +294,7 @@ const FormAdd = connectData(
             value={address}
             onChange={setAddress}
             errors={addressError ? [addressError] : null}
+            warnings={warning ? [remapWarningError(warning)] : null}
             fullWidth
           />
         </Box>
@@ -262,7 +311,7 @@ const FormAdd = connectData(
           <Button
             size="small"
             onClick={submit}
-            disabled={!isAddressFilled}
+            disabled={!isAddressFilled || !!addressError || !!nameError}
             type="outline"
           >
             OK
@@ -304,3 +353,36 @@ const NoAddressPlaceholder = () => (
     </Text>
   </Box>
 );
+
+function remapWarningError(w: Error) {
+  if (w instanceof NonEIP55Address) {
+    return new NonEIP55AddressWhitelist();
+  }
+  return w;
+}
+
+const checkNameCurrencyDuplicate = (
+  current: { name: ?string, currency: ?string, id: ?number },
+  addresses: Address[],
+) =>
+  addresses.some(
+    a =>
+      a.name === current.name &&
+      a.currency === current.currency &&
+      current.id !== a.id,
+  )
+    ? new AddressDuplicateNameCurrency()
+    : null;
+
+const checkNameAddressDuplicate = (
+  current: { name: ?string, address: ?string, id: ?number },
+  addresses: Address[],
+) =>
+  addresses.some(
+    a =>
+      a.name === current.name &&
+      a.address === current.address &&
+      current.id !== a.id,
+  )
+    ? new AddressDuplicateNameAddress()
+    : null;

@@ -20,7 +20,7 @@ export type Transaction = {
 
 const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
 
-const getRecipientWarning = async recipient => {
+const getRecipientWarning = async (recipient: string) => {
   // TODO: temp solution until centralized
   if (!recipient.match(/^0x[0-9a-fA-F]{40}$/)) return null;
   const slice = recipient.substr(2);
