@@ -108,8 +108,8 @@ function DiffBlock(props: DiffBlockProps) {
           fontWeight="bold"
           color={
             type === "current"
-              ? darken(colors.paleBlue, 0.7)
-              : darken(colors.paleRed, 0.7)
+              ? darken(colors.lightGrey, 0.7)
+              : darken(colors.paleBlue, 0.7)
           }
           i18nKey={
             type === "current"
@@ -124,8 +124,8 @@ function DiffBlock(props: DiffBlockProps) {
         p={5}
         bg={
           type === "current"
-            ? opacity(colors.paleBlue, 0.2)
-            : opacity(colors.paleRed, 0.2)
+            ? opacity(colors.lightGrey, 0.2)
+            : opacity(colors.paleBlue, 0.2)
         }
         {...diffBoxProps}
       >
