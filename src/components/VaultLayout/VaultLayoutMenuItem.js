@@ -47,7 +47,7 @@ export default ({ children, item, isMenuOpened }: Props) => {
   );
 
   if (url) {
-    menuItem = <Link to={url}>{menuItem}</Link>;
+    menuItem = item.isDisabled ? menuItem : <Link to={url}>{menuItem}</Link>;
   }
 
   return (
