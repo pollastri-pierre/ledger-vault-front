@@ -19,6 +19,7 @@ import type { Address } from "data/types";
 import colors from "shared/colors";
 import connectData from "restlay/connectData";
 import Box from "components/base/Box";
+import InfoBox from "components/base/InfoBox";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
 import AccountIcon from "components/AccountIcon";
@@ -30,6 +31,7 @@ type Props = {
   onEditAddress: Address => void,
   onDeleteAddress: Address => void,
 };
+const NB_MAX_ADDRESSES = 100;
 const AddAddressForm = (props: Props) => {
   const { addresses, onAddAddress, onEditAddress, onDeleteAddress } = props;
   const [form, setForm] = useState(false);
@@ -37,15 +39,27 @@ const AddAddressForm = (props: Props) => {
     <Box flow={20}>
       <Box flow={20}>
         {!form && (
-          <Box width={80}>
-            <Button
-              onClick={() => setForm(true)}
-              type="link"
-              variant="info"
-              size="small"
-            >
-              <FaPlus style={{ marginRight: 10 }} /> Add
-            </Button>
+          <Box horizontal align="center">
+            <Box width={80}>
+              <Button
+                onClick={() => setForm(true)}
+                type="link"
+                variant="info"
+                disabled={addresses.length === NB_MAX_ADDRESSES}
+                size="small"
+              >
+                <FaPlus style={{ marginRight: 10 }} /> Add
+              </Button>
+            </Box>
+            {addresses.length === NB_MAX_ADDRESSES && (
+              <InfoBox type="info">
+                <Trans
+                  i18nKey="whitelists:create.max_nb_addresses"
+                  count={NB_MAX_ADDRESSES}
+                  values={{ count: NB_MAX_ADDRESSES }}
+                />
+              </InfoBox>
+            )}
           </Box>
         )}
         <Box position="relative">
