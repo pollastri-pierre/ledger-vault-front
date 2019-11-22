@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { FaArrowAltCircleRight } from "react-icons/fa";
+import { FaArrowAltCircleRight, FaUserSecret } from "react-icons/fa";
 
 import {
   ActionableStop,
@@ -63,7 +63,10 @@ const CreatorStop = (props: Props) => {
     onChange({ ...rule, data: [] });
   };
 
-  if (!creatorStep || !creatorStep.group.members.length) {
+  if (
+    creatorStep === undefined ||
+    (creatorStep && !creatorStep.group.members.length)
+  ) {
     return (
       <ActionableStop
         {...stopProps}
@@ -105,13 +108,14 @@ type ExtraProps = {
 
 type EditProps = {
   extraProps?: ExtraProps,
-  value: RuleMultiAuthStep,
+  value: ?RuleMultiAuthStep,
   onChange: RuleMultiAuthStep => void,
 };
 
 const EditCreator = (props: EditProps) => {
   const { extraProps, value: step, onChange } = props;
   if (!extraProps) return null;
+  if (!step) return null;
   const { rule, users, groups } = extraProps;
   return (
     <Box flow={20}>
@@ -132,7 +136,16 @@ const EditCreator = (props: EditProps) => {
   );
 };
 
-const DisplayCreator = ({ value }: { value: RuleMultiAuthStep }) => {
+const DisplayCreator = ({ value }: { value: ?RuleMultiAuthStep }) => {
+  if (!value) {
+    return (
+      <Box horizontal flow={10}>
+        <strong>Transaction creator:</strong>
+        <FaUserSecret size={16} />
+        <span>Anonymized</span>
+      </Box>
+    );
+  }
   const isOldAccount = value.quorum > 1;
   return (
     <div style={{ lineHeight: 2.5 }}>
