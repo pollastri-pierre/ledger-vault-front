@@ -117,7 +117,6 @@ const DisplayThreshold = ({
 
   const currency = currencyOrNull(currencyOrToken);
   const token = tokenOrNull(currencyOrToken);
-
   const unit = currency ? currency.units[0] : getCurrencyLikeUnit(token);
 
   return (

@@ -1,9 +1,7 @@
 // @flow
 
 import React, { Fragment } from "react";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { FaUser, FaUsers, FaRegFileAlt, FaArrowsAltH } from "react-icons/fa";
-import { BigNumber } from "bignumber.js";
 import styled from "styled-components";
 
 import Box from "components/base/Box";
@@ -11,7 +9,12 @@ import Text from "components/base/Text";
 import LineSeparator from "components/LineSeparator";
 import CurrencyUnitValue from "components/CurrencyUnitValue";
 import colors from "shared/colors";
-import type { User, Group, Whitelist } from "data/types";
+import {
+  currencyOrNull,
+  tokenOrNull,
+  getCurrencyLikeUnit,
+} from "utils/cryptoCurrencies";
+import type { User, Group, Whitelist, CurrencyOrToken } from "data/types";
 import type { RulesSet as RulesSetType } from "./types";
 
 import {
@@ -20,16 +23,16 @@ import {
   getWhitelistRule,
 } from "./helpers";
 
-const FIXME_FORCE_CURRENCY = getCryptoCurrencyById("bitcoin");
-
 type MultiTextModeProps = {
   rulesSets: RulesSetType[],
   whitelists: Whitelist[],
   groups: Group[],
   users: User[],
+  currencyOrToken: CurrencyOrToken,
 };
+
 function MultiTextMode(props: MultiTextModeProps) {
-  const { rulesSets, whitelists, groups, users } = props;
+  const { rulesSets, whitelists, groups, users, currencyOrToken } = props;
   return (
     <Box>
       {rulesSets.map((rulesSet, i) => (
@@ -39,6 +42,7 @@ function MultiTextMode(props: MultiTextModeProps) {
             whitelists={whitelists}
             groups={groups}
             users={users}
+            currencyOrToken={currencyOrToken}
           />
           {rulesSets[i + 1] ? <LineSeparator /> : null}
         </Fragment>
@@ -54,15 +58,21 @@ type ResolveRulesProps = {
   whitelists: Whitelist[],
   groups: Group[],
   users: User[],
+  currencyOrToken: CurrencyOrToken,
 };
+
 function ResolveRuleSet(props: ResolveRulesProps) {
-  const { rulesSet, whitelists, users, groups } = props;
+  const { rulesSet, whitelists, users, groups, currencyOrToken } = props;
   const thresholdRule = getThresholdRule(rulesSet);
   const whitelistRule = getWhitelistRule(rulesSet);
   const multiAuthRule = getMultiAuthRule(rulesSet);
   const creatorStep = multiAuthRule && multiAuthRule.data[0];
   const threshold = thresholdRule && thresholdRule.data[0];
   const approvalSteps = multiAuthRule && multiAuthRule.data.slice(1);
+
+  const currency = currencyOrNull(currencyOrToken);
+  const token = tokenOrNull(currencyOrToken);
+  const unit = currency ? currency.units[0] : getCurrencyLikeUnit(token);
 
   function resolveUsers(userList: Array<number | User>) {
     const usersFound = users.filter(user => {
@@ -147,6 +157,7 @@ function ResolveRuleSet(props: ResolveRulesProps) {
     if (!whitelist) return;
     return <StyledLi key={whitelist.id}>{whitelist.name}</StyledLi>;
   };
+
   return (
     <Box flow={10}>
       <Box align="flex-end">
@@ -176,17 +187,14 @@ function ResolveRuleSet(props: ResolveRulesProps) {
                     <span>
                       {"Between "}
                       <strong>
-                        <CurrencyUnitValue
-                          unit={FIXME_FORCE_CURRENCY.units[0]}
-                          value={BigNumber(threshold.min)}
-                        />
+                        <CurrencyUnitValue unit={unit} value={threshold.min} />
                       </strong>
                       {" and "}
                       <strong>
                         {threshold.max ? (
                           <CurrencyUnitValue
-                            unit={FIXME_FORCE_CURRENCY.units[0]}
-                            value={BigNumber(threshold.max)}
+                            unit={unit}
+                            value={threshold.max}
                           />
                         ) : (
                           "Infinity"

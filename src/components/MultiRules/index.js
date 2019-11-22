@@ -52,6 +52,7 @@ const MultiRules = (props: Props) => {
         users={users}
         groups={groups}
         whitelists={whitelists}
+        currencyOrToken={currencyOrToken}
       />
     );
   }
