@@ -13,6 +13,7 @@ import {
   MATCHER_SESSION,
 } from "device";
 import {
+  softwareMode,
   register,
   openSession,
   registerData,
@@ -259,8 +260,7 @@ const openSessionValidate: Interaction = {
         : ACCOUNT_MANAGER_SESSION,
     );
 
-    // TODO remove || check when backend will support streaming
-    return Promise.resolve(channel.w_actions || channel.blob);
+    return Promise.resolve(softwareMode() ? channel.blob : channel.w_actions);
   },
 };
 const openSessionVerifyAddress: Interaction = {
@@ -293,8 +293,10 @@ const openSessionVerifyAddress: Interaction = {
       certif,
       ACCOUNT_MANAGER_SESSION,
     );
-    // TODO remove || check when backend will support streaming
-    return Promise.resolve(address_channel.w_actions || address_channel.blob);
+
+    return Promise.resolve(
+      softwareMode() ? address_channel.blob : address_channel.w_actions,
+    );
   },
 };
 
