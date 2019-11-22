@@ -11,6 +11,7 @@ import RulesSet from "./RulesSet";
 import MultiRulesSideBar from "./MultiRulesSideBar";
 import { isValidRulesSet } from "./helpers";
 import type { RulesSet as RulesSetType } from "./types";
+import MultiTextMode from "./MultiTextMode";
 
 const MAX_NB_RULES_SETS = 4;
 
@@ -21,6 +22,7 @@ type Props = {|
   groups: Group[],
   whitelists: Whitelist[],
   readOnly?: boolean,
+  textMode?: boolean,
 |};
 
 const MultiRules = (props: Props) => {
@@ -32,8 +34,8 @@ const MultiRules = (props: Props) => {
     groups,
     whitelists,
     readOnly,
+    textMode,
   } = props;
-
   const rulesSets = readOnly
     ? originalRulesSets.filter(isValidRulesSet)
     : originalRulesSets;
@@ -41,7 +43,16 @@ const MultiRules = (props: Props) => {
   if (!rulesSets.length) {
     return <Box>No valid rules set found.</Box>;
   }
-
+  if (textMode) {
+    return (
+      <MultiTextMode
+        rulesSets={rulesSets}
+        users={users}
+        groups={groups}
+        whitelists={whitelists}
+      />
+    );
+  }
   const handleChangeRulesSet = i => ruleSet =>
     onChange(rulesSets.map((s, j) => (i === j ? ruleSet : s)));
 

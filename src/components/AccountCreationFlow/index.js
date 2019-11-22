@@ -14,7 +14,7 @@ import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQue
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
 import InfoBox from "components/base/InfoBox";
-import SearchWhitelists from "api/queries/SearchWhitelists";
+import SearchWhitelistsForAccountQuery from "api/queries/SearchWhitelistsForAccountQuery";
 import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
@@ -269,7 +269,7 @@ const AccountEdit = connectData(
       allAccounts: PotentialParentAccountsQuery,
       account: AccountQuery,
       users: OperatorsForAccountCreationQuery,
-      whitelists: SearchWhitelists,
+      whitelists: SearchWhitelistsForAccountQuery,
       groups: GroupsForAccountCreationQuery,
     },
     propsToQueryParams: props => ({
@@ -298,7 +298,7 @@ const AccountCreation = connectData(
       allAccounts: PotentialParentAccountsQuery,
       users: OperatorsForAccountCreationQuery,
       groups: GroupsForAccountCreationQuery,
-      whitelists: SearchWhitelists,
+      whitelists: SearchWhitelistsForAccountQuery,
     },
   },
 );
