@@ -53,6 +53,7 @@ class FilterFieldText extends PureComponent<Props> {
         isActive={isActive}
         RenderCollapsed={this.Collapsed}
       >
+        {/* $FlowFixMe */}
         <InputText
           ref={this.inputRef}
           autoFocus

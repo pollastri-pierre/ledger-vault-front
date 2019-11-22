@@ -1,7 +1,9 @@
 // @flow
 
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
-import type { Account } from "data/types";
+import type { Account, CurrencyOrToken } from "data/types";
 
 export const STATUS_UPDATE_IN_PROGRESS = "PENDING_UPDATE";
 export const VISIBLE_MENU_STATUS = ["ACTIVE", "PENDING_UPDATE", "VIEW_ONLY"];
@@ -35,4 +37,23 @@ export const isSupportedAccount = (account: Account) => {
 export const isBalanceAvailable = (account: Account) => {
   // This seems to work for eth/token/btc like account, what about XRP?
   return !!account.extended_public_key;
+};
+
+export const getAccountCurrencyOrToken = (
+  account: Account,
+): CurrencyOrToken => {
+  if (account.account_type === "Erc20") {
+    const token = getERC20TokenByContractAddress(account.contract_address);
+    if (!token) {
+      throw new Error(
+        `Cannot find token with contract address: ${account.contract_address}`,
+      );
+    }
+    return token;
+  }
+  const currency = getCryptoCurrencyById(account.currency);
+  if (!currency) {
+    throw new Error(`Cannot find currency with id: ${account.currency}`);
+  }
+  return currency;
 };

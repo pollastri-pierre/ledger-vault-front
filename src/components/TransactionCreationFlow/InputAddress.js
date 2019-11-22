@@ -104,8 +104,8 @@ class SendAddress extends PureComponent<Props<*>, State> {
         id="address"
         onChange={this.onChange}
         value={bridge.getTransactionRecipient(account, transaction)}
-        errors={recipientError ? [recipientError] : null}
-        warnings={recipientWarning ? [recipientWarning] : null}
+        errors={recipientError ? [recipientError] : undefined}
+        warnings={recipientWarning ? [recipientWarning] : undefined}
         {...props}
       />
     );

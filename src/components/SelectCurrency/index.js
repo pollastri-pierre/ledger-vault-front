@@ -13,7 +13,7 @@ import type {
 import ERC20TokenIcon from "components/icons/ERC20Token";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
-import type { ERC20Token, Translate } from "data/types";
+import type { ERC20Token, CurrencyOrToken, Translate } from "data/types";
 import {
   listCryptoCurrencies,
   listERC20Tokens,
@@ -121,7 +121,7 @@ const fetchOptions = (inputValue: string, options?: { noToken?: boolean }) =>
     });
   });
 
-const getValueOption = (value: CryptoCurrency | ERC20Token): Option | null => {
+const getValueOption = (value: CurrencyOrToken): Option | null => {
   if (!value) return null;
   const isValueERC20Token = isERC20Token(value);
   const resolved = fullOptions.find((opt: Option) => {
@@ -198,7 +198,8 @@ const ValueComponent = (props: OptionProps) => (
     <GenericRow {...props} />
   </components.SingleValue>
 );
-const WindowList = (props: MenuListComponentProps) => {
+
+const MenuList = (props: MenuListComponentProps) => {
   const height = 40;
   const { options, children, maxHeight, getValue } = props;
   const [value] = getValue();
@@ -228,13 +229,6 @@ const WindowList = (props: MenuListComponentProps) => {
     </List>
   );
 };
-const MenuList = (props: MenuListComponentProps) => {
-  return (
-    <components.MenuList {...props}>
-      <WindowList {...props} />
-    </components.MenuList>
-  );
-};
 
 const customComponents = {
   MenuList,
@@ -242,7 +236,6 @@ const customComponents = {
   SingleValue: ValueComponent,
 };
 
-type CurrencyOrToken = CryptoCurrency | ERC20Token;
 type SingleValue = CurrencyOrToken | null;
 type SingleHandler = (?Item) => void;
 

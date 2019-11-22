@@ -1,9 +1,6 @@
 // @flow
 //
 
-// TODO: put back when we use real ids
-/* eslint-disable react/no-array-index-key */
-
 import React from "react";
 import { FaCheck, FaRegPaperPlane, FaArrowDown } from "react-icons/fa";
 
@@ -13,7 +10,7 @@ import Timeline, {
 } from "components/base/Timeline";
 import Status from "components/Status";
 
-import type { User, Group, Whitelist } from "data/types";
+import type { User, Group, Whitelist, CurrencyOrToken } from "data/types";
 import AddApprovalStep from "./AddApprovalStep";
 import ThresholdStop from "./ThresholdStop";
 import WhitelistStop from "./WhitelistStop";
@@ -42,11 +39,20 @@ type Props = {|
   users: User[],
   groups: Group[],
   whitelists: Whitelist[],
+  currencyOrToken: CurrencyOrToken,
   readOnly?: boolean,
 |};
 
 const RulesSet = (props: Props) => {
-  const { rulesSet, onChange, users, whitelists, groups, readOnly } = props;
+  const {
+    rulesSet,
+    onChange,
+    users,
+    whitelists,
+    groups,
+    currencyOrToken,
+    readOnly,
+  } = props;
 
   const thresholdRule = getThresholdRule(rulesSet);
   const whitelistRule = getWhitelistRule(rulesSet);
@@ -94,6 +100,7 @@ const RulesSet = (props: Props) => {
       {!readOnly && <TimelineLabel offset={5}>Conditions</TimelineLabel>}
 
       <ThresholdStop
+        currencyOrToken={currencyOrToken}
         rule={thresholdRule}
         onRemove={onRemove("THRESHOLD")}
         onEdit={replaceRule("THRESHOLD")}

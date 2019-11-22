@@ -6,7 +6,7 @@ import arrayMove from "array-move";
 
 import colors from "shared/colors";
 import Box from "components/base/Box";
-import type { User, Group, Whitelist } from "data/types";
+import type { User, Group, Whitelist, CurrencyOrToken } from "data/types";
 import RulesSet from "./RulesSet";
 import MultiRulesSideBar from "./MultiRulesSideBar";
 import { isValidRulesSet } from "./helpers";
@@ -21,6 +21,7 @@ type Props = {|
   users: User[],
   groups: Group[],
   whitelists: Whitelist[],
+  currencyOrToken: CurrencyOrToken,
   readOnly?: boolean,
   textMode?: boolean,
 |};
@@ -35,6 +36,7 @@ const MultiRules = (props: Props) => {
     whitelists,
     readOnly,
     textMode,
+    currencyOrToken,
   } = props;
   const rulesSets = readOnly
     ? originalRulesSets.filter(isValidRulesSet)
@@ -50,6 +52,7 @@ const MultiRules = (props: Props) => {
         users={users}
         groups={groups}
         whitelists={whitelists}
+        currencyOrToken={currencyOrToken}
       />
     );
   }
@@ -126,6 +129,7 @@ const MultiRules = (props: Props) => {
       <RulesSetContainer isFull={rulesSets.length === MAX_NB_RULES_SETS}>
         <RulesSet
           key={rulesSet.name}
+          currencyOrToken={currencyOrToken}
           rulesSet={rulesSet}
           onChange={handleChangeRulesSet(safeActiveIndex)}
           users={users}

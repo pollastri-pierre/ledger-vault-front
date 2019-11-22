@@ -71,6 +71,7 @@ class Users extends PureComponent<Props> {
         getModalTabLink(
           request,
           `tasks/whitelists/details/${request.target_id}`,
+          true,
         ),
       );
     }

@@ -2,21 +2,21 @@
 
 import React from "react";
 import { BigNumber } from "bignumber.js";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
+import type { CurrencyOrToken } from "data/types";
 import Box from "components/base/Box";
-import { InputAmount, Label } from "components/base/form";
+import { currencyOrNull, tokenOrNull } from "utils/cryptoCurrencies";
+import { InputAmount, InputTokenAmount, Label } from "components/base/form";
 import type { RuleThreshold } from "./types";
-
-const FIXME_FORCE_CURRENCY = getCryptoCurrencyById("bitcoin");
 
 type Props = {|
   rule: RuleThreshold,
+  currencyOrToken: CurrencyOrToken,
   onChange: RuleThreshold => void,
 |};
 
 const ThresholdParameters = (props: Props) => {
-  const { rule, onChange } = props;
+  const { rule, onChange, currencyOrToken } = props;
 
   const threshold = rule.data[0];
   const isNoLimit = threshold.max === null;
@@ -35,20 +35,33 @@ const ThresholdParameters = (props: Props) => {
     changeThreshold({ ...threshold, max: isChecked ? null : BigNumber(0) });
   };
 
+  const currency = currencyOrNull(currencyOrToken);
+  const token = tokenOrNull(currencyOrToken);
+
   return (
     <Box flow={40}>
       <Box horizontal flow={20}>
         <Box>
           <Label>Minimum amount</Label>
-          <InputAmount
-            tabIndex={1}
-            unitLeft
-            width={220}
-            autoFocus
-            value={threshold.min || BigNumber(0)}
-            currency={FIXME_FORCE_CURRENCY}
-            onChange={handleChange("min")}
-          />
+          {currency ? (
+            <InputAmount
+              tabIndex={1}
+              plop="5"
+              unitLeft
+              width={220}
+              autoFocus
+              value={threshold.min || BigNumber(0)}
+              currency={currency}
+              onChange={handleChange("min")}
+            />
+          ) : token ? (
+            <InputTokenAmount
+              autoFocus
+              value={threshold.min || BigNumber(0)}
+              onChange={handleChange("min")}
+              token={token}
+            />
+          ) : null}
         </Box>
         <Box>
           <Box horizontal justify="space-between">
@@ -66,16 +79,25 @@ const ThresholdParameters = (props: Props) => {
               </label>
             </div>
           </Box>
-          <InputAmount
-            tabIndex={1}
-            unitLeft
-            width={220}
-            value={threshold.max || BigNumber(0)}
-            currency={FIXME_FORCE_CURRENCY}
-            onChange={handleChange("max")}
-            isDisabled={isNoLimit}
-            hideCV={isNoLimit}
-          />
+          {currency ? (
+            <InputAmount
+              tabIndex={1}
+              unitLeft
+              width={220}
+              value={threshold.max || BigNumber(0)}
+              currency={currency}
+              onChange={handleChange("max")}
+              isDisabled={isNoLimit}
+              hideCV={isNoLimit}
+            />
+          ) : token ? (
+            <InputTokenAmount
+              value={threshold.max || BigNumber(0)}
+              onChange={handleChange("max")}
+              token={token}
+              disabled={isNoLimit}
+            />
+          ) : null}
         </Box>
       </Box>
     </Box>
