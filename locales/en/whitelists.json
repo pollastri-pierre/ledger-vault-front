@@ -16,13 +16,13 @@
     "submit": "Create whitelist",
     "no_edit": "No changes were made",
     "finishTitle": "Whitelist Request was successfully created!",
-    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+    "finishDesc": "Your request to create a whitelist was created and now it has a pending status until it is approved by your security scheme",
     "no_hsm_validation": "Editing the description doesn't require the approval from other Administrators or your device",
     "max_nb_addresses": "You can't create more than {{count}} addresses in the whitelist"
   },
   "update": {
     "finishTitle": "Update Whitelist Request was successfully created!",
-    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+    "finishDesc": "Your request to create a whitelist was created and now it has a pending status until it is approved by your security scheme",
     "submit": "Edit whitelist"
   }
 }
