@@ -1,17 +1,12 @@
 // @flow
 import React from "react";
-import { withTranslation } from "react-i18next";
-import Box from "components/base/Box";
-import type { Translate, Address } from "data/types";
+
+import type { Address } from "data/types";
 import AddAddressForm from "components/AddAddressForm";
 import { generateID } from "utils/idGenerator";
 import type { WhitelistCreationStepProps } from "./types";
 
-type Props = WhitelistCreationStepProps & {
-  t: Translate,
-};
-
-const WhitelistCreationAddresses = (props: Props) => {
+const WhitelistCreationAddresses = (props: WhitelistCreationStepProps) => {
   const { payload, updatePayload } = props;
   const addAddress = addr => {
     const nextId = generateID();
@@ -49,15 +44,13 @@ const WhitelistCreationAddresses = (props: Props) => {
   };
 
   return (
-    <Box flow={20}>
-      <AddAddressForm
-        addresses={payload.addresses}
-        onDeleteAddress={removeAddress}
-        onAddAddress={addAddress}
-        onEditAddress={editAddress}
-      />
-    </Box>
+    <AddAddressForm
+      addresses={payload.addresses}
+      onDeleteAddress={removeAddress}
+      onAddAddress={addAddress}
+      onEditAddress={editAddress}
+    />
   );
 };
 
-export default withTranslation()(WhitelistCreationAddresses);
+export default WhitelistCreationAddresses;
