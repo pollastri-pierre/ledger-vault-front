@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
 import {
@@ -14,16 +14,15 @@ import { FaAddressBook, FaPlus } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import SelectCurrency from "components/SelectCurrency";
 import { getBridgeForCurrency } from "bridge";
-import { InputText } from "components/base/form";
+import { InputText, Label } from "components/base/form";
 import type { Address } from "data/types";
-import colors from "shared/colors";
+import colors, { opacity } from "shared/colors";
 import connectData from "restlay/connectData";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
 import AccountIcon from "components/AccountIcon";
-import useClickOther from "hooks/useClickOther";
 
 type Props = {
   addresses: Address[],
@@ -34,64 +33,76 @@ type Props = {
 const NB_MAX_ADDRESSES = 100;
 const AddAddressForm = (props: Props) => {
   const { addresses, onAddAddress, onEditAddress, onDeleteAddress } = props;
-  const [form, setForm] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editedAddress, setEditedAddress] = useState<?number>(null);
+  const stopEditAddress = () => setEditedAddress(null);
+  const hasAddress = addresses.length > 0;
+  const handleEditAddress = (...p) => {
+    onEditAddress(...p);
+    setEditedAddress(null);
+  };
   return (
     <Box flow={20}>
-      <Box flow={20}>
-        {!form && (
-          <Box horizontal align="center">
-            <Box width={80}>
-              <Button
-                onClick={() => setForm(true)}
-                type="link"
-                variant="info"
-                disabled={addresses.length === NB_MAX_ADDRESSES}
-                size="small"
-              >
-                <FaPlus style={{ marginRight: 10 }} /> Add
-              </Button>
-            </Box>
-            {addresses.length === NB_MAX_ADDRESSES && (
-              <InfoBox type="info">
-                <Trans
-                  i18nKey="whitelists:create.max_nb_addresses"
-                  count={NB_MAX_ADDRESSES}
-                  values={{ count: NB_MAX_ADDRESSES }}
-                />
-              </InfoBox>
-            )}
-          </Box>
-        )}
-        <Box position="relative">
-          {form && (
-            <FormContainer>
-              <FormAdd
-                onSubmit={addr => {
-                  setForm(false);
-                  onAddAddress(addr);
-                }}
-                addresses={addresses}
-                onCancel={() => setForm(false)}
+      {!showAddForm && addresses.length > 0 && (
+        <Box horizontal align="center">
+          <Button
+            onClick={() => setShowAddForm(true)}
+            type="filled"
+            disabled={addresses.length === NB_MAX_ADDRESSES}
+            size="small"
+          >
+            <FaPlus style={{ marginRight: 10 }} />{" "}
+            <Trans i18nKey="whitelists:create.add_addr" />
+          </Button>
+          {addresses.length === NB_MAX_ADDRESSES && (
+            <InfoBox type="info">
+              <Trans
+                i18nKey="whitelists:create.max_nb_addresses"
+                count={NB_MAX_ADDRESSES}
+                values={{ count: NB_MAX_ADDRESSES }}
               />
-            </FormContainer>
+            </InfoBox>
           )}
         </Box>
-      </Box>
-      <Box flow={5}>
-        {addresses.length === 0 ? (
-          <NoAddressPlaceholder />
-        ) : (
-          addresses.map(addr => (
+      )}
+
+      {showAddForm && (
+        <Box position="relative">
+          <FormContainer>
+            <FormAdd
+              onSubmit={addr => {
+                setShowAddForm(false);
+                onAddAddress(addr);
+              }}
+              addresses={addresses}
+              onCancel={() => setShowAddForm(false)}
+            />
+          </FormContainer>
+        </Box>
+      )}
+
+      {!showAddForm && !hasAddress && (
+        <NoAddressPlaceholder onClickAdd={() => setShowAddForm(true)} />
+      )}
+
+      {hasAddress && (
+        <Box
+          style={{ border: `1px solid ${colors.form.border}`, borderRadius: 4 }}
+        >
+          {addresses.map(addr => (
             <AddressRow
               key={addr.id}
               addr={addr}
-              onEditAddress={onEditAddress}
+              onEditAddress={handleEditAddress}
+              isEditing={editedAddress === addr.id}
+              onStartEditAddress={() => setEditedAddress(addr.id)}
+              onStopEditAddress={stopEditAddress}
               addresses={addresses}
               onDeleteAddress={onDeleteAddress}
             />
-          ))
-        )}
-      </Box>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };
@@ -101,59 +112,57 @@ const AddressRow = ({
   onEditAddress,
   addresses,
   onDeleteAddress,
+  isEditing,
+  onStartEditAddress,
+  onStopEditAddress,
 }: {
   addr: Address,
   onEditAddress: Address => void,
   addresses: Address[],
   onDeleteAddress: Address => void,
+  isEditing: boolean,
+  onStartEditAddress: () => void,
+  onStopEditAddress: () => void,
 }) => {
-  const [editMode, setEditMode] = useState(false);
-  const editAddr = addr => {
-    setEditMode(false);
-    onEditAddress(addr);
-  };
-
-  const ref = useRef();
-  useClickOther("close-bubbles", ref, () => setEditMode(false));
   return (
-    <Container ref={ref}>
-      <>
-        {editMode && (
-          <FormContainer>
-            <FormAdd
-              addr={addr}
-              onSubmit={editAddr}
-              addresses={addresses}
-              onCancel={() => setEditMode(false)}
-            />
-          </FormContainer>
-        )}
+    <Container>
+      {isEditing ? (
+        <FormContainer hideBorder>
+          <FormAdd
+            isEdit
+            addr={addr}
+            onSubmit={onEditAddress}
+            addresses={addresses}
+            onCancel={onStopEditAddress}
+          />
+        </FormContainer>
+      ) : (
         <Box
           horizontal
           align="center"
           justify="space-between"
           flow={20}
-          onClick={() => setEditMode(!editMode)}
-          data-type="close-bubbles"
+          onClick={onStartEditAddress}
           style={{ padding: 10 }}
         >
-          <Box horizontal flow={20} width={200} align="center">
+          <Box horizontal flow={20} grow align="center">
             <AccountIcon currencyId={addr.currency} />
             <Text fontWeight="bold">{addr.name}</Text>
           </Box>
-          <Text style={{ fontFamily: "monospace" }}>{addr.address}</Text>
-          <div onClick={e => e.stopPropagation()}>
+          <Box noShrink>
+            <Text style={{ fontFamily: "monospace" }}>{addr.address}</Text>
+          </Box>
+          <Box noShrink onClick={e => e.stopPropagation()}>
             <Button
-              type="link"
               variant="info"
               size="small"
               onClick={() => onDeleteAddress(addr)}
             >
               <MdClose />
             </Button>
-          </div>
+          </Box>
         </Box>
-      </>
+      )}
     </Container>
   );
 };
@@ -161,13 +170,18 @@ const AddressRow = ({
 export default AddAddressForm;
 
 const Container = styled(Box)`
-  background: ${colors.cream};
   position: relative;
-  border: 1px solid transparent;
+
+  & + & {
+    border-top: 1px solid ${colors.form.border};
+  }
 
   &:hover {
     cursor: pointer;
-    border: 1px dashed ${colors.lightGrey};
+    background: ${opacity(colors.blue, 0.05)};
+  }
+  &:active {
+    background: ${opacity(colors.blue, 0.09)};
   }
 `;
 
@@ -177,6 +191,7 @@ type NewAddForm = {
   name: string,
   currency: string,
 };
+
 const FormAdd = connectData(
   ({
     addr,
@@ -184,12 +199,14 @@ const FormAdd = connectData(
     onSubmit,
     onCancel,
     restlay,
+    isEdit,
   }: {
     addr?: Address,
     onCancel: () => void,
     addresses: Address[],
     onSubmit: NewAddForm => void,
     restlay: RestlayEnvironment,
+    isEdit?: boolean,
   }) => {
     const [addressError, setAddressError] = useState(null);
     const [nameError, setNameError] = useState(null);
@@ -258,10 +275,13 @@ const FormAdd = connectData(
     const { t } = useTranslation();
     const curr = currency ? getCryptoCurrencyById(currency) : null;
     return (
-      <Box flow={20}>
-        <Box flow={20}>
+      <Box flow={40}>
+        <Box flow={10}>
           <Box horizontal flow={20}>
-            <Box flex="1">
+            <Box flex={1}>
+              <Label>
+                <Trans i18nKey="whitelists:create.field_currency" />
+              </Label>
               <SelectCurrency
                 autoFocus
                 noToken
@@ -271,7 +291,10 @@ const FormAdd = connectData(
                 noOptionsMessage={() => "not found"}
               />
             </Box>
-            <Box flex="1">
+            <Box flex={1}>
+              <Label>
+                <Trans i18nKey="whitelists:create.field_name" />
+              </Label>
               <InputText
                 placeholder={t("whitelists:create.addr_name_placeholder")}
                 maxLength={19}
@@ -283,32 +306,40 @@ const FormAdd = connectData(
               />
             </Box>
           </Box>
-          <InputText
-            placeholder={t("whitelists:create.addr_placeholder")}
-            value={address}
-            onChange={setAddress}
-            errors={addressError ? [addressError] : undefined}
-            warnings={warning ? [remapWarningError(warning)] : undefined}
-            fullWidth
-          />
+          <Box>
+            <Label>
+              <Trans i18nKey="whitelists:create.field_address" />
+            </Label>
+            <InputText
+              placeholder={t("whitelists:create.addr_placeholder")}
+              value={address}
+              onChange={setAddress}
+              errors={addressError ? [addressError] : undefined}
+              warnings={warning ? [remapWarningError(warning)] : undefined}
+              fullWidth
+            />
+          </Box>
         </Box>
-        <Box horizontal flow={20} justify="flex-end">
+        <Box horizontal flow={10} justify="flex-end">
           <Button
             size="small"
             onClick={onCancel}
             disabled={!isAddressFilled}
-            type="link"
             variant="info"
           >
-            cancel
+            <Trans i18nKey="common:cancel" />
           </Button>
           <Button
             size="small"
             onClick={submit}
             disabled={!isAddressFilled || !!addressError || !!nameError}
-            type="outline"
+            type="filled"
           >
-            OK
+            {isEdit ? (
+              <Trans i18nKey="whitelists:create.edit_addr" />
+            ) : (
+              <Trans i18nKey="whitelists:create.add_addr" />
+            )}
           </Button>
         </Box>
       </Box>
@@ -319,34 +350,34 @@ const FormAdd = connectData(
 const FormContainer = styled.div`
   padding: 20px;
   border-radius: 3px;
-  width: 621px;
-  background: #fbfbfb;
-  border: 1px solid ${colors.lightGrey};
-  position: absolute;
-  left: -1px;
-  top: 100%;
-  margin-top: 10px;
-  z-index: 2;
-  box-shadow: ${colors.form.shadow.grey};
+  background: ${colors.form.bg};
+  border: ${p => (p.hideBorder ? "none" : `1px solid ${colors.form.border}`)};
 `;
 
-const NoAddressPlaceholder = () => (
-  <Box
-    align="center"
-    justify="center"
-    flow={10}
-    p={20}
-    style={{ background: colors.cream }}
-  >
-    <FaAddressBook size={25} />
-    <Text>
-      <Trans
-        i18nKey="whitelists:create.no_address"
-        components={<strong>0</strong>}
-      />
-    </Text>
-  </Box>
+const NoAddressPlaceholder = ({ onClickAdd }: { onClickAdd: () => void }) => (
+  <NoAddressPlaceholderContainer>
+    <Box horizontal flow={10} align="center" style={{ color: colors.steel }}>
+      <FaAddressBook size={18} />
+      <Text i18nKey="whitelists:create.no_address" />
+    </Box>
+    <Button onClick={onClickAdd} type="filled" size="small">
+      <FaPlus style={{ marginRight: 10 }} />{" "}
+      <Trans i18nKey="whitelists:create.add_addr" />
+    </Button>
+  </NoAddressPlaceholderContainer>
 );
+
+const NoAddressPlaceholderContainer = styled(Box).attrs({
+  align: "center",
+  justify: "center",
+  flow: 20,
+  p: 20,
+})`
+  background: ${colors.form.bg};
+  height: 200px;
+  border-radius: 4px;
+  border: 1px solid ${colors.form.border};
+`;
 
 function remapWarningError(w: Error) {
   if (w instanceof NonEIP55Address) {

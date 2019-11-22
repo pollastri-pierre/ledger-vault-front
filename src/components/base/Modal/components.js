@@ -19,8 +19,8 @@ export const boxShadow = `0px 11px 15px -7px ${colors.legacyTranslucentGrey7},
 export const ModalDialogInner = styled(Box)`
   background: ${p => (p.transparent ? "transparent" : colors.white)};
   position: relative;
-  margin-bottom: 40px;
-  margin-top: 40px;
+  margin-bottom: 80px;
+  margin-top: 80px;
   border-radius: 4px;
   flex-shrink: 0;
   box-shadow: ${p => (p.transparent ? "none" : boxShadow)};
