@@ -113,7 +113,7 @@ export type Approval = {
 };
 
 export type Address = {
-  id: number,
+  id?: number,
   currency: string,
   address: string,
   name: string,
@@ -530,7 +530,7 @@ export type EditApprovalStep = {
 
 type WhitelistEditData = {
   name?: string,
-  addresses: number[],
+  addresses: Address[],
 };
 
 type GroupEditData = {
