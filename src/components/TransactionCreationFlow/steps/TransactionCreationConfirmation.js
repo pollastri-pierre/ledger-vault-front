@@ -78,7 +78,7 @@ export default (props: TransactionCreationStepProps<any>) => {
             <Trans i18nKey="transactionCreation:steps.account.destinationTag" />
           }
         >
-          {transaction.destinationTag}
+          {transaction.destinationTag ? transaction.destinationTag : "N/A"}
         </LineRow>
       )}
     </Box>
