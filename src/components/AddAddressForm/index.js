@@ -268,7 +268,7 @@ const FormAdd = connectData(
                 placeholder={t("whitelists:create.currency_placeholder")}
                 value={curr}
                 onChange={val => setCurrency(val ? val.value.id : null)}
-                noOptionsMessage="no-options"
+                noOptionsMessage={() => "not found"}
               />
             </Box>
             <Box flex="1">

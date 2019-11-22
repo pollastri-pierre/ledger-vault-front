@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
 import AddAddressForm from "components/AddAddressForm";
+import { generateID } from "utils/idGenerator";
 
 import { delay } from "utils/promise";
 import RestlayProvider from "restlay/RestlayProvider";
@@ -35,7 +36,7 @@ const Wrapper = () => {
   };
 
   const add = addr => {
-    const newId = addresses.length ? addresses[addresses.length - 1].id + 1 : 1;
+    const newId = generateID();
     setAddresses([...addresses, { ...addr, id: newId }]);
   };
 
