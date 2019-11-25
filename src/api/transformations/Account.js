@@ -16,16 +16,16 @@ export function deserializeAccount(account: Account): Account {
     account.balance = 0;
   }
   if (account.governance_rules) {
-    // convert thresholds to BigNumber
-    account.governance_rules.forEach(rulesSet => {
-      const thresholdRule = getThresholdRule(rulesSet);
-      if (thresholdRule) {
-        const [threshold] = thresholdRule.data;
-        threshold.min = BigNumber(threshold.min);
-        threshold.max =
-          threshold.max === null ? null : BigNumber(threshold.max);
-      }
-    });
+    convertGovernanceRules(account.governance_rules);
+  }
+
+  if (
+    account.last_request &&
+    account.last_request.type === "EDIT_ACCOUNT" &&
+    account.last_request.edit_data &&
+    account.last_request.edit_data.governance_rules
+  ) {
+    convertGovernanceRules(account.last_request.edit_data.governance_rules);
   }
 
   return {
@@ -33,4 +33,16 @@ export function deserializeAccount(account: Account): Account {
     balance: BigNumber(account.balance),
     parent_balance: account.parent_balance && BigNumber(account.parent_balance),
   };
+}
+
+function convertGovernanceRules(governance_rules) {
+  // convert thresholds to BigNumber
+  governance_rules.forEach(rulesSet => {
+    const thresholdRule = getThresholdRule(rulesSet);
+    if (thresholdRule) {
+      const [threshold] = thresholdRule.data;
+      threshold.min = BigNumber(threshold.min);
+      threshold.max = threshold.max === null ? null : BigNumber(threshold.max);
+    }
+  });
 }
