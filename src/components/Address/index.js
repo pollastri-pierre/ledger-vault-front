@@ -10,17 +10,17 @@ import colors, { opacity } from "shared/colors";
 import Text from "components/base/Text";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
-type HistoryType = "ADD" | "REMOVE";
+export type HistoryType = "ADD" | "REMOVE";
 
 type Props = {
   address: Address,
-  history: ?HistoryType,
+  history?: ?HistoryType,
 };
 
 const SIZE = 10;
 const iconByHistory = {
-  ADD: <MdAdd size={SIZE} />,
-  REMOVE: <MdClose size={SIZE} />,
+  ADD: <MdAdd size={SIZE} color="green" />,
+  REMOVE: <MdClose size={SIZE} color="red" />,
 };
 const AddressDisplay = ({ address, history }: Props) => (
   <Container history={history}>
@@ -51,7 +51,6 @@ const Icon = ({ currency }: { currency: string }) => {
 
 const Container = styled(Box).attrs({ flow: 5, p: 5 })`
   display: inline-block;
-  width: 300px;
   border: ${p =>
     p.history ? styles[p.history].border : `1px solid ${colors.mediumGrey}`};
   background: ${p =>
@@ -64,8 +63,8 @@ const styles = {
     background: opacity(colors.grenade, 0.1),
   },
   ADD: {
-    border: `1px solid ${colors.gLive}`,
-    background: opacity(colors.gLive, 0.1),
+    border: `1px solid ${colors.green}`,
+    background: opacity(colors.green, 0.1),
   },
   address: {
     fontSize: 10,
