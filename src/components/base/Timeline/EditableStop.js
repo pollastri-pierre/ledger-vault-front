@@ -65,6 +65,7 @@ const EditableStop = <T, P>({
     e.stopPropagation();
     onRemove();
   };
+
   return (
     <TimelineStop Icon={Icon} {...props}>
       {isEdit && (

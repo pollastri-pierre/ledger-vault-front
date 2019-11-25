@@ -77,7 +77,14 @@ class Status extends PureComponent<Props> {
   };
 
   render() {
-    const { status, textOnly, size, derivedStatus, children } = this.props;
+    const {
+      status,
+      textOnly,
+      size,
+      derivedStatus,
+      children,
+      ...p
+    } = this.props;
     const str = this.getStr();
     if (textOnly) return str;
     const bg =
@@ -97,6 +104,7 @@ class Status extends PureComponent<Props> {
         bg={bg}
         color={color}
         borderRadius={15}
+        {...p}
       >
         <Text
           fontWeight="semiBold"

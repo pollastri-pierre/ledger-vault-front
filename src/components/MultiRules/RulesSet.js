@@ -1,5 +1,4 @@
 // @flow
-//
 
 import React from "react";
 import { FaCheck, FaRegPaperPlane, FaArrowDown } from "react-icons/fa";
@@ -126,7 +125,7 @@ const RulesSet = (props: Props) => {
             <strong>Request created</strong>
           </div>
           <div>
-            Transaction status is <Status status="PENDING" />
+            Transaction status is <Status ml={3} status="PENDING" />
           </div>
         </div>
       </TimelineStop>
@@ -165,19 +164,19 @@ const RulesSet = (props: Props) => {
                 <strong>All approvals collected</strong>
               </div>
               <div>
-                Transaction status is <Status status="APPROVED" />
+                Transaction status is <Status ml={3} status="APPROVED" />
               </div>
             </div>
           </TimelineStop>
         ))}
 
-      <TimelineStop Icon={FaRegPaperPlane} bar="top">
+      <TimelineStop Icon={FaRegPaperPlane} bar="top" pt={readOnly ? 0 : 10}>
         <div>
           <div>
             <strong>Broadcasted to the blockchain</strong>
           </div>
           <div>
-            Transaction status is <Status status="SUBMITTED" />
+            Transaction status is <Status ml={3} status="SUBMITTED" />
           </div>
         </div>
       </TimelineStop>
