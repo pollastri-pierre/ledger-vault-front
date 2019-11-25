@@ -149,7 +149,4 @@ const mapDispatch = (dispatch: *) => ({
   onGetShardsChannel: () => dispatch(openProvisionningChannel()),
 });
 
-export default connect(
-  mapProps,
-  mapDispatch,
-)(withTranslation()(Provisioning));
+export default connect(mapProps, mapDispatch)(withTranslation()(Provisioning));

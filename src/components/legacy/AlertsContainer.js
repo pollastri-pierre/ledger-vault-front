@@ -115,7 +115,4 @@ const styles = {
   },
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(MessagesContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(MessagesContainer);

@@ -34,10 +34,14 @@ const fakeNetwork = async url => {
     return [];
   }
   if (url.startsWith("/groups")) {
-    const group = denormalize(groups.map(g => g.id), [schema.Group], {
-      users: keyBy(users, "id"),
-      groups: keyBy(groups, "id"),
-    })[0];
+    const group = denormalize(
+      groups.map(g => g.id),
+      [schema.Group],
+      {
+        users: keyBy(users, "id"),
+        groups: keyBy(groups, "id"),
+      },
+    )[0];
     const g = {
       ...group,
       last_request: requests.find(r => r.type === "CREATE_GROUP"),

@@ -127,8 +127,5 @@ function AccountSettings(props: Props) {
 }
 
 export default connectData(
-  connect(
-    mapStateToProps,
-    null,
-  )(withMe(AccountSettings)),
+  connect(mapStateToProps, null)(withMe(AccountSettings)),
 );

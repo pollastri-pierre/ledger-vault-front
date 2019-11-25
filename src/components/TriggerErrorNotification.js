@@ -59,7 +59,4 @@ class TriggerErrorNotification extends PureComponent<Props> {
     return null;
   }
 }
-export default connect(
-  null,
-  mapDispatchToProps,
-)(TriggerErrorNotification);
+export default connect(null, mapDispatchToProps)(TriggerErrorNotification);
