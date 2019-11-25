@@ -13,6 +13,8 @@ import {
   getLoaderSize,
 } from "./helpers";
 
+const ENTER_KEY = 13;
+
 type ButtonType = "filled" | "outline" | "link";
 type ButtonVariant = "primary" | "danger" | "warning" | "info";
 type ButtonSize = "tiny" | "small" | "slim";
@@ -68,7 +70,7 @@ export const ButtonBase = styled.div.attrs(p => ({
 
 function Button(props: ButtonProps, ref: any) {
   const isUnmounted = useRef(false);
-  const { onClick, children, ...rest } = props;
+  const { onClick, children, disabled, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
@@ -80,6 +82,7 @@ function Button(props: ButtonProps, ref: any) {
 
   const handleClick = () => {
     if (!onClick) return;
+    if (disabled) return;
     setIsLoading(true);
     Promise.resolve()
       .then(onClick)
@@ -91,8 +94,21 @@ function Button(props: ButtonProps, ref: any) {
       });
   };
 
+  const handleKeyUp = e => {
+    if (e.which === ENTER_KEY) {
+      handleClick();
+    }
+  };
+
   return (
-    <ButtonBase {...rest} isLoading={isLoading} onClick={handleClick} ref={ref}>
+    <ButtonBase
+      {...rest}
+      disabled={disabled}
+      isLoading={isLoading}
+      onClick={handleClick}
+      ref={ref}
+      onKeyUp={handleKeyUp}
+    >
       <Container isLoading={isLoading}>{children}</Container>
       {isLoading && (
         <Loader size={getLoaderSize(props)} style={{ position: "absolute" }} />
