@@ -4,6 +4,7 @@ import {
   fromStringRoleToBytes,
   STREAMING_RESPONSE,
   STREAMING_NEXT_ACTION,
+  PAGINATED_STATUS,
 } from "device";
 import invariant from "invariant";
 
@@ -126,7 +127,10 @@ export const sendByChunk = async (
     const apdu = [...command];
     // command is 0xe0,0x45,0x00,0x00 for first chunk, then it's 0xe0,0x45, 0x80,0x00
     apdu[2] = i && 0x80;
-    response = await transport.send(apdu[0], apdu[1], apdu[2], apdu[3], chunk);
+    response = await transport.send(apdu[0], apdu[1], apdu[2], apdu[3], chunk, [
+      0x9000,
+      ...PAGINATED_STATUS,
+    ]);
   }
   return response;
 };

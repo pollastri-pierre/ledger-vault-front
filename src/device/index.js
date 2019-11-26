@@ -29,6 +29,12 @@ export const fromStringRoleToBytes = {
   operator: Buffer.from([0]),
 };
 
+const all61xxStatus = [];
+for (let i = 0x6100; i <= 0x61ff; i++) {
+  all61xxStatus.push(i);
+}
+export const PAGINATED_STATUS = all61xxStatus;
+
 const USE_TRANSPORT_U2F = true; // localStorage.getItem("U2F");
 const FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB") === "1";
 const mockTransport = Promise.resolve({ close: () => Promise.resolve() });
