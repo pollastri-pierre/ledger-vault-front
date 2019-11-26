@@ -60,7 +60,8 @@ class AccountCreationOptions extends PureComponent<Props> {
 
     const isDisabled =
       isEditMode &&
-      (account.status !== "VIEW_ONLY" && account.status !== "MIGRATED");
+      account.status !== "VIEW_ONLY" &&
+      account.status !== "MIGRATED";
 
     if (payload.erc20token) {
       inner = (

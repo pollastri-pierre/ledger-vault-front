@@ -123,7 +123,4 @@ const WrappingKeys = ({
 // useful for test
 export { WrappingKeys };
 
-export default connect(
-  mapState,
-  mapDispatch,
-)(withTranslation()(WrappingKeys));
+export default connect(mapState, mapDispatch)(withTranslation()(WrappingKeys));

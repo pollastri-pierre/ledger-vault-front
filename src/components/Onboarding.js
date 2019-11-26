@@ -188,7 +188,9 @@ export const ProfileIcon = withStyles(profile)(
   ),
 );
 
-export const Step = withStyles(step)(
+export const Step = withStyles(
+  step,
+)(
   ({
     classes,
     className,
@@ -231,7 +233,9 @@ const list = {
   },
 };
 
-export const List = withStyles(list)(
+export const List = withStyles(
+  list,
+)(
   ({
     children,
     classes,
@@ -250,7 +254,9 @@ const title = {
   },
 };
 
-export const Title = withStyles(title)(
+export const Title = withStyles(
+  title,
+)(
   ({
     classes,
     children,
@@ -270,7 +276,9 @@ const introduction = {
     },
   },
 };
-export const Introduction = withStyles(introduction)(
+export const Introduction = withStyles(
+  introduction,
+)(
   ({
     classes,
     children,
@@ -290,7 +298,9 @@ const subtitle = {
   },
 };
 
-export const SubTitle = withStyles(subtitle)(
+export const SubTitle = withStyles(
+  subtitle,
+)(
   ({
     classes,
     children,
@@ -308,7 +318,9 @@ const toContinue = {
     lineHeight: 1.82,
   },
 };
-export const ToContinue = withStyles(toContinue)(
+export const ToContinue = withStyles(
+  toContinue,
+)(
   ({
     classes,
     children,

@@ -97,10 +97,9 @@ const Info = ({
   </InfoContainer>
 );
 
-export default connect(
-  mapProps,
-  () => ({}),
-)(withTranslation()(ConfirmationGlobal));
+export default connect(mapProps, () => ({}))(
+  withTranslation()(ConfirmationGlobal),
+);
 
 const Sep = styled.div`
   width: 170px;

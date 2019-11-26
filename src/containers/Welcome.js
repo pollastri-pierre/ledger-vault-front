@@ -94,7 +94,4 @@ const inputProps = {
   },
 };
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(Welcome);
+export default connect(null, mapDispatchToProps)(Welcome);

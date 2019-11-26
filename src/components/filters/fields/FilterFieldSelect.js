@@ -118,7 +118,10 @@ export default function FilterFieldSelect(props: Props) {
       if (single && opt.value) {
         updateQueryParams(queryKey, opt.value);
       } else if (Array.isArray(opt)) {
-        updateQueryParams(queryKey, opt.map(o => o.value));
+        updateQueryParams(
+          queryKey,
+          opt.map(o => o.value),
+        );
       }
     },
     [updateQueryParams, queryKey, single],

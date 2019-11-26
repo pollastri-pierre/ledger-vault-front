@@ -152,10 +152,14 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
     return wrapWithRequest({ entity: account, request_type, approved });
   }
   if (url.startsWith("/groups")) {
-    const group = denormalize(groups.map(g => g.id), [schema.Group], {
-      users: keyBy(users, "id"),
-      groups: keyBy(groups, "id"),
-    })[0];
+    const group = denormalize(
+      groups.map(g => g.id),
+      [schema.Group],
+      {
+        users: keyBy(users, "id"),
+        groups: keyBy(groups, "id"),
+      },
+    )[0];
     return wrapWithRequest({ entity: group, request_type, approved });
   }
   throw new Error(`invalid url ${url}`);

@@ -39,10 +39,14 @@ const fakeNetwork = async url => {
   }
   if (url.startsWith("/groups")) {
     return wrapConnection(
-      denormalize(groups.map(g => g.id), [schema.Group], {
-        users: keyBy(users, "id"),
-        groups: keyBy(groups, "id"),
-      }),
+      denormalize(
+        groups.map(g => g.id),
+        [schema.Group],
+        {
+          users: keyBy(users, "id"),
+          groups: keyBy(groups, "id"),
+        },
+      ),
     );
   }
   if (url.startsWith("/requests")) {

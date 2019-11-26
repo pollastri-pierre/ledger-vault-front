@@ -64,12 +64,12 @@ export const defer = () => {
 // countTickWaiters function: gets the number of network call awaiting
 export const networkFromMock = (mock: {
   networkSync: Function,
-}): {
+}): ({
   network: NetworkF,
   tick: () => number,
   tickOne: () => number,
   countTickWaiters: () => number,
-} => {
+}) => {
   const tickDefers = [];
   const waitTick = () => {
     const d = defer();

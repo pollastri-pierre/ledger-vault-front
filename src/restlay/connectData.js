@@ -516,10 +516,5 @@ export default function connectData<
     }
   }
 
-  return withRestlayContext(
-    connect(
-      mapStateToProps,
-      null,
-    )(Clazz),
-  );
+  return withRestlayContext(connect(mapStateToProps, null)(Clazz));
 }
