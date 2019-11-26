@@ -13,18 +13,20 @@ import { WrappableFieldLoading } from "components/filters/generic/WrappableField
 
 type Props = FieldProps & {
   accountsConnection: Connection<Account>,
+  queryKey?: string,
+  title?: string,
 };
 
 const noOptionsMessage = () => "No accounts";
 
 function FilterFieldUsersInAccount(props: Props) {
-  const { accountsConnection, ...p } = props;
+  const { accountsConnection, queryKey, title, ...p } = props;
   const accounts = accountsConnection.edges.map(u => u.node);
   const options = accounts.map(u => ({ label: u.name, value: u.id }));
   return (
     <FieldSelect
-      title="Account"
-      queryKey="account"
+      title={title || "Account"}
+      queryKey={queryKey || "account"}
       options={options}
       closeMenuOnSelect={false}
       controlShouldRenderValue={false}

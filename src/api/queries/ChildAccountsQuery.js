@@ -12,7 +12,7 @@ type Input = {
 
 type Node = Account;
 
-const MAX = 2;
+const MAX = 8;
 
 const uri = (query: Input) => {
   return `/accounts?parent=${query.parentAccountID}`;

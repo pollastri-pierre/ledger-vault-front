@@ -8,6 +8,7 @@ import {
   FiltersCard,
   FieldText,
   FieldCurrency,
+  FieldAccount,
   FieldAccountType,
   FieldStatuses,
   FieldGroup,
@@ -39,6 +40,7 @@ function AccountsFilters(props: FieldsGroupProps) {
         queryKey="name"
         placeholder="Account name"
       />
+      <FieldAccount queryKey="parent" title="Parent account" />
     </FiltersCard>
   );
 }
