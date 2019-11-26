@@ -58,16 +58,17 @@ const VaultLayoutTopBar = styled.div`
   display: flex;
   position: relative;
   align-items: center;
-  padding: 0 20px 0 ${vaultLayoutConfig.MENU_WIDTH + 20}px;
+  padding: 0 20px 0 0;
+  padding-left: ${p =>
+    (p.isMenuOpened
+      ? vaultLayoutConfig.MENU_WIDTH
+      : vaultLayoutConfig.COLLAPSED_MENU_WIDTH) + 20}px;
   height: ${vaultLayoutConfig.TOP_BAR_HEIGHT}px;
   background: white;
   box-shadow: 0 -2px 5px 0 ${colors.legacyTranslucentGrey2};
 
-  @media (max-width: ${vaultLayoutConfig.BREAKPOINT}px) {
-    padding-left: ${p =>
-      (p.isMenuOpened
-        ? vaultLayoutConfig.MENU_WIDTH
-        : vaultLayoutConfig.COLLAPSED_MENU_WIDTH) + 20}px;
+  @media (min-width: ${vaultLayoutConfig.BREAKPOINT}px) {
+    padding-left: ${vaultLayoutConfig.MENU_WIDTH + 20}px;
   }
 `;
 
