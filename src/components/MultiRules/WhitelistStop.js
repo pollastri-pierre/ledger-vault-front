@@ -42,7 +42,9 @@ const WhitelistStop = ({
     bar: "full",
     pb: readOnly ? 0 : 30,
   };
-
+  // with readOnly whitelists are inferred from the governance_rules
+  // so whitelists.length === 0 will be true
+  if (whitelists.length === 0 && !readOnly) return null;
   if (!rule) {
     return (
       <ActionableStop
