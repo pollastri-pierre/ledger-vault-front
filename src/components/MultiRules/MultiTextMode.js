@@ -104,15 +104,19 @@ function ResolveRuleSet(props: ResolveRulesProps) {
       </StyledLi>
     );
   };
-
-  const resolveApproverOrCreator = (step: any, type?: string) => {
+  // index is not used as a key iterator by choice but rather by no choice
+  const resolveApproverOrCreator = (
+    step: any,
+    index: ?number,
+    type?: string,
+  ) => {
     if (step.group_id || (step.group && !step.group.is_internal)) {
       const groupId = step.group_id || step.group.id;
       if (type === "creator" && step.quorum < 2) {
-        return <StyledUl key={groupId}>{resolveGroup(groupId)}</StyledUl>;
+        return <StyledUl key={index}>{resolveGroup(groupId)}</StyledUl>;
       }
       return (
-        <StyledUl key={groupId}>
+        <StyledUl key={index}>
           <StyledLi>
             <Text
               i18nKey="approvalsRules:textMode.quorum"
@@ -125,15 +129,12 @@ function ResolveRuleSet(props: ResolveRulesProps) {
     }
     if (step.users || (step.group && step.group.is_internal)) {
       const userList = step.users || step.group.members;
-      // note sure it is the best solution, there is no id, step is varying in shape
-      // but it is a direct descendant of the map and it needs a key
-      // once users are eliminated on the gate, we can use group id
-      const key = userList.length + step.quorum;
+
       if (type === "creator" && step.quorum < 2) {
-        return <StyledUl key={key}>{resolveUsers(userList)}</StyledUl>;
+        return <StyledUl key={index}>{resolveUsers(userList)}</StyledUl>;
       }
       return (
-        <StyledUl key={key}>
+        <StyledUl key={index}>
           <StyledLi>
             <Text
               i18nKey="approvalsRules:textMode.quorum"
@@ -167,7 +168,7 @@ function ResolveRuleSet(props: ResolveRulesProps) {
       </Box>
       <Box justify="center">
         <Text fontWeight="bold" i18nKey="approvalsRules:textMode.creator" />
-        {resolveApproverOrCreator(creatorStep, "creator")}
+        {resolveApproverOrCreator(creatorStep, null, "creator")}
       </Box>
       {(whitelistRule || thresholdRule) && (
         <Box>
@@ -226,7 +227,7 @@ function ResolveRuleSet(props: ResolveRulesProps) {
       {approvalSteps && approvalSteps.length > 0 && (
         <Box justify="center">
           <Text fontWeight="bold" i18nKey="approvalsRules:textMode.approvals" />
-          {approvalSteps.map(step => resolveApproverOrCreator(step))}
+          {approvalSteps.map((step, i) => resolveApproverOrCreator(step, i))}
         </Box>
       )}
     </Box>
