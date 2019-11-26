@@ -12,12 +12,10 @@ const VaultLayoutMainView = styled.div`
   padding: 0 20px 20px 20px;
   pointer-events: auto;
 
-  // NOTE: to discuss which behavior we want for the content
-  // overflow: scroll;
-  padding-left: ${vaultLayoutConfig.MENU_WIDTH + 20}px;
+  padding-left: ${vaultLayoutConfig.COLLAPSED_MENU_WIDTH + 20}px;
 
-  @media (max-width: ${vaultLayoutConfig.BREAKPOINT}px) {
-    padding-left: ${vaultLayoutConfig.COLLAPSED_MENU_WIDTH + 20}px;
+  @media (min-width: ${vaultLayoutConfig.BREAKPOINT}px) {
+    padding-left: ${vaultLayoutConfig.MENU_WIDTH + 20}px;
   }
 `;
 
