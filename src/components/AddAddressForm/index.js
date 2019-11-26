@@ -22,7 +22,7 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
-import AccountIcon from "components/AccountIcon";
+import AccountIcon from "components/legacy/AccountIcon";
 
 type Props = {
   addresses: Address[],

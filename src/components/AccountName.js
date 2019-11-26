@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import AccountIcon from "components/AccountIcon";
+import AccountIcon from "components/legacy/AccountIcon";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 
 import type { Account } from "data/types";
