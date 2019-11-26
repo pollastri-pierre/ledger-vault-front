@@ -159,16 +159,22 @@ export const validateVaultOperation = async (
       data,
     );
     const responseType = response.readInt8(0);
+    let responseStatus = response.readUInt16BE(response.length - 2);
+
     if (responseType === STREAMING_NEXT_ACTION) {
       nextActionId = response.readUIntBE(1, 2);
     } else if (responseType === STREAMING_RESPONSE) {
-      finalResponse = response.slice(1, response.length);
+      finalResponse = response.slice(3, response.length - 2);
+      while (responseStatus !== 0x9000) {
+        const resp = await transport.send(0x00, 0xc0, 0x00, 0x00);
+        responseStatus = resp.readUInt16BE(resp.length - 2);
+        finalResponse = Buffer.concat([finalResponse, removeStatus(resp)]);
+      }
     } else {
       throw Error(`${responseType}`);
     }
   }
-
-  return removeStatus(finalResponse);
+  return finalResponse;
 };
 
 export const openSession = async (
