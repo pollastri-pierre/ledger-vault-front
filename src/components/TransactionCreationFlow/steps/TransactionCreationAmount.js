@@ -36,6 +36,10 @@ const TransactionCreationAmount = (
   invariant(transaction, "transaction has not been created yet");
   invariant(bridge, "bridge has not been created yet");
 
+  const { governance_rules } = account;
+
+  invariant(governance_rules, "account has not governance rules");
+
   const { EditFees, ExtraFields } = bridge;
   const isERC20 = account.account_type === "Erc20";
   const currency = getCryptoCurrencyById(account.currency);
@@ -85,7 +89,7 @@ const TransactionCreationAmount = (
       amount: transaction.amount,
       recipient: transaction.recipient,
     },
-    governanceRules: account.governance_rules,
+    governanceRules: governance_rules,
   });
 
   const showMatchingRulesSet =

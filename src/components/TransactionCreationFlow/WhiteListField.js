@@ -33,13 +33,10 @@ function WhitelistField(props: WhitelistProps) {
     whitelists,
   } = props;
 
+  const { governance_rules } = account;
+
   // extract all active whitelist from the nested structure multiRules
   const allWhitelistsForAccount = resolveWhitelists(account, whitelists);
-
-  const isWhiteListOnly =
-    account.governance_rules.filter(governanceRule =>
-      governanceRule.rules.find(rule => rule.type === "WHITELIST"),
-    ).length === account.governance_rules.length;
 
   const handleChange = (recipient: any) => {
     onChangeTransaction(
@@ -90,8 +87,16 @@ function WhitelistField(props: WhitelistProps) {
     return options;
   }, [allWhitelistsForAccount, account]);
 
+  if (!governance_rules) return null;
+
+  const isWhiteListOnly =
+    governance_rules.filter(governanceRule =>
+      governanceRule.rules.find(rule => rule.type === "WHITELIST"),
+    ).length === governance_rules.length;
+
   const hasAddressToSelect =
     options.length > 0 && options.some(o => o.options.length > 0);
+
   return (
     <Box>
       <Label>{t("transactionCreation:steps.account.recipient")}</Label>
@@ -139,8 +144,10 @@ function resolveWhitelists(
   account: Account,
   whitelists: Whitelist[],
 ): Whitelist[] {
+  const { governance_rules } = account;
+  if (!governance_rules) return [];
   return (
-    account.governance_rules
+    governance_rules
       .map(g => g.rules)
       // $FlowFixMe flat exist on Array but Flow doesnt know yet
       .flat()

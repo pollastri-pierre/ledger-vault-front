@@ -64,7 +64,7 @@ const Rows = ({ account }: { account: Account }) => {
           </LineRow>
         </>
       )}
-      {account.governance_rules.length && (
+      {account.governance_rules && account.governance_rules.length && (
         <LineRow label={<Trans i18nKey="entityModal:tabs.transactionRules" />}>
           <Box
             onClick={toggleRuleVisible}

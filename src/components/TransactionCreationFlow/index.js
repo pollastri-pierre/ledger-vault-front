@@ -77,6 +77,8 @@ const steps = [
     requirements: (payload: TransactionCreationPayload<any>) => {
       const { bridge, transaction, account } = payload;
       if (!bridge || !transaction || !account) return false;
+      const { governance_rules } = account;
+      if (!governance_rules) return false;
       const isValidTx = bridge.checkValidTransactionSync(account, transaction);
       const matchingRulesSet = getMatchingRulesSet({
         transaction: {
@@ -84,7 +86,7 @@ const steps = [
           amount: transaction.amount,
           recipient: transaction.recipient,
         },
-        governanceRules: account.governance_rules,
+        governanceRules: governance_rules,
       });
       return isValidTx && !!matchingRulesSet;
     },

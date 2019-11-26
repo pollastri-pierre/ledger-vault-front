@@ -28,12 +28,14 @@ function AccountDetails(props: Props) {
   const { close, account, me, pendingTransactions } = props;
 
   const hasPendingTransactions = pendingTransactions.edges.length > 0;
-  const hasPendingEditGroup = account.governance_rules.some(rulesSet => {
-    const multiAuthRule = getMultiAuthRule(rulesSet);
-    if (!multiAuthRule) return false;
-    const { data: steps } = multiAuthRule;
-    return steps.some(step => step && step.group.is_under_edit);
-  });
+  const hasPendingEditGroup =
+    account.governance_rules &&
+    account.governance_rules.some(rulesSet => {
+      const multiAuthRule = getMultiAuthRule(rulesSet);
+      if (!multiAuthRule) return false;
+      const { data: steps } = multiAuthRule;
+      return steps.some(step => step && step.group.is_under_edit);
+    });
 
   return (
     <EntityModal
