@@ -2,9 +2,11 @@ import {
   login,
   logout,
   route,
-  successfull_message2,
+  add_account_name,
+  select_creator_group,
+  add_approval_step_group,
   success_creation_account,
-  create_erc20_account,
+  successfull_message2,
 } from "../../../functions/actions";
 
 describe("Test Case for Account", function() {
@@ -16,22 +18,24 @@ describe("Test Case for Account", function() {
     logout();
   });
 
-  it("Create USDC Token Account and Eth parent account", () => {
+  it("Create Ethereum Account", () => {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_erc20_account(
-      "USDC",
-      "Block.Chain 33",
-      "CryptoC",
-      "South Africa",
-      "EMEA",
-    );
+    cy.get("[data-test=menuItem-accounts]").click();
+    cy.url().should("include", "/admin/accounts");
+    add_account_name("Ethereum", "Syscoin2");
+    select_creator_group("Key accounts Ops");
+    add_approval_step_group(2, "America Ops");
+
+    cy.contains("Next").click();
+    cy.get("[data-test=approve_button]").click();
+
     success_creation_account();
   });
 
-  it("Approve USDC token Account", () => {
+  it("Approve Eth Account", () => {
     cy.server();
     route();
     logout();
@@ -39,7 +43,7 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
     cy.get("[data-test=approve_button]").click({ force: true });
-    cy.wait(1500);
+    cy.wait(2500);
     successfull_message2();
   });
 });

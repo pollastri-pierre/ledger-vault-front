@@ -2,8 +2,13 @@ import {
   login,
   logout,
   route,
-  create_account,
+  add_account_name,
+  select_creator_group,
+  select_creator_operators,
+  add_whitelist,
+  add_approval_step_group,
   successfull_message2,
+  no_limit,
   success_creation_account,
   error_message,
 } from "../../../functions/actions";
@@ -22,32 +27,19 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Bitcoin", "Coinhy.pe", "APAC", "New EMEA");
-    success_creation_account();
-  });
+    add_account_name("Bitcoin Testnet", "Amanda Wong");
+    // Rule 1
+    select_creator_group("America Ops");
+    no_limit();
+    add_approval_step_group(1, "Key accounts Ops");
 
-  it("Approve Btc Account", () => {
-    cy.server();
-    route();
-    logout();
-    login(6);
-    cy.url().should("include", "/admin/dashboard");
-    cy.contains("Awaiting approval").click();
-    cy.get("[data-test=approve_button]").click({ force: true });
-    successfull_message2();
-  });
+    // 2 Rules
+    cy.get("[data-test=add-rule]").click();
+    select_creator_operators("Thomas Lebron", "Sally Wilson", "Laura Parker");
+    add_whitelist(1, "List 1");
 
-  it("Create Bitcoin Testnet Account", () => {
-    cy.server();
-    route();
-    cy.get("[data-test=menuItem-accounts]").click();
-    cy.url().should("include", "/admin/accounts");
-    create_account(
-      "Bitcoin Testnet",
-      "Amanda Wong",
-      "America Ops",
-      "Key accounts Ops",
-    );
+    cy.contains("Next").click();
+    cy.get("[data-test=approve_button]").click();
     success_creation_account();
   });
 
@@ -63,12 +55,16 @@ describe("Test Case for Account", function() {
     successfull_message2();
   });
 
-  it("Create a account with the same name should fail", () => {
+  it("Create Bitcoin Account with the same name should fail", () => {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Bitcoin", "Coinhy.pe", "New EMEA", "APAC");
+    add_account_name("Bitcoin", "Coinhy.pe");
+    select_creator_group("APAC");
+
+    cy.contains("Next").click();
+    cy.get("[data-test=approve_button]").click();
     error_message("Error 236", "Account name already exists in this currency");
   });
 });

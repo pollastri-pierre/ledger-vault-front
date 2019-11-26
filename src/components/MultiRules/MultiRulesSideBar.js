@@ -80,6 +80,7 @@ const MultiRulesSideBar = (props: Props) => {
             variant="primary"
             onClick={onAdd}
             style={{ padding: "0 10px" }}
+            data-test="add-rule"
           >
             <Box horizontal align="center" flow={5}>
               <FiPlus />

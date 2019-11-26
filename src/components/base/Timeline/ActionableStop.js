@@ -65,7 +65,7 @@ const ActionableStop = <T, P>({
         />
       )}
       <div>
-        <Inner isDisabled={isDisabled}>
+        <Inner isDisabled={isDisabled} data-test="select_tx_rule">
           {label}
           {isMandatory && (
             <span

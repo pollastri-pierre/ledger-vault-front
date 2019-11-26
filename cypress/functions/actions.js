@@ -1,6 +1,4 @@
-/**
- * Default way to login. It clears the cache.
- */
+// Default way to login. It clears the cache
 
 export function login(id) {
   const orga_name = Cypress.env("workspace");
@@ -99,9 +97,9 @@ export function cancel() {
   });
 }
 
-/** *****************************************************************************
- ***************************** DROP 2 *******************************************
- ****************************************************************************** */
+/** ****************************************************************************
+ ***************************** DROP 2 ******************************************
+ **************************************************************************** */
 
 export function create_user(username, userID, role) {
   cy.get("[data-test=add-button]").click();
@@ -172,10 +170,8 @@ export function successfull_message() {
 }
 
 export function successfull_message2() {
-  cy.get("[data-test=successfull_message]").should(
-    "contain",
-    "The request has been successfully approved",
-  );
+  cy.get("[data-test=successfull_message]").should("contain", "Successfully");
+  cy.wait(1000);
   cy.get("[data-test=done_button]").click();
 }
 
@@ -221,7 +217,11 @@ export function success_tx() {
   cy.contains("Done").click();
 }
 
-export function create_account(currency, name, group, user1) {
+/**
+ * Account Transaction Rules creation
+ */
+
+export function add_account_name(currency, name) {
   cy.get("[data-test=add-button]").click();
   cy.wait(4500);
   cy.get("#input_crypto")
@@ -229,104 +229,114 @@ export function create_account(currency, name, group, user1) {
     .type("{enter}");
   cy.get("[data-test=account_name]").type(name);
   cy.contains("Next").click();
+}
+
+export function select_creator_group(group) {
+  cy.get("[data-test=select_tx_rule]")
+    .eq(0)
+    .click();
   cy.get("#input_groups_users")
     .type(group, { force: true })
     .type("{enter}");
-  cy.get("[data-test=rightANgle]").click();
-  cy.contains("Add approval").click();
-  cy.get("input#input_groups_users")
-    .eq(1)
-    .type(user1, { force: true })
-    .type("{enter}");
-  cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click({ force: true });
-  cy.wait(3500);
+  cy.get("[data-test=select-arrow]").click();
+  cy.get("[data-test=approve_button]").click();
 }
 
-export function create_erc20_account(
-  erc20,
-  childname,
-  parentname,
-  group,
-  user1,
+export function select_creator_operators(operator1, operator2, operator3) {
+  cy.get("[data-test=select_tx_rule]")
+    .eq(0)
+    .click();
+  cy.get("#input_groups_users")
+    .type(operator1, { force: true })
+    .type("{enter}");
+  cy.get("#input_groups_users")
+    .type(operator2, { force: true })
+    .type("{enter}");
+  cy.get("#input_groups_users")
+    .type(operator3, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=select-arrow]").click();
+  cy.get("[data-test=approve_button]").click();
+}
+
+export function add_amount_range(min, max) {
+  cy.get("[data-test=select_tx_rule]")
+    .eq(0)
+    .click();
+  cy.get("[data-test=input_amount]")
+    .eq(0)
+    .type(min, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=input_amount]")
+    .eq(1)
+    .type(max, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=approve_button]").click();
+}
+
+export function no_limit() {
+  cy.get("[data-test=select_tx_rule]")
+    .eq(0)
+    .click();
+  cy.get('[type="checkbox"]').check();
+  cy.get("[data-test=approve_button]").click();
+}
+
+export function add_whitelist(id, list) {
+  cy.get("[data-test=select_tx_rule]")
+    .eq(id)
+    .click();
+  cy.get("#input_whitelist")
+    .type(list, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=select-arrow]").click();
+  cy.get("[data-test=approve_button]").click();
+}
+export function add_multi_whitelist(id, list1, list2) {
+  cy.get("[data-test=select_tx_rule]")
+    .eq(id)
+    .click();
+  cy.get("#input_whitelist")
+    .type(list1, { force: true })
+    .type("{enter}");
+  cy.get("#input_whitelist")
+    .type(list2, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=select-arrow]").click();
+  cy.get("[data-test=approve_button]").click();
+}
+
+export function add_approval_step_group(id, group) {
+  cy.get("[data-test=select_tx_rule]")
+    .eq(id)
+    .click();
+  cy.get("#input_groups_users")
+    .type(group, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=rightANgle]").click({ force: true });
+  cy.get("[data-test=approve_button]").click();
+}
+export function add_approval_step_operators(
+  id,
+  operator1,
+  operator2,
+  operator3,
 ) {
-  cy.get("[data-test=add-button]").click();
-  cy.wait(7500);
-  cy.get("#input_crypto")
-    .type(erc20, { force: true })
-    .type("{enter}");
-  cy.contains("Next").click();
-  cy.get("[data-test=account_childname]").type(childname);
-  cy.get("[data-test=account_parentname]").type(parentname);
-  cy.contains("Next").click();
+  cy.get("[data-test=select_tx_rule]")
+    .eq(id)
+    .click();
   cy.get("#input_groups_users")
-    .type(group, { force: true })
+    .type(operator1, { force: true })
     .type("{enter}");
-  cy.get("[data-test=rightANgle]").click();
-  cy.contains("Add approval").click();
-  cy.get("input#input_groups_users")
-    .eq(1)
-    .type(user1, { force: true })
-    .type("{enter}");
-  cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click({ force: true });
-  cy.wait(3500);
-}
-
-export function create_erc20_account_new_eth(erc20, childname, group, user1) {
-  cy.get("[data-test=add-button]").click();
-  cy.wait(8500);
-  cy.get("#input_crypto")
-    .type(erc20, { force: true })
-    .type("{enter}");
-  cy.contains("Next").click();
-  cy.get("[data-test=account_childname]").type(childname);
-  cy.contains("Next").click();
   cy.get("#input_groups_users")
-    .type(group, { force: true })
+    .type(operator2, { force: true })
     .type("{enter}");
-  cy.get("[data-test=rightANgle]").click();
-  cy.contains("Add approval").click();
-  cy.get("input#input_groups_users")
-    .eq(1)
-    .type(user1, { force: true })
-    .type("{enter}");
-  cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click({ force: true });
-  cy.wait(3500);
-}
-
-export function create_erc20_with_viewonly_eth_account(
-  erc20,
-  childname,
-  parentname,
-  group,
-  user1,
-) {
-  cy.get("[data-test=add-button]").click();
-  cy.wait(5500);
-  cy.get("#input_crypto")
-    .type(erc20, { force: true })
-    .type("{enter}");
-  cy.contains("Create a new view-only Ethereum account").click();
-  cy.contains("Next").click();
-  cy.get("[data-test=account_childname]").type(childname);
-  cy.get("[data-test=account_parentname]").type(parentname);
-  cy.contains("Next").click();
   cy.get("#input_groups_users")
-    .type(group, { force: true })
+    .type(operator3, { force: true })
     .type("{enter}");
-  cy.get("[data-test=rightANgle]").click();
-  cy.contains("Add approval").click();
-  cy.get("input#input_groups_users")
-    .eq(1)
-    .type(user1, { force: true })
-    .type("{enter}");
-  cy.contains("Next").click();
-  cy.get("[data-test=approve_button]").click({ force: true });
-  cy.wait(3500);
+  cy.get("[data-test=rightANgle]").click({ force: true });
+  cy.get("[data-test=approve_button]").click();
 }
-
 export function provide_viewonly_rule(name, groups, user1) {
   cy.get("[data-test=view_only_provide_rules]").click();
   cy.wait(5500);
@@ -365,4 +375,14 @@ export function revoke_users(name) {
   cy.get("[data-test=menuItem-users]").click();
   cy.contains(name).click();
   cy.get("[data-test=approve_button]").click({ force: true });
+}
+
+export function add_whitelist_address(currency, name, address) {
+  cy.get("[data-test=add_address]").click();
+  cy.get("#input_crypto")
+    .type(currency, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=name_address]").type(name);
+  cy.get("[data-test=address]").type(address);
+  cy.get("[data-test=ok_button]").click();
 }

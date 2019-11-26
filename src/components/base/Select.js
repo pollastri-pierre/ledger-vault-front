@@ -1,10 +1,14 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import ReactSelect from "react-select";
+import styled from "styled-components";
+import ReactSelect, { components } from "react-select";
 import AsyncReactSelect from "react-select/async";
 
-import type { PlaceholderProps } from "react-select/src/types";
+import type {
+  PlaceholderProps,
+  DropdownIndicatorProps,
+} from "react-select/src/types";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";
@@ -41,8 +45,34 @@ const Placeholder = (props: PlaceholderProps) => (
   </Box>
 );
 
+const ChevronContainer = styled.div`
+  color: ${colors.legacyLightGrey7};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 30px;
+  transition: 300ms ease transform;
+  &:hover {
+    // taken from react-select
+    color: hsl(0, 0%, 60%);
+  }
+`;
+
+const DropdownIndicator = (props: DropdownIndicatorProps) => (
+  <ChevronContainer
+    style={{
+      transform: `rotate(${props.selectProps.menuIsOpen ? -180 : 0}deg)`,
+    }}
+    data-test="select-arrow"
+  >
+    <components.DownChevron />
+  </ChevronContainer>
+);
+
 const customComponents = {
   Placeholder,
+  DropdownIndicator,
 };
 
 const customStyles = {

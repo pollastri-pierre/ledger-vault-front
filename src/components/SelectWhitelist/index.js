@@ -71,7 +71,7 @@ class SelectWhitelist extends PureComponent<Props> {
 
     return (
       <Select
-        inputId="input_crypto"
+        inputId="input_whitelist"
         placeholder="Select 1 or multiple whitelists"
         components={customComponents}
         defaultOptions

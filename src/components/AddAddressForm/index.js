@@ -50,6 +50,7 @@ const AddAddressForm = (props: Props) => {
             type="filled"
             disabled={addresses.length === NB_MAX_ADDRESSES}
             size="small"
+            data-test="add_address"
           >
             <FaPlus style={{ marginRight: 10 }} />{" "}
             <Trans i18nKey="whitelists:create.add_addr" />
@@ -156,6 +157,7 @@ const AddressRow = ({
             <Button
               variant="info"
               size="small"
+              data-test="delete_edit"
               onClick={() => onDeleteAddress(addr)}
             >
               <MdClose />
@@ -303,6 +305,7 @@ const FormAdd = connectData(
                 errors={nameError ? [nameError] : undefined}
                 onlyAscii
                 fullWidth
+                data-test="name_address"
               />
             </Box>
           </Box>
@@ -317,6 +320,7 @@ const FormAdd = connectData(
               errors={addressError ? [addressError] : undefined}
               warnings={warning ? [remapWarningError(warning)] : undefined}
               fullWidth
+              data-test="address"
             />
           </Box>
         </Box>
@@ -334,6 +338,7 @@ const FormAdd = connectData(
             onClick={submit}
             disabled={!isAddressFilled || !!addressError || !!nameError}
             type="filled"
+            data-test="ok_button"
           >
             {isEdit ? (
               <Trans i18nKey="whitelists:create.edit_addr" />
@@ -360,7 +365,12 @@ const NoAddressPlaceholder = ({ onClickAdd }: { onClickAdd: () => void }) => (
       <FaAddressBook size={18} />
       <Text i18nKey="whitelists:create.no_address" />
     </Box>
-    <Button onClick={onClickAdd} type="filled" size="small">
+    <Button
+      data-test="add_address"
+      onClick={onClickAdd}
+      type="filled"
+      size="small"
+    >
       <FaPlus style={{ marginRight: 10 }} />{" "}
       <Trans i18nKey="whitelists:create.add_addr" />
     </Button>

@@ -3,8 +3,9 @@ import {
   logout,
   route,
   successfull_message2,
+  select_creator_group,
+  add_approval_step_operators,
   success_edit_account,
-  provide_viewonly_rule,
 } from "../../../functions/actions";
 
 describe("Provide transaction rules for View Only account", function() {
@@ -25,7 +26,13 @@ describe("Provide transaction rules for View Only account", function() {
     cy.contains("View-only")
       .eq(0)
       .click();
-    provide_viewonly_rule("Limecoin", "APAC", "Anna");
+    cy.get("[data-test=view_only_provide_rules]").click();
+    cy.wait(5500);
+    cy.get("[data-test=account_name]").should("have.value", "Limecoin");
+    cy.contains("Next").click();
+    select_creator_group("America Ops");
+    cy.contains("Next").click();
+    cy.get("[data-test=approve_button]").click();
     success_edit_account();
   });
 
@@ -37,7 +44,18 @@ describe("Provide transaction rules for View Only account", function() {
     cy.wait(3500);
     cy.contains("CryptoC").click();
     cy.wait(1500);
-    provide_viewonly_rule("CryptoC", "America Ops", "Laura");
+    cy.get("[data-test=account_name]").should("have.value", "CryptoC");
+    cy.contains("Next").click();
+    select_creator_group("America Ops");
+    add_approval_step_operators(
+      2,
+      "James Lepic",
+      "Anna Wagner",
+      "Aidan Fisher",
+    );
+
+    cy.contains("Next").click();
+    cy.get("[data-test=approve_button]").click();
     success_edit_account();
   });
 

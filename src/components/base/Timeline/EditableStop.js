@@ -128,7 +128,12 @@ export const EditForm = <T, P>({
         extraProps={extraProps}
       />
       <Box horizontal justify="space-between" flow={5} pt={20}>
-        <Button type="link" variant="info" onClick={onCancel}>
+        <Button
+          type="link"
+          variant="info"
+          data-test="cancel"
+          onClick={onCancel}
+        >
           Cancel
         </Button>
         <Button
@@ -136,6 +141,7 @@ export const EditForm = <T, P>({
           variant="primary"
           disabled={!isValid(value)}
           onClick={() => onSubmit(value)}
+          data-test="approve_button"
         >
           {label}
         </Button>
