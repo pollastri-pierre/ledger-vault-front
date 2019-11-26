@@ -57,3 +57,8 @@ export const getAccountCurrencyOrToken = (
   }
   return currency;
 };
+
+export function getCurrencyOrTokenName(account: Account) {
+  const curOrToken = getAccountCurrencyOrToken(account);
+  return curOrToken.name;
+}
