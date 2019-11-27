@@ -79,9 +79,7 @@ const WhitelistStop = ({
 
 /* eslint-disable no-unused-vars */
 const isRuleValid = (rule: RuleWhitelist) => {
-  /* eslint-enable no-unused-vars */
-  return true;
-  // return rule.data.length > 0;
+  return rule.data.length > 0;
 };
 
 const DisplayWhitelist = (props: {
