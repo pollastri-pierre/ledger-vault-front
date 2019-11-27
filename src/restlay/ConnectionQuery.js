@@ -9,6 +9,7 @@ export type Connection<T> = {
   }>,
   pageInfo: {
     hasNextPage: boolean,
+    count: number,
   },
 };
 

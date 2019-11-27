@@ -4,7 +4,8 @@ import React from "react";
 import styled from "styled-components";
 
 import imgEmptyStateHappy from "assets/img/empty-state-happy.svg";
-import colors from "shared/colors";
+import VaultLink from "components/VaultLink";
+import colors, { darken } from "shared/colors";
 import Text from "components/base/Text";
 
 export const List = styled.div`
@@ -24,15 +25,29 @@ export const List = styled.div`
   }
 `;
 
-export const ListItem = styled.div`
+const ListItemContainer = styled.div`
+  // important to keep display: block, because can be forwarded as <a />
+  display: block;
+
   padding: 20px;
-  background: white;
   position: relative;
   &:hover {
     cursor: ${p => (p.onClick ? "pointer" : "")};
     background: ${colors.form.bg};
   }
+  &:active {
+    cursor: ${p => (p.onClick ? "pointer" : "")};
+    background: ${darken(colors.form.bg, 0.02)};
+  }
 `;
+
+const RoleVaultLink = p => <VaultLink withRole {...p} />;
+
+export const ListItem = ({ to, ...props }: { to?: string }) => {
+  return (
+    <ListItemContainer as={to ? RoleVaultLink : undefined} to={to} {...props} />
+  );
+};
 
 type ListEmptyProps = {
   children: React$Node,

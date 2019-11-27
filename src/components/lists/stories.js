@@ -6,12 +6,12 @@ import { storiesOf } from "@storybook/react";
 import pageDecorator from "stories/pageDecorator";
 import backendDecorator from "stories/backendDecorator";
 import { RequestActivityTypeList } from "data/types";
-import { RequestsList } from "components/lists";
+import { RequestsList, AccountsList } from "components/lists";
 import Box from "components/base/Box";
 import { genAccounts, genUsers, genRequest } from "data/mock-entities";
 
-const users = genUsers(1);
-const accounts = genAccounts(1, { users });
+const users = genUsers(10);
+const accounts = genAccounts(10, { users });
 const requests = genAllRequests();
 const noop = () => {};
 
@@ -39,6 +39,15 @@ storiesOf("entities/Request", module)
       </Box>
     );
   });
+
+storiesOf("entities/Account", module)
+  .addDecorator(backendDecorator([]))
+  .addDecorator(pageDecorator)
+  .add("Accounts list", () => (
+    <div style={{ width: 400 }}>
+      <AccountsList accounts={accounts} />
+    </div>
+  ));
 
 function genAllRequests(status = "PENDING_APPROVAL") {
   return RequestActivityTypeList.map(type => {

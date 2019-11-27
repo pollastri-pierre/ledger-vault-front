@@ -31,7 +31,7 @@ function AccountView(props: Props) {
       <ResponsiveContainer>
         <Box flow={20} grow>
           <AccountQuickInfoWidget account={account} />
-          <Box horizontal flow={20}>
+          <ResponsiveContainer>
             {account.account_type === "Ethereum" && (
               <Box flex={1}>
                 <SubAccountsWidget account={account} />
@@ -42,7 +42,7 @@ function AccountView(props: Props) {
                 <TransactionsGraphWidget account={account} />
               </Box>
             )}
-          </Box>
+          </ResponsiveContainer>
           <AccountLastTransactionsWidget account={account} />
         </Box>
       </ResponsiveContainer>

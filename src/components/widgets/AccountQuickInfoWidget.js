@@ -24,7 +24,7 @@ import SyncButton from "components/SyncButton";
 import Text from "components/base/Text";
 import PageHeaderActions from "components/base/PageHeaderActions";
 import { SoftCard } from "components/base/Card";
-import AccountIcon from "components/AccountIcon";
+import AccountIcon from "components/legacy/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import { isAccountSpendable } from "utils/transactions";

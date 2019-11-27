@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import InfoBox from "components/base/InfoBox";
 import LineRow from "components/LineRow";
 import Box from "components/base/Box";
-import AccountIcon from "components/AccountIcon";
+import AccountIcon from "components/legacy/AccountIcon";
 import Text from "components/base/Text";
 import colors from "shared/colors";
 import {
