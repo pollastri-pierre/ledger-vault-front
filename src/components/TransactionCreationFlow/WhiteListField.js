@@ -155,6 +155,7 @@ function resolveWhitelists(
       .map(r => r.data)
       // $FlowFixMe flat exist on Array but Flow doesnt know yet
       .flat()
+      .filter((w, i, arr) => arr.findIndex(el => el.id === w.id) === i)
       .map(w => {
         if (typeof w === "number") return whitelists.find(w2 => w2.id === w);
 
