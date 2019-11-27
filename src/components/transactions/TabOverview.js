@@ -6,6 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import TransactionStatus from "components/TransactionStatus";
 import Copy from "components/base/Copy";
 import Box from "components/base/Box";
+import NotApplicableText from "components/base/NotApplicableText";
 import NextRequestButton from "components/NextRequestButton";
 import type { Transaction, Account } from "data/types";
 import LineRow from "../LineRow";
@@ -42,7 +43,11 @@ class TabOverview extends Component<Props> {
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.identifier" />}
           >
-            {transaction.tx_hash ? <Copy text={transaction.tx_hash} /> : "N/A"}
+            {transaction.tx_hash ? (
+              <Copy text={transaction.tx_hash} />
+            ) : (
+              <NotApplicableText inline />
+            )}
           </LineRow>
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.recipient" />}

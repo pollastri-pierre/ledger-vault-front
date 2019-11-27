@@ -11,6 +11,7 @@ import connectData from "restlay/connectData";
 import LineRow from "components/LineRow";
 import Modal from "components/base/Modal";
 import Button from "components/base/Button";
+import NotApplicableText from "components/base/NotApplicableText";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { currencyExchangeSelector } from "redux/modules/exchanges";
@@ -88,9 +89,7 @@ function AccountSettings(props: Props) {
       <LineRow label={<Trans i18nKey="accountSettings:general.exchange" />}>
         <Box horizontal align="center" flow={5}>
           <FaExchangeAlt size={13} color={colors.lightGrey} />
-          <Text fontWeight="bold">
-            {exchange || <Trans i18nKey="common:not_applicable" />}
-          </Text>
+          <Text fontWeight="bold">{exchange || <NotApplicableText />}</Text>
         </Box>
       </LineRow>
       {me.role === "ADMIN" &&

@@ -1,7 +1,9 @@
 // @flow
 
 import React from "react";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
+
+import NotApplicableText from "components/base/NotApplicableText";
 
 import type { User } from "data/types";
 
@@ -23,9 +25,5 @@ export default function GroupMembersCell(props: GroupMembersCellProps) {
     });
   }
 
-  return members.length > 0 ? (
-    content
-  ) : (
-    <Trans i18nKey="common:not_applicable" />
-  );
+  return members.length > 0 ? content : <NotApplicableText />;
 }

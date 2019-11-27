@@ -19,6 +19,7 @@ import TranslatedError from "components/TranslatedError";
 import Box from "components/base/Box";
 import Spinner from "components/base/Spinner";
 import Text from "components/base/Text";
+import NotApplicableText from "components/base/NotApplicableText";
 import InfoBox from "components/base/InfoBox";
 import { Label } from "components/base/form";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
@@ -162,10 +163,7 @@ function FeesBitcoinKind(props: Props) {
                   ) : feesStatus === "fetching" ? (
                     <Spinner size="small" />
                   ) : (
-                    <Text
-                      color={colors.textLight}
-                      i18nKey="common:not_applicable"
-                    />
+                    <NotApplicableText />
                   )}
                 </FakeInputContainer>
                 <Box justify="center">
@@ -181,10 +179,7 @@ function FeesBitcoinKind(props: Props) {
                   ) : feesStatus === "fetching" ? (
                     <Spinner size="small" />
                   ) : (
-                    <Text
-                      color={colors.textLight}
-                      i18nKey="common:not_applicable"
-                    />
+                    <NotApplicableText />
                   )}
                 </FakeInputContainer>
               </Box>

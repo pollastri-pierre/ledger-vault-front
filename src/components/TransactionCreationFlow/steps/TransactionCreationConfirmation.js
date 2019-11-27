@@ -5,6 +5,7 @@ import invariant from "invariant";
 import { Trans } from "react-i18next";
 
 import Box from "components/base/Box";
+import NotApplicableText from "components/base/NotApplicableText";
 import LineRow from "components/LineRow";
 import OverviewTransaction from "components/OverviewTransaction";
 import AccountName from "components/AccountName";
@@ -78,7 +79,11 @@ export default (props: TransactionCreationStepProps<any>) => {
             <Trans i18nKey="transactionCreation:steps.account.destinationTag" />
           }
         >
-          {transaction.destinationTag ? transaction.destinationTag : "N/A"}
+          {transaction.destinationTag ? (
+            transaction.destinationTag
+          ) : (
+            <NotApplicableText inline />
+          )}
         </LineRow>
       )}
     </Box>

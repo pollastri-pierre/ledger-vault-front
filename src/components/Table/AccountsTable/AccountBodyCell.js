@@ -11,6 +11,7 @@ import EntityStatus from "components/EntityStatus";
 import ApproverRole from "components/ApproverRole";
 import DateFormat from "components/DateFormat";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import NotApplicableText from "components/base/NotApplicableText";
 
 import type { Account } from "data/types";
 import type { TableItem } from "../types";
@@ -37,13 +38,13 @@ function AccountBodyCell(props: CellProps) {
         );
       case "countervalue":
         return account.status === "PENDING" ? (
-          "N/A"
+          <NotApplicableText />
         ) : (
           <CounterValue fromAccount={account} value={account.balance} />
         );
       case "balance":
         return account.status === "PENDING" ? (
-          "N/A"
+          <NotApplicableText />
         ) : (
           <CurrencyAccountValue account={account} value={account.balance} />
         );
