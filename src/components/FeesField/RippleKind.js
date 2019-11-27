@@ -17,7 +17,7 @@ import Spinner from "components/base/Spinner";
 import CounterValue from "components/CounterValue";
 import connectData from "restlay/connectData";
 import Box from "components/base/Box";
-import Text from "components/base/Text";
+import NotApplicableText from "components/base/NotApplicableText";
 import { Label, InputAmount } from "components/base/form";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { getFees } from "utils/transactions";
@@ -145,10 +145,7 @@ function FeesFieldRippleKind(props: Props) {
                 ) : feesStatus === "fetching" ? (
                   <Spinner />
                 ) : (
-                  <Text
-                    color={colors.textLight}
-                    i18nKey="common:not_applicable"
-                  />
+                  <NotApplicableText />
                 )}
               </FakeInputContainer>
             </>

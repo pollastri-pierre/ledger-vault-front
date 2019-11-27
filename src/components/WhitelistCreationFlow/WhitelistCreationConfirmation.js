@@ -6,6 +6,7 @@ import LineRow from "components/LineRow";
 import Box from "components/base/Box";
 import AccountIcon from "components/legacy/AccountIcon";
 import Text from "components/base/Text";
+import NotApplicableText from "components/base/NotApplicableText";
 import colors from "shared/colors";
 import {
   hasEditOccuredGeneric,
@@ -47,7 +48,9 @@ export const WhitelistDetails = (props: WhitelistDetailsProps) => {
   return (
     <Box>
       <LineRow label="name">{name}</LineRow>
-      <LineRow label="description">{description}</LineRow>
+      <LineRow label="description">
+        {description || <NotApplicableText inline />}
+      </LineRow>
       <LineRow label="addresses" vertical noOverflowHidden>
         <Box flow={20} pt={10}>
           {addresses

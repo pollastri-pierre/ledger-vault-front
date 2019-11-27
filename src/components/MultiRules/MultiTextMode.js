@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
+import NotApplicableText from "components/base/NotApplicableText";
 import LineSeparator from "components/LineSeparator";
 import CurrencyUnitValue from "components/CurrencyUnitValue";
 import colors from "shared/colors";
@@ -99,7 +100,9 @@ function ResolveRuleSet(props: ResolveRulesProps) {
       <StyledLi key={groupId}>
         <Box horizontal flow={5} align="center">
           <FaUsers />
-          <Text inline> {groupFound ? groupFound.name : "N/A"}</Text>
+          <Text inline>
+            {groupFound ? groupFound.name : <NotApplicableText />}
+          </Text>
         </Box>
       </StyledLi>
     );
@@ -145,7 +148,7 @@ function ResolveRuleSet(props: ResolveRulesProps) {
         </StyledUl>
       );
     }
-    return "N/A";
+    return <NotApplicableText />;
   };
 
   const resolveWhitelists = (item: number | Whitelist) => {

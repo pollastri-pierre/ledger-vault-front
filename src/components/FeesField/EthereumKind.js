@@ -19,6 +19,7 @@ import CounterValue from "components/CounterValue";
 import connectData from "restlay/connectData";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
+import NotApplicableText from "components/base/NotApplicableText";
 import InfoBox from "components/base/InfoBox";
 import FakeInputContainer from "components/base/FakeInputContainer";
 import { Label, InputAmount } from "components/base/form";
@@ -214,10 +215,7 @@ function FeesFieldEthereumKind(props: Props) {
               ) : feesStatus === "fetching" ? (
                 <Spinner />
               ) : (
-                <Text
-                  color={colors.textLight}
-                  i18nKey="common:not_applicable"
-                />
+                <NotApplicableText />
               )}
             </FakeInputContainer>
             <Box justify="center">
@@ -233,10 +231,7 @@ function FeesFieldEthereumKind(props: Props) {
               ) : feesStatus === "fetching" ? (
                 <Spinner />
               ) : (
-                <Text
-                  color={colors.textLight}
-                  i18nKey="common:not_applicable"
-                />
+                <NotApplicableText />
               )}
             </FakeInputContainer>
           </Box>
