@@ -50,24 +50,29 @@ const WhitelistEditRequest = (props: Props) => {
 
   const all = [...removed, ...added, ...(hideUnchanged ? [] : unchanged)];
   return (
-    <Box>
+    <Box flow={20}>
       <DiffName entity={whitelist} />
       {unchanged.length !== whitelist.addresses.length && (
         <Box flow={15}>
           <Text fontWeight="bold">Addresses</Text>
           <Box flow={10}>
-            <Box flow={10}>
+            <div style={grid}>
               <ShowMore number={8}>
                 {all.map(a => (
                   <AddressComponent {...a} />
                 ))}
               </ShowMore>
-            </Box>
+            </div>
           </Box>
         </Box>
       )}
     </Box>
   );
+};
+const grid = {
+  display: "grid",
+  gridGap: 10,
+  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr) )",
 };
 
 const ShowMore = ({

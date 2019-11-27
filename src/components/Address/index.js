@@ -50,7 +50,6 @@ const Icon = ({ currency }: { currency: string }) => {
 };
 
 const Container = styled(Box).attrs({ flow: 5, p: 5 })`
-  display: inline-block;
   border: ${p =>
     p.history ? styles[p.history].border : `1px solid ${colors.mediumGrey}`};
   background: ${p =>
