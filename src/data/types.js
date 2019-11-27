@@ -292,6 +292,7 @@ export type GroupStatus = $Keys<typeof GroupStatusMap>;
 export const WhitelistStatusMap = {
   ACTIVE: "ACTIVE",
   PENDING: "PENDING",
+  ABORTED: "ABORTED",
 };
 export type WhitelistStatus = $Keys<typeof WhitelistStatusMap>;
 

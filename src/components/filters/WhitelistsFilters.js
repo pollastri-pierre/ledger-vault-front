@@ -9,12 +9,16 @@ import {
   FieldText,
   FieldAccount,
 } from "components/filters";
+import { WhitelistStatusMap } from "data/types";
 import type { FieldsGroupProps } from "components/filters/types";
 import type { WhitelistStatus } from "data/types";
 
 export const defaultStatuses: WhitelistStatus[] = [];
 
-const statuses: WhitelistStatus[] = [...defaultStatuses, "ACTIVE", "PENDING"];
+const statuses: WhitelistStatus[] = [
+  ...defaultStatuses,
+  ...Object.keys(WhitelistStatusMap),
+];
 
 export default function WhitelistsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
