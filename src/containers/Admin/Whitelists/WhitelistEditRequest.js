@@ -11,6 +11,7 @@ import DiffName from "components/DiffName";
 
 type Props = {
   whitelist: Whitelist,
+  hideUnchanged: boolean,
 };
 
 type AddressRow = {
@@ -19,7 +20,7 @@ type AddressRow = {
 };
 
 const WhitelistEditRequest = (props: Props) => {
-  const { whitelist } = props;
+  const { whitelist, hideUnchanged } = props;
   if (!whitelist.last_request) return null;
   const { last_request } = whitelist;
   if (!last_request.edit_data) return null;
@@ -47,7 +48,7 @@ const WhitelistEditRequest = (props: Props) => {
     });
   }
 
-  const all = [...removed, ...added, ...unchanged];
+  const all = [...removed, ...added, ...(hideUnchanged ? [] : unchanged)];
   return (
     <Box>
       <DiffName entity={whitelist} />

@@ -28,7 +28,7 @@ function DiffViewer(props: Props) {
         <AccountEditRequest account={entity} />
       )}
       {entity.entityType === "WHITELIST" && (
-        <WhitelistEditRequest whitelist={entity} />
+        <WhitelistEditRequest whitelist={entity} hideUnchanged />
       )}
     </Box>
   );
