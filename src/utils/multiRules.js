@@ -7,6 +7,7 @@ import type { GovernanceRules, RulesSet } from "components/MultiRules/types";
 import {
   getThresholdRule,
   getWhitelistRule,
+  getMultiAuthRule,
 } from "components/MultiRules/helpers";
 
 type GetMatchingRulesSetInput = {|
@@ -38,6 +39,13 @@ function isMatchingRulesSet(input) {
   const { rulesSet } = input;
   const thresholdRule = getThresholdRule(rulesSet);
   const whitelistRule = getWhitelistRule(rulesSet);
+  const multiAuthRule = getMultiAuthRule(rulesSet);
+
+  // when operator is not in a step, he sees the step as null
+  // so we just need to check if multiRules.data[0] is null
+  if (!multiAuthRule || !multiAuthRule.data || !multiAuthRule.data[0]) {
+    return false;
+  }
 
   if (thresholdRule && !isThresholdMatching(thresholdRule, input)) {
     return false;
