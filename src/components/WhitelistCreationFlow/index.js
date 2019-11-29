@@ -57,7 +57,7 @@ const steps = [
   },
   {
     id: "addresses",
-    name: "Add addresses",
+    name: "Addresses",
     Step: WhitelistCreationAddresses,
     requirements: (payload: WhitelistCreationPayload) => payload.name !== "",
   },
