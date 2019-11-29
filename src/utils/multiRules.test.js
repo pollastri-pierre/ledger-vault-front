@@ -62,6 +62,12 @@ const RULES = {
     name: "Rule 1",
     rules: [{ type: "MULTI_AUTHORIZATIONS", data: [{ quorum: 1, group: {} }] }],
   },
+  MULTI_AUTH_NOT_IN_FIRST_STEP: {
+    name: "Rule 1",
+    rules: [
+      { type: "MULTI_AUTHORIZATIONS", data: [null, { quorum: 1, group: {} }] },
+    ],
+  },
   THRESHOLD_1: {
     name: "With threshold 0 < amount < 20",
     rules: [
@@ -103,6 +109,37 @@ const RULES = {
 
 describe("multiRules", () => {
   describe("getMatchingRulesSet", () => {
+    describe("not on first approval step", () => {
+      test("it should return null if op is not in first step", () => {
+        const governanceRules = [RULES.MULTI_AUTH_NOT_IN_FIRST_STEP];
+        const input = {
+          transaction: {
+            amount: BigNumber(10),
+            recipient: "abcde",
+            currency: "bitcoin",
+          },
+          governanceRules,
+        };
+        const set = getMatchingRulesSet(input);
+        expect(set).toBe(null);
+      });
+      test("it should return the second rule if op is not in first step", () => {
+        const governanceRules = [
+          RULES.MULTI_AUTH_NOT_IN_FIRST_STEP,
+          RULES.ONLY_AUTH,
+        ];
+        const input = {
+          transaction: {
+            amount: BigNumber(10),
+            recipient: "abcde",
+            currency: "bitcoin",
+          },
+          governanceRules,
+        };
+        const set = getMatchingRulesSet(input);
+        expect(set).toBe(governanceRules[1]);
+      });
+    });
     describe("no condition", () => {
       test("should return the first set if no condition on it", () => {
         const governanceRules = [RULES.ONLY_AUTH, RULES.THRESHOLD_1];
