@@ -77,6 +77,7 @@ export const isRequestPending = (request: GenericRequest) =>
 const EDIT_REQUEST_TYPE: RequestActivityType[] = [
   "EDIT_ACCOUNT",
   "EDIT_GROUP",
+  "EDIT_WHITELIST",
   "MIGRATE_ACCOUNT",
 ];
 

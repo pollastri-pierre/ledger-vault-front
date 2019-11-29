@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Trans } from "react-i18next";
+import omit from "lodash/omit";
 import type { Match } from "react-router-dom";
 import { FaAddressBook } from "react-icons/fa";
 
@@ -20,8 +21,8 @@ import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import type { Address } from "data/types";
 import { handleCancelOnDevice } from "utils/request";
 import {
-  hasEditOccuredGeneric,
-  onlyDescriptionChangedGeneric,
+  onlyDescriptionChangedWhitelist,
+  hasEditOccuredWhitelist,
 } from "utils/creationFlows";
 import type { WhitelistCreationPayload } from "./types";
 
@@ -82,7 +83,7 @@ const steps = [
       onClose: () => void,
     }) => {
       // if only description changed
-      if (onlyDescriptionChangedGeneric(payload, initialPayload, "addresses")) {
+      if (onlyDescriptionChangedWhitelist(payload, initialPayload)) {
         return <UpdateDescriptionButton payload={payload} onClose={onClose} />;
       }
       return (
@@ -96,12 +97,10 @@ const steps = [
           onSuccess={() => {
             onSuccess();
           }}
-          disabled={
-            !hasEditOccuredGeneric(payload, initialPayload, "addresses")
-          }
+          disabled={!hasEditOccuredWhitelist(payload, initialPayload)}
           additionalFields={{
             type: isEditMode ? "EDIT_WHITELIST" : "CREATE_WHITELIST",
-            data: payload,
+            data: serializePayload(payload, initialPayload),
             description: payload.description,
           }}
           buttonLabel={
@@ -243,3 +242,24 @@ const UpdateDescriptionButton = connectData(
     );
   },
 );
+
+function serializePayload(
+  payload: WhitelistCreationPayload,
+  initialPayload: WhitelistCreationPayload,
+) {
+  if (!payload.id) return payload;
+
+  // gate doesn't want our fake id :p
+  const edit_data: Object = {
+    addresses: payload.addresses.map(a => omit(a, ["id"])),
+  };
+
+  // the gate doesn't allow to send the name if it didn't change
+  if (payload.name !== initialPayload.name) {
+    edit_data.name = payload.name;
+  }
+  return {
+    edit_data,
+    whitelist_id: payload.id,
+  };
+}

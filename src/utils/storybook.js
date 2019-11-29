@@ -14,6 +14,7 @@ import { delay } from "utils/promise";
 import { organization } from "stories/backendDecorator";
 import {
   genUsers,
+  genWhitelists,
   genGroups,
   genAccounts,
   genTransactions,
@@ -23,8 +24,10 @@ import UserContextProvider from "components/UserContextProvider";
 import { OrganizationContextProvider } from "components/OrganizationContext";
 
 const users = genUsers(20);
+const admin = users.find(u => u.role === "ADMIN");
 const groups = genGroups(3, { users, status: "ACTIVE" });
 const accounts = genAccounts(4);
+const whitelists = genWhitelists(10, { users });
 const transactions = genTransactions(1, { accounts, users });
 
 const defaultHistory = [
@@ -136,6 +139,9 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
     }
     return defaultHistory;
   }
+  if (url.match(/whitelists\/[^/]*/g)) {
+    return whitelists[0];
+  }
   if (url.match(/accounts\/[^/]*/g)) {
     const account = accounts[0];
 
@@ -191,7 +197,7 @@ const Inner = ({ story, entity }) => {
       <OrganizationContextProvider
         value={{ organization, refresh: () => Promise.resolve() }}
       >
-        <UserContextProvider me={users[0]}>
+        <UserContextProvider me={admin}>
           <Box
             horizontal
             align="center"

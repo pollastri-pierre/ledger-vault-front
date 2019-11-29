@@ -9,8 +9,8 @@ import Text from "components/base/Text";
 import NotApplicableText from "components/base/NotApplicableText";
 import colors from "shared/colors";
 import {
-  hasEditOccuredGeneric,
-  onlyDescriptionChangedGeneric,
+  hasEditOccuredWhitelist,
+  onlyDescriptionChangedWhitelist,
 } from "utils/creationFlows";
 import type { Whitelist } from "data/types";
 import type { WhitelistCreationStepProps } from "./types";
@@ -22,12 +22,12 @@ const WhitelistCreationConfirmation = (props: Props) => {
   return (
     <Box flow={20}>
       <WhitelistDetails whitelist={payload} />
-      {!hasEditOccuredGeneric(payload, initialPayload, "addresses") ? (
+      {!hasEditOccuredWhitelist(payload, initialPayload) ? (
         <InfoBox type="info" withIcon>
           <Trans i18nKey="whitelists:create.no_edit" />
         </InfoBox>
       ) : (
-        onlyDescriptionChangedGeneric(payload, initialPayload, "addresses") && (
+        onlyDescriptionChangedWhitelist(payload, initialPayload) && (
           <InfoBox type="info" withIcon>
             <Trans i18nKey="whitelists:create.no_hsm_validation" />
           </InfoBox>

@@ -22,6 +22,7 @@ const WhitelistDetails = (props: Props) => {
   return (
     <EntityModal
       growing
+      customWidth={650}
       entity={whitelist}
       Icon={FaAddressBook}
       title={whitelist.name}

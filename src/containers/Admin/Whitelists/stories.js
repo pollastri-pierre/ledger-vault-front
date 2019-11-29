@@ -12,18 +12,33 @@ import Modal from "components/base/Modal";
 import { denormalize } from "normalizr-gre";
 import WhitelistCreationFlow from "components/WhitelistCreationFlow";
 import WhitelistDetails from "containers/Admin/Whitelists/WhitelistDetails";
+import WhitelistEditRequest from "containers/Admin/Whitelists/WhitelistEditRequest";
 import requests from "data/mock-requests.json";
 
 import { EntityModalDecorator } from "utils/storybook";
 
-import { genUsers, genGroups, genAccounts } from "data/mock-entities";
+import {
+  genWhitelists,
+  genUsers,
+  genGroups,
+  genAccounts,
+  genAddresses,
+  genRequest,
+} from "data/mock-entities";
 
 const users = genUsers(20);
 const groups = genGroups(3, { users, status: "ACTIVE" });
 const accounts = genAccounts(4);
+const whitelists = genWhitelists(10, { users, status: "ACTIVE" });
 
 const fakeNetwork = async url => {
   await delay(1e3);
+  if (url.match(/whitelists\/[^/]*/g)) {
+    return whitelists[0];
+  }
+  if (url.startsWith("/whitelists")) {
+    return wrapConnection(whitelists);
+  }
   if (url.startsWith("/people")) {
     return wrapConnection(users);
   }
@@ -61,18 +76,36 @@ storiesOf("entities/Whitelist", module).add("Whitelist creation", () => (
   </RestlayProvider>
 ));
 
-storiesOf("entities/Group", module).add("Whitelist edit", () => (
+storiesOf("entities/Whitelist", module).add("Whitelist edit", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
-      <WhitelistCreationFlow match={{ params: { whitelistId: 1 } }} />
+      <WhitelistCreationFlow
+        match={{ params: { whitelistId: whitelists[0].id } }}
+      />
     </Modal>
   </RestlayProvider>
 ));
+storiesOf("entities/Whitelist", module).add("Whitelist diff edit", () => {
+  const newAddresses = genAddresses(30);
+  const last_request = genRequest("EDIT_WHITELIST", {
+    target_type: "WHITELIST",
+    status: "PENDING_APPROVAL",
+  });
+  const whitelist = {
+    ...whitelists[0],
+    addresses: newAddresses.slice(0, 10),
+    last_request: {
+      ...last_request,
+      edit_data: { addresses: newAddresses.slice(6, 30) },
+    },
+  };
+  return <WhitelistEditRequest whitelist={whitelist} />;
+});
 
 storiesOf("entities/Whitelist", module)
   .addDecorator(StoryRouter())
   .addDecorator(EntityModalDecorator("WHITELIST"))
-  .add("Group details", () => (
+  .add("whitelist details", () => (
     <WhitelistDetails match={{ params: { whitelistId: 0 } }} />
   ));
 
