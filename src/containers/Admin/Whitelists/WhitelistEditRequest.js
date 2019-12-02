@@ -48,11 +48,25 @@ const WhitelistEditRequest = (props: Props) => {
     });
   }
 
-  const all = [...removed, ...added, ...(hideUnchanged ? [] : unchanged)];
+  const unchangedWithoutDups = unchanged.filter(
+    (w, i, arr) =>
+      arr.findIndex(
+        el =>
+          el.address.name === w.address.name &&
+          el.address.currency === w.address.currency &&
+          el.address.address === w.address.address,
+      ) === i,
+  );
+  const all = [
+    ...removed,
+    ...added,
+    ...(hideUnchanged ? [] : unchangedWithoutDups),
+  ];
+
   return (
     <Box flow={20}>
       <DiffName entity={whitelist} />
-      {unchanged.length !== whitelist.addresses.length && (
+      {unchangedWithoutDups.length !== whitelist.addresses.length && (
         <Box flow={15}>
           <Text fontWeight="bold">Addresses</Text>
           <Box flow={10}>
