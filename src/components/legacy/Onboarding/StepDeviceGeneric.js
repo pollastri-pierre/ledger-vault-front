@@ -2,9 +2,9 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
-import { Title, Step, Awaiting } from "../../components/Onboarding";
-import Plug from "../../components/icons/thin/Plug";
-import DialogButton from "../../components/legacy/DialogButton";
+import { Title, Step, Awaiting } from "components/Onboarding";
+import Plug from "components/icons/thin/Plug";
+import DialogButton from "components/legacy/DialogButton";
 
 const styles = {
   base: { width: 400, padding: "40px 40px 80px 40px" },
