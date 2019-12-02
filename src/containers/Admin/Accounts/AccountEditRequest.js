@@ -102,7 +102,7 @@ type DiffBlockProps = {
   accountName?: string,
   children: React$Node,
 };
-function DiffBlock(props: DiffBlockProps) {
+export function DiffBlock(props: DiffBlockProps) {
   const { type, children, hasNameChanged, accountName } = props;
   return (
     <Box noShrink flex={1}>

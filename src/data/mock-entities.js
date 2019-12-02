@@ -135,6 +135,12 @@ function genAccount(
     : nbApprovals >= 2
     ? "ACTIVE"
     : "PENDING";
+
+  if (extra.groups && extra.groups.length < 2) {
+    throw new Error(
+      "We need at least 2 groups in extra to build governance rules",
+    );
+  }
   return {
     id: faker.random.number({ min: 1, max: 100000000 }),
     entityType: "ACCOUNT",
@@ -149,8 +155,18 @@ function genAccount(
           {
             type: "MULTI_AUTHORIZATIONS",
             data: [
-              { quorum: 2, group: genGroup({ users, status: "ACTIVE" }) },
-              { quorum: 1, group: genGroup({ users, status: "ACTIVE" }) },
+              {
+                quorum: 2,
+                group: extra.groups
+                  ? extra.groups[0]
+                  : genGroup({ users, status: "ACTIVE" }),
+              },
+              {
+                quorum: 1,
+                group: extra.groups
+                  ? extra.groups[1]
+                  : genGroup({ users, status: "ACTIVE" }),
+              },
             ],
           },
           {
