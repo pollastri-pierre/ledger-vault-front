@@ -30,8 +30,8 @@ const AddressDisplay = ({ address, history }: Props) => (
         <Text fontWeight="semiBold" ellipsis>
           {address.name}
         </Text>
+        {history && <Box>{iconByHistory[history]}</Box>}
       </Box>
-      {history && <Box>{iconByHistory[history]}</Box>}
     </Box>
     <Text style={styles.address}>{address.address}</Text>
   </Container>
