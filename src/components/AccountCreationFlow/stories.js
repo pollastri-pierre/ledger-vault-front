@@ -19,8 +19,8 @@ import {
 } from "data/mock-entities";
 
 const users = genUsers(20);
-const accounts = genAccounts(10, { users });
 const groups = genGroups(3, { users });
+const accounts = genAccounts(10, { users }, { groups });
 const whitelists = genWhitelists(10, { users });
 
 const fakeNetwork = async url => {
@@ -84,7 +84,7 @@ storiesOf("entities/Account", module).add("Account creation", () => (
 storiesOf("entities/Account", module).add("Account edit", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
-      <AccountCreationFlow match={{ params: { accountId: 1 } }} />
+      <AccountCreationFlow match={{ params: { accountId: accounts[0].id } }} />
     </Modal>
   </RestlayProvider>
 ));
