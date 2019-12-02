@@ -36,7 +36,7 @@ describe("Test Case for Account", function() {
     // 2 Rules
     cy.get("[data-test=add-rule]").click();
     select_creator_operators("Thomas Lebron", "Sally Wilson", "Laura Parker");
-    add_whitelist(1, "List 1");
+    add_whitelist(1, "List testnet");
 
     cy.contains("Next").click();
     cy.get("[data-test=approve_button]").click();

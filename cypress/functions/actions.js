@@ -162,6 +162,19 @@ export function successfull_msg_gp() {
   cy.contains("Done").click();
 }
 
+export function successfull_msg_wl() {
+  cy.get("[data-test=success_msg]").should(
+    "contain",
+    "Update Whitelist Request was successfully created!",
+  );
+  // cy.get("[data-test=success_msg]").should(
+  //  "contain",
+  //  "Your request to update this Whitelist has been submitted for approval.",
+  // );
+
+  cy.contains("Done").click();
+}
+
 export function successfull_message() {
   cy.get(".top-message-body")
     .contains("The request has been successfully created")

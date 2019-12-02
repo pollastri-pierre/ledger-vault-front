@@ -23,9 +23,7 @@ describe("Provide transaction rules for View Only account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     cy.wait(3500);
-    cy.contains("View-only")
-      .eq(0)
-      .click();
+    cy.contains("Limecoin").click();
     cy.get("[data-test=view_only_provide_rules]").click();
     cy.wait(5500);
     cy.get("[data-test=account_name]").should("have.value", "Limecoin");
@@ -43,7 +41,8 @@ describe("Provide transaction rules for View Only account", function() {
     cy.url().should("include", "/admin/accounts");
     cy.wait(3500);
     cy.contains("CryptoC").click();
-    cy.wait(1500);
+    cy.get("[data-test=view_only_provide_rules]").click();
+    cy.wait(5500);
     cy.get("[data-test=account_name]").should("have.value", "CryptoC");
     cy.contains("Next").click();
     select_creator_group("America Ops");

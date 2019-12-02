@@ -26,7 +26,7 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     add_account_name("Ethereum Ropsten", "WPNakamoto");
-    cy.contains("Next").click();
+    //  cy.contains("Next").click();
 
     // Rule 1
     select_creator_group("Key accounts Ops");
@@ -38,13 +38,13 @@ describe("Test Case for Account", function() {
     // Rule 3
     cy.get("[data-test=add-rule]").click();
     select_creator_group("New EMEA");
-    add_whitelist(1, "List 1");
+    add_whitelist(1, "List testnet");
 
     // Rule 4
     cy.get("[data-test=add-rule]").click();
     select_creator_group("APAC");
     add_amount_range(0, "0.0000001", "1");
-    add_whitelist(0, "List 1");
+    add_whitelist(0, "List testnet");
     add_approval_step_operators(
       0,
       "Claudia Schmitt",
