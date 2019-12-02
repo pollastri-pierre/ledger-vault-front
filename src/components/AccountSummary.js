@@ -1,65 +1,35 @@
 // @flow
 
-import React, { PureComponent } from "react";
-import cx from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import React from "react";
+
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 
 import type { Account } from "data/types";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import colors from "shared/colors";
 
-const styles = {
-  container: {
-    display: "flex",
-    alignItems: "center",
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 14,
-  },
-  desc: {
-    fontSize: 10,
-    color: colors.steel,
-  },
-};
-
 type Props = {
   account: Account,
-
-  classes: { [_: $Keys<typeof styles>]: string },
-  className?: string,
 };
 
-class AccountSummary extends PureComponent<Props> {
-  render() {
-    const { account, className, classes } = this.props;
-    const currency = getCryptoCurrencyById(account.currency);
-    return (
-      <div className={cx(className, classes.container)}>
-        <div className={classes.iconContainer}>
-          <CryptoCurrencyIcon
-            currency={currency}
-            color={currency.color}
-            size={24}
-          />
-        </div>
-        <div>
-          <div className={classes.title}>{account.name}</div>
-          <div className={classes.desc}>
-            {`${currency.name} #${account.id}`}
-          </div>
-        </div>
-      </div>
-    );
-  }
+export default function AccountSummary(props: Props) {
+  const { account } = props;
+  const currency = getCryptoCurrencyById(account.currency);
+  return (
+    <Box align="center" horizontal flow={10} ml={5}>
+      <CryptoCurrencyIcon
+        currency={currency}
+        color={currency.color}
+        size={24}
+      />
+      <Box>
+        <Text fontWeight="bold">{account.name}</Text>
+        <Text size="small" color={colors.steel}>
+          {`${currency.name} #${account.id}`}
+        </Text>
+      </Box>
+    </Box>
+  );
 }
-
-export default withStyles(styles)(AccountSummary);

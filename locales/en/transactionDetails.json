@@ -11,6 +11,10 @@
     "status": "Status",
     "total": "Total amount"
   },
+  "note": {
+    "noData": "No note for this transaction",
+    "author": "Published by {{author}}"
+  },
   "tabs": {
     "details": "Details",
     "history": "History",

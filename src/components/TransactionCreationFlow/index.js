@@ -60,12 +60,14 @@ const steps = [
             fontWeight="bold"
             size="header"
           />
-          <Amount
-            smallerInnerMargin
-            account={account}
-            value={totalSpent}
-            strong
-          />
+          {account && (
+            <Amount
+              smallerInnerMargin
+              account={account}
+              value={totalSpent}
+              strong
+            />
+          )}
         </Box>
       );
     },
