@@ -112,7 +112,9 @@ function TransactionsGraph(props: Props) {
         const { type, amount, fees } = rawTransactions[j];
         balance =
           type === "SEND"
-            ? balance.minus(amount.plus(fees))
+            ? account.account_type === "Erc20"
+              ? balance.minus(amount)
+              : balance.minus(amount.plus(fees))
             : balance.plus(amount);
         j++;
       }
