@@ -14,11 +14,10 @@ import {
 
 import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
-import { OutOfDateApp, remapError } from "utils/errors";
+import { OutOfDateApp, remapError, NoChannelForDevice } from "utils/errors";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion, getU2FPublicKey } from "device/interactions/common";
 import { INVALID_DATA, DEVICE_REJECT_ERROR_CODE } from "device";
-import { softwareMode } from "device/interface";
 import { from } from "rxjs";
 import type { GateError } from "data/types";
 
@@ -73,7 +72,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
 
   shouldRetry = e => {
     if (e instanceof OutOfDateApp) return false;
-    if (softwareMode()) return false;
+    if (e instanceof NoChannelForDevice) return false;
     // $FlowFixMe
     return DO_NOT_RETRY.indexOf(e.statusCode) === -1;
   };
