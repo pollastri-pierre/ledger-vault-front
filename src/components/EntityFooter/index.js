@@ -8,7 +8,10 @@ import { Trans } from "react-i18next";
 
 import { RichModalFooter, ConfirmModal } from "components/base/Modal";
 import { useOrganization } from "components/OrganizationContext";
-import type { Interaction } from "components/DeviceInteraction";
+import type {
+  Interaction,
+  DeviceInteractionError,
+} from "components/DeviceInteraction";
 import DeviceInteraction from "components/DeviceInteraction";
 import TranslatedError from "components/TranslatedError";
 import { useMe } from "components/UserContextProvider";
@@ -100,7 +103,7 @@ function EntityFooter(props: Props) {
   const [isRevokeModalOpened, setRevokeModalOpened] = useState(false);
   const [slide, setSlide] = useState(SLIDES.initial);
   const [action, setAction] = useState<?Action>(null);
-  const [error, setError] = useState<?Error>(null);
+  const [error, setError] = useState<?DeviceInteractionError>(null);
 
   const isRequestPending = hasPendingRequest(entity);
   const canBeRevoked = entity.status === "ACTIVE" && !!revokeParams;
@@ -296,7 +299,9 @@ function EntityFooter(props: Props) {
                   <span style={{ fontWeight: "bold", marginRight: 5 }}>
                     Error
                   </span>{" "}
-                  {extractErrorContent(error, null) || (
+                  {error.json ? (
+                    extractErrorContent(error, null)
+                  ) : (
                     <TranslatedError field="description" error={error} />
                   )}
                 </div>
