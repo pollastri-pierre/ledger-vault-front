@@ -8,7 +8,10 @@ import { Trans } from "react-i18next";
 
 import { RichModalFooter, ConfirmModal } from "components/base/Modal";
 import { useOrganization } from "components/OrganizationContext";
-import type { Interaction } from "components/DeviceInteraction";
+import type {
+  Interaction,
+  DeviceInteractionError,
+} from "components/DeviceInteraction";
 import DeviceInteraction from "components/DeviceInteraction";
 import TranslatedError from "components/TranslatedError";
 import { useMe } from "components/UserContextProvider";
@@ -19,6 +22,7 @@ import Slider from "components/base/Slider";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
+import { DEVICE_REJECT_ERROR_CODE } from "device";
 
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import RequestsQuery from "api/queries/RequestsQuery";
@@ -99,7 +103,7 @@ function EntityFooter(props: Props) {
   const [isRevokeModalOpened, setRevokeModalOpened] = useState(false);
   const [slide, setSlide] = useState(SLIDES.initial);
   const [action, setAction] = useState<?Action>(null);
-  const [error, setError] = useState<?Error>(null);
+  const [error, setError] = useState<?DeviceInteractionError>(null);
 
   const isRequestPending = hasPendingRequest(entity);
   const canBeRevoked = entity.status === "ACTIVE" && !!revokeParams;
@@ -173,7 +177,11 @@ function EntityFooter(props: Props) {
   const handleError = err => {
     const isBlockingReasons =
       !!err && !!err.json && !!err.json.blocking_reasons;
-    if (isBlockingReasons) {
+
+    const userCancelOnDevice =
+      err && err.statusCode === DEVICE_REJECT_ERROR_CODE;
+
+    if (isBlockingReasons || userCancelOnDevice) {
       onReset();
       return;
     }
@@ -291,7 +299,9 @@ function EntityFooter(props: Props) {
                   <span style={{ fontWeight: "bold", marginRight: 5 }}>
                     Error
                   </span>{" "}
-                  {extractErrorContent(error, null) || (
+                  {error.json ? (
+                    extractErrorContent(error, null)
+                  ) : (
                     <TranslatedError field="description" error={error} />
                   )}
                 </div>
