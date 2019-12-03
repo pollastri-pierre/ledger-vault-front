@@ -6,7 +6,7 @@ import type { Translate } from "data/types";
 import { withTranslation, Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
-import Arrow from "../../components/icons/full/ArrowDown";
+import Arrow from "components/icons/full/ArrowDown";
 
 const styles = {
   base: { marginBottom: 40 },

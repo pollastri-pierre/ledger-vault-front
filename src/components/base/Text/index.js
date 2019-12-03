@@ -30,6 +30,7 @@ export type TextProps = {|
   components?: React$Node,
   values?: { [string]: string | number },
   className?: string,
+  overflowWrap?: string,
 |};
 
 const TextBase = styled.div`
@@ -45,6 +46,7 @@ const TextBase = styled.div`
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
   user-select: ${p => (p.noSelect ? "none" : "inherit")};
   text-align: ${p => (p.textAlign ? p.textAlign : "inherit")};
+  overflow-wrap: ${p => (p.overflowWrap ? p.overflowWrap : "inherit")};
   ${p =>
     p.selectable
       ? `

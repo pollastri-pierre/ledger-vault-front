@@ -1,12 +1,12 @@
 // @flow
 import React, { PureComponent } from "react";
 import { withTranslation } from "react-i18next";
-import { withStyles } from "@material-ui/core/styles";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import AccountSummary from "components/AccountSummary";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
+import Box from "components/base/Box";
 import { InputText, Label } from "components/base/form";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 
@@ -17,7 +17,6 @@ import type { AccountCreationStepProps, ParentAccount } from "../types";
 
 type Props = AccountCreationStepProps & {
   t: Translate,
-  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 type State = {
@@ -112,7 +111,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
   };
 
   render() {
-    const { t, payload, classes } = this.props;
+    const { t, payload } = this.props;
     const { erc20token } = payload;
     const { matchingNamesWarning } = this.state;
     if (!erc20token) return null;
@@ -153,9 +152,11 @@ class ERC20RenderName extends PureComponent<Props, State> {
               {...inputProps}
             />
             {matchingNamesWarning && (
-              <InfoBox withIcon type="warning" className={classes.infoBox}>
-                <Text>{t("newAccount:erc20.matchingNameWarning")}</Text>
-              </InfoBox>
+              <Box mt={20}>
+                <InfoBox withIcon type="warning">
+                  <Text>{t("newAccount:erc20.matchingNameWarning")}</Text>
+                </InfoBox>
+              </Box>
             )}
           </>
         )}
@@ -163,10 +164,4 @@ class ERC20RenderName extends PureComponent<Props, State> {
     );
   }
 }
-
-const styles = {
-  infoBox: {
-    marginTop: 20,
-  },
-};
-export default withStyles(styles)(withTranslation()(ERC20RenderName));
+export default withTranslation()(ERC20RenderName);

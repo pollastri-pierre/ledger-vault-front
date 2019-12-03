@@ -9,7 +9,7 @@ import Cryptosteel from "components/icons/thin/Cryptosteel";
 import RecoverySheet from "components/icons/thin/RecoverySheet";
 import { withStyles } from "@material-ui/core/styles";
 import DialogButton from "components/legacy/DialogButton";
-import { Title, Introduction } from "../../components/Onboarding";
+import { Title, Introduction } from "components/Onboarding";
 import Footer from "./Footer";
 
 const step = {

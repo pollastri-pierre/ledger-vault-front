@@ -16,7 +16,7 @@ import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import { CardError } from "components/base/Card";
 import type { Connection } from "restlay/ConnectionQuery";
 import type { GenericRequest } from "data/types";
-import ApprovalSlider from "containers/Onboarding/ApprovalSlider";
+import ApprovalSlider from "components/legacy/Onboarding/ApprovalSlider";
 
 type Props = {
   close: () => void,

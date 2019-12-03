@@ -6,12 +6,12 @@ import AlertsContainer from "components/legacy/AlertsContainer";
 import UpdateApp from "components/UpdateApp/LinksToUpdater";
 import MockDevices from "components/MockDevices";
 import GlobalStyle from "components/GlobalStyle";
+import OnboardingContainer from "components/legacy/Onboarding/OnboardingContainer";
 import Welcome from "./Welcome";
 import Login from "./Login";
 
 import App from "./App/App";
 import Logout from "./Login/Logout";
-import OnboardingContainer from "./Onboarding/OnboardingContainer";
 import PrivateRoute from "./Login/PrivateRoute";
 import RegisterUser from "./RegisterUser";
 

@@ -9,7 +9,7 @@ import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import { connect } from "react-redux";
 import { SpinnerCentered } from "components/base/Spinner";
-import Fragment from "containers/Onboarding/Fragments";
+import Fragment from "components/legacy/Onboarding/Fragments";
 import {
   openWrappingChannel,
   toggleDeviceModal,

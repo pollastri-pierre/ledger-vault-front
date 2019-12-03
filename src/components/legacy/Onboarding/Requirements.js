@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import Briefcase from "components/icons/thin/Briefcase";
 import RecoverySheet from "components/icons/thin/RecoverySheet";
-import People from "../../components/icons/thin/People";
+import People from "components/icons/thin/People";
 
 const blue = {
   base: {

@@ -1,76 +1,49 @@
 // @flow
-import React, { Component } from "react";
+import React from "react";
 import { BigNumber } from "bignumber.js";
-import { withStyles } from "@material-ui/core/styles";
 import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
 import type { Account, TransactionType } from "data/types";
 import TransactionTypeIcon from "components/TransactionTypeIcon";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 import CurrencyAccountValue from "./CurrencyAccountValue";
-
-const styles = {
-  base: {
-    textAlign: "center",
-    marginBottom: "32px",
-  },
-  amount: {
-    fontSize: "20px",
-    margin: 0,
-  },
-  containerTitle: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  fiat: {
-    fontSize: "11px",
-    fontWeight: "600",
-    color: colors.steel,
-    display: "flex",
-    marginTop: "7px",
-    justifyContent: "center",
-  },
-};
 
 type Props = {
   amount: BigNumber,
   account: Account,
-  classes: Object,
   transactionType: TransactionType,
 };
 
-class OverviewTransaction extends Component<Props, *> {
-  render() {
-    const { amount, account, classes, transactionType } = this.props;
-    const isReceive = transactionType === "RECEIVE";
-    return (
-      <div className={classes.base}>
-        <Box horizontal justify="center" align="center" flow={10}>
-          <TransactionTypeIcon type={transactionType} />
-          <div
-            className={classes.amount}
-            style={{ color: isReceive ? colors.green : colors.shark }}
-          >
-            <CurrencyAccountValue
-              account={account}
-              value={amount}
-              alwaysShowSign
-              type={transactionType}
-            />
-          </div>
-        </Box>
-        <div className={classes.fiat}>
-          <CounterValue
+export default function OverviewTransaction(props: Props) {
+  const { amount, account, transactionType } = props;
+  const isReceive = transactionType === "RECEIVE";
+  return (
+    <Box mb={32}>
+      <Box horizontal justify="center" align="center" flow={10}>
+        <TransactionTypeIcon type={transactionType} />
+        <Text size="header" color={isReceive ? colors.green : colors.shark}>
+          <CurrencyAccountValue
+            account={account}
             value={amount}
-            fromAccount={account}
             alwaysShowSign
             type={transactionType}
           />
-        </div>
-      </div>
-    );
-  }
+        </Text>
+      </Box>
+      <Text
+        textAlign="center"
+        color={colors.steel}
+        size="small"
+        fontWeight="semiBold"
+      >
+        <CounterValue
+          value={amount}
+          fromAccount={account}
+          alwaysShowSign
+          type={transactionType}
+        />
+      </Text>
+    </Box>
+  );
 }
-
-export default withStyles(styles)(OverviewTransaction);

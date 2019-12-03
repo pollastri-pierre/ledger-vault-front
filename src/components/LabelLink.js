@@ -1,45 +1,26 @@
 // @flow
-import React, { Component } from "react";
-import cx from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import React from "react";
+import Text from "components/base/Text";
+import Box from "components/base/Box";
 
 import colors from "shared/colors";
 
-// this component is wheter active or inactive depending on the route
-
-const styles = {
-  base: {
-    textTransform: "uppercase",
-    fontSize: 11,
-    color: colors.steel,
-    fontWeight: 600,
-    paddingLeft: 40,
-    display: "block",
-    marginBottom: 15,
-  },
-  selected: {
-    color: colors.black,
-  },
-};
-
-class LabelLink extends Component<{
-  className?: string,
-  selected: boolean,
-  classes: { [_: $Keys<typeof styles>]: string },
+type Props = {
   label: string,
-}> {
-  render() {
-    const { classes, className, label, selected } = this.props;
-    return (
-      <span
-        className={cx(classes.base, className, {
-          [classes.selected]: selected,
-        })}
+  selected: boolean,
+};
+export default function LabelLink(props: Props) {
+  const { selected, label } = props;
+  return (
+    <Box mb={15} pl={40}>
+      <Text
+        uppercase
+        fontWeight="semiBold"
+        size="small"
+        color={selected ? colors.black : colors.steel}
       >
         {label}
-      </span>
-    );
-  }
+      </Text>
+    </Box>
+  );
 }
-
-export default withStyles(styles)(LabelLink);
