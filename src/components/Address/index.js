@@ -27,13 +27,13 @@ const AddressDisplay = ({ address, history }: Props) => (
     <Box horizontal justify="space-between">
       <Box horizontal align="center" flow={5}>
         <Icon currency={address.currency} />
-        <Text fontWeight="semiBold" ellipsis>
-          {address.name}
-        </Text>
+        <Text fontWeight="semiBold">{address.name}</Text>
         {history && <Box>{iconByHistory[history]}</Box>}
       </Box>
     </Box>
-    <Text style={styles.address}>{address.address}</Text>
+    <Text style={styles.address} ellipsis>
+      {address.address}
+    </Text>
   </Container>
 );
 

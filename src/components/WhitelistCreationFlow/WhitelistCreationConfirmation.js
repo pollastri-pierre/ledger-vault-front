@@ -65,7 +65,7 @@ export const WhitelistDetails = (props: WhitelistDetailsProps) => {
               >
                 <Box horizontal flow={10}>
                   {addr.currency && <AccountIcon currencyId={addr.currency} />}
-                  <Text size="small" uppercase color={colors.shark}>
+                  <Text size="small" color={colors.shark}>
                     {addr.name}
                   </Text>
                 </Box>
