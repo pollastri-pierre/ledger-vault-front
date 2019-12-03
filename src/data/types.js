@@ -153,6 +153,7 @@ type AccountCommon = {
   balance: BigNumber,
   currency: string,
   parent_balance?: BigNumber,
+  has_access_to_parent: ?Boolean,
   created_on: string,
   governance_rules: GovernanceRules | null,
   fresh_addresses: *,

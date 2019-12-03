@@ -156,17 +156,18 @@ const WidgetContent = ({ account }: Props) => {
                   <Copy text={account.contract_address} />
                 </Box>
               </InfoSquare>
-              {account.parent && (
-                <InfoSquare>
-                  <Label>Parent Ethereum account</Label>
-                  <Link to={account.parent.toString()}>
-                    <Box horizontal flow={5} align="center" justify="center">
-                      <FaLink />
-                      <Text i18nKey="accountView:navigateParent" />
-                    </Box>
-                  </Link>
-                </InfoSquare>
-              )}
+              {account.parent &&
+                (me.role === "ADMIN" || account.has_access_to_parent) && (
+                  <InfoSquare>
+                    <Label>Parent Ethereum account</Label>
+                    <Link to={account.parent.toString()}>
+                      <Box horizontal flow={5} align="center" justify="center">
+                        <FaLink />
+                        <Text i18nKey="accountView:navigateParent" />
+                      </Box>
+                    </Link>
+                  </InfoSquare>
+                )}
             </>
           )}
         </Box>

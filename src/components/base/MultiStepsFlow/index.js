@@ -181,7 +181,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
           steps={steps}
           renderStep={this.StepName}
         />
-        <Box grow p={40} style={styles.content}>
+        <Box grow p={40}>
           <Step {...stepProps} {...additionalProps} />
         </Box>
         <RichModalFooter
@@ -236,13 +236,9 @@ const styles = {
   header: {
     borderTopLeftRadius: 3,
     borderTopRightRadius: 3,
-    userSelect: "none",
   },
   footer: {
     height: 60,
-  },
-  content: {
-    userSelect: "none",
   },
   checkOrNumber: {
     width: 10,
