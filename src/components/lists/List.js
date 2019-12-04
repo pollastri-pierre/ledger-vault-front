@@ -8,38 +8,65 @@ import VaultLink from "components/VaultLink";
 import colors, { darken } from "shared/colors";
 import Text from "components/base/Text";
 
-export const List = styled.div`
-  border: 1px solid ${colors.form.border};
-  background: white;
-  border-radius: 4px;
-  > * + * {
-    border-top: 1px solid ${colors.form.border};
-  }
-  > *:first-child {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-  }
-  > *:last-child {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-  }
-`;
+export const List = styled.div(p => {
+  const listDisplaySpecific =
+    p.display === "grid"
+      ? `
+          display: flex;
+          flex-wrap: wrap;
+        `
+      : `
+          border: 1px solid ${colors.form.border};
+          border-radius: 4px;
 
-const ListItemContainer = styled.div`
-  // important to keep display: block, because can be forwarded as <a />
-  display: block;
+          > * + * {
+            border-top: 1px solid ${colors.form.border};
+          }
+          > *:first-child {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+          }
+          > *:last-child {
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+          }
+        `;
 
-  padding: 20px;
-  position: relative;
-  &:hover {
-    cursor: ${p => (p.onClick ? "pointer" : "")};
-    background: ${colors.form.bg};
-  }
-  &:active {
-    cursor: ${p => (p.onClick ? "pointer" : "")};
-    background: ${darken(colors.form.bg, 0.02)};
-  }
-`;
+  return `
+    ${listDisplaySpecific};
+  `;
+});
+
+const ListItemContainer = styled.div(p => {
+  const listItemDisplaySpecific =
+    p.display === "grid"
+      ? `
+          width: ${p.tileWidth ? p.tileWidth : 300}px;
+          border: 1px solid ${colors.form.border};
+          margin: 5px
+        `
+      : ``;
+
+  return `
+    ${listItemDisplaySpecific}
+
+    // important to keep display: block, because can be forwarded as <a />
+    display: block;
+    position: relative;
+    background: white;
+
+    &:hover {
+      cursor: ${p.onClick ? "pointer" : ""};
+      background: ${colors.form.bg};
+    }
+    &:active {
+      cursor: ${p.onClick ? "pointer" : ""};
+      background: ${darken(colors.form.bg, 0.02)};
+    }
+    padding: ${p.compact ? "10px" : "20px"};
+
+    `;
+});
 
 const RoleVaultLink = p => <VaultLink withRole {...p} />;
 
