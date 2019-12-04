@@ -143,6 +143,7 @@ const BACKDROP_STYLE = {
   right: 0,
   bottom: 0,
   background: "rgba(0, 0, 0, 0.5)",
+  zIndex: 100,
 };
 
 const CONTAINER_STYLE = {

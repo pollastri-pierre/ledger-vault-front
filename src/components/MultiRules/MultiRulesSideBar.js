@@ -3,8 +3,9 @@
 // TODO: put back when we use real ids
 /* eslint-disable react/no-array-index-key */
 
-import React from "react";
+import React, { useState } from "react";
 import { FaGripVertical } from "react-icons/fa";
+import { Trans } from "react-i18next";
 import { FiPlus } from "react-icons/fi";
 import { MdClear } from "react-icons/md";
 import styled from "styled-components";
@@ -16,6 +17,7 @@ import {
 
 import colors, { darken } from "shared/colors";
 import Box from "components/base/Box";
+import { ConfirmModal } from "components/base/Modal";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
 import { getRulesSetErrors, isEmptyRulesSet } from "./helpers";
@@ -46,8 +48,19 @@ const MultiRulesSideBar = (props: Props) => {
     onMove,
     readOnly,
   } = props;
+  const [removingIndex, setRemovingIndex] = useState<number | null>(null);
+
+  const handleRemove = i => () => setRemovingIndex(i);
+  const handleRejectRemoval = () => setRemovingIndex(null);
+  const handleConfirmRemoval = () => {
+    if (removingIndex === null) return;
+    onRemove(removingIndex);
+    setRemovingIndex(null);
+  };
+
   const hasMultiple = rulesSets.length > 1;
-  return (
+
+  const sidebar = (
     <MultiRulesSidebarContainer
       lockToContainerEdges
       lockOffset={0}
@@ -68,7 +81,7 @@ const MultiRulesSideBar = (props: Props) => {
           isActive={i === activeIndex}
           isLast={i === rulesSets.length - 1}
           isFirst={i === 0}
-          onRemove={hasMultiple ? () => onRemove(i) : undefined}
+          onRemove={hasMultiple ? handleRemove(i) : undefined}
           onMove={hasMultiple ? onMove : undefined}
           readOnly={readOnly}
         />
@@ -90,6 +103,20 @@ const MultiRulesSideBar = (props: Props) => {
         </Box>
       )}
     </MultiRulesSidebarContainer>
+  );
+
+  return (
+    <>
+      {sidebar}
+      <ConfirmModal
+        isOpened={removingIndex !== null}
+        onReject={handleRejectRemoval}
+        onConfirm={handleConfirmRemoval}
+        confirmLabel={<Trans i18nKey="approvalsRules:removeRulesSetYes" />}
+      >
+        <Trans i18nKey="approvalsRules:removeRulesSetConfirm" />
+      </ConfirmModal>
+    </>
   );
 };
 
