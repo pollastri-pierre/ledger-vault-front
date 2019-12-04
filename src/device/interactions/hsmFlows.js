@@ -205,21 +205,21 @@ const onboardingPostResult: Interaction = {
 };
 
 export const registerUserFlow = [
-  getValidationPublicKey,
   getConfidentialityPublicKey,
   getAttestation,
   operatorGetChallenge,
   onboardingRegisterDevice,
+  getValidationPublicKey,
   onboardingRegisterData,
   onboardingPostResult,
   postResult,
 ];
 export const onboardingRegisterFlow = [
-  getValidationPublicKey,
   getConfidentialityPublicKey,
   getAttestation,
   onboardingGetChallenge,
   onboardingRegisterDevice,
+  getValidationPublicKey,
   onboardingRegisterData,
   onboardingPostResult,
 ];
