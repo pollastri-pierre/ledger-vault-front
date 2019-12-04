@@ -6,6 +6,7 @@ import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Copy from "components/base/Copy";
 import AccountName from "components/AccountName";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import colors from "shared/colors";
 import InfoBox from "components/base/InfoBox";
@@ -73,13 +74,11 @@ const Rows = ({ account }: { account: Account }) => {
             align="center"
             style={{ cursor: "pointer" }}
           >
-            <div>
-              <Trans
-                i18nKey="accountCreation:rulesSumup"
-                count={account.governance_rules.length}
-                values={{ count: account.governance_rules.length }}
-              />
-            </div>
+            <Text
+              i18nKey="accountCreation:rulesSumup"
+              count={account.governance_rules.length}
+              values={{ count: account.governance_rules.length }}
+            />
             {isRuleVisible ? iconUp : iconDown}
           </Box>
         </LineRow>

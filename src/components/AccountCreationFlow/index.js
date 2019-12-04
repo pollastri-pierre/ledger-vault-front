@@ -57,7 +57,7 @@ const emptyRulesSets = [
   },
 ];
 
-const initialPayload: AccountCreationPayload = {
+export const initialPayload: AccountCreationPayload = {
   name: "",
   accountStatus: "",
   rulesSets: emptyRulesSets,

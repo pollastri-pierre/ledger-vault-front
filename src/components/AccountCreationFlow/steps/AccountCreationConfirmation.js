@@ -4,16 +4,22 @@
 // DISCLAIMER: this is legacy code. to be refactored.
 // ==================================================
 
-import React from "react";
+import React, { useState } from "react";
 import { Trans } from "react-i18next";
 
 import InfoBox from "components/base/InfoBox";
 import MultiRules from "components/MultiRules";
 import { DiffBlock } from "containers/Admin/Accounts/AccountEditRequest";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import AccountName from "components/AccountName";
 import LineRow from "components/LineRow";
+import colors from "shared/colors";
 import type { AccountCreationStepProps } from "../types";
+
+const iconDown = <FaChevronDown size={12} color={colors.lightGrey} />;
+const iconUp = <FaChevronUp size={12} color={colors.lightGrey} />;
 
 export default (props: AccountCreationStepProps) => {
   const {
@@ -24,7 +30,13 @@ export default (props: AccountCreationStepProps) => {
     groups,
     initialPayload,
   } = props;
+
   const { currency, erc20token, accountStatus } = payload;
+  const currencyOrToken = currency || erc20token;
+  const [isRuleVisible, setRule] = useState(true);
+  const toggleRuleVisible = () => {
+    return setRule(!isRuleVisible);
+  };
   return (
     <Box grow flow={20}>
       <Box grow>
@@ -62,6 +74,31 @@ export default (props: AccountCreationStepProps) => {
           <LineRow label={<Trans i18nKey="newAccount:confirmation.currency" />}>
             <span className="info-value currency">{currency.name}</span>
           </LineRow>
+        )}
+        <LineRow
+          label={<Trans i18nKey="newAccount:confirmation.transactionRules" />}
+        >
+          <Box
+            onClick={toggleRuleVisible}
+            horizontal
+            flow={10}
+            align="center"
+            style={{ cursor: "pointer" }}
+          >
+            <Text
+              i18nKey="accountCreation:rulesSumup"
+              count={payload.rulesSets.length}
+              values={{ count: payload.rulesSets.length }}
+            />
+            {isRuleVisible ? iconUp : iconDown}
+          </Box>
+        </LineRow>
+        {currencyOrToken && isRuleVisible && (
+          <MultiRules
+            readOnly
+            rulesSets={payload.rulesSets}
+            currencyOrToken={currencyOrToken}
+          />
         )}
       </Box>
       {isEditMode && currency && (
