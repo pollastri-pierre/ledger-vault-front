@@ -29,6 +29,7 @@ import ExternalLink from "components/icons/ExternalLink";
 import colors from "shared/colors";
 
 import type { AccountCreationStepProps, ParentAccount } from "../types";
+import { initialPayload } from "..";
 
 const styles = {
   topMarged: {
@@ -130,7 +131,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
           : null,
       });
     }
-    updatePayload(patch, onPatched);
+    updatePayload({ ...initialPayload, ...patch }, onPatched);
   };
 
   render() {

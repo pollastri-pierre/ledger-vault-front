@@ -9,7 +9,8 @@
     "members": "Members",
     "parentAccount": "Parent Ethereum account",
     "selectedMembers": "{{memberLength}} selected",
-    "title": "confirmation"
+    "title": "confirmation",
+    "transactionRules": "Transaction rules"
   },
   "currency": {
     "label": "Crypto asset",
