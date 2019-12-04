@@ -29,5 +29,8 @@
     "accountName": "Account name",
     "threshold": "Threshold",
     "quorum": "{{nb}} approvals from"
-  }
+  },
+
+  "removeRulesSetConfirm": "Are you sure you want to remove this rule?",
+  "removeRulesSetYes": "Yes, remove rule"
 }
