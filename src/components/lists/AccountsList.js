@@ -14,19 +14,28 @@ import { List, ListEmpty, ListItem } from "./List";
 
 type Props = {
   accounts: Account[],
+  display?: string,
+  tileWidth?: number,
+  compact?: boolean,
 };
 
 export default function AccountsList(props: Props) {
-  const { accounts } = props;
+  const { accounts, display, tileWidth, compact } = props;
 
   if (!accounts.length) {
     return <ListEmpty>No accounts</ListEmpty>;
   }
 
   return (
-    <List>
+    <List display={display} tileWidth={tileWidth} compact={compact}>
       {accounts.map(account => (
-        <ListItem key={account.id} to={`/accounts/view/${account.id}`}>
+        <ListItem
+          display={display}
+          tileWidth={tileWidth}
+          compact={compact}
+          key={account.id}
+          to={`/accounts/view/${account.id}`}
+        >
           <Box horizontal align="center">
             <Box grow>
               <Box horizontal align="center" flow={10} pr={10}>

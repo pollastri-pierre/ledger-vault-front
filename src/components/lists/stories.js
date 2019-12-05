@@ -2,6 +2,7 @@ import React from "react";
 import faker from "faker";
 import capitalize from "lodash/capitalize";
 import { storiesOf } from "@storybook/react";
+import { boolean, text } from "@storybook/addon-knobs";
 
 import pageDecorator from "stories/pageDecorator";
 import backendDecorator from "stories/backendDecorator";
@@ -43,11 +44,20 @@ storiesOf("entities/Request", module)
 storiesOf("entities/Account", module)
   .addDecorator(backendDecorator([]))
   .addDecorator(pageDecorator)
-  .add("Accounts list", () => (
-    <div style={{ width: 400 }}>
-      <AccountsList accounts={accounts} />
-    </div>
-  ));
+  .add("Accounts list", () => {
+    const grid = boolean("grid", true);
+    const compact = boolean("compact", true);
+    return (
+      <div>
+        <AccountsList
+          accounts={accounts}
+          display={grid ? "grid" : "list"}
+          compact={compact}
+          tileWidth={grid && text("Tile width (!<200)", 300)}
+        />
+      </div>
+    );
+  });
 
 function genAllRequests(status = "PENDING_APPROVAL") {
   return RequestActivityTypeList.map(type => {
