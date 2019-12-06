@@ -3,7 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import colors, { rgba } from "shared/colors";
+import colors, { opacity } from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import AdminIcon from "components/icons/AdminIcon";
@@ -73,16 +73,16 @@ export default (props: UserCreationStepProps) => {
 const Choice = styled.div`
   display: block;
   cursor: pointer;
-  background: ${p => (p.isActive ? rgba(colors.bLive, 0.1) : colors.white)};
+  background: ${p => (p.isActive ? opacity(colors.bLive, 0.1) : colors.white)};
   border: 2px solid
-    ${p => (p.isActive ? rgba(colors.bLive, 0.6) : colors.argile)};
+    ${p => (p.isActive ? opacity(colors.bLive, 0.6) : colors.argile)};
   width: 210px;
   height: 210px;
   padding: 20px;
   padding-top: 30px;
   border-radius: 4px;
   &:hover {
-    background: ${rgba(colors.bLive, 0.1)};
+    background: ${opacity(colors.bLive, 0.1)};
   }
 `;
 
