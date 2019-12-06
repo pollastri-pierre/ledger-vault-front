@@ -1,5 +1,7 @@
 // @flow
 
+import sortBy from "lodash/sortBy";
+
 import type {
   RulesSet,
   RuleType,
@@ -59,6 +61,48 @@ export function isValidRulesSet(set: RulesSet): boolean {
 }
 export function isEmptyRulesSet(set: RulesSet): boolean {
   return set.rules.length === 1 && set.rules[0].data.length === 0;
+}
+
+export function getRulesSetHash(set: RulesSet) {
+  const thresholdRule = getThresholdRule(set);
+  const whitelistRule = getWhitelistRule(set);
+  const multiAuthRule = getMultiAuthRule(set);
+  return [
+    thresholdRule
+      ? [
+          thresholdRule.data[0].min.toFixed(),
+          thresholdRule.data[0].max
+            ? thresholdRule.data[0].max.toFixed()
+            : "nolimit",
+        ].join("-")
+      : "NO_THRESHOLD",
+    whitelistRule
+      ? sortBy(
+          whitelistRule.data.map(w => (typeof w === "number" ? w : w.id)),
+        ).join("-")
+      : "NO_WHITELIST",
+    multiAuthRule
+      ? multiAuthRule.data
+          .map(step => {
+            if (!step) return "anon";
+            const isInternal = step.group.is_internal === true;
+            if (isInternal) {
+              const members = sortBy(step.group.members.map(m => m.id));
+              return `${step.quorum}|[${members.join(",")}]`;
+            }
+            return `${step.quorum}|${step.group.id}`;
+          })
+          .join("-")
+      : "NO_WHITELIST",
+  ].join("__");
+}
+
+export function getDuplicateRulesSet(
+  set: RulesSet,
+  sets: RulesSet[],
+): RulesSet | null {
+  const hash = getRulesSetHash(set);
+  return sets.find(s => s !== set && hash === getRulesSetHash(s)) || null;
 }
 
 export function serializeRulesSetsForPOST(sets: RulesSet[]) {

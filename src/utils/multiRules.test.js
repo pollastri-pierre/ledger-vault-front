@@ -6,6 +6,7 @@
 import BigNumber from "bignumber.js/bignumber.js";
 /* eslint-enable import/extensions */
 
+import { getRulesSetHash } from "components/MultiRules/helpers";
 import { getMatchingRulesSet } from "./multiRules";
 
 const user = {
@@ -60,33 +61,74 @@ const WHITELISTS = {
 const RULES = {
   ONLY_AUTH: {
     name: "Rule 1",
-    rules: [{ type: "MULTI_AUTHORIZATIONS", data: [{ quorum: 1, group: {} }] }],
+    rules: [
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [{ quorum: 1, group: { id: 42, is_internal: false } }],
+      },
+    ],
   },
   MULTI_AUTH_NOT_IN_FIRST_STEP: {
     name: "Rule 1",
     rules: [
-      { type: "MULTI_AUTHORIZATIONS", data: [null, { quorum: 1, group: {} }] },
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [null, { quorum: 1, group: { id: 42, is_internal: false } }],
+      },
     ],
   },
   THRESHOLD_1: {
     name: "With threshold 0 < amount < 20",
     rules: [
       { type: "THRESHOLD", data: [{ min: BigNumber(0), max: BigNumber(20) }] },
-      { type: "MULTI_AUTHORIZATIONS", data: [{ quorum: 1, group: {} }] },
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [
+          {
+            quorum: 1,
+            group: {
+              is_internal: true,
+              members: [
+                { ...user, id: 4 },
+                { ...user, id: 12 },
+              ],
+            },
+          },
+        ],
+      },
     ],
   },
   THRESHOLD_2: {
     name: "With threshold 10 < amount < Infinity",
     rules: [
       { type: "THRESHOLD", data: [{ min: BigNumber(10), max: null }] },
-      { type: "MULTI_AUTHORIZATIONS", data: [{ quorum: 1, group: {} }] },
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [{ quorum: 1, group: { id: 42, is_internal: false } }],
+      },
     ],
   },
   WHITELIST_1: {
     name: "With a whitelist",
     rules: [
       { type: "WHITELIST", data: [WHITELISTS.WHITELIST_1] },
-      { type: "MULTI_AUTHORIZATIONS", data: [{ quorum: 1, group: {} }] },
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [{ quorum: 1, group: { id: 42, is_internal: false } }],
+      },
+    ],
+  },
+  TWO_WHITELISTS: {
+    name: "With two whitelists",
+    rules: [
+      {
+        type: "WHITELIST",
+        data: [WHITELISTS.WHITELIST_1, WHITELISTS.WHITELIST_2],
+      },
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [{ quorum: 1, group: { id: 42, is_internal: false } }],
+      },
     ],
   },
   WHITELIST_AND_THRESHOLD: {
@@ -94,7 +136,10 @@ const RULES = {
     rules: [
       { type: "WHITELIST", data: [WHITELISTS.WHITELIST_1] },
       { type: "THRESHOLD", data: [{ min: BigNumber(0), max: BigNumber(20) }] },
-      { type: "MULTI_AUTHORIZATIONS", data: [{ quorum: 1, group: {} }] },
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [{ quorum: 1, group: { id: 42, is_internal: false } }],
+      },
     ],
   },
   WHITELIST_AND_THRESHOLD_2: {
@@ -102,7 +147,10 @@ const RULES = {
     rules: [
       { type: "WHITELIST", data: [WHITELISTS.WHITELIST_2] },
       { type: "THRESHOLD", data: [{ min: BigNumber(0), max: BigNumber(20) }] },
-      { type: "MULTI_AUTHORIZATIONS", data: [{ quorum: 1, group: {} }] },
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [{ quorum: 1, group: { id: 42, is_internal: false } }],
+      },
     ],
   },
 };
@@ -283,6 +331,33 @@ describe("multiRules", () => {
         const set = getMatchingRulesSet(input);
         expect(set).toBe(governanceRules[1]);
       });
+    });
+  });
+
+  describe("getRulesSetHash", () => {
+    it("should generate correct hash", () => {
+      expect(getRulesSetHash(RULES.ONLY_AUTH)).toBe(
+        "NO_THRESHOLD__NO_WHITELIST__1|42",
+      );
+      expect(getRulesSetHash(RULES.MULTI_AUTH_NOT_IN_FIRST_STEP)).toBe(
+        "NO_THRESHOLD__NO_WHITELIST__anon-1|42",
+      );
+      expect(getRulesSetHash(RULES.THRESHOLD_1)).toBe(
+        "0-20__NO_WHITELIST__1|[4,12]",
+      );
+      expect(getRulesSetHash(RULES.THRESHOLD_2)).toBe(
+        "10-nolimit__NO_WHITELIST__1|42",
+      );
+      expect(getRulesSetHash(RULES.WHITELIST_1)).toBe("NO_THRESHOLD__1__1|42");
+      expect(getRulesSetHash(RULES.WHITELIST_AND_THRESHOLD)).toBe(
+        "0-20__1__1|42",
+      );
+      expect(getRulesSetHash(RULES.WHITELIST_AND_THRESHOLD_2)).toBe(
+        "0-20__2__1|42",
+      );
+      expect(getRulesSetHash(RULES.TWO_WHITELISTS)).toBe(
+        "NO_THRESHOLD__1-2__1|42",
+      );
     });
   });
 });

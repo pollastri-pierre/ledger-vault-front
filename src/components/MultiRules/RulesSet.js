@@ -7,6 +7,7 @@ import Timeline, {
   TimelineStop,
   TimelineLabel,
 } from "components/base/Timeline";
+import InfoBox from "components/base/InfoBox";
 import Status from "components/Status";
 
 import type { User, Group, Whitelist, CurrencyOrToken } from "data/types";
@@ -40,6 +41,7 @@ type Props = {|
   whitelists: Whitelist[],
   currencyOrToken: CurrencyOrToken,
   readOnly?: boolean,
+  duplicateRulesSet?: RulesSetType | null,
 |};
 
 const RulesSet = (props: Props) => {
@@ -51,6 +53,7 @@ const RulesSet = (props: Props) => {
     groups,
     currencyOrToken,
     readOnly,
+    duplicateRulesSet,
   } = props;
 
   const thresholdRule = getThresholdRule(rulesSet);
@@ -84,7 +87,7 @@ const RulesSet = (props: Props) => {
 
   const hasApprovalSteps = multiAuthRule.data.length > 1;
 
-  return (
+  const timeline = (
     <Timeline readOnly={readOnly}>
       <CreatorStop
         rule={multiAuthRule}
@@ -182,6 +185,22 @@ const RulesSet = (props: Props) => {
       </TimelineStop>
     </Timeline>
   );
+
+  return (
+    <>
+      {duplicateRulesSet && <DuplicateWarning name={duplicateRulesSet.name} />}
+      {timeline}
+    </>
+  );
 };
+
+const DuplicateWarning = ({ name }: { name: string }) => (
+  <InfoBox type="warning" mb={20}>
+    <div>
+      {"This rule is identical to "}
+      <strong>{name}</strong>
+    </div>
+  </InfoBox>
+);
 
 export default RulesSet;
