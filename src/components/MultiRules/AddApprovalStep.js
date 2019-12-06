@@ -35,6 +35,7 @@ const AddApprovalStep = (props: Props) => {
     rule,
     users,
     groups,
+    stepIndex: rule.data.length,
   };
 
   return (
@@ -59,6 +60,7 @@ type ExtraProps = {
   rule: RuleMultiAuth,
   users: User[],
   groups: Group[],
+  stepIndex: number,
 };
 
 export const EditApprovalStep = ({
@@ -72,11 +74,12 @@ export const EditApprovalStep = ({
 }) => {
   if (!extraProps) return null;
   if (!value) return null;
-  const { rule, users, groups } = extraProps;
+  const { rule, users, groups, stepIndex } = extraProps;
   return (
     <ApprovalStepParameters
       rule={rule}
       step={value}
+      stepIndex={stepIndex}
       onChange={onChange}
       users={users}
       groups={groups}

@@ -67,7 +67,13 @@ const MultiAuthStop = ({
       indentation={1}
       bulletSize="small"
       bulletVariant="plain"
-      extraProps={{ rule, users, groups, hideHandler: hideHandler || readOnly }}
+      extraProps={{
+        rule,
+        users,
+        groups,
+        stepIndex: rule.data.indexOf(step),
+        hideHandler: hideHandler || readOnly,
+      }}
       label="Edit approval step"
       isValid={isStepValid}
       Icon={UserIcon}
@@ -87,6 +93,7 @@ type ExtraProps = {
   users: User[],
   groups: Group[],
   hideHandler: boolean,
+  stepIndex: number,
 };
 
 const DisplayApprovalStep = ({

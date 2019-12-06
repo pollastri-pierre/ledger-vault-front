@@ -14,16 +14,17 @@ import type { RuleMultiAuthStep, RuleMultiAuth } from "./types";
 type Props = {
   rule: RuleMultiAuth,
   step: RuleMultiAuthStep,
+  stepIndex: number,
   onChange: RuleMultiAuthStep => void,
   users: User[],
   groups: Group[],
 };
 
 const SelectApprovals = (props: Props) => {
-  const { rule, step, groups, users, onChange, ...p } = props;
+  const { rule, step, stepIndex, groups, users, onChange, ...p } = props;
   const { t } = useTranslation();
 
-  const options = filterAvailableOptions(rule, step, groups, users);
+  const options = filterAvailableOptions(rule, step, stepIndex, groups, users);
   const [filteredGroups, filteredUsers] = options;
 
   const handleChangeSelect = ({
@@ -90,12 +91,14 @@ const SelectApprovals = (props: Props) => {
 function filterAvailableOptions(
   rule: RuleMultiAuth,
   step: RuleMultiAuthStep,
+  stepIndex: number,
   groups: Group[],
   users: User[],
 ) {
   const usedGroupIDS = {};
   const usedUserIDS = {};
-  rule.data.forEach(s => {
+  rule.data.forEach((s, i) => {
+    if (i === stepIndex) return;
     if (!s) return;
     if (s.group.is_internal) {
       s.group.members.forEach(user => {
