@@ -73,7 +73,7 @@ export default (props: UserCreationStepProps) => {
 const Choice = styled.div`
   display: block;
   cursor: pointer;
-  background: ${p => (p.isActive ? opacity(colors.bLive, 0.1) : colors.white)};
+  background: ${p => (p.isActive ? opacity(colors.bLive, 0.05) : colors.white)};
   border: 2px solid
     ${p => (p.isActive ? opacity(colors.bLive, 0.6) : colors.argile)};
   width: 210px;
@@ -82,7 +82,10 @@ const Choice = styled.div`
   padding-top: 30px;
   border-radius: 4px;
   &:hover {
-    background: ${opacity(colors.bLive, 0.1)};
+    background: ${opacity(colors.bLive, 0.03)};
+  }
+  &:active {
+    background: ${opacity(colors.bLive, 0.05)};
   }
 `;
 
