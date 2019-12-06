@@ -37,7 +37,7 @@ export const logout = () => async (dispatch: Dispatch<*>) => {
 };
 
 export function login(token: string) {
-  setTokenToCookies(token);
+  // setTokenToCookies(token);
   return { type: LOGIN };
 }
 
@@ -47,7 +47,7 @@ export type State = {
 
 export default function reducer(
   state: State = {
-    isAuthenticated: !!getCookieToken(),
+    isAuthenticated: true,
   },
   action: Object,
 ) {

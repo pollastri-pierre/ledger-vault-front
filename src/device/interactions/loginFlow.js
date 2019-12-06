@@ -54,6 +54,7 @@ export const postU2FSignature: Interaction = {
       "POST",
       {
         authentication: u2f_authenticate.rawResponse,
+        token,
       },
       token,
     ),

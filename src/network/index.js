@@ -23,7 +23,7 @@ export default function<T>(
   const headers = {
     Accept: "application/json",
     "Content-Type": !fetchParams || !noJson ? "application/json" : "text/plain",
-    ...(token ? { "X-Ledger-Auth": token } : {}),
+    // ...(token ? { "X-Ledger-Auth": token } : {}),
   };
   const options: Object = { headers, method };
   if (method !== "GET" && body) {
