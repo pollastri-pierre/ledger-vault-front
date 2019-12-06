@@ -28,6 +28,25 @@ export function deserializeAccount(account: Account): Account {
     convertGovernanceRules(account.last_request.edit_data.governance_rules);
   }
 
+  //
+  // Context:
+  // - https://ledgerhq.atlassian.net/browse/LV-2096
+  // - https://ledgerhq.atlassian.net/browse/LV-2103
+  //
+  // There is apparently some blocker on gate side to fill a pending account
+  // with its governance rules, so let's fix the object here.
+  //
+  // Hope we can remove this some day.
+  //
+  if (account.status === "PENDING") {
+    // $FlowFixMe (we don't want to pollute Account type with next_governance_rules)
+    if (account.governance_rules === null && account.next_governance_rules) {
+      account.governance_rules = account.next_governance_rules;
+      account.next_governance_rules = null;
+      convertGovernanceRules(account.governance_rules);
+    }
+  }
+
   return {
     ...account,
     balance: BigNumber(account.balance),
