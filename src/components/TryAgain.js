@@ -1,80 +1,59 @@
 // @flow
 
-import React, { Component } from "react";
-import cx from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import React, { useState, useRef, useEffect } from "react";
+import styled from "styled-components";
+
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 
 import errorFormatter from "formatters/error";
+import colors from "shared/colors";
 import type { RestlayEnvironment } from "restlay/connectData";
 
-const styles = {
-  base: {
-    display: "block",
-    textAlign: "center",
-    fontSize: 14,
-    padding: 40,
-    cursor: "pointer",
-    "& strong": {
-      fontSize: "1.4em",
-    },
-    "& p.error": {
-      opacity: 0.5,
-      fontSize: "0.8em",
-    },
-  },
-  pending: {
-    opacity: 0.5,
-  },
+type Props = {
+  action: () => Promise<*> | *,
+  error: Error,
 };
-class TryAgain extends Component<
-  {
-    action: () => Promise<*> | *,
-    error: Error,
-    classes: { [$Keys<typeof styles>]: string },
-  },
-  { pending: boolean },
-> {
-  state = {
-    pending: false,
-  };
+export default function TryAgain(props: Props) {
+  const isUnmounted = useRef(false);
+  const [pending, setPending] = useState(false);
+  const { error, action } = props;
 
-  _unmounted = false;
+  useEffect(() => {
+    return () => {
+      isUnmounted.current = true;
+    };
+  }, []);
 
-  componentWillUnmount() {
-    this._unmounted = true;
-  }
-
-  onclick = (e: Event) => {
+  const onclick = (e: Event) => {
     e.preventDefault();
-    const { action } = this.props;
-    if (this.state.pending) return;
-    this.setState({ pending: true });
+    if (pending) return;
+    setPending(true);
     Promise.resolve()
       .then(action)
       .catch(e => e)
       .then(() => {
-        if (this._unmounted) return;
-        this.setState({ pending: false });
+        if (isUnmounted.current) return;
+        setPending(false);
       });
   };
 
-  render() {
-    const { pending } = this.state;
-    const { error, classes } = this.props;
-    return (
-      <div
-        className={cx(classes.base, { [classes.pending]: pending })}
-        onClick={this.onclick}
-      >
-        <p>An error occured.</p>
-        <strong>Reload</strong>
-        <p className="error">{errorFormatter(error)}</p>
-      </div>
-    );
-  }
+  return (
+    <Container p={40} onClick={onclick}>
+      <Text i18nKey="common:errorOccured" />
+      <Text fontWeight="bold" size="header" i18nKey="common:reload" />
+      <Text color={colors.form.error}>{errorFormatter(error)}</Text>
+    </Container>
+  );
 }
 
-const StyledTryAgain = withStyles(styles)(TryAgain);
+const Container = styled(Box).attrs({
+  p: 40,
+  flow: 15,
+  align: "center",
+})`
+  cursor: pointer;
+`;
 
 type ErrProps = {
   error: Error,
@@ -82,7 +61,5 @@ type ErrProps = {
 };
 
 export const RestlayTryAgain = ({ error, restlay }: ErrProps) => (
-  <StyledTryAgain error={error} action={restlay.forceFetch} />
+  <TryAgain error={error} action={restlay.forceFetch} />
 );
-
-export default StyledTryAgain;

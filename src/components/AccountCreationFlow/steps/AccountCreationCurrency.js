@@ -6,7 +6,6 @@
 
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
-import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
 
 import type { Account, ERC20Token } from "data/types";
@@ -25,30 +24,12 @@ import {
 } from "utils/cryptoCurrencies";
 import HelpLink from "components/HelpLink";
 import Text from "components/base/Text";
+import Box from "components/base/Box";
 import ExternalLink from "components/icons/ExternalLink";
 import colors from "shared/colors";
 
 import type { AccountCreationStepProps, ParentAccount } from "../types";
 import { initialPayload } from "..";
-
-const styles = {
-  topMarged: {
-    marginTop: 20,
-  },
-  radioContainer: {
-    fontSize: 12,
-    display: "flex",
-    alignItems: "flex-start",
-    cursor: "pointer",
-  },
-  radioContent: {
-    marginTop: 15,
-    marginBottom: 10,
-  },
-  parentAccountSelectContainer: {
-    marginTop: 10,
-  },
-};
 
 const findParentAccountInAccounts = (
   parentAccount: ?ParentAccount,
@@ -86,11 +67,7 @@ const getAvailableParentsAccounts = (
     .map(el => el.node);
 };
 
-type Props = AccountCreationStepProps & {
-  classes: { [_: $Keys<typeof styles>]: string },
-};
-
-class AccountCreationCurrencies extends PureComponent<Props> {
+class AccountCreationCurrencies extends PureComponent<AccountCreationStepProps> {
   handleChooseParentAccount = (parentAccount: ?Account) => {
     this.props.updatePayload({
       parentAccount: parentAccount ? { id: parentAccount.id } : null,
@@ -135,7 +112,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
   };
 
   render() {
-    const { payload, allAccounts, isEditMode, classes } = this.props;
+    const { payload, allAccounts, isEditMode } = this.props;
 
     const currencyOrToken = payload.currency || payload.erc20token || null;
 
@@ -170,22 +147,21 @@ class AccountCreationCurrencies extends PureComponent<Props> {
           )}
         />
         {payload.currency && isNotSupportedCoin(payload.currency) && (
-          <div className={classes.topMarged}>
+          <Box mt={20}>
             <InfoBox withIcon type="warning">
               <Text>
                 <Trans i18nKey="newAccount:not_supported" />
               </Text>
             </InfoBox>
-          </div>
+          </Box>
         )}
         {displayERC20Box && (
-          <div className={classes.topMarged}>
+          <Box mt={20}>
             {availableParentAccounts.length > 0 ? (
               <EthAccountsRadio
                 accounts={availableParentAccounts}
                 account={parentAccount}
                 onChange={this.handleChooseParentAccount}
-                classes={classes}
               />
             ) : (
               <InfoBox withIcon type="info">
@@ -197,7 +173,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
                 </Text>
               </InfoBox>
             )}
-          </div>
+          </Box>
         )}
       </Disabled>
     );
@@ -208,12 +184,10 @@ function EthAccountsRadio({
   onChange,
   account,
   accounts,
-  classes,
 }: {
   accounts: Account[],
   account: ?Account,
   onChange: (?Account) => void,
-  classes: { [_: $Keys<typeof styles>]: string },
 }) {
   const onChooseNull = () => onChange(null);
   const selectFirstIfNotSet = () => {
@@ -224,27 +198,30 @@ function EthAccountsRadio({
 
   return (
     <>
-      <div className={classes.radioContainer} onClick={selectFirstIfNotSet}>
+      <Box
+        cursor="pointer"
+        horizontal
+        align="flex-start"
+        onClick={selectFirstIfNotSet}
+      >
         <Radio color="primary" checked={account !== null} />
-        <div className={classes.radioContent}>
+        <Box my={15}>
           <Trans i18nKey="newAccount:erc20.selectExisting" />
-          <div className={classes.parentAccountSelectContainer}>
+          <Box mt={10}>
             <SelectAccount
               accounts={accounts}
               value={account || accounts[0]}
               onChange={onChange}
             />
-          </div>
-        </div>
-      </div>
-      <div className={classes.radioContainer} onClick={onChooseNull}>
+          </Box>
+        </Box>
+      </Box>
+      <Box cursor="pointer" horizontal align="center" onClick={onChooseNull}>
         <Radio color="primary" checked={account === null} />
-        <div className={classes.radioContent}>
-          <Trans i18nKey="newAccount:erc20.createNew" />
-        </div>
-      </div>
+        <Text i18nKey="newAccount:erc20.createNew" />
+      </Box>
     </>
   );
 }
 
-export default withStyles(styles)(AccountCreationCurrencies);
+export default AccountCreationCurrencies;

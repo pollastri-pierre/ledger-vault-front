@@ -34,5 +34,7 @@
   "role": {
     "ADMIN": "Administrator",
     "OPERATOR": "Operator"
-  }
+  },
+  "errorOccured": "An error occured",
+  "reload": "Reload"
 }
