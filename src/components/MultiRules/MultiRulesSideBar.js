@@ -20,7 +20,11 @@ import Box from "components/base/Box";
 import { ConfirmModal } from "components/base/Modal";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
-import { getRulesSetErrors, isEmptyRulesSet } from "./helpers";
+import {
+  getRulesSetErrors,
+  isEmptyRulesSet,
+  getDuplicateRulesSet,
+} from "./helpers";
 
 import type { RulesSet as RulesSetType } from "./types";
 
@@ -78,6 +82,10 @@ const MultiRulesSideBar = (props: Props) => {
           error={
             getRulesSetErrors(rulesSet).length > 0 && !isEmptyRulesSet(rulesSet)
           }
+          warning={
+            !isEmptyRulesSet(rulesSet) &&
+            !!getDuplicateRulesSet(rulesSet, rulesSets)
+          }
           isActive={i === activeIndex}
           isLast={i === rulesSets.length - 1}
           isFirst={i === 0}
@@ -131,6 +139,7 @@ type TabProps = {
   isLast: boolean,
   isFirst: boolean,
   error: Boolean,
+  warning: Boolean,
   onRemove?: () => void,
   onMove?: MoveHandler,
   readOnly?: boolean,
@@ -143,6 +152,7 @@ const RulesSetTab = SortableElement(
     isActive,
     isLast,
     error,
+    warning,
     isFirst,
     onRemove,
     onMove,
@@ -170,7 +180,9 @@ const RulesSetTab = SortableElement(
             <FaGripVertical />
           </GripAction>
         )}
-        <RuleTitle error={error}>{rulesSet.name}</RuleTitle>
+        <RuleTitle error={error} warning={warning}>
+          {rulesSet.name}
+        </RuleTitle>
         {!readOnly && (
           <Action
             pos="right"
@@ -189,8 +201,8 @@ const RulesSetTab = SortableElement(
 const RuleTitle = styled(Text).attrs({
   fontWeight: "bold",
 })`
-  border-bottom: ${p => (p.error ? "1px dotted" : "none")}
-  border-color: ${colors.grenade}
+  border-bottom: ${p => (p.error || p.warning ? "2px dotted" : "none")}
+  border-color: ${p => (p.error ? colors.grenade : colors.warning)};
 `;
 
 const Triangle = styled.div`

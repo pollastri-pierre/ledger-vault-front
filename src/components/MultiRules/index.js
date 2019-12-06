@@ -9,7 +9,7 @@ import Box from "components/base/Box";
 import type { User, Group, Whitelist, CurrencyOrToken } from "data/types";
 import RulesSet from "./RulesSet";
 import MultiRulesSideBar from "./MultiRulesSideBar";
-import { isValidRulesSet } from "./helpers";
+import { isValidRulesSet, getDuplicateRulesSet } from "./helpers";
 import type { RulesSet as RulesSetType } from "./types";
 import MultiTextMode from "./MultiTextMode";
 
@@ -114,6 +114,10 @@ const MultiRules = (props: Props) => {
     return null;
   }
 
+  const duplicateRulesSet = isValidRulesSet(rulesSet)
+    ? getDuplicateRulesSet(rulesSet, rulesSets)
+    : null;
+
   return (
     <Box width={600}>
       <MultiRulesSideBar
@@ -136,6 +140,7 @@ const MultiRules = (props: Props) => {
           groups={groups}
           whitelists={whitelists}
           readOnly={readOnly}
+          duplicateRulesSet={duplicateRulesSet}
         />
       </RulesSetContainer>
     </Box>
