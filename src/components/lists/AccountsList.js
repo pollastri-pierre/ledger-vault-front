@@ -12,9 +12,11 @@ import type { Account } from "data/types";
 
 import { List, ListEmpty, ListItem } from "./List";
 
+type Display = "list" | "grid";
+
 type Props = {
   accounts: Account[],
-  display?: string,
+  display?: Display,
   tileWidth?: number,
   compact?: boolean,
 };
