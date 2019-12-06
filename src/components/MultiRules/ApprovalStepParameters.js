@@ -14,13 +14,14 @@ import type { RuleMultiAuthStep, RuleMultiAuth } from "./types";
 type Props = {
   rule: RuleMultiAuth,
   step: RuleMultiAuthStep,
+  stepIndex: number,
   onChange: RuleMultiAuthStep => void,
   users: User[],
   groups: Group[],
 };
 
 const ApprovalStepParameters = (props: Props) => {
-  const { rule, step, onChange, users, groups } = props;
+  const { rule, step, stepIndex, onChange, users, groups } = props;
 
   const handleChangeQuorum = quorum => onChange({ ...step, quorum });
 
@@ -31,6 +32,7 @@ const ApprovalStepParameters = (props: Props) => {
         <SelectApprovals
           rule={rule}
           step={step}
+          stepIndex={stepIndex}
           groups={groups}
           users={users}
           onChange={onChange}

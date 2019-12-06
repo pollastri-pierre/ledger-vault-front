@@ -122,6 +122,7 @@ const EditCreator = (props: EditProps) => {
       <SelectApprovals
         rule={rule}
         step={step}
+        stepIndex={0}
         groups={groups}
         users={users}
         onChange={data => onChange({ ...data, quorum: 1 })} // enforce quorum to 1 for first step
