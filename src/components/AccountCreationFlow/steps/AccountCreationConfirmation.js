@@ -9,7 +9,6 @@ import { Trans } from "react-i18next";
 
 import InfoBox from "components/base/InfoBox";
 import MultiRules from "components/MultiRules";
-import { DiffBlock } from "containers/Admin/Accounts/AccountEditRequest";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -22,14 +21,7 @@ const iconDown = <FaChevronDown size={12} color={colors.lightGrey} />;
 const iconUp = <FaChevronUp size={12} color={colors.lightGrey} />;
 
 export default (props: AccountCreationStepProps) => {
-  const {
-    payload,
-    isEditMode,
-    users,
-    whitelists,
-    groups,
-    initialPayload,
-  } = props;
+  const { payload } = props;
 
   const { currency, erc20token, accountStatus } = payload;
   const currencyOrToken = currency || erc20token;
@@ -101,38 +93,6 @@ export default (props: AccountCreationStepProps) => {
           />
         )}
       </Box>
-      {isEditMode && currency && (
-        <Box horizontal flow={10} justify="space-between">
-          <DiffBlock
-            type="current"
-            hasNameChanged={payload.name !== initialPayload.name}
-            accountName={initialPayload.name}
-          >
-            <MultiRules
-              textMode
-              users={users.edges.map(n => n.node)}
-              whitelists={whitelists.edges.map(n => n.node)}
-              groups={groups.edges.map(n => n.node)}
-              rulesSets={initialPayload.rulesSets}
-              currencyOrToken={currency}
-            />
-          </DiffBlock>
-          <DiffBlock
-            type="previous"
-            hasNameChanged={payload.name !== initialPayload.name}
-            accountName={initialPayload.name}
-          >
-            <MultiRules
-              textMode
-              users={users.edges.map(n => n.node)}
-              whitelists={whitelists.edges.map(n => n.node)}
-              groups={groups.edges.map(n => n.node)}
-              rulesSets={payload.rulesSets}
-              currencyOrToken={currency}
-            />
-          </DiffBlock>
-        </Box>
-      )}
       <InfoBox type="info" withIcon>
         {accountStatus === "MIGRATED" ? (
           <Trans i18nKey="newAccount:confirmation.descMigrated" />
