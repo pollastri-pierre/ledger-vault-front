@@ -170,7 +170,7 @@ function AssetsDistributionWidget(props: Props) {
 export default connectWidget(
   connect(mapStateToProps)(AssetsDistributionWidget),
   {
-    height: 300,
+    height: 370,
     queries: {
       accountsConnection: SearchAccounts,
     },
