@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Button from "components/base/Button";
-import SyncAccountMutation from "api/mutations/SyncAccountMutation";
 import SearchTransactions from "api/queries/SearchTransactions";
+import AccountQuery from "api/queries/AccountQuery";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { FaSync, FaCheck } from "react-icons/fa";
@@ -19,9 +19,7 @@ const SyncButton = (props: Props) => {
   const { restlay, account } = props;
   const [synced, setSynced] = useState(false);
   const forceSync = async () => {
-    await restlay.commitMutation(
-      new SyncAccountMutation({ accountID: `${account.id}` }),
-    );
+    await restlay.fetchQuery(new AccountQuery({ accountId: `${account.id}` }));
     const promise = await restlay.fetchQuery(
       new SearchTransactions({ account: [`${account.id}`] }),
     );
