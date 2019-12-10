@@ -3,32 +3,21 @@
 import React from "react";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import styled from "styled-components";
-import { MdClose, MdAdd } from "react-icons/md";
 import type { Address } from "data/types";
 import Box from "components/base/Box";
-import colors, { opacity } from "shared/colors";
 import Text from "components/base/Text";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
-export type HistoryType = "ADD" | "REMOVE";
-
 type Props = {
   address: Address,
-  history?: ?HistoryType,
 };
 
-const SIZE = 10;
-const iconByHistory = {
-  ADD: <MdAdd size={SIZE} color="green" />,
-  REMOVE: <MdClose size={SIZE} color="red" />,
-};
-const AddressDisplay = ({ address, history }: Props) => (
-  <Container history={history}>
+const AddressDisplay = ({ address }: Props) => (
+  <Container history={history} title={address.address}>
     <Box horizontal justify="space-between">
       <Box horizontal align="center" flow={5}>
         <Icon currency={address.currency} />
         <Text fontWeight="semiBold">{address.name}</Text>
-        {history && <Box>{iconByHistory[history]}</Box>}
       </Box>
     </Box>
     <Text style={styles.address} ellipsis>
@@ -49,24 +38,16 @@ const Icon = ({ currency }: { currency: string }) => {
   );
 };
 
-const Container = styled(Box).attrs({ flow: 5, p: 5 })`
-  border: ${p =>
-    p.history ? styles[p.history].border : `1px solid ${colors.mediumGrey}`};
-  background: ${p =>
-    p.history ? styles[p.history].background : colors.translucentGrey};
+const Container = styled(Box).attrs({ flow: 5, p: 5, pb: 8 })`
+  border-radius: 4px;
+  border: 1px solid #eeeeeeb8;
+  background: white;
 `;
 
 const styles = {
-  REMOVE: {
-    border: `1px solid ${colors.grenade}`,
-    background: opacity(colors.grenade, 0.1),
-  },
-  ADD: {
-    border: `1px solid ${colors.green}`,
-    background: opacity(colors.green, 0.1),
-  },
   address: {
     fontSize: 10,
+    borderRadius: 4,
     fontFamily: "monospace",
     padding: 4,
     backgroundColor: "rgba(0, 0, 0, 0.05)",
