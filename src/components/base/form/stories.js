@@ -5,7 +5,7 @@ import { storiesOf } from "@storybook/react";
 import { text } from "@storybook/addon-knobs";
 import { FaLink } from "react-icons/fa";
 
-import { InputText } from "components/base/form";
+import { InputText, TextArea } from "components/base/form";
 
 const p = () => ({
   value: text("value", ""),
@@ -46,4 +46,13 @@ storiesOf("components/form/InputText", module)
   .add("warning", () => <InputText {...p()} warnings={warnings} />)
   .add("hints", () => (
     <InputText autoFocus value={text("value", "40420.aa")} hints={hints} />
+  ));
+
+storiesOf("components/form/TextArea", module)
+  .addDecorator(story => <div style={{ maxWidth: 400 }}>{story()}</div>)
+  .add("basic", () => <TextArea {...p()} />)
+  .add("error", () => <TextArea {...p()} errors={errors} />)
+  .add("warning", () => <TextArea {...p()} warnings={warnings} />)
+  .add("hints", () => (
+    <TextArea autoFocus value={text("value", "text area")} hints={hints} />
   ));
