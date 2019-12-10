@@ -220,7 +220,7 @@ const FormAdd = connectData(
     const [name, setName] = useState((addr && addr.name) || "");
     const [address, setAddress] = useState((addr && addr.address) || "");
 
-    const isAddressFilled = () => name !== "" && address !== "" && !!currency;
+    const isAddressFilled = name !== "" && address !== "" && !!currency;
 
     useEffect(() => {
       let unsub = false;
@@ -265,7 +265,7 @@ const FormAdd = connectData(
     }, [currency, name, address, restlay, addresses, addr]);
 
     const submit = async () => {
-      if (!isAddressFilled() || addressError || !currency) return null;
+      if (!isAddressFilled || addressError || !currency) return null;
       const data = {
         id: addr && addr.id,
         name,
@@ -325,12 +325,7 @@ const FormAdd = connectData(
           </Box>
         </Box>
         <Box horizontal flow={10} justify="flex-end">
-          <Button
-            size="small"
-            onClick={onCancel}
-            disabled={!isAddressFilled}
-            variant="info"
-          >
+          <Button size="small" onClick={onCancel} variant="info">
             <Trans i18nKey="common:cancel" />
           </Button>
           <Button
