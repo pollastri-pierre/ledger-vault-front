@@ -139,11 +139,14 @@ export const getAttestationCertificate = async (): Promise<Buffer> => {
 export const validateVaultOperation = async (
   transport: *,
   path: number[],
-  operation: Buffer,
+  channel: { blob: string, w_actions: string[] },
 ) => {
   const data = await deviceNetwork(ENDPOINTS.VALIDATE_VAULT_OPERATION, "POST", {
     path: pathArrayToString(path),
-    operation: operation.toString("hex"),
+    operation: Buffer.from(channel.blob, "base64").toString("hex"),
+    actions: channel.w_actions.map(a =>
+      Buffer.from(a, "base64").toString("hex"),
+    ),
   });
   return Buffer.from(data, "hex");
 };
