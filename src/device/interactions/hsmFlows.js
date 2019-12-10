@@ -13,7 +13,6 @@ import {
   MATCHER_SESSION,
 } from "device";
 import {
-  softwareMode,
   register,
   openSession,
   registerData,
@@ -260,7 +259,10 @@ const openSessionValidate: Interaction = {
         : ACCOUNT_MANAGER_SESSION,
     );
 
-    return Promise.resolve(softwareMode() ? channel.blob : channel.w_actions);
+    return Promise.resolve({
+      blob: channel.blob,
+      w_actions: channel.w_actions,
+    });
   },
 };
 const openSessionVerifyAddress: Interaction = {
@@ -294,9 +296,10 @@ const openSessionVerifyAddress: Interaction = {
       ACCOUNT_MANAGER_SESSION,
     );
 
-    return Promise.resolve(
-      softwareMode() ? address_channel.blob : address_channel.w_actions,
-    );
+    return Promise.resolve({
+      blob: address_channel.blob,
+      w_actions: address_channel.w_actions,
+    });
   },
 };
 
@@ -307,13 +310,7 @@ const validateDevice = (entity: ?TargetType): Interaction => ({
   tooltip: entity ? <Text i18nKey={`deviceInteractions:${entity}`} /> : null,
   action: ({ transport, channel_blob }) =>
     // TODO remove isArray() check when backend will support streaming
-    validateVaultOperation()(
-      transport,
-      VALIDATION_PATH,
-      Array.isArray(channel_blob)
-        ? channel_blob
-        : Buffer.from(channel_blob, "base64"),
-    ),
+    validateVaultOperation()(transport, VALIDATION_PATH, channel_blob),
 });
 
 export const validateOperation = (entity: ?TargetType) => [

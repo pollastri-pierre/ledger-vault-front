@@ -138,7 +138,7 @@ export const sendByChunk = async (
 export const validateVaultOperation = async (
   transport: Transport<*>,
   path: number[],
-  operation: string[],
+  operation: { blob: string, w_actions: string[] },
 ) => {
   const paths = Buffer.concat([
     Buffer.from([path.length]),
@@ -153,7 +153,7 @@ export const validateVaultOperation = async (
   let finalResponse;
 
   while (!finalResponse) {
-    const screen = Buffer.from(operation[nextActionId - 1], "base64");
+    const screen = Buffer.from(operation.w_actions[nextActionId - 1], "base64");
     const length = Buffer.alloc(2);
     length.writeUInt16BE(screen.length, 0);
     const data = Buffer.concat([paths, length, screen]);
