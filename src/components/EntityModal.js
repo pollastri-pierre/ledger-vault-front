@@ -1,6 +1,7 @@
 // @flow
 
-import React from "react";
+import React, { useEffect } from "react";
+import type { MemoryHistory } from "history";
 import { useTranslation } from "react-i18next";
 import { FaPen } from "react-icons/fa";
 import { withRouter, matchPath } from "react-router";
@@ -45,6 +46,7 @@ type Props<T> = {|
   customWidth?: number,
   additionalFields?: T,
   revokeParams?: RevokeParams,
+  history: MemoryHistory,
 |};
 
 function EntityModal<T>(props: Props<T>) {
@@ -64,6 +66,7 @@ function EntityModal<T>(props: Props<T>) {
     customWidth,
     additionalFields,
     revokeParams,
+    history,
   } = props;
   const { t } = useTranslation();
 
@@ -89,6 +92,16 @@ function EntityModal<T>(props: Props<T>) {
 
   const hasPendingReq = hasPendingRequest(entity);
   const isPendingEdit = hasPendingEdit(entity);
+
+  // when user is on edit tab and reject/approve the request, the edit tab will not exist
+  // anymore after the request finished, so we need to bring him back to first tab
+  useEffect(() => {
+    // if request is not in pending edit and we are on edit tab
+    if (!isPendingEdit && content.key === "editRequest") {
+      const path = `*/${childs[0].key || ""}`;
+      history.push(path);
+    }
+  }, [childs, content.key, entity, history, isPendingEdit]);
 
   const inner = (
     <>
