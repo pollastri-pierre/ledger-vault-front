@@ -33,7 +33,7 @@
     },
     "finish": "Finish",
     "finishTitle": "User invitation request successfully created!",
-    "finishDesc": "You can now share the registration URL with the new user."
+    "finishDesc": "You can now share the registration URL with the new user:"
   },
   "form": {
     "labelUsername": "Username",
