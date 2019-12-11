@@ -149,7 +149,7 @@ const DisplayCreator = ({ value }: { value: ?RuleMultiAuthStep }) => {
   }
   const isOldAccount = value.quorum > 1;
   return (
-    <div style={{ lineHeight: 2.5 }}>
+    <div>
       <div>
         {isOldAccount ? (
           <>
@@ -159,7 +159,9 @@ const DisplayCreator = ({ value }: { value: ?RuleMultiAuthStep }) => {
           <strong>Transaction creator:</strong>
         )}
       </div>
-      <StepMembers step={value} />
+      <div style={{ lineHeight: 2.5 }}>
+        <StepMembers step={value} />
+      </div>
     </div>
   );
 };
