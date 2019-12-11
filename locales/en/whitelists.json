@@ -16,7 +16,7 @@
     "edit_addr": "Edit address",
     "addr_name_placeholder": "Enter a name for the address",
     "addr_placeholder": "Enter the address",
-    "currency_placeholder": "Select a crypto asset",
+    "currency_placeholder": "Select a blockchain",
     "submit": "Create whitelist",
     "no_edit": "No changes were made",
     "finishTitle": "Whitelist Request was successfully created!",

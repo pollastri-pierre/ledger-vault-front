@@ -431,7 +431,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             data-test="reject-button"
             onClick={onAbort}
           >
-            <Trans i18nKey="common:cancel" />
+            <Trans i18nKey="common:reject" />
           </Button>
         </Emphasis>
       ) : null}
