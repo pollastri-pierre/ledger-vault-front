@@ -2,7 +2,7 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
 import Box from "components/base/Box";
-import { InputText, Label } from "components/base/form";
+import { InputText, Label, Form } from "components/base/form";
 import type { Translate } from "data/types";
 import type { WhitelistCreationStepProps } from "./types";
 
@@ -11,11 +11,11 @@ type Props = WhitelistCreationStepProps & {
 };
 
 const WhitelistCreationInfos = (props: Props) => {
-  const { t, payload, updatePayload } = props;
+  const { t, payload, updatePayload, onEnter } = props;
   const handleChangeName = (name: string) => updatePayload({ name });
   const handleChangeDesc = (description: string) =>
     updatePayload({ description });
-  return (
+  const inner = (
     <Box flow={20}>
       <Box>
         <Label>{t("whitelists:create.name_placeholder")}</Label>
@@ -41,6 +41,7 @@ const WhitelistCreationInfos = (props: Props) => {
       </Box>
     </Box>
   );
+  return <Form onSubmit={onEnter}>{inner}</Form>;
 };
 
 export default withTranslation()(WhitelistCreationInfos);

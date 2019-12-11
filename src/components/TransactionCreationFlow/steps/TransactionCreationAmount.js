@@ -10,7 +10,12 @@ import FakeInputContainer from "components/base/FakeInputContainer";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import CounterValue from "components/CounterValue";
-import { Label, InputAmount, InputAmountNoUnits } from "components/base/form";
+import {
+  Label,
+  InputAmount,
+  InputAmountNoUnits,
+  Form,
+} from "components/base/form";
 import {
   AmountTooHigh,
   AmountExceedMax,
@@ -29,7 +34,7 @@ import WhiteListField from "../WhiteListField";
 const TransactionCreationAmount = (
   props: TransactionCreationStepProps<any>,
 ) => {
-  const { payload, updatePayload } = props;
+  const { payload, updatePayload, onEnter } = props;
   const { account, transaction, bridge } = payload;
 
   invariant(account, "transaction has not been chosen yet");
@@ -96,8 +101,7 @@ const TransactionCreationAmount = (
     transaction.amount &&
     transaction.amount.isGreaterThan(0) &&
     transaction.recipient;
-
-  return (
+  const inner = (
     <Box flow={20}>
       <Box grow>
         <TransactionCreationAccount
@@ -189,6 +193,7 @@ const TransactionCreationAmount = (
       )}
     </Box>
   );
+  return <Form onSubmit={onEnter}>{inner}</Form>;
 };
 
 export default memo<TransactionCreationStepProps<any>>(

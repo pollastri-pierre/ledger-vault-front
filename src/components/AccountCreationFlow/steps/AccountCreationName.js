@@ -7,7 +7,7 @@ import Disabled from "components/Disabled";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import { InputText, Label } from "components/base/form";
+import { InputText, Label, Form } from "components/base/form";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
 import type { AccountCreationStepProps } from "../types";
@@ -23,7 +23,14 @@ export default function AccountCreationOptions(
   props: AccountCreationStepProps,
 ) {
   const { t } = useTranslation();
-  const { payload, updatePayload, allAccounts, isEditMode, account } = props;
+  const {
+    payload,
+    updatePayload,
+    allAccounts,
+    isEditMode,
+    account,
+    onEnter,
+  } = props;
   const { currency } = payload;
 
   const handleChangeName = (name: string) => {
@@ -74,5 +81,9 @@ export default function AccountCreationOptions(
       </Box>
     );
   }
-  return <Disabled disabled={isDisabled}>{inner}</Disabled>;
+  return (
+    <Disabled disabled={isDisabled}>
+      <Form onSubmit={onEnter}>{inner}</Form>
+    </Disabled>
+  );
 }

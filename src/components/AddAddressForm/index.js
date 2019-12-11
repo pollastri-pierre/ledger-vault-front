@@ -14,7 +14,7 @@ import { FaAddressBook, FaPlus } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import SelectCurrency from "components/SelectCurrency";
 import { getBridgeForCurrency } from "bridge";
-import { InputText, Label } from "components/base/form";
+import { InputText, Label, Form } from "components/base/form";
 import type { Address } from "data/types";
 import colors, { opacity } from "shared/colors";
 import connectData from "restlay/connectData";
@@ -276,7 +276,8 @@ const FormAdd = connectData(
     };
     const { t } = useTranslation();
     const curr = currency ? getCryptoCurrencyById(currency) : null;
-    return (
+
+    const inner = (
       <Box flow={40}>
         <Box flow={10}>
           <Box horizontal flow={20}>
@@ -344,6 +345,7 @@ const FormAdd = connectData(
         </Box>
       </Box>
     );
+    return <Form onSubmit={submit}>{inner}</Form>;
   },
 );
 

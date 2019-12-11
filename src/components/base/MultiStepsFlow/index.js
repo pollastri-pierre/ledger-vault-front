@@ -159,6 +159,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       hideBack,
       CustomFooterElementLeft,
       WarningNext,
+      requirements,
     } = step;
 
     const stepProps = {
@@ -170,6 +171,11 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
+      onEnter: () => {
+        if (!requirements || requirements(payload)) {
+          this.next();
+        }
+      },
     };
 
     return (

@@ -6,12 +6,12 @@ import { Trans } from "react-i18next";
 
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
-import { Label, InputText } from "components/base/form";
+import { Label, InputText, Form } from "components/base/form";
 
 import type { TransactionCreationStepProps } from "../types";
 
 export default (props: TransactionCreationStepProps<any>) => {
-  const { payload, updatePayload } = props;
+  const { payload, updatePayload, onEnter } = props;
   const { bridge, transaction } = payload;
 
   invariant(bridge, "No bridge");
@@ -27,8 +27,7 @@ export default (props: TransactionCreationStepProps<any>) => {
 
   const handleChangeTitle = title => editNote({ title });
   const handleChangeContent = content => editNote({ content });
-
-  return (
+  const inner = (
     <Box flow={20}>
       <Box>
         <Label>
@@ -60,4 +59,5 @@ export default (props: TransactionCreationStepProps<any>) => {
       </Box>
     </Box>
   );
+  return <Form onSubmit={onEnter}>{inner}</Form>;
 };
