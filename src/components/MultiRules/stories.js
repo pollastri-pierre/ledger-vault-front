@@ -11,6 +11,7 @@ import { serializeRulesSetsForPOST } from "components/MultiRules/helpers";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
 import initialRulesSets from "data/mock-governance-rules.json";
+import { convertGovernanceRules } from "api/transformations/Account";
 
 const BITCOIN = getCryptoCurrencyById("bitcoin");
 
@@ -18,14 +19,16 @@ const users = genUsers(15).map(u => ({ ...u, role: "OPERATOR" }));
 const groups = genGroups(3, { users });
 const whitelists = genWhitelists(10, { users });
 
-initialRulesSets[0].rules[1].data[0].group = {
+initialRulesSets[0].rules[2].data[0].group = {
   is_internal: true,
   members: [users[0], users[1]],
 };
 
-initialRulesSets[0].rules[1].data[1].group = groups[0];
-initialRulesSets[0].rules[1].data[2].group = groups[1];
+initialRulesSets[0].rules[2].data[1].group = groups[0];
+initialRulesSets[0].rules[2].data[2].group = groups[1];
 initialRulesSets[0].rules[0].data.push(whitelists[0].id);
+
+convertGovernanceRules(initialRulesSets);
 
 /* eslint-disable no-unused-vars */
 const emptyRulesSets = [

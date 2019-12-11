@@ -88,31 +88,33 @@ const DisplayWhitelist = (props: {
     whitelists: Whitelist[],
   },
 }) => (
-  <div style={{ lineHeight: 2.5 }}>
+  <div>
     <div>
       <strong>Whitelist</strong>
       {" - Allowed recipients:"}
     </div>
-    {props.value.data.map(v => {
-      if (!props.extraProps) return;
-      const { whitelists } = props.extraProps;
-      let whitelist;
-      if (typeof v === "number") {
-        whitelist = whitelists.find(w => w.id === v);
-      } else {
-        whitelist = v;
-      }
-      if (!whitelist) return;
-      return (
-        <Badge
-          Icon={FaRegFileAlt}
-          key={whitelist.id}
-          style={{ marginRight: 5 }}
-        >
-          {whitelist.name}
-        </Badge>
-      );
-    })}
+    <div style={{ lineHeight: 2.5 }}>
+      {props.value.data.map(v => {
+        if (!props.extraProps) return;
+        const { whitelists } = props.extraProps;
+        let whitelist;
+        if (typeof v === "number") {
+          whitelist = whitelists.find(w => w.id === v);
+        } else {
+          whitelist = v;
+        }
+        if (!whitelist) return;
+        return (
+          <Badge
+            Icon={FaRegFileAlt}
+            key={whitelist.id}
+            style={{ marginRight: 5 }}
+          >
+            {whitelist.name}
+          </Badge>
+        );
+      })}
+    </div>
   </div>
 );
 

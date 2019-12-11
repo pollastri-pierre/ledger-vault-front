@@ -226,7 +226,7 @@ const TimelineStopContainer = styled.div`
   display: flex;
   align-items: flex-start;
   margin-left: ${p => p.offsetX}px;
-  padding: 8px;
+  padding: 10px 8px;
   border-radius: 4px;
   border: 1px dashed transparent;
   ${p =>

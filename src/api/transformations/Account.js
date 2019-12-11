@@ -54,7 +54,7 @@ export function deserializeAccount(account: Account): Account {
   };
 }
 
-function convertGovernanceRules(governance_rules) {
+export function convertGovernanceRules(governance_rules: any) {
   // convert thresholds to BigNumber
   governance_rules.forEach(rulesSet => {
     const thresholdRule = getThresholdRule(rulesSet);

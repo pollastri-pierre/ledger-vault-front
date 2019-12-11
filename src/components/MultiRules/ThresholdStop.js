@@ -124,31 +124,33 @@ const DisplayThreshold = ({
       <div>
         <strong>Amount range</strong>
       </div>
-      {threshold.max ? (
-        <span>
-          {"Applies to transactions with amount between "}
-          <Badge>
-            <strong>
-              <CurrencyUnitValue unit={unit} value={threshold.min} />
-            </strong>
-          </Badge>
-          {" and "}
-          <Badge>
-            <strong>
-              <CurrencyUnitValue unit={unit} value={threshold.max} />
-            </strong>
-          </Badge>
-        </span>
-      ) : (
-        <span>
-          {"Applies to transactions with amount greater than "}
-          <Badge>
-            <strong>
-              <CurrencyUnitValue unit={unit} value={threshold.min} />
-            </strong>
-          </Badge>
-        </span>
-      )}
+      <div style={{ lineHeight: 2.5 }}>
+        {threshold.max ? (
+          <span>
+            {"Applies to transactions with amount between "}
+            <Badge>
+              <strong>
+                <CurrencyUnitValue unit={unit} value={threshold.min} />
+              </strong>
+            </Badge>
+            {" and "}
+            <Badge>
+              <strong>
+                <CurrencyUnitValue unit={unit} value={threshold.max} />
+              </strong>
+            </Badge>
+          </span>
+        ) : (
+          <span>
+            {"Applies to transactions with amount greater than "}
+            <Badge>
+              <strong>
+                <CurrencyUnitValue unit={unit} value={threshold.min} />
+              </strong>
+            </Badge>
+          </span>
+        )}
+      </div>
     </div>
   );
 };
