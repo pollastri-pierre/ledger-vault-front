@@ -5,7 +5,6 @@ export type MultiStepsFlowStep<T, P> = {|
   name: React$Node,
   Step: React$ComponentType<StepProps<T> & P>,
   Cta?: React$ComponentType<StepProps<T> & P>,
-  requirements?: (T, ?P) => boolean,
   onNext?: (T, PayloadUpdater<T>, ?P) => Promise<void>,
   nextLabel?: React$Node,
   WarningNext?: React$ComponentType<{ payload: T }>,
@@ -25,4 +24,5 @@ export type StepProps<T> = {
   isEditMode?: boolean,
   onClose?: () => void,
   onSuccess?: () => void,
+  onEnter: () => void,
 };

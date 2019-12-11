@@ -5,7 +5,7 @@ import { withTranslation, useTranslation, Trans } from "react-i18next";
 
 import type { Translate } from "data/types";
 
-import { InputText, Label } from "components/base/form";
+import { InputText, Label, Form } from "components/base/form";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
@@ -96,35 +96,38 @@ export const InputUserID = ({
 };
 
 function UserCreationInfo(props: Props) {
-  const { payload, updatePayload, t } = props;
+  const { payload, updatePayload, t, onEnter } = props;
   const { username, userID } = payload;
 
   const handleChangeUsername = (username: string) =>
     updatePayload({ username });
   const handleChangeUserID = (userID: string) => updatePayload({ userID });
+  const inner = (
+    <Box flow={15} grow>
+      <Box>
+        <Label>{t("inviteUser:form.labelUsername")}</Label>
+        <InputText
+          data-test="username"
+          value={username}
+          autoFocus
+          onChange={handleChangeUsername}
+          placeholder={t("inviteUser:form.placeholderUsername")}
+          fullWidth
+          hints={usernameHints}
+          maxLength={USERNAME_LENGTH}
+          onlyAscii
+        />
+      </Box>
+      <Box>
+        <Label>{t("inviteUser:form.labelUserID")}</Label>
+        <InputUserID value={userID} onChange={handleChangeUserID} />
+      </Box>
+    </Box>
+  );
 
   return (
     <Box grow>
-      <Box flow={15} grow>
-        <Box>
-          <Label>{t("inviteUser:form.labelUsername")}</Label>
-          <InputText
-            data-test="username"
-            value={username}
-            autoFocus
-            onChange={handleChangeUsername}
-            placeholder={t("inviteUser:form.placeholderUsername")}
-            fullWidth
-            hints={usernameHints}
-            maxLength={USERNAME_LENGTH}
-            onlyAscii
-          />
-        </Box>
-        <Box>
-          <Label>{t("inviteUser:form.labelUserID")}</Label>
-          <InputUserID value={userID} onChange={handleChangeUserID} />
-        </Box>
-      </Box>
+      <Form onSubmit={onEnter}>{inner}</Form>
       {payload.role === "ADMIN" && (
         <InfoBox type="warning" withIcon>
           <Text i18nKey="inviteUser:steps.infos.warningAddAdmin" />
