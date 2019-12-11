@@ -37,7 +37,7 @@ export const List = styled.div(p => {
   `;
 });
 
-const ListItemContainer = styled.div(p => {
+const ListItemContainer = styled(({ tileWidth, ...p }) => <div {...p} />)(p => {
   const listItemDisplaySpecific =
     p.display === "grid"
       ? `
@@ -68,7 +68,17 @@ const ListItemContainer = styled.div(p => {
     `;
 });
 
-const RoleVaultLink = p => <VaultLink withRole {...p} />;
+// hacky to put `tileWidth` here, but it's the only way I found to prevent
+// styled-components from putting it in the DOM as an attribute (create a
+// big redish warning in the console)...
+type RoleVaultLinkProps = {
+  to: string,
+  tileWidth?: any,
+};
+
+const RoleVaultLink = ({ to, tileWidth, ...p }: RoleVaultLinkProps) => (
+  <VaultLink withRole to={to} {...p} />
+);
 
 export const ListItem = ({ to, ...props }: { to?: string }) => {
   return (

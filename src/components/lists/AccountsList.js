@@ -29,7 +29,7 @@ export default function AccountsList(props: Props) {
   }
 
   return (
-    <List display={display} tileWidth={tileWidth} compact={compact}>
+    <List display={display} compact={compact}>
       {accounts.map(account => (
         <ListItem
           display={display}
