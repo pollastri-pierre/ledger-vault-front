@@ -59,7 +59,7 @@ context("Create Wrapping Key", () => {
         cy.wait("@authenticate");
 
         cy.get("[data-test=error-message-desc]").contains(
-          "Person already exists",
+          "User already exists",
         );
         cy.get("[data-test=close]").click();
 
