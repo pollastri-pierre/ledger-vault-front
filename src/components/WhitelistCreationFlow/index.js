@@ -211,7 +211,7 @@ const editDescriptionMutation = {
   action: ({ restlay, data, description }) =>
     restlay.commitMutation(
       new EditWhitelistDescriptionMutation({
-        whitelistId: data.whitelistId,
+        whitelistId: data.whitelist_id,
         description,
       }),
     ),
