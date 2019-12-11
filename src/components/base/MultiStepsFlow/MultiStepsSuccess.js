@@ -12,9 +12,10 @@ import colors from "shared/colors";
 type Props = {
   title: React$Node,
   desc?: React$Node,
+  children?: React$Node,
 };
 export default function MultiStepsSuccess(props: Props) {
-  const { title, desc } = props;
+  const { title, desc, children } = props;
   return (
     <Box align="center" justify="center" flow={30} mt={30}>
       <SuccessIconWrapper>
@@ -29,6 +30,7 @@ export default function MultiStepsSuccess(props: Props) {
             {desc}
           </Text>
         )}
+        {children}
       </Box>
     </Box>
   );
