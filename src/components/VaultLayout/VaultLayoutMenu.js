@@ -74,8 +74,10 @@ const VaultLayoutMenuHeader = styled.div`
   align-items: center;
   justify-content: center;
   opacity: ${p => (p.isOpened ? 1 : 0)};
+  pointer-events: none;
   @media (min-width: ${vaultLayoutConfig.BREAKPOINT}px) {
     opacity: 1;
+    pointer-events: auto;
   }
 `;
 
