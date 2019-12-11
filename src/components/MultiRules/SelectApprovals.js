@@ -95,11 +95,13 @@ function filterAvailableOptions(
   groups: Group[],
   users: User[],
 ) {
+  const isTargetStepCreatorStep = stepIndex === 0;
   const usedGroupIDS = {};
   const usedUserIDS = {};
   rule.data.forEach((s, i) => {
     if (i === stepIndex) return;
     if (!s) return;
+    const isCreatorStep = i === 0;
     if (s.group.is_internal) {
       s.group.members.forEach(user => {
         if (
@@ -111,7 +113,9 @@ function filterAvailableOptions(
       });
     } else if (
       !s.group.is_internal &&
-      !(!step.group.is_internal && step.group.id === s.group.id)
+      !(!step.group.is_internal && step.group.id === s.group.id) &&
+      !isCreatorStep &&
+      !isTargetStepCreatorStep
     ) {
       usedGroupIDS[s.group.id] = true;
     }
