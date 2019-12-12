@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import moment from "moment";
 import styled from "styled-components";
 import { FaInfinity } from "react-icons/fa";
 
@@ -22,7 +23,16 @@ class FilterFieldDate extends PureComponent<Props> {
   handleChange = (field: string, e: SyntheticInputEvent<*>) => {
     const { updateQueryParams } = this.props;
     const { value } = e.target;
-    const v = value ? new Date(value).toISOString() : null;
+    let v = value ? moment(value) : null;
+    if (v) {
+      if (field === "start") {
+        v = v.startOf("day");
+      }
+      if (field === "end") {
+        v = v.endOf("day");
+      }
+      v = v.toISOString();
+    }
     updateQueryParams(field, v);
   };
 
@@ -38,9 +48,9 @@ class FilterFieldDate extends PureComponent<Props> {
     const endDate = resolveDate(queryParams.end);
     return (
       <Box horizontal flow={5} align="center">
-        {startDate ? <span>{startDate}</span> : infinity}
+        {startDate ? <span>{startDate.format("YYYY-MM-DD")}</span> : infinity}
         <span>/</span>
-        {endDate ? <span>{endDate}</span> : infinity}
+        {endDate ? <span>{endDate.format("YYYY-MM-DD")}</span> : infinity}
       </Box>
     );
   };
@@ -64,14 +74,14 @@ class FilterFieldDate extends PureComponent<Props> {
               <Label>Start date</Label>
               <StyledInputDate
                 autoFocus
-                value={startDate}
+                value={startDate ? startDate.format("YYYY-MM-DD") : ""}
                 onChange={this.handleChangeStartDate}
               />
             </Box>
             <Box flex={1}>
               <Label>End date</Label>
               <StyledInputDate
-                value={endDate}
+                value={endDate ? endDate.format("YYYY-MM-DD") : ""}
                 onChange={this.handleChangeEndDate}
               />
             </Box>
@@ -106,8 +116,8 @@ const StyledInputDate = styled(p => <input type="date" {...p} />)`
 `;
 
 function resolveDate(v: ObjectParameter | $ReadOnlyArray<ObjectParameter>) {
-  if (typeof v !== "string") return "";
-  return new Date(v).toISOString().substr(0, 10);
+  if (typeof v !== "string") return null;
+  return moment(v);
 }
 
 export default FilterFieldDate;
