@@ -15,7 +15,7 @@ export const logout = () => async (dispatch: Dispatch<*>) => {
   });
 };
 
-export function login(token: string) {
+export function login() {
   return { type: LOGIN };
 }
 

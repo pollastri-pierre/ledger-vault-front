@@ -50,7 +50,7 @@ export default function Login(props: Props) {
   }, [domain]);
 
   const onSuccess = res => {
-    dispatch(login(res.u2f_challenge.token));
+    dispatch(login());
     history.push(`/${domain}`);
   };
 
