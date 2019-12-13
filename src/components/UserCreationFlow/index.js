@@ -77,7 +77,11 @@ const steps = [
           title={<Trans i18nKey="inviteUser:steps.finishTitle" />}
           desc={<Trans i18nKey="inviteUser:steps.finishDesc" />}
         >
-          {payload && payload.url && <Copy text={payload.url} />}
+          {payload && payload.url && (
+            <Box style={{ maxWidth: 600 }}>
+              <Copy text={payload.url} />
+            </Box>
+          )}
         </MultiStepsSuccess>
       );
     },
