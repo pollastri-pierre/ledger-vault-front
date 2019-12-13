@@ -36,5 +36,7 @@
     "OPERATOR": "Operator"
   },
   "errorOccured": "An error occured",
-  "reload": "Reload"
+  "reload": "Reload",
+  "saved": "Saved!",
+  "save": "Save"
 }
