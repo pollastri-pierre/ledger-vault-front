@@ -286,19 +286,6 @@ const FormAdd = connectData(
           <Box horizontal flow={20}>
             <Box flex={1}>
               <Label>
-                <Trans i18nKey="whitelists:create.field_currency" />
-              </Label>
-              <SelectCurrency
-                autoFocus
-                noToken
-                placeholder={t("whitelists:create.currency_placeholder")}
-                value={curr}
-                onChange={val => setCurrency(val ? val.value.id : null)}
-                noOptionsMessage={() => "not found"}
-              />
-            </Box>
-            <Box flex={1}>
-              <Label>
                 <Trans i18nKey="whitelists:create.field_name" />
               </Label>
               <InputText
@@ -311,6 +298,19 @@ const FormAdd = connectData(
                 onlyAscii
                 fullWidth
                 data-test="name_address"
+              />
+            </Box>
+            <Box flex={1}>
+              <Label>
+                <Trans i18nKey="whitelists:create.field_currency" />
+              </Label>
+              <SelectCurrency
+                autoFocus
+                noToken
+                placeholder={t("whitelists:create.currency_placeholder")}
+                value={curr}
+                onChange={val => setCurrency(val ? val.value.id : null)}
+                noOptionsMessage={() => "not found"}
               />
             </Box>
           </Box>
