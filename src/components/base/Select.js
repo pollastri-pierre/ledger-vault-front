@@ -4,6 +4,7 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import ReactSelect, { components } from "react-select";
 import AsyncReactSelect from "react-select/async";
+import CreatableReactSelect from "react-select/creatable";
 
 import type {
   PlaceholderProps,
@@ -27,6 +28,7 @@ export type GroupedOption = {
 
 type Props = {
   async?: boolean,
+  creatable?: boolean,
   options?: Option[] | GroupedOption[],
   components?: Object,
   styles?: Object,
@@ -106,12 +108,22 @@ const customStyles = {
     minHeight: 40,
     borderColor: `${
       state.menuIsOpen || state.isFocused
-        ? colors.form.focus
+        ? state.selectProps.hasError
+          ? colors.form.error
+          : state.selectProps.hasError
+          ? colors.form.warning
+          : colors.form.focus
         : colors.form.border
     } !important`,
     borderRadius: 4,
     boxShadow:
-      state.menuIsOpen || state.isFocused ? colors.form.shadow.focus : "none",
+      state.menuIsOpen || state.isFocused
+        ? state.selectProps.hasError
+          ? colors.form.shadow.error
+          : state.selectProps.hasWarning
+          ? colors.form.shadow.warning
+          : colors.form.shadow.focus
+        : "none",
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     borderBottomLeftRadius: state.menuIsOpen ? 0 : 4,
@@ -156,8 +168,12 @@ const customStyles = {
 
 class Select extends PureComponent<Props> {
   render() {
-    const { async, components, styles, ...props } = this.props;
-    const Comp = async ? AsyncReactSelect : ReactSelect;
+    const { async, creatable, components, styles, ...props } = this.props;
+    const Comp = creatable
+      ? CreatableReactSelect
+      : async
+      ? AsyncReactSelect
+      : ReactSelect;
 
     return (
       <Comp

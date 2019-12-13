@@ -29,7 +29,7 @@ import colors from "shared/colors";
 import type { TransactionCreationStepProps } from "../types";
 
 import TransactionCreationAccount from "./TransactionCreationAccount";
-import WhiteListField from "../WhiteListField";
+import AddressField from "../AddressField";
 
 const TransactionCreationAmount = (
   props: TransactionCreationStepProps<any>,
@@ -101,6 +101,9 @@ const TransactionCreationAmount = (
     transaction.amount &&
     transaction.amount.isGreaterThan(0) &&
     transaction.recipient;
+
+  const whitelists = props.whitelists.edges.map(n => n.node);
+
   const inner = (
     <Box flow={20}>
       <Box grow>
@@ -114,11 +117,11 @@ const TransactionCreationAmount = (
         />
       </Box>
       <Box grow>
-        <WhiteListField
+        <AddressField
           account={account}
           transaction={transaction}
           onChangeTransaction={onChangeTransaction}
-          whitelists={props.whitelists.edges.map(n => n.node)}
+          whitelists={whitelists}
           bridge={bridge}
         />
       </Box>
