@@ -4,10 +4,8 @@ import { Trans } from "react-i18next";
 import InfoBox from "components/base/InfoBox";
 import LineRow from "components/LineRow";
 import Box from "components/base/Box";
-import AccountIcon from "components/legacy/AccountIcon";
-import Text from "components/base/Text";
 import NotApplicableText from "components/base/NotApplicableText";
-import colors from "shared/colors";
+import Address from "components/Address";
 import {
   hasEditOccuredWhitelist,
   onlyDescriptionChangedWhitelist,
@@ -56,21 +54,7 @@ export const WhitelistDetails = (props: WhitelistDetailsProps) => {
           {addresses
             .filter(a => a.name !== "" && a.address !== "")
             .map(addr => (
-              <Box
-                horizontal
-                flow={20}
-                align="center"
-                justify="space-between"
-                key={addr.id}
-              >
-                <Box horizontal flow={10}>
-                  {addr.currency && <AccountIcon currencyId={addr.currency} />}
-                  <Text size="small" color={colors.shark}>
-                    {addr.name}
-                  </Text>
-                </Box>
-                <Text>{addr.address}</Text>
-              </Box>
+              <Address key={`${addr.name}-${addr.currency}`} address={addr} />
             ))}
         </Box>
       </LineRow>
