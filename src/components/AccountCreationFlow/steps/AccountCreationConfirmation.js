@@ -21,7 +21,7 @@ const iconDown = <FaChevronDown size={12} color={colors.lightGrey} />;
 const iconUp = <FaChevronUp size={12} color={colors.lightGrey} />;
 
 export default (props: AccountCreationStepProps) => {
-  const { payload } = props;
+  const { payload, whitelists } = props;
 
   const { currency, erc20token, accountStatus } = payload;
   const currencyOrToken = currency || erc20token;
@@ -90,6 +90,7 @@ export default (props: AccountCreationStepProps) => {
             readOnly
             rulesSets={payload.rulesSets}
             currencyOrToken={currencyOrToken}
+            whitelists={whitelists.edges.map(e => e.node)}
           />
         )}
       </Box>
