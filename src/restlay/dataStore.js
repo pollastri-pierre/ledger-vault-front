@@ -202,7 +202,7 @@ export const executeQueryOrMutation =
     }
 
     const promise = ctx
-      .network(uri, method, body, undefined, queryOrMutation.fetchParams)
+      .network(uri, method, body, queryOrMutation.fetchParams)
       .then(data => {
         // FIXME FIXME FIXME prevent extremely weird and wicked behaviour
         // of the gate, which send onboarding data instead of any other
