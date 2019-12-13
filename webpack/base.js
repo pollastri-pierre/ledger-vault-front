@@ -14,7 +14,7 @@ let commitHash = require("child_process")
 
 commitHash = commitHash.substring(0, commitHash.length - 1);
 export default {
-  entry: ["@babel/polyfill", "./src/index"],
+  entry: "./src/index",
 
   resolve: {
     modules: [paths.src, paths.nodeModules],
