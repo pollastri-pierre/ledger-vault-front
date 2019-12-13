@@ -3,6 +3,14 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import {
+  RequestActivityTypeDefsGroup,
+  RequestActivityTypeDefsAccount,
+  RequestActivityTypeDefsUser,
+  RequestActivityTypeDefsOrganization,
+  RequestActivityTypeDefsWhitelist,
+} from "data/types";
+
 import type { RequestActivityType } from "data/types";
 
 import { FieldSelect } from "components/filters";
@@ -11,24 +19,23 @@ import type { FieldProps } from "components/filters";
 const opts = [
   {
     label: "Users",
-    options: ["CREATE_ADMIN", "CREATE_OPERATOR", "REVOKE_USER"],
+    options: Object.keys(RequestActivityTypeDefsUser),
   },
   {
     label: "Group",
-    options: ["CREATE_GROUP", "EDIT_GROUP", "REVOKE_GROUP"],
+    options: Object.keys(RequestActivityTypeDefsGroup),
   },
   {
     label: "Accounts",
-    options: [
-      "CREATE_ACCOUNT",
-      "EDIT_ACCOUNT",
-      "MIGRATE_ACCOUNT",
-      "REVOKE_ACCOUNT",
-    ],
+    options: Object.keys(RequestActivityTypeDefsAccount),
+  },
+  {
+    label: "Whitelists",
+    options: Object.keys(RequestActivityTypeDefsWhitelist),
   },
   {
     label: "Other",
-    options: ["UPDATE_QUORUM"],
+    options: Object.keys(RequestActivityTypeDefsOrganization),
   },
 ];
 

@@ -431,28 +431,27 @@ export const RequestStatusMap = {
 };
 export type RequestStatus = $Keys<typeof RequestStatusMap>;
 
-const RequestActivityTypeDefsWhitelist = {
+export const RequestActivityTypeDefsWhitelist = {
   CREATE_WHITELIST: "CREATE_WHITELIST",
   EDIT_WHITELIST: "EDIT_WHITELIST",
-  REVOKE_WHITELIST: "REVOKE_WHITELIST",
 };
 export const RequestActivityTypeDefsGroup = {
   CREATE_GROUP: "CREATE_GROUP",
   EDIT_GROUP: "EDIT_GROUP",
   REVOKE_GROUP: "REVOKE_GROUP",
 };
-const RequestActivityTypeDefsAccount = {
+export const RequestActivityTypeDefsAccount = {
   CREATE_ACCOUNT: "CREATE_ACCOUNT",
   EDIT_ACCOUNT: "EDIT_ACCOUNT",
   REVOKE_ACCOUNT: "REVOKE_ACCOUNT",
   MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
 };
-const RequestActivityTypeDefsUser = {
+export const RequestActivityTypeDefsUser = {
   REVOKE_USER: "REVOKE_USER",
   CREATE_ADMIN: "CREATE_ADMIN",
   CREATE_OPERATOR: "CREATE_OPERATOR",
 };
-const RequestActivityTypeDefsOrganization = {
+export const RequestActivityTypeDefsOrganization = {
   UPDATE_QUORUM: "UPDATE_QUORUM",
 };
 const RequestActivityTypeDefsTransaction = {
