@@ -29,6 +29,7 @@ export type ButtonProps = {|
   circular?: boolean,
   "data-test"?: string,
   style?: Object,
+  isLoadingProp?: boolean,
 |};
 
 export const ButtonBase = styled.div.attrs(p => ({
@@ -70,7 +71,7 @@ export const ButtonBase = styled.div.attrs(p => ({
 
 function Button(props: ButtonProps, ref: any) {
   const isUnmounted = useRef(false);
-  const { onClick, children, disabled, ...rest } = props;
+  const { onClick, children, disabled, isLoadingProp, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
@@ -104,13 +105,13 @@ function Button(props: ButtonProps, ref: any) {
     <ButtonBase
       {...rest}
       disabled={disabled}
-      isLoading={isLoading}
+      isLoading={isLoading || isLoadingProp}
       onClick={handleClick}
       ref={ref}
       onKeyUp={handleKeyUp}
     >
-      <Container isLoading={isLoading}>{children}</Container>
-      {isLoading && (
+      <Container isLoading={isLoading || isLoadingProp}>{children}</Container>
+      {(isLoading || isLoadingProp) && (
         <Loader size={getLoaderSize(props)} style={{ position: "absolute" }} />
       )}
     </ButtonBase>

@@ -2,6 +2,7 @@
 
 import UpdateUserRegistrationMutation from "api/mutations/UpdateUserRegistrationMutation";
 import InviteUserMutation from "api/mutations/InviteUserMutation";
+import UserQuery from "api/queries/UserQuery";
 
 import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -11,17 +12,16 @@ export const updateUserInfo = async (
   request_id: string,
   user_info: Object,
   restlay: RestlayEnvironment,
+  userId?: number,
 ) => {
   const mutation = new UpdateUserRegistrationMutation({
     request_id,
     user_info,
   });
 
-  try {
-    await restlay.commitMutation(mutation);
-  } catch (error) {
-    console.warn(error);
-  }
+  await restlay.commitMutation(mutation);
+  userId &&
+    (await restlay.fetchQuery(new UserQuery({ userID: userId.toString() })));
 };
 
 export const processUserInfo = async (
