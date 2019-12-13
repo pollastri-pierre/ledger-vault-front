@@ -65,7 +65,7 @@ export default function FilterFieldSelect(props: Props) {
                 if (areSame(subO.value, s)) return subO;
               }
             }
-            if (areSame(o.value, s)) return o;
+            if (o.value && areSame(o.value, s)) return o;
           }
           return null;
         })
