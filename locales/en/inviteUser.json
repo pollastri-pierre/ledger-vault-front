@@ -62,7 +62,7 @@
     "success": {
       "title": "Success",
       "subtitle": "You've successfully registered to the Ledger Vault.",
-      "description": "Administrators of your workspace will get in touch once your registration has been approved."
+      "description": "Your registration must now be approved by the Administrators of your workspace."
     }
   }
 }
