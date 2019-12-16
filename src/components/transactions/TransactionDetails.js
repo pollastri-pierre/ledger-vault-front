@@ -70,6 +70,11 @@ function TransactionDetails(props: Props) {
       title="Transaction details"
       onClose={close}
       footer={footer}
+      refreshDataQuery={
+        new TransactionWithAccountQuery({
+          transactionId: String(transaction.id),
+        })
+      }
     >
       <TabOverview key="overview" transaction={transaction} account={account} />
       <FetchEntityHistory

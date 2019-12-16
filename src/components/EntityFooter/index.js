@@ -26,6 +26,7 @@ import { DEVICE_REJECT_ERROR_CODE } from "device";
 
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import RequestsQuery from "api/queries/RequestsQuery";
+import Query from "restlay/Query";
 
 import { extractErrorContent } from "redux/modules/alerts";
 import { approveFlow, createAndApprove } from "device/interactions/hsmFlows";
@@ -57,6 +58,7 @@ type Props = {|
   captureRefs?: boolean,
   revokeParams?: RevokeParams,
   restlay: RestlayEnvironment,
+  refreshDataQuery?: typeof Query,
 |};
 
 const SLIDES = {
@@ -87,6 +89,7 @@ function EntityFooter(props: Props) {
     onFinish,
     captureRefs,
     revokeParams,
+    refreshDataQuery,
   } = props;
 
   const { refresh: refreshOrganization } = useOrganization();
@@ -154,7 +157,7 @@ function EntityFooter(props: Props) {
     }
   };
 
-  const runDeviceAction = (action: Action) => {
+  const runDeviceAction = async (action: Action) => {
     if (action.type !== "device") return;
     setAction(action);
     setSlide(SLIDES.action);
@@ -165,6 +168,9 @@ function EntityFooter(props: Props) {
     await restlay.commitMutation(
       new AbortRequestMutation({ requestID: request.id }),
     );
+    if (refreshDataQuery) {
+      await restlay.fetchQuery(refreshDataQuery);
+    }
     await restlay.fetchQuery(
       new RequestsQuery({
         status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
@@ -172,7 +178,7 @@ function EntityFooter(props: Props) {
         order: "asc",
       }),
     );
-  }, [request, restlay]);
+  }, [request, restlay, refreshDataQuery]);
 
   const handleError = err => {
     const isBlockingReasons =
@@ -207,9 +213,12 @@ function EntityFooter(props: Props) {
   const onRevoke = () =>
     runDeviceAction({ type: "device", ...prepareAbortEntityData(entity) });
 
-  const onDeviceSuccess = () => {
+  const onDeviceSuccess = async () => {
     setSlide(SLIDES.result);
     triggerPostSuccessSideEffects();
+    if (refreshDataQuery) {
+      await restlay.fetchQuery(refreshDataQuery);
+    }
   };
 
   const inner =

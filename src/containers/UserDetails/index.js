@@ -7,6 +7,7 @@ import EntityModal from "components/EntityModal";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
+import UserQuery from "api/queries/UserQuery";
 import type { User } from "data/types";
 import { useMe } from "components/UserContextProvider";
 
@@ -55,6 +56,7 @@ function UserDetails(props: Props) {
       Icon={FaUser}
       title={user.username}
       onClose={close}
+      refreshDataQuery={new UserQuery({ userID: String(user.id) })}
       revokeParams={revokeParams}
     >
       <UserDetailsOverview key="overview" user={user} />
