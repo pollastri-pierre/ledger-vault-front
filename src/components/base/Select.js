@@ -85,7 +85,7 @@ const customStyles = {
     ...styles,
     fontSize: 13,
     margin: 0,
-    marginLeft: 0,
+    marginLeft: 2,
     color: "inherit",
   }),
   singleValue: styles => ({
