@@ -5,11 +5,6 @@
     "title": "General",
     "units": "Units"
   },
-  "header": "Account Settings",
-  "transactionRules": {
-    "approvals": "Approval workflow",
-    "title": "Transaction rules"
-  },
   "advanced": {
     "derivation_path": "Derivation path",
     "xpub": "XPUB",

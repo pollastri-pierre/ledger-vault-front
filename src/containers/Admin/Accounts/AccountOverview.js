@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from "react";
+import React from "react";
 import { Trans } from "react-i18next";
 import LineRow from "components/LineRow";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
@@ -7,16 +7,11 @@ import Copy from "components/base/Copy";
 import AccountName from "components/AccountName";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import colors from "shared/colors";
 import InfoBox from "components/base/InfoBox";
 import ParentAccount from "components/ParentAccount";
 import MultiRules from "components/MultiRules";
 import { isBalanceAvailable, getAccountCurrencyOrToken } from "utils/accounts";
 import type { Account } from "data/types";
-
-const iconDown = <FaChevronDown size={12} color={colors.lightGrey} />;
-const iconUp = <FaChevronUp size={12} color={colors.lightGrey} />;
 
 const AccountOverview = ({
   account,
@@ -36,10 +31,6 @@ const AccountOverview = ({
 );
 
 const Rows = ({ account }: { account: Account }) => {
-  const [isRuleVisible, setRule] = useState(false);
-  const toggleRuleVisible = () => {
-    return setRule(!isRuleVisible);
-  };
   const currencyOrToken = getAccountCurrencyOrToken(account);
   return (
     <div>
@@ -66,29 +57,23 @@ const Rows = ({ account }: { account: Account }) => {
         </>
       )}
       {account.governance_rules && account.governance_rules.length && (
-        <LineRow label={<Trans i18nKey="entityModal:tabs.transactionRules" />}>
-          <Box
-            onClick={toggleRuleVisible}
-            horizontal
-            flow={10}
-            align="center"
-            style={{ cursor: "pointer" }}
-          >
-            <Text
-              i18nKey="accountCreation:rulesSumup"
-              count={account.governance_rules.length}
-              values={{ count: account.governance_rules.length }}
+        <LineRow
+          label={<Trans i18nKey="entityModal:tabs.transactionRules" />}
+          collapsibleState="collapsed"
+          collapsibleChildren={
+            <MultiRules
+              readOnly
+              rulesSets={account.governance_rules}
+              currencyOrToken={currencyOrToken}
             />
-            {isRuleVisible ? iconUp : iconDown}
-          </Box>
+          }
+        >
+          <Text
+            i18nKey="accountCreation:rulesSumup"
+            count={account.governance_rules.length}
+            values={{ count: account.governance_rules.length }}
+          />
         </LineRow>
-      )}
-      {account.governance_rules && isRuleVisible && (
-        <MultiRules
-          readOnly
-          rulesSets={account.governance_rules}
-          currencyOrToken={currencyOrToken}
-        />
       )}
     </div>
   );

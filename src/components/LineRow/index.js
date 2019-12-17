@@ -1,8 +1,9 @@
 // @flow
 
-import React, { Component } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Tooltip from "@material-ui/core/Tooltip";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 import colors from "shared/colors";
 import InfoCircle from "components/icons/InfoCircle";
@@ -14,23 +15,40 @@ export const BoxLined = styled(Box)`
     border-top: 1px solid ${colors.argile};
   }
 `;
+type CollapsibleState = "collapsed" | "open";
 
-class LineRow extends Component<{
+type LineRowProps = {
   label: React$Node,
   children?: React$Node | string,
   tooltipInfoMessage?: React$Node,
   vertical?: boolean,
   noOverflowHidden?: boolean,
-}> {
-  render() {
-    const {
-      label,
-      children,
-      tooltipInfoMessage,
-      vertical,
-      noOverflowHidden,
-    } = this.props;
-    return (
+  collapsibleState?: CollapsibleState,
+  collapsibleChildren?: React$Node,
+};
+
+const iconDown = <FaChevronDown size={12} color={colors.lightGrey} />;
+const iconUp = <FaChevronUp size={12} color={colors.lightGrey} />;
+
+export default function LineRow(props: LineRowProps) {
+  const {
+    label,
+    children,
+    tooltipInfoMessage,
+    vertical,
+    noOverflowHidden,
+    collapsibleState,
+    collapsibleChildren,
+  } = props;
+  const [isCollapsibleContentVisible, setCollapsibleContent] = useState(
+    collapsibleState !== "collapsed",
+  );
+  const toggleCollapsibleContent = () => {
+    return setCollapsibleContent(!isCollapsibleContentVisible);
+  };
+
+  return (
+    <>
       <BoxLined
         horizontal={!vertical}
         align={!vertical ? "center" : "left"}
@@ -51,16 +69,32 @@ class LineRow extends Component<{
         {children && (
           <Box
             ellipsis={!noOverflowHidden}
+            onClick={collapsibleState ? toggleCollapsibleContent : null}
+            horizontal
+            align="center"
+            flow={10}
             style={
-              vertical ? { ...styles.value, textAlign: "left" } : styles.value
+              (vertical ? { ...styles.value, textAlign: "left" } : styles.value,
+              {
+                cursor: collapsibleState ? "pointer" : "none",
+                display: "flex",
+              })
             }
           >
             {children}
+            {collapsibleState
+              ? isCollapsibleContentVisible
+                ? iconUp
+                : iconDown
+              : null}
           </Box>
         )}
       </BoxLined>
-    );
-  }
+      {isCollapsibleContentVisible && collapsibleChildren && (
+        <Box>{collapsibleChildren}</Box>
+      )}
+    </>
+  );
 }
 
 const styles = {
@@ -69,5 +103,3 @@ const styles = {
     textAlign: "right",
   },
 };
-
-export default LineRow;

@@ -50,6 +50,13 @@ class Wrapper extends Component<*, State> {
         <LineRow label="Editable Name">
           <EditableField value={username} onChange={this.onEditUsername} />
         </LineRow>
+        <LineRow
+          label="Collapsible"
+          collapsibleState="collapsed"
+          collapsibleChildren={<div>This is some collapsible content</div>}
+        >
+          <div>Toggle</div>
+        </LineRow>
       </Box>
     );
   }
