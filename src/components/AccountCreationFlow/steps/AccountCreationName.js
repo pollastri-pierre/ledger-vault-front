@@ -65,6 +65,9 @@ export default function AccountCreationOptions(
 
     inner = (
       <Box flow={20}>
+        <InfoBox type="info" withIcon>
+          <Text i18nKey="accountCreation:steps.name.warning" />
+        </InfoBox>
         <Box>
           <Label>{t("newAccount:options.name")}</Label>
           <InputText
@@ -79,9 +82,6 @@ export default function AccountCreationOptions(
             IconLeft={IconLeft}
           />
         </Box>
-        <InfoBox type="info" withIcon>
-          <Text i18nKey="accountCreation:steps.name.warning" />
-        </InfoBox>
       </Box>
     );
   }
