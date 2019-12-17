@@ -93,8 +93,7 @@ class InputText extends PureComponent<Props, State> {
       <Box position="relative" grow={grow}>
         {IconLeft && <IconWrapper Icon={IconLeft} isFocused={isFocused} />}
         <StyledInput
-          // not fully working. https://bugs.chromium.org/p/chromium/issues/detail?id=370363#c7
-          autoComplete="new-password"
+          autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
