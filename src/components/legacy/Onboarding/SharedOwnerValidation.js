@@ -96,7 +96,7 @@ const SharedOwnerValidation = ({
           <Box>
             <strong>{t("onboarding:master_seed_signin.ask_admin")}</strong>
             <Sep />
-            <Box>
+            <Box align="flex-start">
               {validating ? (
                 <DeviceInteraction
                   onSuccess={onSuccess}
