@@ -47,6 +47,7 @@ function AccountDetails(props: Props) {
       editURL={`/accounts/edit/${account.id}`}
       customWidth={680}
       disableEdit={hasPendingTransactions || hasPendingEditGroup}
+      refreshDataQuery={new AccountQuery({ accountId: String(account.id) })}
     >
       <AccountOverview
         key="overview"

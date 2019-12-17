@@ -44,6 +44,7 @@ function GroupDetails(props: Props) {
       revokeParams={revokeParams}
       editURL={`/groups/edit/${group.id}`}
       additionalFields={{ operators: operators.edges.map(e => e.node) }}
+      refreshDataQuery={new GroupQuery({ groupId: String(group.id) })}
     >
       <GroupDetailsOverview
         key="overview"

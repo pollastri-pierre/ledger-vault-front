@@ -47,6 +47,7 @@ type Props<T> = {|
   additionalFields?: T,
   revokeParams?: RevokeParams,
   history: MemoryHistory,
+  refreshDataQuery: void => void,
 |};
 
 function EntityModal<T>(props: Props<T>) {
@@ -67,6 +68,7 @@ function EntityModal<T>(props: Props<T>) {
     additionalFields,
     revokeParams,
     history,
+    refreshDataQuery,
   } = props;
   const { t } = useTranslation();
 
@@ -150,6 +152,7 @@ function EntityModal<T>(props: Props<T>) {
         onFinish={onClose}
         customContent={footer}
         revokeParams={revokeParams}
+        refreshDataQuery={refreshDataQuery}
       />
     </>
   );

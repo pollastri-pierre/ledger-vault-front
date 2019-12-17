@@ -29,6 +29,9 @@ const WhitelistDetails = (props: Props) => {
       onClose={close}
       revokeButton={() => <div>revoke button</div>}
       editURL={`/whitelists/edit/${whitelist.id}`}
+      refreshDataQuery={
+        new WhitelistQuery({ whitelistId: String(whitelist.id) })
+      }
     >
       <WhitelistComponent key="overview" whitelist={whitelist} />
       {me.role === "ADMIN" && (
