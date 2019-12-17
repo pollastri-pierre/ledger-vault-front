@@ -3,7 +3,7 @@
 export const reasonsTableDefault = [
   {
     header: {
-      label: "Entity",
+      label: "Object",
       align: "left",
     },
     body: {
