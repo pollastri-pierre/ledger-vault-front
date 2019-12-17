@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useEffect } from "react";
-import { FaRegEdit, FaCheck } from "react-icons/fa";
+import { FaPen, FaCheck } from "react-icons/fa";
 
 import { minWait } from "utils/promise";
 
@@ -81,20 +81,20 @@ export default function EditableField(props: Props) {
     <Box horizontal align="center" flow={10}>
       {!editMode ? (
         <>
-          <Box flow={5} horizontal justify="center" align="center">
+          <Box flow={10} horizontal>
             {requestStatus === "success" && (
-              <>
-                <FaCheck color={colors.green} />
+              <Box horizontal flow={5} justify="center" align="center">
+                <FaCheck size={11} color={colors.green} />
                 <Text i18nKey="common:saved" color={colors.green} />
-              </>
+              </Box>
             )}
             <Text>{localValue}</Text>
           </Box>
-          <FaRegEdit
+          <FaPen
             data-test="edit-icon"
             style={styles.cursor}
             color={colors.lead}
-            size={12}
+            size={11}
             onClick={toggleEditMode}
           />
         </>
