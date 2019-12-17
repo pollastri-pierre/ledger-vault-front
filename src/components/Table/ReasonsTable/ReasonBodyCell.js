@@ -25,9 +25,9 @@ function ReasonBodyCell(props: CellProps) {
         }
         if (reason.type === "Transaction") {
           return (
-            <Box horizontal>
+            <Box horizontal flow={10}>
               <TransactionTypeIcon type="SEND" />
-              Transaction
+              <span>Transaction</span>
             </Box>
           );
         }
