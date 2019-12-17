@@ -1,0 +1,6 @@
+{
+  "hints": {
+    "maxLength": "{{maxLength}} characters max ({{nbLeft}} left)",
+    "onlyAscii": "No special characters"
+  }
+}

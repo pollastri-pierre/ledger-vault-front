@@ -9,6 +9,7 @@ import { InputText, Label, Form } from "components/base/form";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
+import { maxLengthNonAsciiHints } from "components/base/hints";
 import type { UserCreationStepProps } from "../types";
 
 const USERNAME_LENGTH = 19;
@@ -45,26 +46,7 @@ const userIDHints = [
     check: v => v.split("").every(isUserIDCharValid),
   },
 ];
-const usernameHints = [
-  {
-    key: "maxLength",
-    label: v => (
-      <Trans
-        i18nKey="inviteUser:form.hints.username.maxLength"
-        values={{
-          unLength: USERNAME_LENGTH,
-          nbLeft: USERNAME_LENGTH - v.length,
-        }}
-      />
-    ),
-    check: v => v.length < USERNAME_LENGTH,
-  },
-  {
-    key: "nonAscii",
-    label: <Trans i18nKey="inviteUser:form.hints.username.onlyAscii" />,
-    check: () => true,
-  },
-];
+
 export const InputUserID = ({
   value,
   onChange,
@@ -113,7 +95,7 @@ function UserCreationInfo(props: Props) {
           onChange={handleChangeUsername}
           placeholder={t("inviteUser:form.placeholderUsername")}
           fullWidth
-          hints={usernameHints}
+          hints={maxLengthNonAsciiHints(USERNAME_LENGTH)}
           maxLength={USERNAME_LENGTH}
           onlyAscii
         />
