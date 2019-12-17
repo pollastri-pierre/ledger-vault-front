@@ -13,11 +13,13 @@ import colors from "shared/colors";
 
 type Props = {
   text: string,
+  compact?: boolean,
+  customBg?: string,
   children?: React$Node,
 };
 
 export default function Copy(props: Props) {
-  const { text, children } = props;
+  const { text, compact, customBg, children } = props;
   const [copied, setCopied] = useState(false);
   const isUnmounted = useRef();
 
@@ -36,14 +38,17 @@ export default function Copy(props: Props) {
   }, []);
 
   return (
-    <Container>
-      <Text data-test="Copy_value" style={textStyles}>
+    <Container customBg={customBg}>
+      <Text
+        data-test="Copy_value"
+        style={compact ? { ...textStyles, ...compactStyle } : textStyles}
+      >
         {children || text}
       </Text>
       <Tooltip title={copied ? "Copied!" : "Copy"} placement="right">
         <CopyToClipboard data-test="Copy" text={text} onCopy={onCopy}>
           <IconContainer>
-            <FaCopy />
+            <FaCopy size={compact ? 11 : 16} />
           </IconContainer>
         </CopyToClipboard>
       </Tooltip>
@@ -59,9 +64,15 @@ const textStyles = {
   whiteSpace: "nowrap",
 };
 
+const compactStyle = {
+  fontSize: 11,
+  padding: 2,
+  fontFamily: "monospace",
+};
+
 const Container = styled.div`
   display: flex;
-  background: ${colors.form.bg};
+  background: ${p => p.customBg || colors.form.bg};
   border: 1px solid ${colors.legacyLightGrey1};
   border-radius: 4px;
   padding: 2px;

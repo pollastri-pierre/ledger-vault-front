@@ -149,7 +149,9 @@ const AddressRow = ({
         >
           <Box horizontal flow={20} grow align="center">
             <AccountIcon currencyId={addr.currency} />
-            <Text fontWeight="bold">{addr.name}</Text>
+            <Text fontWeight="bold" ellipsis>
+              {addr.name}
+            </Text>
           </Box>
           <Box noShrink>
             <Text style={{ fontFamily: "monospace" }}>{addr.address}</Text>
@@ -286,19 +288,6 @@ const FormAdd = connectData(
           <Box horizontal flow={20}>
             <Box flex={1}>
               <Label>
-                <Trans i18nKey="whitelists:create.field_currency" />
-              </Label>
-              <SelectCurrency
-                autoFocus
-                noToken
-                placeholder={t("whitelists:create.currency_placeholder")}
-                value={curr}
-                onChange={val => setCurrency(val ? val.value.id : null)}
-                noOptionsMessage={() => "not found"}
-              />
-            </Box>
-            <Box flex={1}>
-              <Label>
                 <Trans i18nKey="whitelists:create.field_name" />
               </Label>
               <InputText
@@ -306,11 +295,24 @@ const FormAdd = connectData(
                 maxLength={ADDRESS_NAME_LENGTH}
                 hints={maxLengthNonAsciiHints(ADDRESS_NAME_LENGTH)}
                 onChange={setName}
+                autoFocus
                 value={name}
                 errors={nameError ? [nameError] : undefined}
                 onlyAscii
                 fullWidth
                 data-test="name_address"
+              />
+            </Box>
+            <Box flex={1}>
+              <Label>
+                <Trans i18nKey="whitelists:create.field_currency" />
+              </Label>
+              <SelectCurrency
+                noToken
+                placeholder={t("whitelists:create.currency_placeholder")}
+                value={curr}
+                onChange={val => setCurrency(val ? val.value.id : null)}
+                noOptionsMessage={() => "No currencies"}
               />
             </Box>
           </Box>

@@ -52,6 +52,35 @@ const WhitelistEditRequest = (props: Props) => {
 
   const hasAddressesChanged = added.length > 0 || removed.length > 0;
 
+  const iconByType = {
+    added: (
+      <Box
+        align="center"
+        justify="center"
+        style={{
+          borderRadius: "50%",
+          width: 20,
+          height: 20,
+        }}
+      >
+        <MdAdd size={16} color={colors.green} />
+      </Box>
+    ),
+    removed: (
+      <Box
+        align="center"
+        justify="center"
+        style={{
+          borderRadius: "50%",
+          width: 20,
+          height: 20,
+        }}
+      >
+        <MdClose size={16} color={colors.grenade} />
+      </Box>
+    ),
+  };
+
   return (
     <Box flow={20}>
       <DiffName entity={whitelist} />
@@ -59,41 +88,62 @@ const WhitelistEditRequest = (props: Props) => {
         {hasAddressesChanged && (
           <>
             <Text fontWeight="bold">Addresses</Text>
-            <Box flow={20}>
-              <Box flow={10} horizontal align="flex-start">
-                {added.length > 0 && (
-                  <Overlay type="add">
-                    <Box horizontal align="center" flow={5}>
-                      <MdAdd size={15} color={colors.green} />
-                      <Text>Addresses added</Text>
+            <Box flow={5}>
+              {added.length > 0 && (
+                <Overlay type="added">
+                  {added.map(a => (
+                    <Box
+                      flow={10}
+                      horizontal
+                      align="center"
+                      justify="space-between"
+                    >
+                      {iconByType.added}
+                      <AddressComponent address={a.address} customBg="white" />
                     </Box>
-                    {added
-                      .slice(0, showMore ? added.length : NB_ITEM)
-                      .map(a => (
-                        <AddressComponent {...a} />
-                      ))}
-                  </Overlay>
-                )}
-                {removed.length > 0 && (
-                  <Overlay>
-                    <Box horizontal align="center" flow={5}>
-                      <MdClose size={15} color={colors.grenade} />
-                      <Text>Addresses removed</Text>
+                  ))}
+                </Overlay>
+              )}
+              {removed.length > 0 && (
+                <Overlay type="removed">
+                  {removed.map(a => (
+                    <Box
+                      flow={10}
+                      horizontal
+                      align="center"
+                      justify="space-between"
+                    >
+                      {iconByType.removed}
+                      <AddressComponent address={a.address} customBg="white" />
                     </Box>
-                    {removed
-                      .slice(0, showMore ? removed.length : NB_ITEM)
-                      .map(a => (
-                        <AddressComponent {...a} />
-                      ))}
-                  </Overlay>
-                )}
-              </Box>
-              {(NB_ITEM < added.length || NB_ITEM < removed.length) && (
-                <Button type="link" onClick={() => setShowMore(!showMore)}>
-                  {showMore ? "Show less" : "Show more"}
-                </Button>
+                  ))}
+                </Overlay>
+              )}
+              {unchanged.length > 0 && (
+                <Overlay>
+                  {unchanged
+                    .slice(0, showMore ? unchanged.length : NB_ITEM)
+                    .map(a => (
+                      <Box
+                        flow={10}
+                        horizontal
+                        align="center"
+                        justify="space-between"
+                      >
+                        <AddressComponent
+                          address={a.address}
+                          customBg="white"
+                        />
+                      </Box>
+                    ))}
+                </Overlay>
               )}
             </Box>
+            {NB_ITEM < unchanged.length && (
+              <Button type="link" onClick={() => setShowMore(!showMore)}>
+                {showMore ? "Show less" : "Show more"}
+              </Button>
+            )}
           </>
         )}
       </Box>
@@ -106,9 +156,11 @@ const Overlay = styled(Box).attrs({ flow: 10 })`
   flex: 1;
   border-radius: 4px;
   background: ${p =>
-    p.type === "add"
-      ? opacity(colors.green, 0.05)
-      : opacity(colors.grenade, 0.05)};
+    p.type === "added"
+      ? `${opacity(colors.green, 0.1)}`
+      : p.type === "removed"
+      ? `${opacity(colors.grenade, 0.1)}`
+      : `${opacity(colors.lightGrey, 0.1)}`};
 `;
 
 export default WhitelistEditRequest;

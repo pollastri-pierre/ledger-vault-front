@@ -2,6 +2,7 @@
 
 import React from "react";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+import Copy from "components/base/Copy";
 import styled from "styled-components";
 import type { Address } from "data/types";
 import Box from "components/base/Box";
@@ -10,19 +11,22 @@ import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
 type Props = {
   address: Address,
+  customBg?: string,
 };
 
-const AddressDisplay = ({ address }: Props) => (
+const AddressDisplay = ({ address, customBg }: Props) => (
   <Container history={history} title={address.address}>
-    <Box horizontal justify="space-between">
+    <Box horizontal align="center" justify="space-between">
       <Box horizontal align="center" flow={5}>
-        <Icon currency={address.currency} />
-        <Text fontWeight="semiBold">{address.name}</Text>
+        <div style={{ marginTop: 2 }}>
+          <Icon currency={address.currency} />
+        </div>
+        <Text fontWeight="semiBold" ellipsis>
+          {address.name}
+        </Text>
       </Box>
     </Box>
-    <Text style={styles.address} ellipsis>
-      {address.address}
-    </Text>
+    <Copy text={address.address} compact customBg={customBg} />
   </Container>
 );
 
@@ -38,20 +42,12 @@ const Icon = ({ currency }: { currency: string }) => {
   );
 };
 
-const Container = styled(Box).attrs({ flow: 5, p: 5, pb: 8 })`
-  border-radius: 4px;
-  border: 1px solid #eeeeeeb8;
-  background: white;
-`;
-
-const styles = {
-  address: {
-    fontSize: 10,
-    borderRadius: 4,
-    fontFamily: "monospace",
-    padding: 4,
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-  },
-};
+const Container = styled(Box).attrs({
+  horizontal: true,
+  grow: 1,
+  justify: "space-between",
+  align: "center",
+  flow: 5,
+})``;
 
 export default AddressDisplay;
