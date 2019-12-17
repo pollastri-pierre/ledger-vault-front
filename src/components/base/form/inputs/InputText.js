@@ -93,6 +93,8 @@ class InputText extends PureComponent<Props, State> {
       <Box position="relative" grow={grow}>
         {IconLeft && <IconWrapper Icon={IconLeft} isFocused={isFocused} />}
         <StyledInput
+          // prevent LastPass autocomplete see https://stackoverflow.com/a/44984917
+          data-lpignore="true"
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
