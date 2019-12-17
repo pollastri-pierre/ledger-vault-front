@@ -7,6 +7,7 @@ import Disabled from "components/Disabled";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
+import { maxLengthNonAsciiHints } from "components/base/hints";
 import { InputText, Label, Form } from "components/base/form";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
@@ -14,8 +15,10 @@ import type { AccountCreationStepProps } from "../types";
 
 import ERC20RenderName from "./ERC20RenderName";
 
+const ACCOUNT_NAME_LENGTH = 19;
+
 const inputProps = {
-  maxLength: 19,
+  maxLength: ACCOUNT_NAME_LENGTH,
   onlyAscii: true,
 };
 
@@ -70,6 +73,7 @@ export default function AccountCreationOptions(
             disabled={isDisabled}
             autoFocus
             onChange={handleChangeName}
+            hints={maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)}
             placeholder={t("newAccount:options.acc_name_placeholder")}
             {...inputProps}
             IconLeft={IconLeft}

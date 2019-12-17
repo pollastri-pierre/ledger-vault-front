@@ -22,6 +22,7 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
+import { maxLengthNonAsciiHints } from "components/base/hints";
 import AccountIcon from "components/legacy/AccountIcon";
 
 type Props = {
@@ -194,6 +195,8 @@ type NewAddForm = {
   currency: string,
 };
 
+const ADDRESS_NAME_LENGTH = 19;
+
 const FormAdd = connectData(
   ({
     addr,
@@ -300,7 +303,8 @@ const FormAdd = connectData(
               </Label>
               <InputText
                 placeholder={t("whitelists:create.addr_name_placeholder")}
-                maxLength={19}
+                maxLength={ADDRESS_NAME_LENGTH}
+                hints={maxLengthNonAsciiHints(ADDRESS_NAME_LENGTH)}
                 onChange={setName}
                 value={name}
                 errors={nameError ? [nameError] : undefined}

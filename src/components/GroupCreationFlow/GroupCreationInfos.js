@@ -4,6 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import Box from "components/base/Box";
+import { maxLengthNonAsciiHints } from "components/base/hints";
 import { InputText, Label, Form } from "components/base/form";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
 import InfoBox from "components/base/InfoBox";
@@ -12,6 +13,7 @@ import type { User } from "data/types";
 import type { GroupCreationStepProps } from "./types";
 
 export const MAX_MEMBERS = 20;
+const GROUP_NAME_LENGTH = 19;
 
 export default function GroupCreationInfos(props: GroupCreationStepProps) {
   const { t } = useTranslation();
@@ -33,8 +35,9 @@ export default function GroupCreationInfos(props: GroupCreationStepProps) {
           value={payload.name}
           autoFocus
           onChange={handleChangeName}
-          maxLength={19}
+          maxLength={GROUP_NAME_LENGTH}
           onlyAscii
+          hints={maxLengthNonAsciiHints(GROUP_NAME_LENGTH)}
           placeholder={t("group:create.name_placeholder")}
         />
       </Box>
