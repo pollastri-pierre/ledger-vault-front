@@ -45,7 +45,7 @@ python test_account_creation.py \
       \"rules\": [
           { \"type\": \"MULTI_AUTHORIZATIONS\",
             \"data\": [
-                { \"quorum\": 2, \"users\": [13, 14]},
+                { \"quorum\": 1, \"users\": [13, 14]},
                 { \"quorum\": 2, \"group_id\": 3}
             ]
           }
@@ -140,7 +140,7 @@ python test_account_creation.py \
             {
                 \"type\": \"MULTI_AUTHORIZATIONS\",
                 \"data\": [
-                    {\"quorum\": 2, \"group_id\": 3},
+                    {\"quorum\": 1, \"group_id\": 3},
                     {\"quorum\": 2, \"users\": [13, 14]}
                 ]
             },
@@ -162,7 +162,7 @@ python test_account_creation.py \
             {
                 \"type\": \"MULTI_AUTHORIZATIONS\",
                 \"data\": [
-                    {\"quorum\": 2, \"group_id\": 3},
+                    {\"quorum\": 1, \"group_id\": 3},
                     {\"quorum\": 1, \"users\": [14]}
                 ]
             },
