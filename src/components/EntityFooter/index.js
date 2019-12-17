@@ -373,6 +373,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
   const me = useMe();
   const userApprovedRequest = hasUserApprovedRequest(request, me);
   const userInCurrentStep = isUserInCurrentStep(request, me);
+  const [isRejectModalOpened, setRejectModalOpened] = useState(false);
 
   // we always want to display abort button if it's a user creation request
   // to allow aborting an invitation link
@@ -395,6 +396,19 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             expires on <DateFormat date={request.expired_at} />
           </Text>
         </Box>
+        <ConfirmModal
+          isOpened={isRejectModalOpened}
+          isConfirmRed
+          onConfirm={() => {
+            setRejectModalOpened(false);
+            onAbort();
+          }}
+          onReject={() => setRejectModalOpened(false)}
+          title={<Text i18nKey="request:reject_confirm_title" />}
+          confirmLabel="Reject"
+        >
+          <Text i18nKey="request:reject_confirm_content" />
+        </ConfirmModal>
       </Box>
       {userApprovedRequest ? (
         <Emphasis>
@@ -405,7 +419,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             type="filled"
             variant="danger"
             data-test="reject-button"
-            onClick={onAbort}
+            onClick={() => setRejectModalOpened(true)}
           >
             <Trans i18nKey="common:abort" />
           </Button>
@@ -416,7 +430,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             type="filled"
             variant="danger"
             data-test="reject-button"
-            onClick={onAbort}
+            onClick={() => setRejectModalOpened(true)}
           >
             <Trans i18nKey="common:abort" />
           </Button>
@@ -438,7 +452,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             type="filled"
             variant="danger"
             data-test="reject-button"
-            onClick={onAbort}
+            onClick={() => setRejectModalOpened(true)}
           >
             <Trans i18nKey="common:reject" />
           </Button>
