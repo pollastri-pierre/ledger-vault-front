@@ -34,7 +34,7 @@ const getRecipientWarning = async (recipient: string) => {
 
 const getRecipientError = async (restlay, currency, recipient) => {
   const isValid = await isRecipientValid(restlay, currency, recipient);
-  return isValid ? null : new InvalidAddress();
+  return isValid ? null : new InvalidAddress(null, { ticker: currency.ticker });
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
