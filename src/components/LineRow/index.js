@@ -76,7 +76,7 @@ export default function LineRow(props: LineRowProps) {
             style={
               (vertical ? { ...styles.value, textAlign: "left" } : styles.value,
               {
-                cursor: collapsibleState ? "pointer" : "none",
+                cursor: collapsibleState ? "pointer" : "auto",
                 display: "flex",
               })
             }
