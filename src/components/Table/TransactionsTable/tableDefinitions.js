@@ -34,16 +34,6 @@ export const defaultDefinition = [
   },
   {
     header: {
-      label: "Status",
-      align: "left",
-    },
-    body: {
-      prop: "status",
-      align: "left",
-    },
-  },
-  {
-    header: {
       label: "Countervalue",
       align: "right",
     },
@@ -62,6 +52,16 @@ export const defaultDefinition = [
     body: {
       prop: "amount",
       align: "right",
+    },
+  },
+  {
+    header: {
+      label: "Status",
+      align: "left",
+    },
+    body: {
+      prop: "status",
+      align: "left",
     },
   },
 ];
@@ -90,16 +90,6 @@ export const txAccountTableDefinition = [
   },
   {
     header: {
-      label: "Status",
-      align: "left",
-    },
-    body: {
-      prop: "status",
-      align: "left",
-    },
-  },
-  {
-    header: {
       label: "Countervalue",
       align: "right",
     },
@@ -118,6 +108,16 @@ export const txAccountTableDefinition = [
     body: {
       prop: "amount",
       align: "right",
+    },
+  },
+  {
+    header: {
+      label: "Status",
+      align: "left",
+    },
+    body: {
+      prop: "status",
+      align: "left",
     },
   },
 ];
