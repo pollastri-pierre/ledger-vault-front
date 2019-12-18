@@ -225,6 +225,12 @@ const HistoryStep = ({
       <Trans i18nKey={`history:stepType.${step.type}`} />
       {" on "}
       {moment(step.createdOn).format("LLL")}
+      {step.createdBy && step.createdBy.role !== "ADMIN_SYSTEM" && (
+        <>
+          {" by "}
+          <b>{step.createdBy.username}</b>
+        </>
+      )}
       {step.blockerRequest && (
         <>
           {" by a "}
