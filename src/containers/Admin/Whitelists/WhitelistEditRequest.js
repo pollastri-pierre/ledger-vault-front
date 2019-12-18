@@ -49,6 +49,15 @@ const WhitelistEditRequest = (props: Props) => {
       }
     });
   }
+  const unchangedWithoutDups = unchanged.filter(
+    (w, i, arr) =>
+      arr.findIndex(
+        el =>
+          el.address.name === w.address.name &&
+          el.address.currency === w.address.currency &&
+          el.address.address === w.address.address,
+      ) === i,
+  );
 
   const hasAddressesChanged = added.length > 0 || removed.length > 0;
 
@@ -119,10 +128,10 @@ const WhitelistEditRequest = (props: Props) => {
                   ))}
                 </Overlay>
               )}
-              {unchanged.length > 0 && (
+              {unchangedWithoutDups.length > 0 && (
                 <Overlay>
-                  {unchanged
-                    .slice(0, showMore ? unchanged.length : NB_ITEM)
+                  {unchangedWithoutDups
+                    .slice(0, showMore ? unchangedWithoutDups.length : NB_ITEM)
                     .map(a => (
                       <Box
                         flow={10}
@@ -139,7 +148,7 @@ const WhitelistEditRequest = (props: Props) => {
                 </Overlay>
               )}
             </Box>
-            {NB_ITEM < unchanged.length && (
+            {NB_ITEM < unchangedWithoutDups.length && (
               <Button type="link" onClick={() => setShowMore(!showMore)}>
                 {showMore ? "Show less" : "Show more"}
               </Button>
