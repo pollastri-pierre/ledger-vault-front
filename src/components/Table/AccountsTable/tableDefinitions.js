@@ -16,17 +16,6 @@ export const accountsTableDefault = [
   },
   {
     header: {
-      label: "Status",
-      align: "left",
-      sortable: true,
-    },
-    body: {
-      prop: "status",
-      align: "left",
-    },
-  },
-  {
-    header: {
       label: "Countervalue",
       align: "right",
       sortable: false,
@@ -43,6 +32,17 @@ export const accountsTableDefault = [
     },
     body: {
       prop: "balance",
+      align: "right",
+    },
+  },
+  {
+    header: {
+      label: "Status",
+      align: "right",
+      sortable: true,
+    },
+    body: {
+      prop: "status",
       align: "right",
     },
   },
@@ -68,17 +68,6 @@ export const accountsIsOperatorTableDefault = [
     },
     body: {
       prop: "name",
-      align: "left",
-    },
-  },
-  {
-    header: {
-      label: "Status",
-      align: "left",
-      sortable: true,
-    },
-    body: {
-      prop: "status",
       align: "left",
     },
   },
@@ -110,6 +99,17 @@ export const accountsIsOperatorTableDefault = [
     },
     body: {
       prop: "approver_role",
+      align: "right",
+    },
+  },
+  {
+    header: {
+      label: "Status",
+      align: "right",
+      sortable: true,
+    },
+    body: {
+      prop: "status",
       align: "right",
     },
   },
