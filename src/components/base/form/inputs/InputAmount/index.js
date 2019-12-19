@@ -20,10 +20,11 @@ type Props = {
   hideUnit?: boolean,
   unitLeft?: boolean,
   hideCV?: boolean,
-  unit?: Unit,
+  unit?: ?Unit,
   width?: number | string,
   unitsWidth?: number,
   isDisabled?: boolean,
+  noForceFocus?: boolean,
 };
 
 type State = {
@@ -37,10 +38,14 @@ type State = {
 
 class InputAmount extends PureComponent<Props, State> {
   static getDerivedStateFromProps(props: Props, state: State) {
-    if (!props.value.isEqualTo(state.cachedValue)) {
+    if (
+      props.unit !== state.unit ||
+      !props.value.isEqualTo(state.cachedValue)
+    ) {
       const val = formatCurrencyUnit(state.unit, props.value);
       return {
         displayValue: props.value.isEqualTo(0) ? "" : val,
+        unit: props.unit || state.unit,
         cachedValue: props.value,
       };
     }
@@ -86,7 +91,12 @@ class InputAmount extends PureComponent<Props, State> {
     const unit = propUnit || currency.units[0];
 
     if (prevState.unit !== this.state.unit) {
-      this.inputRef.current && this.inputRef.current.focus();
+      if (!this.props.noForceFocus) {
+        this.inputRef.current && this.inputRef.current.focus();
+      } else {
+        this.onFocus();
+        this.onBlur();
+      }
     }
     if (prevProps.currency !== this.props.currency) {
       this.resetUnit(currency, unit, value);

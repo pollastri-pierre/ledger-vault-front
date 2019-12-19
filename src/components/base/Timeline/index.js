@@ -325,7 +325,7 @@ export const ShadowStopInner = styled.div`
   background: white;
   top: 0;
   left: ${PREPEND_SIZE + STOP_PADDING + 8}px;
-  right: 0;
+  min-width: 500px;
   flex-grow: 1;
   border-radius: 4px;
   padding: 20px;
