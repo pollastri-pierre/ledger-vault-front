@@ -21,7 +21,7 @@
   },
   "InvalidAddress": {
     "title": "Invalid address",
-    "description": "Please enter a valid address."
+    "description": "This is not a valid {{ticker}} address"
   },
   "AddressShouldNotBeSegwit": {
     "title": "Address is SegWit",
