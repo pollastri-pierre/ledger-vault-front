@@ -39,7 +39,7 @@ type State = {
 class InputAmount extends PureComponent<Props, State> {
   static getDerivedStateFromProps(props: Props, state: State) {
     if (
-      props.unit !== state.unit ||
+      (props.unit && props.unit !== state.unit) ||
       !props.value.isEqualTo(state.cachedValue)
     ) {
       const val = formatCurrencyUnit(state.unit, props.value);
