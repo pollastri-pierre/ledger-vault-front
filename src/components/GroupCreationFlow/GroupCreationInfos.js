@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import Box from "components/base/Box";
 import { maxLengthNonAsciiHints } from "components/base/hints";
-import { InputText, Label, Form } from "components/base/form";
+import { InputText, Label, Form, TextArea } from "components/base/form";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
 import InfoBox from "components/base/InfoBox";
 
@@ -43,8 +43,7 @@ export default function GroupCreationInfos(props: GroupCreationStepProps) {
       </Box>
       <Box>
         <Label>{t("group:create.desc_placeholder")}</Label>
-        <InputText
-          maxLength={255}
+        <TextArea
           data-test="group_description"
           value={payload.description}
           onChange={handleChangeDesc}

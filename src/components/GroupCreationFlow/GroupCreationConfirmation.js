@@ -4,6 +4,8 @@ import { Trans } from "react-i18next";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import LineRow from "components/LineRow";
+import CollapsibleText from "components/CollapsibleText";
+
 import ListGroupMembers from "components/ListGroupMembers";
 import {
   hasEditOccuredGeneric,
@@ -26,12 +28,10 @@ class GroupCreationConfirmation extends PureComponent<Props> {
           >
             {payload.name}
           </LineRow>
-          <LineRow
-            data-test="group_desc"
+          <CollapsibleText
             label={<Trans i18nKey="group:create.description" />}
-          >
-            {payload.description}
-          </LineRow>
+            content={payload.description || ""}
+          />
           <LineRow
             data-test="group_member"
             label={<Trans i18nKey="group:create.nb_members" />}
