@@ -17,4 +17,6 @@ export default class AbortRequestMutation extends Mutation<Input, Response> {
     // temp body until it is removed from the gate
     return {};
   }
+
+  showError = false;
 }

@@ -11,6 +11,10 @@
     "description": "Make sure you're using the right device.",
     "title": "Invalid device"
   },
+  "RequestFinished": {
+    "description": "This request has already been approved or rejected.",
+    "title": "Request already approved or rejected"
+  },
   "UnknownDevice": {
     "description": "Please connect an Administrator device.",
     "title": "Unknown device"
