@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useMemo } from "react";
 import connectData from "restlay/connectData";
 import { FaMoneyCheck } from "react-icons/fa";
 
@@ -37,6 +37,11 @@ function AccountDetails(props: Props) {
       return steps.some(step => step && step.group.is_under_edit);
     });
 
+  const refreshDataQuery = useMemo(
+    () => new AccountQuery({ accountId: String(account.id) }),
+    [account.id],
+  );
+
   return (
     <EntityModal
       growing
@@ -47,7 +52,7 @@ function AccountDetails(props: Props) {
       editURL={`/accounts/edit/${account.id}`}
       customWidth={680}
       disableEdit={hasPendingTransactions || hasPendingEditGroup}
-      refreshDataQuery={new AccountQuery({ accountId: String(account.id) })}
+      refreshDataQuery={refreshDataQuery}
     >
       <AccountOverview
         key="overview"

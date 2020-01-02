@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { FaUsers } from "react-icons/fa";
 
@@ -34,6 +34,11 @@ function GroupDetails(props: Props) {
     ),
   };
 
+  const refreshDataQuery = useMemo(
+    () => new GroupQuery({ groupId: String(group.id) }),
+    [group.id],
+  );
+
   return (
     <EntityModal
       growing
@@ -44,7 +49,7 @@ function GroupDetails(props: Props) {
       revokeParams={revokeParams}
       editURL={`/groups/edit/${group.id}`}
       additionalFields={{ operators: operators.edges.map(e => e.node) }}
-      refreshDataQuery={new GroupQuery({ groupId: String(group.id) })}
+      refreshDataQuery={refreshDataQuery}
     >
       <GroupDetailsOverview
         key="overview"

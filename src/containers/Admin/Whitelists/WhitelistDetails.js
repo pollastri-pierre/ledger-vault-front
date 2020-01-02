@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { useMemo } from "react";
 import type { Whitelist } from "data/types";
 import { FaAddressBook } from "react-icons/fa";
 import { CardError } from "components/base/Card";
@@ -19,6 +19,10 @@ type Props = {
 const WhitelistDetails = (props: Props) => {
   const { close, whitelist } = props;
   const me = useMe();
+  const refreshDataQuery = useMemo(
+    () => new WhitelistQuery({ whitelistId: String(whitelist.id) }),
+    [whitelist.id],
+  );
   return (
     <EntityModal
       growing
@@ -29,9 +33,7 @@ const WhitelistDetails = (props: Props) => {
       onClose={close}
       revokeButton={() => <div>revoke button</div>}
       editURL={`/whitelists/edit/${whitelist.id}`}
-      refreshDataQuery={
-        new WhitelistQuery({ whitelistId: String(whitelist.id) })
-      }
+      refreshDataQuery={refreshDataQuery}
     >
       <WhitelistComponent key="overview" whitelist={whitelist} />
       {me.role === "ADMIN" && (
