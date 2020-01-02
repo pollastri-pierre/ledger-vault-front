@@ -59,7 +59,7 @@ function AccountSettings(props: Props) {
     setSettings(settings => ({ ...settings, currency_unit: unit.data }));
     const m = new SaveAccountSettingsMutation({
       account,
-      currency_unit: unit.data.code,
+      currency_unit: unit.data.name,
     });
     restlay.commitMutation(m);
   };
