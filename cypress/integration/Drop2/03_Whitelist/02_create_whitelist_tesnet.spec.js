@@ -68,7 +68,7 @@ describe("Create whitelist", function() {
     cy.get("[data-test=approve_button]").click();
     cy.get("[data-test=success_msg]").should(
       "contain",
-      "Whitelist Request was successfully created!",
+      "Whitelist request was successfully created!",
     );
     cy.contains("Done").click();
   });
