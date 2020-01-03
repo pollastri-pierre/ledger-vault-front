@@ -106,7 +106,7 @@ function AccountSettings(props: Props) {
             <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
               <Button
                 type="filled"
-                variant="danger"
+                variant="primary"
                 size="small"
                 onClick={onXpubModal}
               >
@@ -116,7 +116,7 @@ function AccountSettings(props: Props) {
                 </Box>
               </Button>
               <Modal isOpened={isXpubModalOpen} onClose={onXpubModal}>
-                <AccountXpub account={account} />
+                <AccountXpub onClose={onXpubModal} account={account} />
               </Modal>
             </LineRow>
           </>

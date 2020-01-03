@@ -62,7 +62,7 @@ export const ButtonBase = styled.div.attrs(p => ({
     ${p => getStyles(p, "hover")};
   }
   &:focus {
-    ${p => getStyles(p, "focus")};
+    ${p => (p.disabled ? "" : getStyles(p, "focus"))};
   }
   &:active {
     ${p => getStyles(p, "active")};
