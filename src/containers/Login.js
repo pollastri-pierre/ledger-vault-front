@@ -49,7 +49,7 @@ export default function Login(props: Props) {
     };
   }, [domain]);
 
-  const onSuccess = res => {
+  const onSuccess = () => {
     dispatch(login());
     history.push(`/${domain}`);
   };

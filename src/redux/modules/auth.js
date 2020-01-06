@@ -9,6 +9,7 @@ export const logout = () => async (dispatch: Dispatch<*>) => {
   try {
     await network(`/authentications/logout`, "POST");
   } catch {
+    // We tried to logout and it failed, but no need to raise anything.
   }
   dispatch({
     type: LOGOUT,
@@ -25,6 +26,9 @@ export type State = {
 
 export default function reducer(
   state: State = {
+    // Since we don't control the auth token (handled by the back)
+    // we assume that we are authenticated by default, fetch the
+    // requested page, and only set isAuth to false in case of fail
     isAuthenticated: true,
   },
   action: Object,
@@ -38,4 +42,3 @@ export default function reducer(
       return state;
   }
 }
-

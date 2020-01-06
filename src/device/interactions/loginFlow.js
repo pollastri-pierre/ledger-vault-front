@@ -49,13 +49,9 @@ export const u2fAuthenticate: Interaction = {
 export const postU2FSignature: Interaction = {
   responseKey: "u2f_sign",
   action: ({ u2f_authenticate }) =>
-    network(
-      `/u2f/authentications/authenticate`,
-      "POST",
-      {
-        authentication: u2f_authenticate.rawResponse
-      }
-    ),
+    network(`/u2f/authentications/authenticate`, "POST", {
+      authentication: u2f_authenticate.rawResponse,
+    }),
 };
 
 export const loginFlow: Flow = [
