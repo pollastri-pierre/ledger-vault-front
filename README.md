@@ -61,6 +61,7 @@ yarn starte2e
 
 | Key                | Default value | Description                                                                    |
 | ------------------ | :-----------: | :----------------------------------------------------------------------------- |
+| `TRANSPORT`        |     "u2f"     | Contain the preferred transport
 | `NO_CHECK_VERSION` |     null      | Prevent the comparison between the device version and the expected app version |
 | `locale`           |      en       | Forwarded to i18next                                                           |
 | `token`            |     null      | Will fill the X-Ledger-Auth header for Gate calls                              |
