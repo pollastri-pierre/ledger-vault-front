@@ -1,6 +1,6 @@
 // @flow
 import type { DeviceError } from "utils/errors";
-import { NetworkTimeoutError } from "utils/errors";
+import { NetworkTimeoutError, remapError } from "utils/errors";
 import fetchF from "./fetchF";
 
 export function NetworkError(obj: *) {
@@ -35,13 +35,16 @@ export default function<T>(
         message: "network error",
         status: response.status,
       };
-      return response
-        .json()
-        .then(
-          json => new NetworkError({ ...baseErrorObject, json }),
-          () => new NetworkError(baseErrorObject),
-        )
-        .then(e => Promise.reject(e));
+      return (
+        response
+          .json()
+          .then(
+            json => new NetworkError({ ...baseErrorObject, json }),
+            () => new NetworkError(baseErrorObject),
+          )
+          // $FlowFixMe
+          .then(e => Promise.reject(remapError(e)))
+      );
     }
     // $FlowFixMe
     return noParse ? response : response.json();

@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import {
   getTransactionExplorer,
@@ -62,6 +62,14 @@ function TransactionDetails(props: Props) {
     </Box>
   ) : null;
 
+  const refreshDataQuery = useMemo(
+    () =>
+      new TransactionWithAccountQuery({
+        transactionId: String(transaction.id),
+      }),
+    [transaction.id],
+  );
+
   return (
     <EntityModal
       growing
@@ -70,11 +78,7 @@ function TransactionDetails(props: Props) {
       title="Transaction details"
       onClose={close}
       footer={footer}
-      refreshDataQuery={
-        new TransactionWithAccountQuery({
-          transactionId: String(transaction.id),
-        })
-      }
+      refreshDataQuery={refreshDataQuery}
     >
       <TabOverview key="overview" transaction={transaction} account={account} />
       <FetchEntityHistory

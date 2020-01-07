@@ -165,7 +165,7 @@ export function successfull_msg_gp() {
 export function successfull_msg_wl() {
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Update Whitelist Request was successfully created!",
+    "Update Whitelist request was successfully created!",
   );
   // cy.get("[data-test=success_msg]").should(
   //  "contain",

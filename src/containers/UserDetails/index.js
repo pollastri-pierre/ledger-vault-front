@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { FaUser } from "react-icons/fa";
 import EntityModal from "components/EntityModal";
@@ -49,6 +49,11 @@ function UserDetails(props: Props) {
     user.status,
   );
 
+  const refreshDataQuery = useMemo(
+    () => new UserQuery({ userID: String(user.id) }),
+    [user.id],
+  );
+
   return (
     <EntityModal
       growing
@@ -56,7 +61,7 @@ function UserDetails(props: Props) {
       Icon={FaUser}
       title={user.username}
       onClose={close}
-      refreshDataQuery={new UserQuery({ userID: String(user.id) })}
+      refreshDataQuery={refreshDataQuery}
       revokeParams={revokeParams}
     >
       <UserDetailsOverview key="overview" user={user} />

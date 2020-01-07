@@ -2,9 +2,10 @@
 
 import React from "react";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
+import Tooltip from "@material-ui/core/Tooltip";
+import { FaHourglassHalf } from "react-icons/fa";
 
-import Text from "components/base/Text";
-import { Trans } from "react-i18next";
 import colors from "shared/colors";
 
 type Props = {
@@ -15,20 +16,17 @@ type Props = {
 const DEFAULT_DAY = 1;
 
 const RequestExpirationDate = ({ expirationDate, displayDayBefore }: Props) => {
+  const { t } = useTranslation();
   const diff = moment(expirationDate).diff(moment(new Date()), "days");
   const dayBefore = displayDayBefore || DEFAULT_DAY;
-  if (diff > dayBefore) {
-    return null;
-  }
   const remainingTime = moment(expirationDate).toNow(true);
   return (
-    <Text size="small" italic color={colors.grenade}>
-      <Trans
-        i18nKey="request:expire_in"
-        count={remainingTime}
-        values={{ count: remainingTime }}
+    <Tooltip title={t("request:expire_in", { count: remainingTime })}>
+      <FaHourglassHalf
+        size={17}
+        color={diff <= dayBefore ? colors.grenade : colors.lightGrey}
       />
-    </Text>
+    </Tooltip>
   );
 };
 

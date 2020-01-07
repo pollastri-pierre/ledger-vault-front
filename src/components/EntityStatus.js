@@ -57,7 +57,7 @@ class EntityStatus extends PureComponent<Props> {
       status !== "ACTIVE";
 
     const inner = (
-      <Box horizontal flow={10} align="center">
+      <Box horizontal flow={5} align="center" inline>
         <Status
           size={size}
           status={
