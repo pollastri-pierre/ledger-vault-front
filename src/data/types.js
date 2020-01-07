@@ -267,7 +267,7 @@ export const TransactionStatusMap = {
   SUBMITTED: "SUBMITTED",
   ABORTED: "ABORTED",
   PENDING_APPROVAL: "PENDING_APPROVAL",
-  BLOCKED: "BLOCKED",
+  FAILED: "FAILED",
 };
 export type TransactionStatus = $Keys<typeof TransactionStatusMap>;
 
@@ -428,6 +428,7 @@ export const RequestStatusMap = {
   PENDING_APPROVAL: "PENDING_APPROVAL",
   PENDING_REGISTRATION: "PENDING_REGISTRATION",
   APPROVED: "APPROVED",
+  BLOCKED: "BLOCKED",
 };
 export type RequestStatus = $Keys<typeof RequestStatusMap>;
 
