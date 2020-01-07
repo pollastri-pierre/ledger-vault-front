@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 
-import { NoChannelForDevice } from "utils/errors";
+import { NoChannelForDevice, RequestFinished } from "utils/errors";
 import NewRequestMutation from "api/mutations/NewRequestMutation";
 import GetAddressQuery from "api/queries/GetAddressQuery";
 import network from "network";
@@ -227,6 +227,13 @@ const openSessionValidate: Interaction = {
   device: true,
   responseKey: "channel_blob",
   action: async ({ transport, secure_channels, u2f_key, targetType }) => {
+    // let's assume that if there is no channel for this request, it means
+    // that is has already collected all possible approvals (can occur in the
+    // case someone try to approve an already approved request, see LV-2158)
+    if (noValidChannel(secure_channels)) {
+      throw new RequestFinished();
+    }
+
     const channel =
       secure_channels[u2f_key.pubKey.toString("hex").toUpperCase()];
     if (!channel) {
@@ -385,3 +392,8 @@ export const generateSeed = [
   validateDevice(),
   generateFragmentSeed,
 ];
+
+function noValidChannel(channels) {
+  const keys = Object.keys(channels);
+  return keys.length === 0 || (keys.length === 1 && keys[0] === "success");
+}
