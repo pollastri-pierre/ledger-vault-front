@@ -23,7 +23,7 @@
       }
     },
     "recap": {
-      "title": "Recap",
+      "title": "Confirmation",
       "rowTitle": {
         "username": "Username",
         "userID": "User ID",
