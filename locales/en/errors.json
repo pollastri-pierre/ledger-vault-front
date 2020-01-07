@@ -77,7 +77,7 @@
   },
   "DeviceNotOnDashboard": {
     "title": "Device not on dashboard",
-    "description": "The device is not on dashboard. Please close the Vault app."
+    "description": "The device is not on the Dashboard. Please close the Vault app."
   },
   "DeviceOnDashboardExpected": {
     "title": "User denied manager",
@@ -85,11 +85,11 @@
   },
   "AddressDuplicateNameCurrency": {
     "title": "AddressDuplicateNameCurrency",
-    "description": "This name is already used by an address in the same currency."
+    "description": "Name already exists. Address names must be unique per currency."
   },
   "AddressDuplicateCurrencyAddress": {
     "title": "AddressDuplicateCurrencyAddress",
-    "description": "Address already used in this currency."
+    "description": "Address already exists. A single occurrence of an address can be created per currency."
   },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",
