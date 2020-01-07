@@ -16,6 +16,17 @@ export const logout = () => async (dispatch: Dispatch<*>) => {
   });
 };
 
+export const checkLogin = () => async (dispatch: Dispatch<*>) => {
+  try {
+    const res = await network(`/authentications/status`, "GET");
+    if (res.authenticated === true) {
+      dispatch(login());
+    }
+  } catch {
+    // do nothing if network call fail. isAuthenticated remains false.
+  }
+};
+
 export function login() {
   return { type: LOGIN };
 }
@@ -29,7 +40,7 @@ export default function reducer(
     // Since we don't control the auth token (handled by the back)
     // we assume that we are authenticated by default, fetch the
     // requested page, and only set isAuth to false in case of fail
-    isAuthenticated: true,
+    isAuthenticated: false,
   },
   action: Object,
 ) {
