@@ -17,6 +17,7 @@ const BG_BY_STATUS = {
   DELETED: colors.palePink,
   CREATION_ABORTED: colors.palePink,
   BLOCKED: colors.argile,
+  FAILED: colors.argile,
   EXPIRED: colors.argile,
   APPROVED: colors.paleGreen,
   SUBMITTED: colors.paleGreen,
