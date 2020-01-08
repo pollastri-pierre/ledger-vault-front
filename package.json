@@ -1,6 +1,6 @@
 {
   "name": "ledger-vault-front",
-  "version": "2.4.3",
+  "version": "2.6.0",
   "private": true,
   "scripts": {
     "build": "rm -rf dist && NODE_ENV=production webpack --progress --hide-modules --config webpack/build.babel.js",
