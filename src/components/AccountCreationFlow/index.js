@@ -13,6 +13,8 @@ import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
+import InfoBox from "components/base/InfoBox";
+import SearchWhitelistsForAccountQuery from "api/queries/SearchWhitelistsForAccountQuery";
 import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
@@ -27,8 +29,12 @@ import {
   getCurrencyIdFromBlockchainName,
   getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
-import { deserializeApprovalSteps } from "utils/accounts";
-import type { ApprovalsRule } from "components/ApprovalsRules";
+import {
+  serializeRulesSetsForPOST,
+  isValidRulesSet,
+  isEmptyRulesSet,
+} from "components/MultiRules/helpers";
+import type { RulesSet } from "components/MultiRules/types";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 
 import type { Account } from "data/types";
@@ -39,10 +45,22 @@ import AccountCreationConfirmation from "./steps/AccountCreationConfirmation";
 
 import type { AccountCreationPayload } from "./types";
 
-const initialPayload: AccountCreationPayload = {
+const emptyRulesSets = [
+  {
+    name: "Rule 1",
+    rules: [
+      {
+        type: "MULTI_AUTHORIZATIONS",
+        data: [],
+      },
+    ],
+  },
+];
+
+export const initialPayload: AccountCreationPayload = {
   name: "",
   accountStatus: "",
-  rules: [{ quorum: 1, group_id: null, users: [] }],
+  rulesSets: emptyRulesSets,
   currency: null,
   erc20token: null,
   parentAccount: null,
@@ -69,13 +87,27 @@ const steps = [
     id: "rules",
     name: <Trans i18nKey="accountCreation:steps.rules.title" />,
     Step: AccountCreationRules,
+    WarningNext: ({ payload }: { payload: AccountCreationPayload }) => {
+      if (payload.rulesSets.length > 1 && hasEmptyRules(payload.rulesSets)) {
+        return (
+          <InfoBox type="warning">
+            <Trans i18nKey="accountCreation:multirules.delete_empty_rule" />
+          </InfoBox>
+        );
+      }
+      return null;
+    },
     requirements: (payload: AccountCreationPayload) => {
       if (payload.name === "") return false;
       if (payload.erc20token) {
         const { parentAccount } = payload;
         if (!parentAccount) return false;
         if (parentAccount.id) return true;
-        return !!parentAccount.name && parentAccount.name !== "";
+        return (
+          !!parentAccount.name &&
+          parentAccount.name !== "" &&
+          parentAccount.name !== payload.name
+        );
       }
       return true;
     },
@@ -85,7 +117,7 @@ const steps = [
     name: <Trans i18nKey="accountCreation:steps.confirmation.title" />,
     Step: AccountCreationConfirmation,
     requirements: (payload: AccountCreationPayload) => {
-      return areApprovalsRulesValid(payload.rules);
+      return areRulesSetsValid(payload.rulesSets);
     },
     Cta: ({
       payload,
@@ -241,6 +273,7 @@ const AccountEdit = connectData(
       allAccounts: PotentialParentAccountsQuery,
       account: AccountQuery,
       users: OperatorsForAccountCreationQuery,
+      whitelists: SearchWhitelistsForAccountQuery,
       groups: GroupsForAccountCreationQuery,
     },
     propsToQueryParams: props => ({
@@ -269,6 +302,7 @@ const AccountCreation = connectData(
       allAccounts: PotentialParentAccountsQuery,
       users: OperatorsForAccountCreationQuery,
       groups: GroupsForAccountCreationQuery,
+      whitelists: SearchWhitelistsForAccountQuery,
     },
   },
 );
@@ -283,18 +317,11 @@ const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
 export default Wrapper;
 
 export const deserialize: Account => AccountCreationPayload = account => {
-  const { tx_approval_steps } = account;
-
-  const rules =
-    !tx_approval_steps || tx_approval_steps.length === 0
-      ? initialPayload.rules
-      : deserializeApprovalSteps(tx_approval_steps);
-
   return {
     id: account.id,
     accountStatus: account.status,
     name: account.name,
-    rules,
+    rulesSets: account.governance_rules || emptyRulesSets,
     currency:
       account.account_type === "Bitcoin" ||
       account.account_type === "Ethereum" ||
@@ -315,9 +342,7 @@ export function serializePayload(
 ) {
   const data: Object = {
     name: payload.name,
-    governance_rules: {
-      tx_approval_steps: payload.rules,
-    },
+    governance_rules: serializeRulesSetsForPOST(payload.rulesSets),
   };
 
   if (payload.currency) {
@@ -360,9 +385,14 @@ export function serializePayload(
   return finalPayload;
 }
 
-export function areApprovalsRulesValid(rules: Array<?ApprovalsRule>) {
-  if (!rules.length) return false;
-  return rules.every(
-    rule => rule && (rule.group_id !== null || rule.users.length > 0),
-  );
+export function areRulesSetsValid(rulesSets: RulesSet[]) {
+  if (!rulesSets.length) return false;
+  if (rulesSets.length === 1 && isEmptyRulesSet(rulesSets[0])) return false;
+  return rulesSets
+    .map(r => isEmptyRulesSet(r) || isValidRulesSet(r))
+    .every(Boolean);
+}
+
+export function hasEmptyRules(rulesSets: RulesSet[]) {
+  return rulesSets.some(r => isEmptyRulesSet(r));
 }

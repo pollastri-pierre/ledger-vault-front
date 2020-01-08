@@ -1,7 +1,6 @@
 // @flow
 
-import React from "react";
-import styled from "styled-components";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { FaUsers } from "react-icons/fa";
 
@@ -12,11 +11,7 @@ import EntityModal from "components/EntityModal";
 import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
 import { FetchEntityHistory } from "components/EntityHistory";
-import colors from "shared/colors";
-import { createAndApprove } from "device/interactions/hsmFlows";
 import { CardError } from "components/base/Card";
-import ApproveRequestButton from "components/ApproveRequestButton";
-import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import type { Group, User } from "data/types";
@@ -30,23 +25,20 @@ type Props = {
 
 function GroupDetails(props: Props) {
   const { close, group, operators } = props;
-  const revokeButton = (
-    <ApproveRequestButton
-      interactions={createAndApprove("GROUP")}
-      onSuccess={close}
-      isRevoke
-      additionalFields={{
-        data: { group_id: group.id },
-        type: "REVOKE_GROUP",
-      }}
-      buttonLabel={<Trans i18nKey="group:delete" />}
-      withConfirm
-      confirmLabel={<Trans i18nKey="group:delete" />}
-      confirmContent={
-        <Text textAlign="center" i18nKey="group:revokeWarning.content" />
-      }
-    />
+
+  const revokeParams = {
+    buttonLabel: <Trans i18nKey="group:delete" />,
+    confirmLabel: <Trans i18nKey="group:delete" />,
+    confirmContent: (
+      <Text textAlign="center" i18nKey="group:revokeWarning.content" />
+    ),
+  };
+
+  const refreshDataQuery = useMemo(
+    () => new GroupQuery({ groupId: String(group.id) }),
+    [group.id],
   );
+
   return (
     <EntityModal
       growing
@@ -54,9 +46,10 @@ function GroupDetails(props: Props) {
       Icon={FaUsers}
       title={group.name}
       onClose={close}
-      revokeButton={revokeButton}
+      revokeParams={revokeParams}
       editURL={`/groups/edit/${group.id}`}
       additionalFields={{ operators: operators.edges.map(e => e.node) }}
+      refreshDataQuery={refreshDataQuery}
     >
       <GroupDetailsOverview
         key="overview"
@@ -88,23 +81,3 @@ export default connectData(GroupDetails, {
     role: "OPERATOR",
   }),
 });
-
-export const TabName = styled(Box).attrs({
-  horizontal: true,
-  align: "center",
-  flow: 5,
-  p: 12,
-})`
-  background: ${p => (p.isActive ? colors.white : "inherit")};
-  border-top-right-radius: 2px;
-  border-top-left-radius: 2px;
-  box-shadow: ${p =>
-    p.isActive ? `2px -2px 3px ${colors.legacyLightGrey11}` : "none"};
-  font-weight: ${p => (p.isActive ? "bold" : "normal")};
-  opacity: ${p => (p.isActive ? "1" : "0.5")};
-  &:hover {
-    cursor: pointer;
-    opacity: 1;
-    color: ${colors.legacyDarkGrey3};
-  }
-`;

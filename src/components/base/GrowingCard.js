@@ -1,11 +1,13 @@
 // @flow
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { animated, useSpring } from "react-spring";
 
 import { boxShadow } from "components/base/Modal/components";
 import Measure from "components/base/Measure";
 import Spinner from "components/base/Spinner";
+
+import { usePrevious } from "utils/customHooks";
 
 const SIZE = 350;
 
@@ -36,6 +38,7 @@ export default function GrowingCard({ children }: { children: React$Node }) {
 
   const onMeasure = useCallback(
     dimensions => {
+      if (prevTransforms) return;
       const { width, height } = dimensions;
 
       const { innerHeight } = window;
@@ -52,7 +55,7 @@ export default function GrowingCard({ children }: { children: React$Node }) {
 
       setTransforms(transforms);
     },
-    [setTransforms],
+    [setTransforms, prevTransforms],
   );
 
   const opacityStyle = {
@@ -95,14 +98,6 @@ export default function GrowingCard({ children }: { children: React$Node }) {
       )}
     </>
   );
-}
-
-function usePrevious(value) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
 }
 
 const modalStyle = {

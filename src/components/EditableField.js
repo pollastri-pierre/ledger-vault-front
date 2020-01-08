@@ -1,26 +1,25 @@
 // @flow
 
-import React, { PureComponent } from "react";
-import { FaRegEdit } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaPen, FaCheck } from "react-icons/fa";
+
+import { minWait } from "utils/promise";
+
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
-import { InputText } from "components/base/form";
+import { InputText, Form } from "components/base/form";
 
 import colors from "shared/colors";
 
 type Props = {
   value: string,
-  onChange: string => void,
+  onChange: Function,
   InputComponent?: React$ComponentType<*>,
   inputProps?: Object,
   getSaveDisabled?: string => boolean,
 };
-
-type State = {
-  editMode: boolean,
-  localValue: string,
-};
+type RequestStatus = "idle" | "fetching" | "error" | "success";
 
 const styles = {
   cursor: {
@@ -28,74 +27,110 @@ const styles = {
   },
 };
 
-class EditableField extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      editMode: false,
-      localValue: props.value,
-    };
-  }
+export default function EditableField(props: Props) {
+  const {
+    value,
+    onChange,
+    InputComponent,
+    inputProps,
+    getSaveDisabled,
+  } = props;
+  const [editMode, setEditMode] = useState(false);
+  const [localValue, setLocalValue] = useState(value);
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>("idle");
 
-  handleChange = (value: string) => {
-    this.setState({ localValue: value });
-  };
-
-  toggleEditMode = () => {
-    const { editMode } = this.state;
-    this.setState({ editMode: !editMode });
-  };
-
-  onConfirm = () => {
-    const { onChange, value } = this.props;
-    const { localValue } = this.state;
-    if (localValue === "") {
-      this.setState({ localValue: value });
-    } else {
-      onChange(localValue);
+  useEffect(() => {
+    if (requestStatus === "success") {
+      const messageTimer = setTimeout(() => {
+        setRequestStatus("idle");
+      }, 3000);
+      return () => {
+        clearTimeout(messageTimer);
+      };
     }
-    this.toggleEditMode();
+  }, [requestStatus]);
+
+  const handleChange = (value: string) => {
+    setLocalValue(value);
   };
 
-  render() {
-    const { editMode, localValue } = this.state;
-    const { value, InputComponent, inputProps, getSaveDisabled } = this.props;
-    const Input = InputComponent || InputText;
-    return (
-      <Box horizontal align="center" flow={10}>
-        {!editMode ? (
-          <>
-            <Text>{value}</Text>
-            <FaRegEdit
-              data-test="edit-icon"
-              style={styles.cursor}
-              color={colors.lead}
-              size={12}
-              onClick={this.toggleEditMode}
-            />
-          </>
-        ) : (
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const onClick = async () => {
+    if (getSaveDisabled && getSaveDisabled(localValue)) return;
+    if (localValue === "" || localValue === value) {
+      setLocalValue(value);
+      toggleEditMode();
+    } else {
+      setRequestStatus("fetching");
+      try {
+        await minWait(onChange(localValue), 500);
+        setRequestStatus("success");
+      } catch (e) {
+        setLocalValue(value);
+        setRequestStatus("idle");
+      } finally {
+        toggleEditMode();
+      }
+    }
+  };
+  const Input = InputComponent || InputText;
+  return (
+    <Box horizontal align="center" flow={10}>
+      {!editMode ? (
+        <>
+          <Box flow={10} horizontal>
+            {requestStatus === "success" && (
+              <Box horizontal flow={5} justify="center" align="center">
+                <FaCheck size={11} color={colors.green} />
+                <Text i18nKey="common:saved" color={colors.green} />
+              </Box>
+            )}
+            <Text>{localValue}</Text>
+          </Box>
+          <FaPen
+            data-test="edit-icon"
+            style={styles.cursor}
+            color={colors.lead}
+            size={11}
+            onClick={toggleEditMode}
+          />
+        </>
+      ) : (
+        <Form onSubmit={onClick}>
           <Box horizontal align="center" flow={5}>
             <Input
               data-test="type-edit"
               autoFocus
               value={localValue}
-              onChange={this.handleChange}
+              onChange={handleChange}
+              disabled={requestStatus === "fetching"}
               {...inputProps}
             />
-            <Button
-              type="filled"
-              data-test="save-button"
-              onClick={this.onConfirm}
-              disabled={getSaveDisabled ? getSaveDisabled(localValue) : false}
-            >
-              Save
-            </Button>
+            {localValue === "" ? (
+              <Button
+                variant="info"
+                data-test="cancel-button"
+                onClick={toggleEditMode}
+              >
+                <Text i18nKey="common:cancel" />
+              </Button>
+            ) : (
+              <Button
+                type="filled"
+                data-test="save-button"
+                onClick={onClick}
+                isLoadingProp={requestStatus === "fetching"}
+                disabled={getSaveDisabled ? getSaveDisabled(localValue) : false}
+              >
+                <Text i18nKey="common:save" />
+              </Button>
+            )}
           </Box>
-        )}
-      </Box>
-    );
-  }
+        </Form>
+      )}
+    </Box>
+  );
 }
-
-export default EditableField;

@@ -13,6 +13,8 @@ import {
   getLoaderSize,
 } from "./helpers";
 
+const ENTER_KEY = 13;
+
 type ButtonType = "filled" | "outline" | "link";
 type ButtonVariant = "primary" | "danger" | "warning" | "info";
 type ButtonSize = "tiny" | "small" | "slim";
@@ -27,6 +29,7 @@ export type ButtonProps = {|
   circular?: boolean,
   "data-test"?: string,
   style?: Object,
+  isLoadingProp?: boolean,
 |};
 
 export const ButtonBase = styled.div.attrs(p => ({
@@ -36,6 +39,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   bg: "transparent",
   tabIndex: 0,
 }))`
+  user-select: none;
   ${space};
   ${color};
   font-size: ${p => getFontSize(p)}px;
@@ -47,7 +51,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   border-radius: ${p => (p.circular ? "50%" : "2px")};
   cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
   opacity: ${p => (p.disabled ? "0.6" : "1")};
-  pointer-events: ${p => (p.disabled || p.isLoading ? "none" : "auto")};
+  pointer-events: ${p => (p.disabled || p.isLoading ? "none" : "inherit")};
   text-decoration: ${p => (p.link ? "underline" : "none")};
   outline: none;
   height: ${p => getButtonHeight(p)}px;
@@ -58,7 +62,7 @@ export const ButtonBase = styled.div.attrs(p => ({
     ${p => getStyles(p, "hover")};
   }
   &:focus {
-    ${p => getStyles(p, "focus")};
+    ${p => (p.disabled ? "" : getStyles(p, "focus"))};
   }
   &:active {
     ${p => getStyles(p, "active")};
@@ -67,7 +71,7 @@ export const ButtonBase = styled.div.attrs(p => ({
 
 function Button(props: ButtonProps, ref: any) {
   const isUnmounted = useRef(false);
-  const { onClick, children, ...rest } = props;
+  const { onClick, children, disabled, isLoadingProp, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
@@ -79,6 +83,7 @@ function Button(props: ButtonProps, ref: any) {
 
   const handleClick = () => {
     if (!onClick) return;
+    if (disabled) return;
     setIsLoading(true);
     Promise.resolve()
       .then(onClick)
@@ -90,10 +95,23 @@ function Button(props: ButtonProps, ref: any) {
       });
   };
 
+  const handleKeyUp = e => {
+    if (e.which === ENTER_KEY) {
+      handleClick();
+    }
+  };
+
   return (
-    <ButtonBase {...rest} isLoading={isLoading} onClick={handleClick} ref={ref}>
-      <Container isLoading={isLoading}>{children}</Container>
-      {isLoading && (
+    <ButtonBase
+      {...rest}
+      disabled={disabled}
+      isLoading={isLoading || isLoadingProp}
+      onClick={handleClick}
+      ref={ref}
+      onKeyUp={handleKeyUp}
+    >
+      <Container isLoading={isLoading || isLoadingProp}>{children}</Container>
+      {(isLoading || isLoadingProp) && (
         <Loader size={getLoaderSize(props)} style={{ position: "absolute" }} />
       )}
     </ButtonBase>

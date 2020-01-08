@@ -33,7 +33,4 @@ const PrivateRoute = ({
   />
 );
 
-export default connect(
-  mapStateToProps,
-  () => ({}),
-)(PrivateRoute);
+export default connect(mapStateToProps, () => ({}))(PrivateRoute);

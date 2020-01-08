@@ -1,69 +1,82 @@
 // @flow
 
 import React from "react";
+import styled from "styled-components";
+import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
-import UsersQuery from "api/queries/UsersQuery";
+import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
+import SearchWhitelists from "api/queries/SearchWhitelists";
 import Box from "components/base/Box";
+import LineSeparator from "components/LineSeparator";
+import MultiRules from "components/MultiRules";
+import { getAccountCurrencyOrToken } from "utils/accounts";
 import { SpinnerCentered } from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity, darken } from "shared/colors";
-import RulesViewer from "components/ApprovalsRules/RulesViewer";
-import type {
-  Account,
-  User,
-  Group,
-  TxApprovalStepCollection,
-} from "data/types";
+import type { Account, User, Group, Whitelist } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
-
-import { haveRulesChangedDiff, resolveRules } from "./helpers";
 
 type Props = {
   account: Account,
   users: Connection<User>,
   groups: Connection<Group>,
+  whitelists: Connection<Whitelist>,
 };
 
 function AccountEditRequest(props: Props) {
-  const { account, groups, users } = props;
-  const { tx_approval_steps, last_request } = account;
+  const { account, users, whitelists, groups } = props;
+  const { governance_rules, last_request } = account;
 
   if (!last_request) return null;
 
   const isAccountMigration = last_request.type === "MIGRATE_ACCOUNT";
   const editData = last_request.edit_data || null;
-
-  const newRules = isAccountMigration
-    ? tx_approval_steps
-    : editData
-    ? resolveRules(
-        editData.governance_rules.tx_approval_steps,
-        groups.edges.map(e => e.node),
-        users.edges.map(e => e.node),
-      )
-    : null;
-
-  const oldRules = isAccountMigration ? null : tx_approval_steps;
   const hasNameChanged = editData && account.name !== editData.name;
 
-  const haveRulesChanged = haveRulesChangedDiff(newRules, oldRules);
+  const newRules = isAccountMigration
+    ? governance_rules
+    : editData
+    ? editData.governance_rules
+    : null;
+  const oldRules = isAccountMigration ? null : governance_rules;
+  const currencyOrToken = getAccountCurrencyOrToken(account);
 
   return (
     <Box flow={10} horizontal justify="space-between">
-      <DiffBlock
-        name={hasNameChanged ? account.name : null}
-        rules={haveRulesChanged ? oldRules : null}
-        haveRulesChanged={haveRulesChanged}
-        type="current"
-      />
-      <DiffBlock
-        name={hasNameChanged && editData ? editData.name : null}
-        rules={haveRulesChanged ? newRules : null}
-        haveRulesChanged={haveRulesChanged}
-        type="proposed"
-      />
+      {oldRules && (
+        <DiffBlock
+          type="current"
+          hasNameChanged={hasNameChanged}
+          accountName={account.name}
+        >
+          <MultiRules
+            textMode
+            users={users.edges.map(n => n.node)}
+            whitelists={whitelists.edges.map(n => n.node)}
+            groups={groups.edges.map(n => n.node)}
+            rulesSets={oldRules}
+            currencyOrToken={currencyOrToken}
+          />
+        </DiffBlock>
+      )}
+      {newRules && (
+        <DiffBlock
+          type="previous"
+          hasNameChanged={hasNameChanged}
+          accountName={editData ? editData.name : ""}
+        >
+          <MultiRules
+            textMode
+            users={users.edges.map(n => n.node)}
+            whitelists={whitelists.edges.map(n => n.node)}
+            groups={groups.edges.map(n => n.node)}
+            rulesSets={newRules}
+            currencyOrToken={currencyOrToken}
+          />
+        </DiffBlock>
+      )}
     </Box>
   );
 }
@@ -77,37 +90,30 @@ const diffBoxProps = {
 export default connectData(AccountEditRequest, {
   RenderLoading: () => <SpinnerCentered />,
   queries: {
-    users: UsersQuery,
+    users: OperatorsForAccountCreationQuery,
     groups: GroupsQuery,
+    whitelists: SearchWhitelists,
   },
 });
 
 type DiffBlockProps = {
-  name: ?string,
-  rules: ?TxApprovalStepCollection,
   type: string,
-  haveRulesChanged: ?boolean,
+  hasNameChanged?: ?boolean,
+  accountName?: string,
+  children: React$Node,
 };
-function DiffBlock(props: DiffBlockProps) {
-  const { name, rules, type, haveRulesChanged } = props;
+export function DiffBlock(props: DiffBlockProps) {
+  const { type, children, hasNameChanged, accountName } = props;
   return (
-    <Box
-      bg={
-        type === "current"
-          ? opacity(colors.paleBlue, 0.2)
-          : opacity(colors.paleRed, 0.2)
-      }
-      {...diffBoxProps}
-    >
-      <Box mb={20}>
+    <Box noShrink flex={1}>
+      <Box m={5}>
         <Text
-          size="small"
           uppercase
           fontWeight="bold"
           color={
             type === "current"
-              ? darken(colors.paleBlue, 0.7)
-              : darken(colors.paleRed, 0.7)
+              ? darken(colors.lightGrey, 0.7)
+              : darken(colors.paleBlue, 0.7)
           }
           i18nKey={
             type === "current"
@@ -116,18 +122,47 @@ function DiffBlock(props: DiffBlockProps) {
           }
         />
       </Box>
-      {name && (
-        <Box mb={20}>
-          <Text fontWeight="bold" i18nKey="entityModal:diff.name" />
-          <Text>{name}</Text>
-        </Box>
-      )}
-      {haveRulesChanged && (
-        <Box mb={20}>
-          <Text fontWeight="bold" i18nKey="entityModal:diff.rules" />
-          <RulesViewer rules={rules} />
-        </Box>
-      )}
+      <Box
+        mb={20}
+        flow={10}
+        p={5}
+        bg={
+          type === "current"
+            ? opacity(colors.lightGrey, 0.2)
+            : opacity(colors.paleBlue, 0.2)
+        }
+        {...diffBoxProps}
+      >
+        <>
+          {hasNameChanged && (
+            <>
+              <Text
+                fontWeight="bold"
+                i18nKey="approvalsRules:textMode.accountName"
+              />
+              <StyledUl>
+                <StyledLi>
+                  <Box horizontal flow={5} align="center">
+                    <FaMoneyCheck />
+                    <Text>{accountName}</Text>
+                  </Box>
+                </StyledLi>
+              </StyledUl>
+              <LineSeparator />
+            </>
+          )}
+        </>
+        {children}
+      </Box>
     </Box>
   );
 }
+
+// as a separate story - TODO: create our own li and ul to control the bullet points better
+const StyledUl = styled.ul`
+  margin: 0;
+`;
+
+const StyledLi = styled.li`
+  word-break: break-all;
+`;

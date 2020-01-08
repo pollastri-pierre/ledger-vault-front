@@ -14,6 +14,7 @@ import { delay } from "utils/promise";
 import { organization } from "stories/backendDecorator";
 import {
   genUsers,
+  genWhitelists,
   genGroups,
   genAccounts,
   genTransactions,
@@ -23,8 +24,10 @@ import UserContextProvider from "components/UserContextProvider";
 import { OrganizationContextProvider } from "components/OrganizationContext";
 
 const users = genUsers(20);
+const admin = users.find(u => u.role === "ADMIN");
 const groups = genGroups(3, { users, status: "ACTIVE" });
 const accounts = genAccounts(4);
+const whitelists = genWhitelists(10, { users });
 const transactions = genTransactions(1, { accounts, users });
 
 const defaultHistory = [
@@ -136,21 +139,33 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
     }
     return defaultHistory;
   }
+  if (url.match(/whitelists\/[^/]*/g)) {
+    return whitelists[0];
+  }
   if (url.match(/accounts\/[^/]*/g)) {
     const account = accounts[0];
-    account.tx_approval_steps.forEach((rule, i) => {
-      const a = denormalize(rule.group, schema.Group, {
-        users: keyBy(users, "id"),
-      });
-      account.tx_approval_steps[i].group = a;
-    });
+
+    // FIXME we need a coherent governance_rules in the account
+    //       before, we used to do this:
+    //
+    // account.tx_approval_steps.forEach((rule, i) => {
+    //   const a = denormalize(rule.group, schema.Group, {
+    //     users: keyBy(users, "id"),
+    //   });
+    //   account.tx_approval_steps[i].group = a;
+    // });
+
     return wrapWithRequest({ entity: account, request_type, approved });
   }
   if (url.startsWith("/groups")) {
-    const group = denormalize(groups.map(g => g.id), [schema.Group], {
-      users: keyBy(users, "id"),
-      groups: keyBy(groups, "id"),
-    })[0];
+    const group = denormalize(
+      groups.map(g => g.id),
+      [schema.Group],
+      {
+        users: keyBy(users, "id"),
+        groups: keyBy(groups, "id"),
+      },
+    )[0];
     return wrapWithRequest({ entity: group, request_type, approved });
   }
   throw new Error(`invalid url ${url}`);
@@ -182,7 +197,7 @@ const Inner = ({ story, entity }) => {
       <OrganizationContextProvider
         value={{ organization, refresh: () => Promise.resolve() }}
       >
-        <UserContextProvider me={users[0]}>
+        <UserContextProvider me={admin}>
           <Box
             horizontal
             align="center"

@@ -2,16 +2,17 @@ import React from "react";
 import faker from "faker";
 import capitalize from "lodash/capitalize";
 import { storiesOf } from "@storybook/react";
+import { boolean, text } from "@storybook/addon-knobs";
 
 import pageDecorator from "stories/pageDecorator";
 import backendDecorator from "stories/backendDecorator";
 import { RequestActivityTypeList } from "data/types";
-import { RequestsList } from "components/lists";
+import { RequestsList, AccountsList } from "components/lists";
 import Box from "components/base/Box";
 import { genAccounts, genUsers, genRequest } from "data/mock-entities";
 
-const users = genUsers(1);
-const accounts = genAccounts(1, { users });
+const users = genUsers(10);
+const accounts = genAccounts(10, { users });
 const requests = genAllRequests();
 const noop = () => {};
 
@@ -37,6 +38,24 @@ storiesOf("entities/Request", module)
           <RequestsList requests={secondPack} onRequestClick={noop} />
         </div>
       </Box>
+    );
+  });
+
+storiesOf("entities/Account", module)
+  .addDecorator(backendDecorator([]))
+  .addDecorator(pageDecorator)
+  .add("Accounts list", () => {
+    const grid = boolean("grid", true);
+    const compact = boolean("compact", true);
+    return (
+      <div>
+        <AccountsList
+          accounts={accounts}
+          display={grid ? "grid" : "list"}
+          compact={compact}
+          tileWidth={grid && text("Tile width (!<200)", 300)}
+        />
+      </div>
     );
   });
 

@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useMemo } from "react";
 import invariant from "invariant";
 import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
@@ -9,19 +9,22 @@ import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
+import SearchWhitelists from "api/queries/SearchWhitelists";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 import Button from "components/base/Button";
 import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import { handleCancelOnDevice } from "utils/request";
+import { getMatchingRulesSet } from "utils/multiRules";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
 import { createAndApprove } from "device/interactions/hsmFlows";
+import Amount from "components/Amount";
+import { isAccountSpendable } from "utils/transactions";
 
-import TransactionCreationAccount, {
-  getBridgeAndTransactionFromAccount,
-} from "./steps/TransactionCreationAccount";
+import { getBridgeAndTransactionFromAccount } from "./steps/TransactionCreationAccount";
 import TransactionCreationAmount from "./steps/TransactionCreationAmount";
 import TransactionCreationNote from "./steps/TransactionCreationNote";
 import TransactionCreationConfirmation from "./steps/TransactionCreationConfirmation";
@@ -38,14 +41,36 @@ const steps = [
   {
     id: "account",
     name: <Trans i18nKey="transactionCreation:steps.account.title" />,
-    Step: TransactionCreationAccount,
-  },
-  {
-    id: "amount",
-    name: <Trans i18nKey="transactionCreation:steps.amount.title" />,
     Step: TransactionCreationAmount,
-    requirements: (payload: TransactionCreationPayload<any>) =>
-      !!payload.transaction,
+    CustomFooterElementLeft: ({
+      payload,
+    }: {
+      payload: TransactionCreationPayload<any>,
+    }) => {
+      const { account, transaction, bridge } = payload;
+      const totalSpent =
+        account &&
+        bridge &&
+        transaction &&
+        bridge.getTotalSpent(account, transaction);
+      return (
+        <Box flow={5} mx={25}>
+          <Text
+            i18nKey="transactionCreation:steps.account.total"
+            fontWeight="bold"
+            size="header"
+          />
+          {account && (
+            <Amount
+              smallerInnerMargin
+              account={account}
+              value={totalSpent}
+              strong
+            />
+          )}
+        </Box>
+      );
+    },
   },
   {
     id: "note",
@@ -54,7 +79,18 @@ const steps = [
     requirements: (payload: TransactionCreationPayload<any>) => {
       const { bridge, transaction, account } = payload;
       if (!bridge || !transaction || !account) return false;
-      return bridge.checkValidTransactionSync(account, transaction);
+      const { governance_rules } = account;
+      if (!governance_rules) return false;
+      const isValidTx = bridge.checkValidTransactionSync(account, transaction);
+      const matchingRulesSet = getMatchingRulesSet({
+        transaction: {
+          currency: account.currency,
+          amount: transaction.amount,
+          recipient: transaction.recipient,
+        },
+        governanceRules: governance_rules,
+      });
+      return isValidTx && !!matchingRulesSet;
     },
   },
   {
@@ -126,24 +162,21 @@ const title = <Trans i18nKey="transactionCreation:title" />;
 export default connectData(
   props => {
     const { match, accounts } = props;
-    let cursor = 0;
+    const cursor = 0;
     let payload = initialPayload;
 
-    if (match.params && match.params.id) {
-      const acc = accounts.edges
-        .map(e => e.node)
-        .find(a => a.id === parseInt(match.params.id, 10));
-
-      if (acc) {
-        const {
-          bridge,
-          account,
-          transaction,
-        } = getBridgeAndTransactionFromAccount(acc);
-        cursor = 1;
-        payload = { ...initialPayload, account, transaction, bridge };
-      }
-    }
+    const filteredAccounts = useMemo(
+      () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
+      [accounts],
+    );
+    const acc =
+      match.params && match.params.id
+        ? filteredAccounts.find(a => a.id === parseInt(match.params.id, 10))
+        : filteredAccounts[0];
+    const { bridge, account, transaction } = getBridgeAndTransactionFromAccount(
+      acc,
+    );
+    payload = { ...initialPayload, account, transaction, bridge };
     return (
       <GrowingCard>
         <MultiStepsFlow
@@ -163,7 +196,11 @@ export default connectData(
     RenderError: CardError,
     queries: {
       accounts: AccountsQuery,
+      whitelists: SearchWhitelists,
     },
+    propsToQueryParams: () => ({
+      pageSize: -1,
+    }),
   },
 );
 

@@ -126,6 +126,9 @@ export function extractErrorTitle(error: *): string {
   return title || "Unexpected error";
 }
 
-export function extractErrorContent(error: *): string {
-  return error.json ? error.json.message : error.message || "Unexpected error";
+export function extractErrorContent(
+  error: *,
+  defaultValue: ?string = "Unexpected error",
+): string {
+  return error.json ? error.json.message : error.message || defaultValue;
 }

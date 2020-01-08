@@ -20,7 +20,7 @@ describe("reject invitation", function() {
     cy.get("[data-test=reject-button]").click();
     cy.get("[data-test=successfull_message]").should(
       "contain",
-      "The request has been successfully rejected",
+      "Successfully rejected",
     );
     cy.get("[data-test=done_button]").click();
 
@@ -29,7 +29,7 @@ describe("reject invitation", function() {
     cy.get("[data-test=reject-button]").click();
     cy.get("[data-test=successfull_message]").should(
       "contain",
-      "The request has been successfully rejected",
+      "Successfully rejected",
     );
     cy.get("[data-test=done_button]").click();
   });

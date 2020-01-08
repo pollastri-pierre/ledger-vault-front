@@ -2,18 +2,16 @@
 import React, { Component } from "react";
 import type { BigNumber } from "bignumber.js";
 import { getAccountCurrencyUnit } from "data/currency";
-import type { Account, TransactionType, ERC20Token } from "data/types";
-import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import type { Account, TransactionType } from "data/types";
+import {
+  getERC20TokenByContractAddress,
+  getCurrencyLikeUnit,
+} from "utils/cryptoCurrencies";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 
 // This is a "smart" component that accepts a contextual account and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
-export const getCurrencyLikeUnit = (token: ?ERC20Token) => ({
-  code: token ? token.ticker : "",
-  symbol: "",
-  magnitude: token ? token.decimals : 0,
-  name: "",
-});
+
 class CurrencyAccountValue extends Component<{
   // the contextual account object
   account: Account,

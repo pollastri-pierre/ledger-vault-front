@@ -11,6 +11,7 @@ import connectData from "restlay/connectData";
 import LineRow from "components/LineRow";
 import Modal from "components/base/Modal";
 import Button from "components/base/Button";
+import NotApplicableText from "components/base/NotApplicableText";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { currencyExchangeSelector } from "redux/modules/exchanges";
@@ -58,7 +59,7 @@ function AccountSettings(props: Props) {
     setSettings(settings => ({ ...settings, currency_unit: unit.data }));
     const m = new SaveAccountSettingsMutation({
       account,
-      currency_unit: unit.data.code,
+      currency_unit: unit.data.name,
     });
     restlay.commitMutation(m);
   };
@@ -88,9 +89,7 @@ function AccountSettings(props: Props) {
       <LineRow label={<Trans i18nKey="accountSettings:general.exchange" />}>
         <Box horizontal align="center" flow={5}>
           <FaExchangeAlt size={13} color={colors.lightGrey} />
-          <Text fontWeight="bold">
-            {exchange || <Trans i18nKey="common:not_applicable" />}
-          </Text>
+          <Text fontWeight="bold">{exchange || <NotApplicableText />}</Text>
         </Box>
       </LineRow>
       {me.role === "ADMIN" &&
@@ -107,7 +106,7 @@ function AccountSettings(props: Props) {
             <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
               <Button
                 type="filled"
-                variant="danger"
+                variant="primary"
                 size="small"
                 onClick={onXpubModal}
               >
@@ -117,7 +116,7 @@ function AccountSettings(props: Props) {
                 </Box>
               </Button>
               <Modal isOpened={isXpubModalOpen} onClose={onXpubModal}>
-                <AccountXpub account={account} />
+                <AccountXpub onClose={onXpubModal} account={account} />
               </Modal>
             </LineRow>
           </>
@@ -127,8 +126,5 @@ function AccountSettings(props: Props) {
 }
 
 export default connectData(
-  connect(
-    mapStateToProps,
-    null,
-  )(withMe(AccountSettings)),
+  connect(mapStateToProps, null)(withMe(AccountSettings)),
 );

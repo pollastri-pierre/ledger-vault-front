@@ -38,7 +38,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
 
 const getRecipientError = async (restlay, currency, recipient) => {
   const isValid = await isRecipientValid(restlay, currency, recipient);
-  if (!isValid) return new InvalidAddress();
+  if (!isValid) return new InvalidAddress(null, { ticker: currency.ticker });
 
   const isSegwit = isAddressSegwit(currency, recipient);
 

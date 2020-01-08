@@ -23,7 +23,7 @@ type Props = FieldsGroupProps & {
 export const defaultStatuses: TransactionStatus[] = [
   "SUBMITTED",
   "PENDING_APPROVAL",
-  "BLOCKED",
+  "FAILED",
   "ABORTED",
 ];
 

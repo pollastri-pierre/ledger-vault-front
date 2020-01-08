@@ -7,15 +7,21 @@ import { storiesOf } from "@storybook/react";
 import { delay } from "utils/promise";
 import RestlayProvider from "restlay/RestlayProvider";
 import Modal from "components/base/Modal";
+import { isAccountSpendable } from "utils/transactions";
 import TransactionCreationFlow from "components/TransactionCreationFlow";
 
-import { genAccounts, genUsers } from "data/mock-entities";
+import { genAccounts, genUsers, genWhitelists } from "data/mock-entities";
 
 const users = genUsers(20);
-const accounts = genAccounts(20, { users });
+const whitelists = genWhitelists(10, { users });
+const accounts = genAccounts(20, { users }, { status: "ACTIVE", whitelists });
+const filteredAccounts = accounts.filter(isAccountSpendable);
 
 const fakeNetwork = async url => {
   await delay(200);
+  if (url === "/whitelists?pageSize=-1") {
+    return wrapConnection(whitelists);
+  }
   if (
     url ===
     "/accounts?status=ACTIVE&status=VIEW_ONLY&status=MIGRATED&status=HSM_COIN_UPDATED&pageSize=-1"
@@ -49,7 +55,9 @@ const fakeNetwork = async url => {
 storiesOf("entities/Transaction", module).add("Send", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
-      <TransactionCreationFlow match={{ params: { id: 5 } }} />
+      <TransactionCreationFlow
+        match={{ params: { id: filteredAccounts[0].id } }}
+      />
     </Modal>
   </RestlayProvider>
 ));

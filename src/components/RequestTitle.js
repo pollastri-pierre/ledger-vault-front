@@ -65,6 +65,10 @@ const extraByRequest = [
     ["CREATE_ACCOUNT", "EDIT_ACCOUNT", "REVOKE_ACCOUNT", "MIGRATE_ACCOUNT"],
     request => (request.account ? request.account.name : null),
   ],
+  [
+    ["CREATE_WHITELIST", "EDIT_WHITELIST", "REVOKE_WHITELIST"],
+    request => (request.whitelist ? request.whitelist.name : null),
+  ],
 ];
 
 function getRequestExtra(request) {

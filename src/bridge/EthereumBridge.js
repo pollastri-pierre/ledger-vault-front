@@ -20,7 +20,7 @@ export type Transaction = {
 
 const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
 
-const getRecipientWarning = async recipient => {
+const getRecipientWarning = async (recipient: string) => {
   // TODO: temp solution until centralized
   if (!recipient.match(/^0x[0-9a-fA-F]{40}$/)) return null;
   const slice = recipient.substr(2);
@@ -34,7 +34,7 @@ const getRecipientWarning = async recipient => {
 
 const getRecipientError = async (restlay, currency, recipient) => {
   const isValid = await isRecipientValid(restlay, currency, recipient);
-  return isValid ? null : new InvalidAddress();
+  return isValid ? null : new InvalidAddress(null, { ticker: currency.ticker });
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -122,16 +122,8 @@ const EthereumBridge: WalletBridge<Transaction> = {
     if (!estimatedFees) return false;
     if (!estimatedFees.isGreaterThan(0)) return false;
     if (a.account_type === "Erc20") {
-      //
-      // FIXME FIXME FIXME
-      // cf - https://ledgerhq.atlassian.net/browse/LV-2050
-      //    - https://ledgerhq.atlassian.net/browse/LV-2050
-      //
-      // Put back those lines when the gate fixes the regression:
-      //
-      // if (!a.parent_balance) return false;
-      // if (estimatedFees.isGreaterThan(a.parent_balance)) return false;
-      //
+      if (!a.parent_balance) return false;
+      if (estimatedFees.isGreaterThan(a.parent_balance)) return false;
     } else if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) {
       return false;
     }

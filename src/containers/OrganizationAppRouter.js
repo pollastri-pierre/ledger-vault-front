@@ -3,15 +3,15 @@ import { BrowserRouter } from "react-router-dom";
 import counterValues from "data/counterValues";
 import { Switch, Route } from "react-router";
 import AlertsContainer from "components/legacy/AlertsContainer";
-import UpdateApp from "components/UpdateApp/LinksToUpdater";
+import UpdateApp from "components/UpdateApp";
 import MockDevices from "components/MockDevices";
 import GlobalStyle from "components/GlobalStyle";
+import OnboardingContainer from "components/legacy/Onboarding/OnboardingContainer";
 import Welcome from "./Welcome";
 import Login from "./Login";
 
 import App from "./App/App";
 import Logout from "./Login/Logout";
-import OnboardingContainer from "./Onboarding/OnboardingContainer";
 import PrivateRoute from "./Login/PrivateRoute";
 import RegisterUser from "./RegisterUser";
 
@@ -30,13 +30,13 @@ const OrganizationAppRouter = () => (
       <>
         <AlertsContainer />
         <Switch>
+          <Route path="/update-app" component={UpdateApp} />
           <Route
             path="/:orga_name"
             render={({ match, history }) => (
               <>
                 <Switch>
                   <Route path={`${match.url}/login`} render={LoginComponent} />
-                  <Route path="*/update-app" component={UpdateApp} />
                   <Route
                     path={`${match.url}/onboarding`}
                     render={() => (

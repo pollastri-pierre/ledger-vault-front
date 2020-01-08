@@ -327,7 +327,4 @@ const mapDispatchToProps = {
   logout,
   login,
 };
-export default connect(
-  null,
-  mapDispatchToProps,
-)(MockDevices);
+export default connect(null, mapDispatchToProps)(MockDevices);

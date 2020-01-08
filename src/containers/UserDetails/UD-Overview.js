@@ -35,15 +35,16 @@ class UserDetailsOverview extends PureComponent<Props> {
         user.last_request.id.toString(),
         user_info,
         restlay,
+        user.id,
       ));
   };
 
   updateUsername = (username: string) => {
-    this.updateUserInfo({ username });
+    return this.updateUserInfo({ username });
   };
 
   updateUserID = (user_id: string) => {
-    this.updateUserInfo({ user_id });
+    return this.updateUserInfo({ user_id });
   };
 
   render() {

@@ -24,7 +24,7 @@ import SyncButton from "components/SyncButton";
 import Text from "components/base/Text";
 import PageHeaderActions from "components/base/PageHeaderActions";
 import { SoftCard } from "components/base/Card";
-import AccountIcon from "components/AccountIcon";
+import AccountIcon from "components/legacy/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import { isAccountSpendable } from "utils/transactions";
@@ -156,17 +156,18 @@ const WidgetContent = ({ account }: Props) => {
                   <Copy text={account.contract_address} />
                 </Box>
               </InfoSquare>
-              {account.parent && (
-                <InfoSquare>
-                  <Label>Parent Ethereum account</Label>
-                  <Link to={account.parent.toString()}>
-                    <Box horizontal flow={5} align="center" justify="center">
-                      <FaLink />
-                      <Text i18nKey="accountView:navigateParent" />
-                    </Box>
-                  </Link>
-                </InfoSquare>
-              )}
+              {account.parent &&
+                (me.role === "ADMIN" || account.has_access_to_parent) && (
+                  <InfoSquare>
+                    <Label>Parent Ethereum account</Label>
+                    <Link to={account.parent.toString()}>
+                      <Box horizontal flow={5} align="center" justify="center">
+                        <FaLink />
+                        <Text i18nKey="accountView:navigateParent" />
+                      </Box>
+                    </Link>
+                  </InfoSquare>
+                )}
             </>
           )}
         </Box>

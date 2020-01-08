@@ -81,6 +81,7 @@ class ModalRoute extends Component<{
               disableBackdropClick={disableBackdropClick}
               onClose={this.onClose}
               transparent={transparent}
+              history={history}
             >
               {inner}
             </Modal>

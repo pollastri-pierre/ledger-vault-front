@@ -1,5 +1,6 @@
 import merge from "webpack-merge";
 import webpack from "webpack";
+import JSObfuscator from "webpack-obfuscator";
 
 import webpackConfig from "./base";
 
@@ -14,7 +15,16 @@ export default merge(webpackConfig, {
     rules: [
       {
         test: /\.js$/,
-        use: ["thread-loader", "babel-loader?sourceMap"],
+        use: [
+          {
+            loader: "thread-loader",
+            options: {
+              workers:
+                process.env.CIRCLE_NODE_TOTAL || require("os").cpus().length,
+            },
+          },
+          "babel-loader?sourceMap",
+        ],
         exclude: /node_modules/,
       },
     ],
@@ -33,7 +43,10 @@ export default merge(webpackConfig, {
     },
   },
 
-  plugins: [new webpack.optimize.OccurrenceOrderPlugin()],
+  plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new JSObfuscator({}, ["vendor-**.js"]),
+  ],
 
   stats: {
     colors: true,

@@ -3,17 +3,21 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { FiltersCard, FieldStatuses, FieldText } from "components/filters";
+import {
+  FiltersCard,
+  FieldStatuses,
+  FieldText,
+  FieldAccount,
+} from "components/filters";
+import { WhitelistStatusMap } from "data/types";
 import type { FieldsGroupProps } from "components/filters/types";
-import type { MetaStatus } from "data/types";
+import type { WhitelistStatus } from "data/types";
 
-export const defaultStatuses: MetaStatus[] = [];
+export const defaultStatuses: WhitelistStatus[] = [];
 
-const statuses: MetaStatus[] = [
+const statuses: WhitelistStatus[] = [
   ...defaultStatuses,
-  "APPROVED",
-  "PENDING",
-  "ABORTED",
+  ...Object.keys(WhitelistStatusMap),
 ];
 
 export default function WhitelistsFilters(props: FieldsGroupProps) {
@@ -23,10 +27,11 @@ export default function WhitelistsFilters(props: FieldsGroupProps) {
       <FieldStatuses
         statuses={statuses}
         placeholder={t("common:requestStatus")}
-        queryKey="meta_status"
+        queryKey="status"
       />
       <FieldText title="Name" queryKey="name" placeholder="name" />
       <FieldText title="Address" queryKey="address" placeholder="address" />
+      <FieldAccount />
     </FiltersCard>
   );
 }

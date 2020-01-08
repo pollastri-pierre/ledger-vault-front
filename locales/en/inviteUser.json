@@ -33,7 +33,7 @@
     },
     "finish": "Finish",
     "finishTitle": "User invitation request successfully created!",
-    "finishDesc": "You can now share the registration URL with the new user."
+    "finishDesc": "You can now share the registration URL with the new user:"
   },
   "form": {
     "labelUsername": "Username",
@@ -62,7 +62,7 @@
     "success": {
       "title": "Success",
       "subtitle": "You've successfully registered to the Ledger Vault.",
-      "description": "Administrators of your workspace will get in touch once your registration has been approved."
+      "description": "Your registration must now be approved by the Administrators of your workspace."
     }
   }
 }

@@ -36,7 +36,4 @@ export class Logout extends Component<{
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Logout);
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

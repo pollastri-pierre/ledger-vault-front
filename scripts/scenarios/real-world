@@ -18,6 +18,8 @@ python test_user_creation.py --user 9  --username "Andrew Williams" --approve
 # user 16
 python test_user_creation.py --user 10 --username "Nicole Watkins" --approve
 
+# whitelist 1
+python test_whitelist_creation.py --name "whitelist1" --approve
 # group 2
 python test_group_creation.py \
   --name 'APAC Ops' \
@@ -38,10 +40,17 @@ python test_account_creation.py \
   --name BlockchainPlanet \
   --currency bitcoin \
   --approve \
-  --tx-approval-steps "[
-    { \"quorum\": 2, \"group_id\": 3 },
-    { \"quorum\": 2, \"users\": [12, 15] },
-    { \"quorum\": 1, \"users\": [11] }
+  --multi-sets-json "[
+    { \"name\": \"Rule 1\",
+      \"rules\": [
+          { \"type\": \"MULTI_AUTHORIZATIONS\",
+            \"data\": [
+                { \"quorum\": 1, \"users\": [13, 14]},
+                { \"quorum\": 2, \"group_id\": 3}
+            ]
+          }
+      ]
+    }
   ]"
 
 # ethereum account
@@ -49,7 +58,124 @@ python test_account_creation.py \
   --name "Nakchain ETH" \
   --currency ethereum \
   --approve \
-  --tx-approval-steps "[
-    { \"quorum\": 1, \"group_id\": 3 },
-    { \"quorum\": 2, \"users\": [11, 12] }
+  --multi-sets-json "[
+    {
+      \"name\": \"Rule 1\",
+      \"rules\": [
+        {
+            \"type\": \"THRESHOLD\",
+            \"data\": [
+                {
+                    \"currency_type\": \"CRYPTO\",
+                    \"min\": \"0\",
+                    \"max\": \"1000\"
+                }
+            ]
+        },
+        {
+            \"type\": \"MULTI_AUTHORIZATIONS\",
+            \"data\": [
+                {\"quorum\": 1, \"users\": [14]}
+            ]
+        }
+      ]
+  },
+    {
+        \"name\": \"Rule 2\",
+        \"rules\": [
+            {
+                \"type\": \"THRESHOLD\",
+                \"data\": [
+                    {
+                        \"currency_type\": \"CRYPTO\",
+                        \"min\": \"0\",
+                        \"max\": \"1000\"
+                    }
+                ]
+            },
+            {
+                \"type\": \"MULTI_AUTHORIZATIONS\",
+                \"data\": [
+                    {\"quorum\": 1, \"users\": [13]}
+                ]
+            }
+        ]
+    }
   ]"
+
+# ethereum account
+python test_account_creation.py \
+  --name "Blockchain ETH" \
+  --currency ethereum \
+  --approve \
+  --multi-sets-json "[
+    {
+        \"name\": \"Rule 1\",
+        \"rules\": [
+            {
+                \"type\": \"WHITELIST\",
+                \"data\": [1]
+            },
+            {
+                \"type\": \"THRESHOLD\",
+                \"data\": [
+                    {
+                        \"currency_type\": \"CRYPTO\",
+                        \"min\": \"0\",
+                        \"max\": \"1000\"
+                    }
+                ]
+            },
+            {
+                \"type\": \"MULTI_AUTHORIZATIONS\",
+                \"data\": [
+                    {\"quorum\": 1, \"group_id\": 3}
+                ]
+            }
+        ]
+    },
+    {
+        \"name\": \"Rule 2\",
+        \"rules\": [
+            {
+                \"type\": \"MULTI_AUTHORIZATIONS\",
+                \"data\": [
+                    {\"quorum\": 1, \"group_id\": 3},
+                    {\"quorum\": 2, \"users\": [13, 14]}
+                ]
+            },
+            {
+                \"type\": \"THRESHOLD\",
+                \"data\": [
+                    {
+                        \"currency_type\": \"CRYPTO\",
+                        \"min\": \"0\",
+                        \"max\": \"1000\"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        \"name\": \"Rule 3\",
+        \"rules\": [
+            {
+                \"type\": \"MULTI_AUTHORIZATIONS\",
+                \"data\": [
+                    {\"quorum\": 1, \"group_id\": 3},
+                    {\"quorum\": 1, \"users\": [14]}
+                ]
+            },
+            {
+                \"type\": \"THRESHOLD\",
+                \"data\": [
+                    {
+                        \"currency_type\": \"CRYPTO\",
+                        \"min\": \"2000\",
+                        \"max\": \"4000\"
+                    }
+                ]
+            }
+        ]
+    }
+]"

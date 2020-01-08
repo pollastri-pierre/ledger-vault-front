@@ -65,7 +65,7 @@ export default function FilterFieldSelect(props: Props) {
                 if (areSame(subO.value, s)) return subO;
               }
             }
-            if (areSame(o.value, s)) return o;
+            if (o.value && areSame(o.value, s)) return o;
           }
           return null;
         })
@@ -118,7 +118,10 @@ export default function FilterFieldSelect(props: Props) {
       if (single && opt.value) {
         updateQueryParams(queryKey, opt.value);
       } else if (Array.isArray(opt)) {
-        updateQueryParams(queryKey, opt.map(o => o.value));
+        updateQueryParams(
+          queryKey,
+          opt.map(o => o.value),
+        );
       }
     },
     [updateQueryParams, queryKey, single],

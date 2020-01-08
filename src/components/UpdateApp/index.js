@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import queryString from "query-string";
 import { withRouter } from "react-router";
 import manager from "@ledgerhq/live-common/lib/manager";
@@ -12,8 +12,6 @@ import { Trans } from "react-i18next";
 import type { Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 import { TransportWebUSBGestureRequired } from "@ledgerhq/errors";
-
-import colors from "shared/colors";
 
 import {
   withDeviceInfo,
@@ -28,10 +26,13 @@ import { DeviceNotOnDashboard, remapError } from "utils/errors";
 import TranslatedError from "components/TranslatedError";
 import VaultCentered from "components/VaultCentered";
 import Box from "components/base/Box";
+import InfoBox from "components/base/InfoBox";
+import FakeLink from "components/base/FakeLink";
 import Card from "components/base/Card";
 import Button from "components/base/Button";
 import ProgressBar from "components/base/ProgressBar";
 import Text from "components/base/Text";
+import LinksToUpdater from "./LinksToUpdater";
 
 export type Step =
   | "idle"
@@ -60,11 +61,11 @@ const fetchVaultApp = deviceInfo =>
       }),
   );
 
-type InstallParams = {
+type InstallParams = {|
   setStep: Step => void,
   addLog: Object => void,
   subscribeProgress: Step => (e: { progress: number }) => void,
-};
+|};
 
 export function installEverything(params: InstallParams): Observable<*> {
   const { addLog } = params;
@@ -161,10 +162,14 @@ type Props = {
 };
 
 const UpdateApp = ({ history, location }: Props) => {
+  const [isLinksModalOpened, setLinksModalOpened] = useState(false);
   const [state, dispatch] = useReducer<State, Object>(reducer, initialState);
   const { step, error, progress, logs } = state;
 
   useEffect(() => setEnv("FORCE_PROVIDER", provider), []);
+
+  const openLinksModal = () => setLinksModalOpened(true);
+  const closeLinksModal = () => setLinksModalOpened(false);
 
   const subscribeProgress = stepName => e => {
     if (e.progress === 0) {
@@ -244,6 +249,18 @@ const UpdateApp = ({ history, location }: Props) => {
             <Text i18nKey="update:update" />
           </Button>
         ) : null}
+        <Box style={{ textAlign: "center" }}>
+          <Text size="small">
+            {"Troubleshooting? "}
+            <FakeLink style={{ display: "inline" }} onClick={openLinksModal}>
+              Download standalone updater
+            </FakeLink>
+          </Text>
+        </Box>
+        <LinksToUpdater
+          isOpened={isLinksModalOpened}
+          onClose={closeLinksModal}
+        />
       </Card>
     </VaultCentered>
   );
@@ -257,10 +274,10 @@ type DisplayErrorProps = {
 const DisplayError = ({ error, onRetry }: DisplayErrorProps) =>
   error ? (
     <>
-      <Text color={colors.grenade}>
+      <InfoBox type="error">
         <TranslatedError error={error} field="description" />
-      </Text>
-      <Button onClick={onRetry}>
+      </InfoBox>
+      <Button type="filled" onClick={onRetry}>
         <Text i18nKey="update:retry" />
       </Button>
     </>

@@ -1,21 +1,20 @@
 // @flow
 import React from "react";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Box from "components/base/Box";
-import { InputText, Label } from "components/base/form";
-import type { Translate } from "data/types";
+import { InputText, Label, Form } from "components/base/form";
+import { maxLengthNonAsciiHints } from "components/base/hints";
 import type { WhitelistCreationStepProps } from "./types";
 
-type Props = WhitelistCreationStepProps & {
-  t: Translate,
-};
+const WHITELIST_NAME_LENGTH = 19;
 
-const WhitelistCreationInfos = (props: Props) => {
-  const { t, payload, updatePayload } = props;
+const WhitelistCreationInfos = (props: WhitelistCreationStepProps) => {
+  const { payload, updatePayload, onEnter } = props;
+  const { t } = useTranslation();
   const handleChangeName = (name: string) => updatePayload({ name });
   const handleChangeDesc = (description: string) =>
     updatePayload({ description });
-  return (
+  const inner = (
     <Box flow={20}>
       <Box>
         <Label>{t("whitelists:create.name_placeholder")}</Label>
@@ -24,8 +23,9 @@ const WhitelistCreationInfos = (props: Props) => {
           value={payload.name}
           autoFocus
           onChange={handleChangeName}
-          maxLength={19}
+          maxLength={WHITELIST_NAME_LENGTH}
           onlyAscii
+          hints={maxLengthNonAsciiHints(WHITELIST_NAME_LENGTH)}
           placeholder={t("whitelists:create.name_placeholder")}
         />
       </Box>
@@ -41,6 +41,7 @@ const WhitelistCreationInfos = (props: Props) => {
       </Box>
     </Box>
   );
+  return <Form onSubmit={onEnter}>{inner}</Form>;
 };
 
-export default withTranslation()(WhitelistCreationInfos);
+export default WhitelistCreationInfos;

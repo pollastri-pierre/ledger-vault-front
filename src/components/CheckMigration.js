@@ -9,19 +9,21 @@ import colors from "shared/colors";
 import AccountsToMigrateQuery from "api/queries/AccountsToMigrateQuery";
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
+import SearchWhitelists from "api/queries/SearchWhitelists";
 import connectData from "restlay/connectData";
 import { createAndApprove } from "device/interactions/hsmFlows";
-import type { User, Account, Group } from "data/types";
+import { getAccountCurrencyOrToken } from "utils/accounts";
+import type { User, Account, Group, Whitelist } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
 import {
-  areApprovalsRulesValid,
+  areRulesSetsValid,
   serializePayload,
   deserialize as accountToPayload,
 } from "components/AccountCreationFlow";
 import AccountName from "components/AccountName";
 import ApproveRequestButton from "components/ApproveRequestButton";
-import ApprovalsRules from "components/ApprovalsRules";
+import MultiRules from "components/MultiRules";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Modal, { ModalClose } from "components/base/Modal";
 import Text from "components/base/Text";
@@ -33,13 +35,14 @@ import { RestlayTryAgain } from "components/TryAgain";
 type Props = {
   allUsers: Connection<User>,
   allGroups: Connection<Group>,
+  allWhitelists: Connection<Whitelist>,
   accountsToMigrate: Connection<Account>,
 };
 
 const isAccountHSMAppUpdated = a => a.status === "HSM_COIN_UPDATED";
 
 const CheckMigration = (props: Props) => {
-  const { allUsers, allGroups, accountsToMigrate } = props;
+  const { allUsers, allGroups, allWhitelists, accountsToMigrate } = props;
 
   // used to close the modal without migrating
   const [hasForceClose, setForceClose] = useState(false);
@@ -51,6 +54,7 @@ const CheckMigration = (props: Props) => {
   const accounts = accountsToMigrate.edges.map(n => n.node);
   const users = allUsers.edges.map(n => n.node);
   const groups = allGroups.edges.map(n => n.node);
+  const whitelists = allWhitelists.edges.map(n => n.node);
 
   // view props
   const count = accounts.length;
@@ -91,6 +95,7 @@ const CheckMigration = (props: Props) => {
                   account={account}
                   users={users}
                   groups={groups}
+                  whitelists={whitelists}
                   onMigrationSuccess={onSuccess}
                 />
               );
@@ -123,22 +128,25 @@ const AccountToMigrate = ({
   account,
   users,
   groups,
+  whitelists,
   onMigrationSuccess,
   status,
 }: {
   account: Account,
   users: User[],
   groups: Group[],
+  whitelists: Whitelist[],
   onMigrationSuccess: () => void,
   status: "active" | "waiting" | "done",
 }) => {
   const isMigrated = account.status === "MIGRATED";
   const [payload, setPayload] = useState(accountToPayload(account));
-  const onRulesChange = rules => setPayload({ ...payload, rules });
-  const isValid = areApprovalsRulesValid(payload.rules);
+  const onRulesSetsChange = rulesSets => setPayload({ ...payload, rulesSets });
+  const isValid = areRulesSetsValid(payload.rulesSets);
   const isEditMode = true;
   const data = isValid ? serializePayload(payload, isEditMode) : null;
   const isOpened = status === "active";
+  const currencyOrToken = getAccountCurrencyOrToken(account);
   return (
     <Box key={account.id} p={20} flow={10} position="relative">
       <Box horizontal align="center" justify="space-between">
@@ -158,11 +166,13 @@ const AccountToMigrate = ({
       </Box>
       {isOpened && (
         <>
-          <ApprovalsRules
+          <MultiRules
+            rulesSets={payload.rulesSets}
+            onChange={onRulesSetsChange}
             users={users}
+            whitelists={whitelists}
             groups={groups}
-            rules={payload.rules}
-            onChange={onRulesChange}
+            currencyOrToken={currencyOrToken}
           />
           <Box height={80} position="relative">
             <Absolute top={20} right={20}>
@@ -192,5 +202,6 @@ export default connectData(CheckMigration, {
     accountsToMigrate: AccountsToMigrateQuery,
     allUsers: OperatorsForAccountCreationQuery,
     allGroups: GroupsForAccountCreationQuery,
+    allWhitelists: SearchWhitelists,
   },
 });

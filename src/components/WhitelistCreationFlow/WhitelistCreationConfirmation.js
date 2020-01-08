@@ -4,12 +4,11 @@ import { Trans } from "react-i18next";
 import InfoBox from "components/base/InfoBox";
 import LineRow from "components/LineRow";
 import Box from "components/base/Box";
-import AccountIcon from "components/AccountIcon";
-import Text from "components/base/Text";
-import colors from "shared/colors";
+import NotApplicableText from "components/base/NotApplicableText";
+import Address from "components/Address";
 import {
-  hasEditOccuredGeneric,
-  onlyDescriptionChangedGeneric,
+  hasEditOccuredWhitelist,
+  onlyDescriptionChangedWhitelist,
 } from "utils/creationFlows";
 import type { Whitelist } from "data/types";
 import type { WhitelistCreationStepProps } from "./types";
@@ -21,12 +20,12 @@ const WhitelistCreationConfirmation = (props: Props) => {
   return (
     <Box flow={20}>
       <WhitelistDetails whitelist={payload} />
-      {!hasEditOccuredGeneric(payload, initialPayload, "addresses") ? (
+      {!hasEditOccuredWhitelist(payload, initialPayload) ? (
         <InfoBox type="info" withIcon>
           <Trans i18nKey="whitelists:create.no_edit" />
         </InfoBox>
       ) : (
-        onlyDescriptionChangedGeneric(payload, initialPayload, "addresses") && (
+        onlyDescriptionChangedWhitelist(payload, initialPayload) && (
           <InfoBox type="info" withIcon>
             <Trans i18nKey="whitelists:create.no_hsm_validation" />
           </InfoBox>
@@ -47,29 +46,15 @@ export const WhitelistDetails = (props: WhitelistDetailsProps) => {
   return (
     <Box>
       <LineRow label="name">{name}</LineRow>
-      <LineRow label="description">{description}</LineRow>
+      <LineRow label="description">
+        {description || <NotApplicableText inline />}
+      </LineRow>
       <LineRow label="addresses" vertical noOverflowHidden>
         <Box flow={20} pt={10}>
           {addresses
             .filter(a => a.name !== "" && a.address !== "")
             .map(addr => (
-              <Box
-                horizontal
-                flow={20}
-                align="center"
-                justify="space-between"
-                key={addr.id}
-              >
-                <Box horizontal flow={10}>
-                  {addr.currency && (
-                    <AccountIcon currencyId={addr.currency.id} />
-                  )}
-                  <Text size="small" uppercase color={colors.shark}>
-                    {addr.name}
-                  </Text>
-                </Box>
-                <Text>{addr.address}</Text>
-              </Box>
+              <Address key={`${addr.name}-${addr.currency}`} address={addr} />
             ))}
         </Box>
       </LineRow>

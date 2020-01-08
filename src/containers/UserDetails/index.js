@@ -1,15 +1,14 @@
 // @flow
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import { FaUser } from "react-icons/fa";
-import ApproveRequestButton from "components/ApproveRequestButton";
 import EntityModal from "components/EntityModal";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
+import UserQuery from "api/queries/UserQuery";
 import type { User } from "data/types";
-import { createAndApprove } from "device/interactions/hsmFlows";
 import { useMe } from "components/UserContextProvider";
 
 import { FetchEntityHistory } from "components/EntityHistory";
@@ -25,38 +24,34 @@ function UserDetails(props: Props) {
   const { user, close } = props;
   const me = useMe();
   const isActuallyMyself = user.id === me.id;
-  const revokeButton = isActuallyMyself ? null : (
-    <ApproveRequestButton
-      interactions={createAndApprove("PERSON")}
-      onSuccess={close}
-      isRevoke
-      disabled={false}
-      additionalFields={{
-        data: { user_id: user.id },
-        type: "REVOKE_USER",
-      }}
-      buttonLabel={<Trans i18nKey="common:revoke" />}
-      withConfirm
-      confirmTitle={<Trans i18nKey="userDetails:revokeWarning.title" />}
-      confirmLabel={<Trans i18nKey="userDetails:revokeWarning.confirm" />}
-      confirmContent={
-        <Box flow={15} align="flex-start">
-          <Text
-            textAlign="center"
-            i18nKey="userDetails:revokeWarning.content"
-          />
-          {user.role === "ADMIN" && (
-            <InfoBox type="warning" style={{ alignSelf: "center" }}>
-              <Text i18nKey="userDetails:revokeWarning.contentAdmin" />
-            </InfoBox>
-          )}
-        </Box>
-      }
-    />
-  );
+  const revokeParams = isActuallyMyself
+    ? null
+    : {
+        buttonLabel: <Trans i18nKey="common:revoke" />,
+        confirmTitle: <Trans i18nKey="userDetails:revokeWarning.title" />,
+        confirmLabel: <Trans i18nKey="userDetails:revokeWarning.confirm" />,
+        confirmContent: (
+          <Box flow={15} align="flex-start">
+            <Text
+              textAlign="center"
+              i18nKey="userDetails:revokeWarning.content"
+            />
+            {user.role === "ADMIN" && (
+              <InfoBox type="warning" style={{ alignSelf: "center" }}>
+                <Text i18nKey="userDetails:revokeWarning.contentAdmin" />
+              </InfoBox>
+            )}
+          </Box>
+        ),
+      };
 
   const showPermissionTab = ["ACTIVE", "ACCESS_SUSPENDED"].includes(
     user.status,
+  );
+
+  const refreshDataQuery = useMemo(
+    () => new UserQuery({ userID: String(user.id) }),
+    [user.id],
   );
 
   return (
@@ -66,7 +61,8 @@ function UserDetails(props: Props) {
       Icon={FaUser}
       title={user.username}
       onClose={close}
-      revokeButton={revokeButton}
+      refreshDataQuery={refreshDataQuery}
+      revokeParams={revokeParams}
     >
       <UserDetailsOverview key="overview" user={user} />
       {user.role === "OPERATOR" && showPermissionTab && (

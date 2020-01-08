@@ -9,7 +9,7 @@ export type Hint = {
 
 export type InputProps<T> = {
   value: T,
-  onChange: T => void,
+  onChange: T => void | Promise<void>,
   errors?: Error[],
   warnings?: Error[],
   hints?: Hint[],

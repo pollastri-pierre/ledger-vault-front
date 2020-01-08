@@ -5,6 +5,7 @@ import invariant from "invariant";
 import { Trans } from "react-i18next";
 
 import Box from "components/base/Box";
+import NotApplicableText from "components/base/NotApplicableText";
 import LineRow from "components/LineRow";
 import OverviewTransaction from "components/OverviewTransaction";
 import AccountName from "components/AccountName";
@@ -27,10 +28,18 @@ export default (props: TransactionCreationStepProps<any>) => {
         account={account}
         transactionType="SEND"
       />
-      <LineRow label={<Trans i18nKey="send:confirmation.identifier" />}>
+      <LineRow
+        label={
+          <Trans i18nKey="transactionCreation:steps.confirmation.identifier" />
+        }
+      >
         <Copy text={transaction.recipient} />
       </LineRow>
-      <LineRow label={<Trans i18nKey="send:confirmation.account" />}>
+      <LineRow
+        label={
+          <Trans i18nKey="transactionCreation:steps.confirmation.account" />
+        }
+      >
         <AccountName account={account} />
       </LineRow>
       {transaction.note.title && (
@@ -47,13 +56,17 @@ export default (props: TransactionCreationStepProps<any>) => {
           <span data-test="note_comments">{transaction.note.content}</span>
         </LineRow>
       )}
-      <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>
+      <LineRow
+        label={<Trans i18nKey="transactionCreation:steps.confirmation.fees" />}
+      >
         <Amount account={account} value={fees} disableERC20 />
       </LineRow>
       <LineRow
-        label={<Trans i18nKey="send:confirmation.total" />}
+        label={<Trans i18nKey="transactionCreation:steps.confirmation.total" />}
         tooltipInfoMessage={
-          isERC20 && <Trans i18nKey="send:confirmation.totalERC20Info" />
+          isERC20 && (
+            <Trans i18nKey="transactionCreation:steps.confirmation.totalERC20Info" />
+          )
         }
       >
         {totalSpent !== null && (
@@ -63,10 +76,14 @@ export default (props: TransactionCreationStepProps<any>) => {
       {isRipple && (
         <LineRow
           label={
-            <Trans i18nKey="transactionCreation:steps.amount.destinationTag" />
+            <Trans i18nKey="transactionCreation:steps.account.destinationTag" />
           }
         >
-          {transaction.destinationTag}
+          {transaction.destinationTag ? (
+            transaction.destinationTag
+          ) : (
+            <NotApplicableText inline />
+          )}
         </LineRow>
       )}
     </Box>

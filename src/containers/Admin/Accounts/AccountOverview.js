@@ -1,21 +1,17 @@
 // @flow
-import React, { useState } from "react";
+import React from "react";
 import { Trans } from "react-i18next";
 import LineRow from "components/LineRow";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Copy from "components/base/Copy";
 import AccountName from "components/AccountName";
 import Box from "components/base/Box";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import colors from "shared/colors";
+import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
-import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
 import ParentAccount from "components/ParentAccount";
-import { isBalanceAvailable } from "utils/accounts";
+import MultiRules from "components/MultiRules";
+import { isBalanceAvailable, getAccountCurrencyOrToken } from "utils/accounts";
 import type { Account } from "data/types";
-
-const iconDown = <FaChevronDown size={12} color={colors.lightGrey} />;
-const iconUp = <FaChevronUp size={12} color={colors.lightGrey} />;
 
 const AccountOverview = ({
   account,
@@ -35,10 +31,7 @@ const AccountOverview = ({
 );
 
 const Rows = ({ account }: { account: Account }) => {
-  const [isRuleVisible, setRule] = useState(false);
-  const toggleRuleVisible = () => {
-    return setRule(!isRuleVisible);
-  };
+  const currencyOrToken = getAccountCurrencyOrToken(account);
   return (
     <div>
       <LineRow label={<Trans i18nKey="accountDetails:name" />}>
@@ -63,28 +56,24 @@ const Rows = ({ account }: { account: Account }) => {
           </LineRow>
         </>
       )}
-      {account.tx_approval_steps && (
-        <LineRow label={<Trans i18nKey="entityModal:tabs.transactionRules" />}>
-          <Box
-            onClick={toggleRuleVisible}
-            horizontal
-            flow={10}
-            align="center"
-            style={{ cursor: "pointer" }}
-          >
-            <div>
-              <Trans
-                i18nKey="accountCreation:rulesSumup"
-                count={account.tx_approval_steps.length}
-                values={{ count: account.tx_approval_steps.length }}
-              />
-            </div>
-            {isRuleVisible ? iconUp : iconDown}
-          </Box>
+      {account.governance_rules && account.governance_rules.length && (
+        <LineRow
+          label={<Trans i18nKey="entityModal:tabs.transactionRules" />}
+          collapsibleState="collapsed"
+          collapsibleChildren={
+            <MultiRules
+              readOnly
+              rulesSets={account.governance_rules}
+              currencyOrToken={currencyOrToken}
+            />
+          }
+        >
+          <Text
+            i18nKey="accountCreation:rulesSumup"
+            count={account.governance_rules.length}
+            values={{ count: account.governance_rules.length }}
+          />
         </LineRow>
-      )}
-      {account.tx_approval_steps && isRuleVisible && (
-        <AccountTransactionRules account={account} noTitle />
       )}
     </div>
   );

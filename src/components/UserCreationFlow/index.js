@@ -8,6 +8,7 @@ import connectData from "restlay/connectData";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Button from "components/base/Button";
 import Box from "components/base/Box";
+import Copy from "components/base/Copy";
 import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
 
 import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
@@ -70,15 +71,21 @@ const steps = [
     id: "finish",
     name: <Trans i18nKey="inviteUser:steps.finish" />,
     hideBack: true,
-    Step: () => {
+    Step: ({ payload }: { payload: UserCreationPayload }) => {
       return (
         <MultiStepsSuccess
           title={<Trans i18nKey="inviteUser:steps.finishTitle" />}
           desc={<Trans i18nKey="inviteUser:steps.finishDesc" />}
-        />
+        >
+          {payload && payload.url && (
+            <Box style={{ maxWidth: 600 }}>
+              <Copy text={payload.url} />
+            </Box>
+          )}
+        </MultiStepsSuccess>
       );
     },
-    Cta: ({ onClose }: { onClose: () => void }) => {
+    Cta: ({ onClose }: { onClose?: () => void }) => {
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>

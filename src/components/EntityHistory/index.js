@@ -37,7 +37,7 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 import Fetch from "components/Fetch";
 
-type EntityType = "user" | "group" | "account" | "transaction";
+type EntityType = "user" | "group" | "account" | "transaction" | "whitelist";
 
 type Props = {
   history: VaultHistory,
@@ -49,6 +49,7 @@ const createItemByEntity = {
   account: null,
   group: null,
   transaction: null,
+  whitelist: null,
 };
 const itemIconsByType = {
   CREATE: entityType => {
@@ -224,6 +225,12 @@ const HistoryStep = ({
       <Trans i18nKey={`history:stepType.${step.type}`} />
       {" on "}
       {moment(step.createdOn).format("LLL")}
+      {step.createdBy && step.createdBy.role !== "ADMIN_SYSTEM" && (
+        <>
+          {" by "}
+          <b>{step.createdBy.username}</b>
+        </>
+      )}
       {step.blockerRequest && (
         <>
           {" by a "}
@@ -394,7 +401,7 @@ export function FetchEntityHistory({
   entityType,
 }: {
   url: string,
-  entityType: "user" | "group" | "account" | "transaction",
+  entityType: "user" | "group" | "account" | "transaction" | "whitelist",
 }) {
   return (
     <Fetch url={url} deserialize={deserializeHistory}>

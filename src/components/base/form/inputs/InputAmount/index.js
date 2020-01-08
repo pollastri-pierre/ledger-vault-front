@@ -18,9 +18,13 @@ type Props = {
   onChange: BigNumber => void,
   value: BigNumber,
   hideUnit?: boolean,
+  unitLeft?: boolean,
   hideCV?: boolean,
-  unit?: Unit,
-  width?: number,
+  unit?: ?Unit,
+  width?: number | string,
+  unitsWidth?: number,
+  isDisabled?: boolean,
+  noForceFocus?: boolean,
 };
 
 type State = {
@@ -34,10 +38,14 @@ type State = {
 
 class InputAmount extends PureComponent<Props, State> {
   static getDerivedStateFromProps(props: Props, state: State) {
-    if (!props.value.isEqualTo(state.cachedValue)) {
+    if (
+      (props.unit && props.unit !== state.unit) ||
+      !props.value.isEqualTo(state.cachedValue)
+    ) {
       const val = formatCurrencyUnit(state.unit, props.value);
       return {
         displayValue: props.value.isEqualTo(0) ? "" : val,
+        unit: props.unit || state.unit,
         cachedValue: props.value,
       };
     }
@@ -63,9 +71,35 @@ class InputAmount extends PureComponent<Props, State> {
     };
   }
 
+  resetUnit = (currency: any, unit: any, value: any) => {
+    const val = formatCurrencyUnit(unit, value);
+
+    return this.setState({
+      unit,
+      options: currency.units.map(u => ({
+        label: u.code,
+        value: u.code,
+        data: u,
+      })),
+      displayValue: value.isEqualTo(0) ? "" : val,
+      cachedValue: value,
+    });
+  };
+
   componentDidUpdate(prevProps: Props, prevState: State) {
+    const { value, currency, unit: propUnit } = this.props;
+    const unit = propUnit || currency.units[0];
+
     if (prevState.unit !== this.state.unit) {
-      this.inputRef.current && this.inputRef.current.focus();
+      if (!this.props.noForceFocus) {
+        this.inputRef.current && this.inputRef.current.focus();
+      } else {
+        this.onFocus();
+        this.onBlur();
+      }
+    }
+    if (prevProps.currency !== this.props.currency) {
+      this.resetUnit(currency, unit, value);
     }
   }
 
@@ -106,12 +140,25 @@ class InputAmount extends PureComponent<Props, State> {
   };
 
   render() {
-    const { value, currency, hideUnit, hideCV, width, ...props } = this.props;
+    const {
+      value,
+      currency,
+      hideUnit,
+      hideCV,
+      width,
+      unitLeft,
+      unitsWidth,
+      isDisabled,
+      ...props
+    } = this.props;
     const { displayValue, unit, options } = this.state;
     const option = options.find(opt => opt.data === unit);
     return (
-      <Box horizontal flow={10} width={width || 370}>
-        <Box grow flow={8}>
+      <Box
+        width={width || 370}
+        style={{ flexDirection: unitLeft ? "row-reverse" : "row" }}
+      >
+        <Box grow flow={8} mr={unitLeft ? 0 : 5}>
           <InputText
             placeholder="0"
             align="right"
@@ -119,6 +166,7 @@ class InputAmount extends PureComponent<Props, State> {
             data-test="input_amount"
             value={displayValue}
             inputRef={this.inputRef}
+            disabled={isDisabled}
             {...props}
             onChange={this.onChange}
             onFocus={this.onFocus}
@@ -137,12 +185,13 @@ class InputAmount extends PureComponent<Props, State> {
           )}
         </Box>
         {!hideUnit && (
-          <Box width={120}>
+          <Box width={unitsWidth || 120} mr={unitLeft ? 5 : 0}>
             <Select
               tabIndex={-1}
               value={option}
               options={options}
               onChange={this.onChangeUnit}
+              isDisabled={isDisabled}
             />
           </Box>
         )}

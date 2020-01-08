@@ -1,5 +1,6 @@
 {
   "GROUP": "Verify the group on your device",
+  "WHITELIST": "Verify the whitelist on your device",
   "BITCOIN_ACCOUNT": "Verify the account on your device",
   "ETHEREUM_ACCOUNT": "Verify the account on your device",
   "RIPPLE_ACCOUNT": "Verify the account on your device",
@@ -13,5 +14,6 @@
   "PERSON": "Verify the user on your device",
   "ORGANIZATION": "Verify the admin rule on your device",
   "u2f_authenticate": "Tap sign-in on the device",
-  "ADDRESS": "Verify the address on the device"
+  "ADDRESS": "Verify the address on the device",
+  "webusb_reconnect": "Please click again to pair the device"
 }

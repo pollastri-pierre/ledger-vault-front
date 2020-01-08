@@ -14,7 +14,7 @@ let commitHash = require("child_process")
 
 commitHash = commitHash.substring(0, commitHash.length - 1);
 export default {
-  entry: ["@babel/polyfill", "./src/index"],
+  entry: "./src/index",
 
   resolve: {
     modules: [paths.src, paths.nodeModules],
@@ -96,6 +96,12 @@ export default {
       }, {}),
       VAULT_FRONT_VERSION: JSON.stringify(pkg.version),
       "process.env.NODE_ENV": JSON.stringify(globals.__ENV__),
+      "process.env.NOTIFICATION_URL": JSON.stringify(
+        process.env.NOTIFICATION_URL,
+      ),
+      "process.env.NOTIFICATION_PATH": JSON.stringify(
+        process.env.NOTIFICATION_PATH,
+      ),
       "process.env.ORGANIZATION_NAME": JSON.stringify(
         process.env.ORGANIZATION_NAME,
       ),

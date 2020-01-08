@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useMemo } from "react";
 import connectData from "restlay/connectData";
 import { FaMoneyCheck } from "react-icons/fa";
 
@@ -13,6 +13,7 @@ import AccountOverview from "containers/Admin/Accounts/AccountOverview";
 import AccountSettings from "containers/Accounts/AccountSettings";
 import { FetchEntityHistory } from "components/EntityHistory";
 import EntityModal from "components/EntityModal";
+import { getMultiAuthRule } from "components/MultiRules/helpers";
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Account, User, Transaction } from "data/types";
 
@@ -28,8 +29,18 @@ function AccountDetails(props: Props) {
 
   const hasPendingTransactions = pendingTransactions.edges.length > 0;
   const hasPendingEditGroup =
-    account.tx_approval_steps &&
-    account.tx_approval_steps.some(s => s && s.group.is_under_edit);
+    account.governance_rules &&
+    account.governance_rules.some(rulesSet => {
+      const multiAuthRule = getMultiAuthRule(rulesSet);
+      if (!multiAuthRule) return false;
+      const { data: steps } = multiAuthRule;
+      return steps.some(step => step && step.group.is_under_edit);
+    });
+
+  const refreshDataQuery = useMemo(
+    () => new AccountQuery({ accountId: String(account.id) }),
+    [account.id],
+  );
 
   return (
     <EntityModal
@@ -39,7 +50,9 @@ function AccountDetails(props: Props) {
       title={account.name}
       onClose={close}
       editURL={`/accounts/edit/${account.id}`}
+      customWidth={680}
       disableEdit={hasPendingTransactions || hasPendingEditGroup}
+      refreshDataQuery={refreshDataQuery}
     >
       <AccountOverview
         key="overview"

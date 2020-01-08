@@ -1,13 +1,14 @@
 // @flow
 import React, { PureComponent } from "react";
 import { withTranslation } from "react-i18next";
-import { withStyles } from "@material-ui/core/styles";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import AccountSummary from "components/AccountSummary";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
+import Box from "components/base/Box";
 import { InputText, Label } from "components/base/form";
+import { maxLengthNonAsciiHints } from "components/base/hints";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
@@ -17,7 +18,6 @@ import type { AccountCreationStepProps, ParentAccount } from "../types";
 
 type Props = AccountCreationStepProps & {
   t: Translate,
-  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 type State = {
@@ -25,6 +25,7 @@ type State = {
   parentName: string,
   matchingNamesWarning: boolean,
 };
+const ACCOUNT_NAME_LENGTH = 19;
 
 const ethereumCurrency = getCryptoCurrencyById("ethereum");
 const ropstenCurrency = getCryptoCurrencyById("ethereum_ropsten");
@@ -32,13 +33,13 @@ const EthereumCurIconSrc = getCryptoCurrencyIcon(ethereumCurrency);
 const RopstenCurIconSrc = getCryptoCurrencyIcon(ropstenCurrency);
 const EthereumCurIcon = EthereumCurIconSrc
   ? () => <EthereumCurIconSrc size={15} color={ethereumCurrency.color} />
-  : null;
+  : undefined;
 const RopstenCurIcon = RopstenCurIconSrc
   ? () => <RopstenCurIconSrc size={15} color={ropstenCurrency.color} />
-  : null;
+  : undefined;
 
 const inputProps = {
-  maxLength: 19,
+  maxLength: ACCOUNT_NAME_LENGTH,
   onlyAscii: true,
 };
 
@@ -112,7 +113,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
   };
 
   render() {
-    const { t, payload, classes } = this.props;
+    const { t, payload } = this.props;
     const { erc20token } = payload;
     const { matchingNamesWarning } = this.state;
     if (!erc20token) return null;
@@ -131,6 +132,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
           value={payload.name}
           data-test="account_childname"
           autoFocus
+          hints={maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)}
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
           IconLeft={() => <ERC20TokenIcon token={erc20token} size={16} />}
@@ -147,15 +149,18 @@ class ERC20RenderName extends PureComponent<Props, State> {
             <InputText
               value={parentAccountName}
               data-test="account_parentname"
+              hints={maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)}
               onChange={this.handleChangeParentAccountName}
               placeholder={t("newAccount:options.acc_name_placeholder")}
               IconLeft={parentCurIcon}
               {...inputProps}
             />
             {matchingNamesWarning && (
-              <InfoBox withIcon type="warning" className={classes.infoBox}>
-                <Text>{t("newAccount:erc20.matchingNameWarning")}</Text>
-              </InfoBox>
+              <Box mt={20}>
+                <InfoBox withIcon type="warning">
+                  <Text>{t("newAccount:erc20.matchingNameWarning")}</Text>
+                </InfoBox>
+              </Box>
             )}
           </>
         )}
@@ -163,10 +168,4 @@ class ERC20RenderName extends PureComponent<Props, State> {
     );
   }
 }
-
-const styles = {
-  infoBox: {
-    marginTop: 20,
-  },
-};
-export default withStyles(styles)(withTranslation()(ERC20RenderName));
+export default withTranslation()(ERC20RenderName);

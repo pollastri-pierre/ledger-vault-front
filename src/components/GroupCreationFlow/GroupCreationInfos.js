@@ -1,24 +1,23 @@
 // @flow
 
 import React from "react";
-import { Trans, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import Box from "components/base/Box";
-import { InputText, Label } from "components/base/form";
+import { maxLengthNonAsciiHints } from "components/base/hints";
+import { InputText, Label, Form } from "components/base/form";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
 import InfoBox from "components/base/InfoBox";
 
-import type { Translate, User } from "data/types";
+import type { User } from "data/types";
 import type { GroupCreationStepProps } from "./types";
 
-type Props = GroupCreationStepProps & {
-  t: Translate,
-};
-
 export const MAX_MEMBERS = 20;
+const GROUP_NAME_LENGTH = 19;
 
-const GroupCreationInfos = (props: Props) => {
-  const { payload, updatePayload, operators, t } = props;
+export default function GroupCreationInfos(props: GroupCreationStepProps) {
+  const { t } = useTranslation();
+  const { payload, updatePayload, operators, onEnter } = props;
 
   const listOperators = operators.edges.map(e => e.node);
   const handleChangeName = (name: string) => updatePayload({ name });
@@ -27,8 +26,7 @@ const GroupCreationInfos = (props: Props) => {
 
   const handleChangeMembers = (data: { members: User[] }) =>
     updatePayload({ members: data.members });
-
-  return (
+  const inner = (
     <Box flow={20}>
       <Box>
         <Label>{t("group:create.name_placeholder")}</Label>
@@ -37,8 +35,9 @@ const GroupCreationInfos = (props: Props) => {
           value={payload.name}
           autoFocus
           onChange={handleChangeName}
-          maxLength={19}
+          maxLength={GROUP_NAME_LENGTH}
           onlyAscii
+          hints={maxLengthNonAsciiHints(GROUP_NAME_LENGTH)}
           placeholder={t("group:create.name_placeholder")}
         />
       </Box>
@@ -54,9 +53,7 @@ const GroupCreationInfos = (props: Props) => {
       </Box>
       <Box justify="space-between" grow>
         <Box>
-          <Label>
-            <Trans i18nKey="group:membersTitle" />
-          </Label>
+          <Label>{t("group:membersTitle")}</Label>
           <SelectGroupsUsers
             openMenuOnFocus
             members={listOperators}
@@ -67,12 +64,11 @@ const GroupCreationInfos = (props: Props) => {
         </Box>
         {payload.members.length === MAX_MEMBERS && (
           <InfoBox withIcon type="info">
-            <Trans i18nKey="group:maxMembers" />
+            {t("group:maxMembers")}
           </InfoBox>
         )}
       </Box>
     </Box>
   );
-};
-
-export default withTranslation()(GroupCreationInfos);
+  return <Form onSubmit={onEnter}>{inner}</Form>;
+}

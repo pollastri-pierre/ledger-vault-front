@@ -1,27 +1,32 @@
 {
   "add": "add whitelist",
   "create": {
+    "field_currency": "Currency",
+    "field_name": "Name",
+    "field_address": "Address",
     "title": "Create whitelist",
     "editTitle": "Edit whitelist",
     "details": "Details",
-    "no_address": "The whitelist is empty. Click <0>+ Add</0> to add addresses",
+    "no_address": "The whitelist is empty.",
     "add_addresses": "Add addresses",
     "confirmation": "Confirmation",
     "name_placeholder": "Enter a name for the whitelist",
     "desc_placeholder": "Enter a description (optional)",
-    "add_addr": "Add addresses",
+    "add_addr": "Add address",
+    "edit_addr": "Edit address",
     "addr_name_placeholder": "Enter a name for the address",
     "addr_placeholder": "Enter the address",
-    "currency_placeholder": "Select a crypto asset",
+    "currency_placeholder": "Select a blockchain",
     "submit": "Create whitelist",
     "no_edit": "No changes were made",
-    "finishTitle": "Whitelist Request was successfully created!",
-    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
-    "no_hsm_validation": "Editing the description doesn't require the approval from other Administrators or your device"
+    "finishTitle": "Whitelist request was successfully created!",
+    "finishDesc": "Your request to create a whitelist has been submitted for approval.",
+    "no_hsm_validation": "Editing the description doesn't require the approval from other Administrators or your device",
+    "max_nb_addresses": "You can't create more than {{count}} addresses in the whitelist"
   },
   "update": {
-    "finishTitle": "Update Whitelist Request was successfully created!",
-    "finishDesc": "Your request to create a group was created and now it has a pending status until it is approved by your security scheme",
+    "finishTitle": "Update Whitelist request was successfully created!",
+    "finishDesc": "Your request to update this whitelist has been submitted for approval.",
     "submit": "Edit whitelist"
   }
 }

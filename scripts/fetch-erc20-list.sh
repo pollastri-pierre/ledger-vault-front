@@ -3,7 +3,7 @@
 
 # ------
 UPSTREAM=git@github.com:LedgerHQ/crypto-assets.git
-OUTPUT_FILES="master,erc20-list hsm-simu,erc20-list.dev"
+OUTPUT_FILES="LVFM-318,erc20-list hsm-simu-ATP,erc20-list.dev"
 OUTPUT_PATH=src/data
 DIR_TO_SCAN=tokens/ethereum/erc20
 # ------

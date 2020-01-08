@@ -5,10 +5,11 @@ import { withTranslation, useTranslation, Trans } from "react-i18next";
 
 import type { Translate } from "data/types";
 
-import { InputText, Label } from "components/base/form";
+import { InputText, Label, Form } from "components/base/form";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
+import { maxLengthNonAsciiHints } from "components/base/hints";
 import type { UserCreationStepProps } from "../types";
 
 const USERNAME_LENGTH = 19;
@@ -45,26 +46,7 @@ const userIDHints = [
     check: v => v.split("").every(isUserIDCharValid),
   },
 ];
-const usernameHints = [
-  {
-    key: "maxLength",
-    label: v => (
-      <Trans
-        i18nKey="inviteUser:form.hints.username.maxLength"
-        values={{
-          unLength: USERNAME_LENGTH,
-          nbLeft: USERNAME_LENGTH - v.length,
-        }}
-      />
-    ),
-    check: v => v.length < USERNAME_LENGTH,
-  },
-  {
-    key: "nonAscii",
-    label: <Trans i18nKey="inviteUser:form.hints.username.onlyAscii" />,
-    check: () => true,
-  },
-];
+
 export const InputUserID = ({
   value,
   onChange,
@@ -96,35 +78,38 @@ export const InputUserID = ({
 };
 
 function UserCreationInfo(props: Props) {
-  const { payload, updatePayload, t } = props;
+  const { payload, updatePayload, t, onEnter } = props;
   const { username, userID } = payload;
 
   const handleChangeUsername = (username: string) =>
     updatePayload({ username });
   const handleChangeUserID = (userID: string) => updatePayload({ userID });
+  const inner = (
+    <Box flow={15} grow>
+      <Box>
+        <Label>{t("inviteUser:form.labelUsername")}</Label>
+        <InputText
+          data-test="username"
+          value={username}
+          autoFocus
+          onChange={handleChangeUsername}
+          placeholder={t("inviteUser:form.placeholderUsername")}
+          fullWidth
+          hints={maxLengthNonAsciiHints(USERNAME_LENGTH)}
+          maxLength={USERNAME_LENGTH}
+          onlyAscii
+        />
+      </Box>
+      <Box>
+        <Label>{t("inviteUser:form.labelUserID")}</Label>
+        <InputUserID value={userID} onChange={handleChangeUserID} />
+      </Box>
+    </Box>
+  );
 
   return (
     <Box grow>
-      <Box flow={15} grow>
-        <Box>
-          <Label>{t("inviteUser:form.labelUsername")}</Label>
-          <InputText
-            data-test="username"
-            value={username}
-            autoFocus
-            onChange={handleChangeUsername}
-            placeholder={t("inviteUser:form.placeholderUsername")}
-            fullWidth
-            hints={usernameHints}
-            maxLength={USERNAME_LENGTH}
-            onlyAscii
-          />
-        </Box>
-        <Box>
-          <Label>{t("inviteUser:form.labelUserID")}</Label>
-          <InputUserID value={userID} onChange={handleChangeUserID} />
-        </Box>
-      </Box>
+      <Form onSubmit={onEnter}>{inner}</Form>
       {payload.role === "ADMIN" && (
         <InfoBox type="warning" withIcon>
           <Text i18nKey="inviteUser:steps.infos.warningAddAdmin" />

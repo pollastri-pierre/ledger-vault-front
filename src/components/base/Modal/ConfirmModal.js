@@ -18,6 +18,7 @@ type Props = ModalProps & {
   title: React$Node,
   confirmLabel: React$Node,
   rejectLabel: React$Node,
+  isConfirmRed?: boolean,
 };
 
 function ConfirmModal(props: Props) {
@@ -29,6 +30,7 @@ function ConfirmModal(props: Props) {
     rejectLabel,
     onConfirm,
     onReject,
+    isConfirmRed,
   } = props;
   return (
     <Modal {...props} isOpened={isOpened} onClose={onReject}>
@@ -53,7 +55,12 @@ function ConfirmModal(props: Props) {
             >
               {rejectLabel}
             </Button>
-            <Button type="filled" data-test="Confirm" onClick={onConfirm}>
+            <Button
+              variant={isConfirmRed ? "danger" : "info"}
+              type="filled"
+              data-test="Confirm"
+              onClick={onConfirm}
+            >
               {confirmLabel}
             </Button>
           </Box>

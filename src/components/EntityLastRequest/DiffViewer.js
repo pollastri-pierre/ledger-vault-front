@@ -4,6 +4,7 @@ import React from "react";
 import Box from "components/base/Box";
 import GroupEditRequest from "containers/Admin/Groups/GroupEditRequest";
 import AccountEditRequest from "containers/Admin/Accounts/AccountEditRequest";
+import WhitelistEditRequest from "containers/Admin/Whitelists/WhitelistEditRequest";
 import type { Entity } from "data/types";
 
 type Props = {
@@ -25,6 +26,9 @@ function DiffViewer(props: Props) {
       )}
       {entity.entityType === "ACCOUNT" && (
         <AccountEditRequest account={entity} />
+      )}
+      {entity.entityType === "WHITELIST" && (
+        <WhitelistEditRequest whitelist={entity} hideUnchanged />
       )}
     </Box>
   );

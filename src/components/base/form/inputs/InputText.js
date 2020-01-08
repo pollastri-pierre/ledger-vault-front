@@ -21,7 +21,6 @@ type Alignment = "left" | "right";
 
 type Props = InputProps<string> & {
   IconLeft?: React$ComponentType<Icon>,
-  label: string,
   autoFocus?: boolean,
   maxLength?: number,
   onlyAscii?: boolean,
@@ -94,8 +93,9 @@ class InputText extends PureComponent<Props, State> {
       <Box position="relative" grow={grow}>
         {IconLeft && <IconWrapper Icon={IconLeft} isFocused={isFocused} />}
         <StyledInput
-          // not fully working. https://bugs.chromium.org/p/chromium/issues/detail?id=370363#c7
-          autoComplete="new-password"
+          // prevent LastPass autocomplete see https://stackoverflow.com/a/44984917
+          data-lpignore="true"
+          autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
@@ -170,6 +170,11 @@ const StyledInput = styled.input`
         : p.hasWarning
         ? colors.form.shadow.warning
         : colors.form.shadow.focus};
+  }
+
+  &:disabled {
+    // taken from react-select style, so we are unified
+    background: hsl(0, 0%, 95%);
   }
 
   ::placeholder {

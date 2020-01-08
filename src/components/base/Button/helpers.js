@@ -1,6 +1,6 @@
 // @flow
 
-import colors, { opacity, darken, rgba } from "shared/colors";
+import colors, { opacity, darken } from "shared/colors";
 
 import type { ButtonProps } from "./";
 
@@ -118,8 +118,8 @@ const buttonStyles: { [_: string]: Object } = {
     `,
     focus: p => `
       box-shadow: 0 0 0 1px ${darken(getBgByVariant(p), 0.2)} inset,
-      0 0 0 1px ${rgba(getBgByVariant(p), 0.3)},
-      0 0 0 2px ${rgba(getBgByVariant(p), 0.3)}`,
+      0 0 0 1px ${opacity(getBgByVariant(p), 0.3)},
+      0 0 0 2px ${opacity(getBgByVariant(p), 0.3)}`,
   },
 
   link: {
@@ -142,29 +142,31 @@ const buttonStyles: { [_: string]: Object } = {
       color: ${getColorByVariant(p)};
     `,
     hover: p => `
-      background: ${rgba(getBgByVariant(p), 0.1)};
+      background: ${opacity(getBgByVariant(p), 0.1)};
     `,
     focus: p => `
-      box-shadow: 0 0 0 3px ${rgba(getBgByVariant(p), 0.3)};
+      box-shadow: 0 0 0 3px ${opacity(getBgByVariant(p), 0.3)};
     `,
     active: p => `
-      background: ${rgba(getBgByVariant(p), 0.15)};
+      background: ${opacity(getBgByVariant(p), 0.15)};
       color: ${darken(getColorByVariant(p), 0.1)};
       border-color: ${darken(getBgByVariant(p), 0.1)};
     `,
   },
 
   default: {
-    default: () => ``,
-    active: () => `
+    default: () => `
       background: ${opacity(colors.argile, 0.8)};
     `,
+    active: () => `
+      background: ${colors.argile};
+    `,
     hover: () => `
-      background: ${opacity(colors.argile, 0.5)};
+      background: ${colors.argile};
     `,
     focus: () => `
-      box-shadow: 0 0 0 1px ${rgba(colors.argile, 0.5)} inset,
-      0 0 0 1px ${rgba(colors.argile, 0.3)},
-      0 0 0 2px ${rgba(colors.argile, 0.3)}`,
+      box-shadow: 0 0 0 1px ${opacity(colors.argile, 0.5)} inset,
+      0 0 0 1px ${opacity(colors.argile, 0.3)},
+      0 0 0 2px ${opacity(colors.argile, 0.3)}`,
   },
 };

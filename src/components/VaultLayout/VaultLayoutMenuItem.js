@@ -47,7 +47,7 @@ export default ({ children, item, isMenuOpened }: Props) => {
   );
 
   if (url) {
-    menuItem = <Link to={url}>{menuItem}</Link>;
+    menuItem = item.isDisabled ? menuItem : <Link to={url}>{menuItem}</Link>;
   }
 
   return (
@@ -65,12 +65,12 @@ const VaultLayoutMenuItem = styled.div`
   align-items: center;
 
   .VaultLayoutMenuItem--content {
-    display: block;
+    display: ${p => (p.isMenuOpened ? "block" : "none")};
   }
 
-  @media (max-width: ${vaultLayoutConfig.BREAKPOINT}px) {
+  @media (min-width: ${vaultLayoutConfig.BREAKPOINT}px) {
     .VaultLayoutMenuItem--content {
-      display: ${p => (p.isMenuOpened ? "block" : "none")};
+      display: block;
     }
   }
 
@@ -108,11 +108,11 @@ const VaultLayoutIconContainer = styled.div`
 
 const NotifWrapper = styled.div`
   position: absolute;
-  top: 10px;
-  right: 30px;
+  top: ${p => (p.isMenuOpened ? 10 : -5)}px;
+  right: ${p => (p.isMenuOpened ? 30 : 8)}px;
 
-  @media (max-width: ${vaultLayoutConfig.BREAKPOINT}px) {
-    top: ${p => (p.isMenuOpened ? 10 : -5)}px;
-    right: ${p => (p.isMenuOpened ? 30 : 8)}px;
+  @media (min-width: ${vaultLayoutConfig.BREAKPOINT}px) {
+    top: 10px;
+    right: 30px;
   }
 `;

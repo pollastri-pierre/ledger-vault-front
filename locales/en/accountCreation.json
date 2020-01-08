@@ -18,12 +18,15 @@
   "continue_eth_creation": "Create new Ethereum account & continue",
   "cta": "Create account",
   "cta_edit": "Edit account",
-  "rulesSumup": "1 step",
-  "rulesSumup_plural": "{{count}} steps",
+  "rulesSumup": "1 rule",
+  "rulesSumup_plural": "{{count}} rules",
   "edit_title": "Edit account",
   "finish": "Finish",
   "finishTitle": "Account request successfully created!",
   "finishDesc": "Your request to create an account has been submitted for approval.",
   "finishEditTitle": "Account request successfully created!",
-  "finishEditDesc": "Your request to edit an account has been submitted for approval."
+  "finishEditDesc": "Your request to edit this account has been submitted for approval.",
+  "multirules": {
+    "delete_empty_rule": "Some rules are empty"
+  }
 }

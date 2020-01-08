@@ -1,6 +1,7 @@
 // @flow
 
 import type { BigNumber } from "bignumber.js";
+import type { GovernanceRules } from "components/MultiRules/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 // This contains all the flow types for the Data Model (coming from the API)
@@ -64,13 +65,6 @@ export type RateLimiter = {
   time_slot: number,
 };
 
-export type SecurityScheme = {
-  quorum: number,
-  time_lock?: number,
-  rate_limiter?: RateLimiter,
-  auto_expire?: number | null,
-};
-
 export type AccountSettings = {
   id: number,
   fiat: Fiat,
@@ -113,14 +107,14 @@ export type UserInvite = {
 };
 
 export type Approval = {
-  created_on: Date,
+  created_on: string,
   created_by: User,
   type: "APPROVE" | "ABORT",
 };
 
 export type Address = {
-  id: number,
-  currency: CryptoCurrency,
+  id?: number,
+  currency: string,
   address: string,
   name: string,
 };
@@ -130,10 +124,10 @@ export type WhitelistCommon = {
   entityType: "WHITELIST",
   description: string,
   addresses: Address[],
-  created_on: Date,
+  created_on: string,
   created_by: User,
   approvals: Approval[],
-  status: string,
+  status: WhitelistStatus,
 };
 
 export type Whitelist = WhitelistCommon & {
@@ -147,10 +141,6 @@ type ExtendedPubKey = {
   chain_code: string,
 };
 
-export type TxApprovalStep = { quorum: number, group: $Shape<Group> };
-
-export type TxApprovalStepCollection = Array<TxApprovalStep | null>;
-
 type AccountCommon = {
   id: number,
   account_type: AccountType,
@@ -159,19 +149,18 @@ type AccountCommon = {
   address?: string,
   contract_address: string,
   name: string,
-  members: User[],
   settings: AccountSettings,
-  security_scheme: SecurityScheme,
   balance: BigNumber,
   currency: string,
   parent_balance?: BigNumber,
-  created_on: Date,
+  has_access_to_parent: ?Boolean,
+  created_on: string,
+  governance_rules: GovernanceRules | null,
   fresh_addresses: *,
   is_hsm_coin_app_updated: boolean,
   index: number,
   status: AccountStatus,
   xpub: string,
-  tx_approval_steps?: TxApprovalStepCollection,
   parent: ?number,
   derivation_path: string,
   extended_public_key: ExtendedPubKey,
@@ -200,10 +189,10 @@ type GroupCommon = {
   id: number,
   name: string,
   entityType: "GROUP",
-  created_on: Date,
+  created_on: string,
   created_by: User,
   description?: string,
-  status: string, // TODO create UNION type when different status are known
+  status: GroupStatus,
   is_internal: boolean,
   members: User[],
   is_under_edit: boolean,
@@ -278,39 +267,46 @@ export const TransactionStatusMap = {
   SUBMITTED: "SUBMITTED",
   ABORTED: "ABORTED",
   PENDING_APPROVAL: "PENDING_APPROVAL",
-  BLOCKED: "BLOCKED",
+  FAILED: "FAILED",
 };
 export type TransactionStatus = $Keys<typeof TransactionStatusMap>;
 
 export const UserStatusMap = {
   ACTIVE: "ACTIVE",
   ABORTED: "ABORTED",
+  ACCESS_SUSPENDED: "ACCESS_SUSPENDED",
   REVOKED: "REVOKED",
   PENDING_APPROVAL: "PENDING_APPROVAL",
   PENDING_REVOCATION: "PENDING_REVOCATION",
   PENDING_REGISTRATION: "PENDING_REGISTRATION",
-  ACCESS_SUSPENDED: "ACCESS_SUSPENDED",
 };
 export type UserStatus = $Keys<typeof UserStatusMap>;
 
 export const GroupStatusMap = {
-  PENDING: "PENDING",
   ACTIVE: "ACTIVE",
+  PENDING: "PENDING",
   REVOKED: "REVOKED",
   ABORTED: "ABORTED",
 };
 export type GroupStatus = $Keys<typeof GroupStatusMap>;
 
+export const WhitelistStatusMap = {
+  ACTIVE: "ACTIVE",
+  PENDING: "PENDING",
+  ABORTED: "ABORTED",
+};
+export type WhitelistStatus = $Keys<typeof WhitelistStatusMap>;
+
 export const AccountStatusMap = {
   ACTIVE: "ACTIVE",
   VIEW_ONLY: "VIEW_ONLY",
   REVOKED: "REVOKED",
+  // FIXME does this status is a thing?
   MIGRATED: "MIGRATED",
   HSM_COIN_UPDATED: "HSM_COIN_UPDATED",
   PENDING: "PENDING",
   PENDING_UPDATE: "PENDING_UPDATE",
   PENDING_VIEW_ONLY: "PENDING_VIEW_ONLY",
-  PENDING_CREATION_APPROVAL: "PENDING_CREATION_APPROVAL",
   PENDING_MIGRATED: "PENDING_MIGRATED",
 };
 export type AccountStatus = $Keys<typeof AccountStatusMap>;
@@ -323,7 +319,7 @@ type TransactionCommon = {
   confirmations: number,
   min_confirmations: number,
   tx_hash: ?string,
-  created_on: Date,
+  created_on: string,
   price?: Price,
   fees: BigNumber,
   approvedTime: ?string,
@@ -359,14 +355,14 @@ export type ActivityCommon = {
   id: number,
   seen: boolean,
   show: boolean,
-  created_on: Date,
+  created_on: string,
 };
 
 export type ActivityGeneric = {
   id: number,
   seen: boolean,
   show: boolean,
-  created_on: Date,
+  created_on: string,
   business_action: ActivityEntityAccount | ActivityEntityTransaction,
 };
 
@@ -418,6 +414,8 @@ export type ERC20Token = {
   disable_countervalue?: boolean,
 };
 
+export type CurrencyOrToken = CryptoCurrency | ERC20Token;
+
 export const MetaStatusMap = {
   APPROVED: "APPROVED",
   PENDING: "PENDING",
@@ -430,31 +428,31 @@ export const RequestStatusMap = {
   PENDING_APPROVAL: "PENDING_APPROVAL",
   PENDING_REGISTRATION: "PENDING_REGISTRATION",
   APPROVED: "APPROVED",
+  BLOCKED: "BLOCKED",
 };
 export type RequestStatus = $Keys<typeof RequestStatusMap>;
 
-const RequestActivityTypeDefsWhitelist = {
-  CREATE_GROUP: "CREATE_WHITELIST",
-  EDIT_GROUP: "EDIT_WHITELIST",
-  REVOKE_GROUP: "REVOKE_WHITELIST",
+export const RequestActivityTypeDefsWhitelist = {
+  CREATE_WHITELIST: "CREATE_WHITELIST",
+  EDIT_WHITELIST: "EDIT_WHITELIST",
 };
-const RequestActivityTypeDefsGroup = {
+export const RequestActivityTypeDefsGroup = {
   CREATE_GROUP: "CREATE_GROUP",
   EDIT_GROUP: "EDIT_GROUP",
   REVOKE_GROUP: "REVOKE_GROUP",
 };
-const RequestActivityTypeDefsAccount = {
+export const RequestActivityTypeDefsAccount = {
   CREATE_ACCOUNT: "CREATE_ACCOUNT",
   EDIT_ACCOUNT: "EDIT_ACCOUNT",
   REVOKE_ACCOUNT: "REVOKE_ACCOUNT",
   MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
 };
-const RequestActivityTypeDefsUser = {
+export const RequestActivityTypeDefsUser = {
   REVOKE_USER: "REVOKE_USER",
   CREATE_ADMIN: "CREATE_ADMIN",
   CREATE_OPERATOR: "CREATE_OPERATOR",
 };
-const RequestActivityTypeDefsOrganization = {
+export const RequestActivityTypeDefsOrganization = {
   UPDATE_QUORUM: "UPDATE_QUORUM",
 };
 const RequestActivityTypeDefsTransaction = {
@@ -533,7 +531,7 @@ export type EditApprovalStep = {
 
 type WhitelistEditData = {
   name?: string,
-  addresses: number[],
+  addresses: Address[],
 };
 
 type GroupEditData = {
@@ -542,9 +540,7 @@ type GroupEditData = {
 };
 type AccountEditData = {
   name?: string,
-  governance_rules: {
-    tx_approval_steps: EditApprovalStep[],
-  },
+  governance_rules: GovernanceRules,
 };
 
 type MapRequestType = {
@@ -601,6 +597,7 @@ export type Request<T> = {
   type: $ElementType<$PropertyType<MapRequestType, "type">, T>,
   account?: AccountCommon,
   user?: UserCommon,
+  whitelist?: WhitelistCommon,
   transaction?: TransactionCommon,
   group?: GroupCommon,
   quorum?: number,

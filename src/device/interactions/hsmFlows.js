@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 
-import { NoChannelForDevice } from "utils/errors";
+import { NoChannelForDevice, RequestFinished } from "utils/errors";
 import NewRequestMutation from "api/mutations/NewRequestMutation";
 import GetAddressQuery from "api/queries/GetAddressQuery";
 import network from "network";
@@ -204,21 +204,21 @@ const onboardingPostResult: Interaction = {
 };
 
 export const registerUserFlow = [
-  getValidationPublicKey,
   getConfidentialityPublicKey,
   getAttestation,
   operatorGetChallenge,
   onboardingRegisterDevice,
+  getValidationPublicKey,
   onboardingRegisterData,
   onboardingPostResult,
   postResult,
 ];
 export const onboardingRegisterFlow = [
-  getValidationPublicKey,
   getConfidentialityPublicKey,
   getAttestation,
   onboardingGetChallenge,
   onboardingRegisterDevice,
+  getValidationPublicKey,
   onboardingRegisterData,
   onboardingPostResult,
 ];
@@ -227,6 +227,13 @@ const openSessionValidate: Interaction = {
   device: true,
   responseKey: "channel_blob",
   action: async ({ transport, secure_channels, u2f_key, targetType }) => {
+    // let's assume that if there is no channel for this request, it means
+    // that is has already collected all possible approvals (can occur in the
+    // case someone try to approve an already approved request, see LV-2158)
+    if (noValidChannel(secure_channels)) {
+      throw new RequestFinished();
+    }
+
     const channel =
       secure_channels[u2f_key.pubKey.toString("hex").toUpperCase()];
     if (!channel) {
@@ -259,7 +266,10 @@ const openSessionValidate: Interaction = {
         : ACCOUNT_MANAGER_SESSION,
     );
 
-    return Promise.resolve(channel.blob);
+    return Promise.resolve({
+      blob: channel.blob,
+      w_actions: channel.w_actions,
+    });
   },
 };
 const openSessionVerifyAddress: Interaction = {
@@ -293,7 +303,10 @@ const openSessionVerifyAddress: Interaction = {
       ACCOUNT_MANAGER_SESSION,
     );
 
-    return Promise.resolve(address_channel.blob);
+    return Promise.resolve({
+      blob: address_channel.blob,
+      w_actions: address_channel.w_actions,
+    });
   },
 };
 
@@ -303,11 +316,8 @@ const validateDevice = (entity: ?TargetType): Interaction => ({
   responseKey: "validate_device",
   tooltip: entity ? <Text i18nKey={`deviceInteractions:${entity}`} /> : null,
   action: ({ transport, channel_blob }) =>
-    validateVaultOperation()(
-      transport,
-      VALIDATION_PATH,
-      Buffer.from(channel_blob, "base64"),
-    ),
+    // TODO remove isArray() check when backend will support streaming
+    validateVaultOperation()(transport, VALIDATION_PATH, channel_blob),
 });
 
 export const validateOperation = (entity: ?TargetType) => [
@@ -382,3 +392,8 @@ export const generateSeed = [
   validateDevice(),
   generateFragmentSeed,
 ];
+
+function noValidChannel(channels) {
+  const keys = Object.keys(channels);
+  return keys.length === 0 || (keys.length === 1 && keys[0] === "success");
+}

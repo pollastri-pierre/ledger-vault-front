@@ -1,10 +1,15 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import ReactSelect from "react-select";
+import styled from "styled-components";
+import ReactSelect, { components } from "react-select";
 import AsyncReactSelect from "react-select/async";
+import CreatableReactSelect from "react-select/creatable";
 
-import type { PlaceholderProps } from "react-select/src/types";
+import type {
+  PlaceholderProps,
+  DropdownIndicatorProps,
+} from "react-select/src/types";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";
@@ -23,6 +28,7 @@ export type GroupedOption = {
 
 type Props = {
   async?: boolean,
+  creatable?: boolean,
   options?: Option[] | GroupedOption[],
   components?: Object,
   styles?: Object,
@@ -41,8 +47,34 @@ const Placeholder = (props: PlaceholderProps) => (
   </Box>
 );
 
+const ChevronContainer = styled.div`
+  color: ${colors.legacyLightGrey7};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 30px;
+  transition: 300ms ease transform;
+  &:hover {
+    // taken from react-select
+    color: hsl(0, 0%, 60%);
+  }
+`;
+
+const DropdownIndicator = (props: DropdownIndicatorProps) => (
+  <ChevronContainer
+    style={{
+      transform: `rotate(${props.selectProps.menuIsOpen ? -180 : 0}deg)`,
+    }}
+    data-test="select-arrow"
+  >
+    <components.DownChevron />
+  </ChevronContainer>
+);
+
 const customComponents = {
   Placeholder,
+  DropdownIndicator,
 };
 
 const customStyles = {
@@ -55,7 +87,7 @@ const customStyles = {
     ...styles,
     fontSize: 13,
     margin: 0,
-    marginLeft: 0,
+    marginLeft: 2,
     color: "inherit",
   }),
   singleValue: styles => ({
@@ -76,12 +108,22 @@ const customStyles = {
     minHeight: 40,
     borderColor: `${
       state.menuIsOpen || state.isFocused
-        ? colors.form.focus
+        ? state.selectProps.hasError
+          ? colors.form.error
+          : state.selectProps.hasError
+          ? colors.form.warning
+          : colors.form.focus
         : colors.form.border
     } !important`,
     borderRadius: 4,
     boxShadow:
-      state.menuIsOpen || state.isFocused ? colors.form.shadow.focus : "none",
+      state.menuIsOpen || state.isFocused
+        ? state.selectProps.hasError
+          ? colors.form.shadow.error
+          : state.selectProps.hasWarning
+          ? colors.form.shadow.warning
+          : colors.form.shadow.focus
+        : "none",
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     borderBottomLeftRadius: state.menuIsOpen ? 0 : 4,
@@ -126,8 +168,12 @@ const customStyles = {
 
 class Select extends PureComponent<Props> {
   render() {
-    const { async, components, styles, ...props } = this.props;
-    const Comp = async ? AsyncReactSelect : ReactSelect;
+    const { async, creatable, components, styles, ...props } = this.props;
+    const Comp = creatable
+      ? CreatableReactSelect
+      : async
+      ? AsyncReactSelect
+      : ReactSelect;
 
     return (
       <Comp

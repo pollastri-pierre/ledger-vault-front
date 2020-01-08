@@ -49,51 +49,90 @@ function Modal(props: ModalProps) {
   const swallowClick = (e: SyntheticInputEvent<HTMLInputElement>) =>
     e.stopPropagation();
 
-  const backdropStyle = useSpring({
-    ...BACKDROP_STYLE,
-    opacity: isOpened ? 0.7 : 0,
+  const onDisappear = () => {
+    setIsInDOM(false);
+  };
+
+  if (!modalRoot || !isInDOM) return null;
+
+  const modal = (
+    <AnimatedModal
+      isOpened={isOpened}
+      onDisappear={onDisappear}
+      onBackdropClick={handleClickOnBackdrop}
+    >
+      <ModalDialog>
+        <ModalDialogInner
+          transparent={transparent}
+          onClick={swallowClick}
+          data-role="modal-inner"
+        >
+          <Box grow>{children}</Box>
+        </ModalDialogInner>
+      </ModalDialog>
+    </AnimatedModal>
+  );
+
+  return createPortal(modal, modalRoot);
+}
+
+function AnimatedModal(props: {|
+  isOpened: boolean,
+  onDisappear: () => void,
+  onBackdropClick: () => void,
+  children: React$Node,
+|}) {
+  const { isOpened, onDisappear, onBackdropClick, children } = props;
+  const [isFirstRender, setFirstRender] = useState(true);
+
+  const isVisible = isOpened && !isFirstRender;
+
+  useEffect(() => {
+    setFirstRender(false);
+  }, []);
+
+  const backdropAnim = useSpring({
+    opacity: isVisible ? 0.7 : 0,
     config: {
       tension: 300,
     },
   });
 
-  const containerStyle = {
-    ...CONTAINER_STYLE,
-    pointerEvents: isOpened ? "auto" : "none",
+  const backdropStyle = {
+    ...BACKDROP_STYLE,
+    ...backdropAnim,
   };
 
-  const bodyWrapperStyle = useSpring({
-    ...BODY_WRAPPER_STYLE,
-    opacity: isOpened ? 1 : 0,
-    transform: `scale(${isOpened ? 1 : 0.95})`,
+  const containerStyle = {
+    ...CONTAINER_STYLE,
+    pointerEvents: isVisible ? "auto" : "none",
+  };
+
+  const bodyWrapperAnim = useSpring({
+    opacity: isVisible ? 1 : 0,
+    transform: `scale(${isVisible ? 1 : 0.95})`,
     config: {
       tension: 500,
       friction: 38,
     },
+    onRest: () => {
+      if (!isVisible) onDisappear();
+    },
   });
 
-  if (!modalRoot || !isInDOM) return null;
+  const bodyWrapperStyle = {
+    ...BODY_WRAPPER_STYLE,
+    ...bodyWrapperAnim,
+  };
 
-  const modal = (
+  return (
     <>
       <animated.div data-role="modal-backdrop" style={backdropStyle} />
-      <div style={containerStyle} onClick={handleClickOnBackdrop}>
-        <animated.div style={bodyWrapperStyle}>
-          <ModalDialog>
-            <ModalDialogInner
-              transparent={transparent}
-              onClick={swallowClick}
-              data-role="modal-inner"
-            >
-              <Box grow>{children}</Box>
-            </ModalDialogInner>
-          </ModalDialog>
-        </animated.div>
+      <div style={containerStyle} onClick={onBackdropClick}>
+        <animated.div style={bodyWrapperStyle}>{children}</animated.div>
       </div>
     </>
   );
-
-  return createPortal(modal, modalRoot);
 }
 
 const BACKDROP_STYLE = {
@@ -104,6 +143,7 @@ const BACKDROP_STYLE = {
   right: 0,
   bottom: 0,
   background: "rgba(0, 0, 0, 0.5)",
+  zIndex: 100,
 };
 
 const CONTAINER_STYLE = {

@@ -34,23 +34,21 @@ function AccountsWidget(props: Props) {
   );
   return (
     <Widget title="Accounts" height={accounts.length ? undefined : 300}>
-      <Card grow flow={20} style={{ padding: 10 }}>
-        {accounts.length ? (
-          <>
-            <Box grow>
-              <AccountsList accounts={accounts} />
+      {accounts.length ? (
+        <AccountsList accounts={accounts} />
+      ) : (
+        <Card grow flow={20} style={{ padding: 10 }}>
+          {me.role === "ADMIN" ? (
+            <Box grow align="center" justify="center">
+              {addButton}
             </Box>
-          </>
-        ) : me.role === "ADMIN" ? (
-          <Box grow align="center" justify="center">
-            {addButton}
-          </Box>
-        ) : (
-          <Box grow align="center" justify="center">
-            <Text color={colors.textLight}>No accounts.</Text>
-          </Box>
-        )}
-      </Card>
+          ) : (
+            <Box grow align="center" justify="center">
+              <Text color={colors.textLight}>No accounts.</Text>
+            </Box>
+          )}
+        </Card>
+      )}
     </Widget>
   );
 }

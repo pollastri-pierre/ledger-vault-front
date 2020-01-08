@@ -40,7 +40,7 @@ const getRecipientError = async (restlay, currency, recipient, account) => {
     return new InvalidAddressBecauseDestinationIsAlsoSource();
   }
   const isValid = await isRecipientValid(restlay, currency, recipient);
-  return isValid ? null : new InvalidAddress();
+  return isValid ? null : new InvalidAddress(null, { ticker: currency.ticker });
 };
 
 const getFees = (a, t) => t.estimatedFees || BigNumber(0);

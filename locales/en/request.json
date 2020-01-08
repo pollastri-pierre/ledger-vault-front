@@ -1,8 +1,10 @@
 {
   "type": {
     "CREATE_GROUP": "Create group",
+    "CREATE_WHITELIST": "Create whitelist",
     "CREATE_TRANSACTION": "Create transaction",
     "EDIT_GROUP": "Edit group",
+    "EDIT_WHITELIST": "Edit whitelist",
     "EDIT_ACCOUNT": "Edit account",
     "MIGRATE_ACCOUNT": "Update account",
     "REVOKE_GROUP": "Delete group",
@@ -16,20 +18,23 @@
   },
   "richType": {
     "CREATE_TRANSACTION": "Create transaction",
-    "CREATE_GROUP": "Create <0>{{extra}}</0> group",
-    "EDIT_GROUP": "Edit <0>{{extra}}</0> group",
-    "REVOKE_GROUP": "Delete <0>{{extra}}</0> group",
-    "REVOKE_USER": "Revoke <0>{{extra}}</0>",
-    "EDIT_ACCOUNT": "Edit <0>{{extra}}</0> account",
-    "MIGRATE_ACCOUNT": "Update <0>{{extra}}</0> account",
-    "REVOKE_ACCOUNT": "Archive <0>{{extra}}</0> account",
-    "CREATE_ADMIN": "Create <0>{{extra}}</0> (Administrator)",
-    "CREATE_OPERATOR": "Create <0>{{extra}}</0> (Operator)",
-    "CREATE_ACCOUNT": "Create <0>{{extra}}</0> account",
+    "CREATE_GROUP": "Create <0>{{-extra}}</0> group",
+    "CREATE_WHITELIST": "Create <0>{{-extra}}</0> whitelist",
+    "EDIT_GROUP": "Edit <0>{{-extra}}</0> group",
+    "EDIT_WHITELIST": "Edit <0>{{-extra}}</0> whitelist",
+    "REVOKE_GROUP": "Delete <0>{{-extra}}</0> group",
+    "REVOKE_USER": "Revoke <0>{{-extra}}</0>",
+    "EDIT_ACCOUNT": "Edit <0>{{-extra}}</0> account",
+    "MIGRATE_ACCOUNT": "Update <0>{{-extra}}</0> account",
+    "REVOKE_ACCOUNT": "Archive <0>{{-extra}}</0> account",
+    "CREATE_ADMIN": "Create <0>{{-extra}}</0> (Administrator)",
+    "CREATE_OPERATOR": "Create <0>{{-extra}}</0> (Operator)",
+    "CREATE_ACCOUNT": "Create <0>{{-extra}}</0> account",
     "UPDATE_QUORUM": "Edit admin rule"
   },
   "statusDot": {
     "EDIT_GROUP": "<0>Edit group</0> request in progress",
+    "EDIT_WHITELIST": "<0>Edit whitelist</0> request in progress",
     "EDIT_ACCOUNT": "<0>Edit account</0> request in progress",
     "MIGRATE_ACCOUNT": "<0>Update account</0> request in progress",
     "REVOKE_GROUP": "<0>Delete group</0> request in progress",
@@ -39,7 +44,9 @@
   },
   "approve": {
     "CREATE_GROUP": "Approve group creation",
+    "CREATE_WHITELIST": "Approve whitelist creation",
     "EDIT_GROUP": "Approve group edition",
+    "EDIT_WHITELIST": "Approve whitelist edition",
     "EDIT_ACCOUNT": "Approve account edition",
     "REVOKE_GROUP": "Approve group deletion",
     "CREATE_ACCOUNT": "Approve account creation",
@@ -50,6 +57,8 @@
     "MIGRATE_ACCOUNT": "Approve account update",
     "CREATE_TRANSACTION": "Approve transaction creation"
   },
+  "reject_confirm_title": "Reject request",
+  "reject_confirm_content": "Are you sure you want to permanently reject this request?",
   "expire_in": "request expires in {{count}}",
   "extra": {
     "CREATE_TRANSACTION_ON": "<0>in </0><1><0 /></1><2> account</2>"

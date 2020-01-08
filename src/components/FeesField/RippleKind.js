@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import last from "lodash/last";
 import { BigNumber } from "bignumber.js";
 import { Trans } from "react-i18next";
@@ -10,15 +10,19 @@ import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
+import FakeInputContainer from "components/base/FakeInputContainer";
+import TranslatedError from "components/TriggerErrorNotification";
+import DoubleTilde from "components/icons/DoubleTilde";
 import Spinner from "components/base/Spinner";
-import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import connectData from "restlay/connectData";
 import Box from "components/base/Box";
-import Text from "components/base/Text";
+import NotApplicableText from "components/base/NotApplicableText";
 import { Label, InputAmount } from "components/base/form";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { getFees } from "utils/transactions";
+
+import colors from "shared/colors";
 
 type Props = {
   transaction: RippleTransaction,
@@ -31,9 +35,12 @@ type Props = {
 type FeesStatus = "idle" | "fetching" | "error";
 
 function FeesFieldRippleKind(props: Props) {
+  const instanceNonce = useRef(0);
+
   const { transaction, account, bridge, restlay, onChangeTransaction } = props;
   const currency = getCryptoCurrencyById(account.currency);
   const [feesStatus, setFeesStatus] = useState<FeesStatus>("idle");
+  const [feesError, setFeesError] = useState(null);
 
   const effectDeps = [
     account,
@@ -47,6 +54,8 @@ function FeesFieldRippleKind(props: Props) {
   useEffect(() => {
     let unsubscribed = false;
     const effect = async () => {
+      const nonce = ++instanceNonce.current;
+
       try {
         // check recipient
         const recipientError = await bridge.getRecipientError(
@@ -55,7 +64,7 @@ function FeesFieldRippleKind(props: Props) {
           transaction.recipient,
           account,
         );
-        if (unsubscribed) return;
+        if (nonce !== instanceNonce.current || unsubscribed) return;
         if (recipientError) {
           setFeesStatus("idle");
           return;
@@ -73,7 +82,7 @@ function FeesFieldRippleKind(props: Props) {
         };
 
         const estimatedFees = await getFees(account, payload, restlay);
-        if (unsubscribed) return;
+        if (nonce !== instanceNonce.current || unsubscribed) return;
 
         // update tx
         onChangeTransaction({
@@ -85,6 +94,7 @@ function FeesFieldRippleKind(props: Props) {
       } catch (err) {
         console.error(err);
         setFeesStatus("error");
+        setFeesError(err);
       }
     };
     effect();
@@ -97,56 +107,51 @@ function FeesFieldRippleKind(props: Props) {
     onChangeTransaction({ ...transaction, estimatedFees });
   };
 
-  const shouldDisplayFees =
-    feesStatus === "fetching" ||
-    transaction.estimatedFees ||
-    feesStatus === "error";
-
   return (
     <Box horizontal flow={20}>
-      <Box width={175} noShrink>
+      <Box noShrink grow>
         <Label>
-          <Trans i18nKey="send:details.fees.title" />
+          <Trans i18nKey="transactionCreation:steps.account.fees.title" />
         </Label>
-        <InputAmount
-          unit={last(currency.units)}
-          currency={currency}
-          placeholder={feesStatus === "fetching" ? "Loading..." : "0"}
-          onChange={onFeesChange}
-          value={transaction.estimatedFees || BigNumber(0)}
-          disabled={feesStatus === "fetching"}
-        />
-      </Box>
+        <Box horizontal justify="space-between">
+          <Box width={280}>
+            <InputAmount
+              width="100%"
+              unitLeft
+              hideCV
+              unit={last(currency.units)}
+              currency={currency}
+              placeholder={feesStatus === "fetching" ? "Loading..." : "0"}
+              onChange={onFeesChange}
+              value={transaction.estimatedFees || BigNumber(0)}
+              disabled={feesStatus === "fetching"}
+            />
+          </Box>
 
-      {shouldDisplayFees && (
-        <Box grow align="flex-end">
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
-          </Label>
-          <Text size="small" uppercase>
-            {feesStatus === "fetching" ? (
-              <Spinner />
-            ) : transaction.estimatedFees ? (
-              <>
-                <CurrencyAccountValue
-                  account={account}
-                  value={transaction.estimatedFees}
-                  disableERC20
-                />
-                {" ("}
-                <CounterValue
-                  smallerInnerMargin
-                  value={transaction.estimatedFees}
-                  from={account.currency}
-                />
-                {")"}
-              </>
-            ) : (
-              "error"
-            )}
-          </Text>
+          {feesStatus === "error" ? (
+            <TranslatedError field="description" error={feesError} />
+          ) : (
+            <>
+              <Box justify="center">
+                <DoubleTilde size={14} color={colors.textLight} />
+              </Box>
+              <FakeInputContainer width={280}>
+                {transaction.estimatedFees ? (
+                  <CounterValue
+                    smallerInnerMargin
+                    value={transaction.estimatedFees}
+                    from={account.currency}
+                  />
+                ) : feesStatus === "fetching" ? (
+                  <Spinner />
+                ) : (
+                  <NotApplicableText />
+                )}
+              </FakeInputContainer>
+            </>
+          )}
         </Box>
-      )}
+      </Box>
     </Box>
   );
 }

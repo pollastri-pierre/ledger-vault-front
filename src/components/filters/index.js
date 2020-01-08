@@ -14,9 +14,7 @@ export { default as FieldCurrency } from "./fields/FilterFieldCurrency";
 export { default as FieldSelect } from "./fields/FilterFieldSelect";
 export { default as FieldStatuses } from "./fields/FilterFieldStatuses";
 export { default as FieldMembers } from "./fields/FilterFieldMembers";
-export {
-  default as FieldRequestActivity,
-} from "./fields/FilterFieldRequestActivity";
+export { default as FieldRequestActivity } from "./fields/FilterFieldRequestActivity";
 export { default as FieldGroup } from "./fields/FilterFieldGroup";
 export { default as FieldAccount } from "./fields/FilterFieldAccount";
 export { default as FieldUser } from "./fields/FilterFieldUser";

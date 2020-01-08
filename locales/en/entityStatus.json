@@ -5,6 +5,7 @@
   "DELETED": "Deleted",
   "EXPIRED": "Expired",
   "BLOCKED": "Failed",
+  "FAILED": "Failed",
   "APPROVED": "Approved",
   "SUBMITTED": "Submitted",
   "PENDING": "Pending",

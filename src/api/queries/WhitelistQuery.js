@@ -11,7 +11,7 @@ type Response = Whitelist;
 
 // Fetch a specific group
 export default class WhitelistQuery extends Query<Input, Response> {
-  uri = `/whitelist-mock/${this.props.whitelistId}`;
+  uri = `/whitelists/${this.props.whitelistId}`;
 
   responseSchema = schema.Whitelist;
 }

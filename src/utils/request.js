@@ -77,6 +77,7 @@ export const isRequestPending = (request: GenericRequest) =>
 const EDIT_REQUEST_TYPE: RequestActivityType[] = [
   "EDIT_ACCOUNT",
   "EDIT_GROUP",
+  "EDIT_WHITELIST",
   "MIGRATE_ACCOUNT",
 ];
 
@@ -124,6 +125,13 @@ export function navigateToRequest(
     );
   } else if (request.target_type === "ORGANIZATION") {
     history.push(`dashboard/organization/details/${request.id}`);
+  } else if (request.target_type === "WHITELIST") {
+    history.push(
+      getModalTabLink(
+        request,
+        `dashboard/whitelists/details/${request.target_id}`,
+      ),
+    );
   }
 }
 

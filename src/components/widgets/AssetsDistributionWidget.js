@@ -82,7 +82,11 @@ function AssetsDistributionWidget(props: Props) {
   const { countervalues, total, nbMax, accountsConnection } = props;
 
   const array = Object.keys(countervalues).map(key => {
-    return { label: key, ...countervalues[key] };
+    return {
+      label: key,
+      value: countervalues[key].value,
+      color: countervalues[key].color,
+    };
   });
 
   // we sort the array so we can take the biggest nbMax currencies
@@ -166,7 +170,7 @@ function AssetsDistributionWidget(props: Props) {
 export default connectWidget(
   connect(mapStateToProps)(AssetsDistributionWidget),
   {
-    height: 300,
+    height: 370,
     queries: {
       accountsConnection: SearchAccounts,
     },

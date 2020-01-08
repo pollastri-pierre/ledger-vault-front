@@ -29,7 +29,9 @@ export type TextProps = {|
   i18nKey?: string,
   components?: React$Node,
   values?: { [string]: string | number },
+  count?: number,
   className?: string,
+  overflowWrap?: string,
 |};
 
 const TextBase = styled.div`
@@ -45,6 +47,7 @@ const TextBase = styled.div`
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
   user-select: ${p => (p.noSelect ? "none" : "inherit")};
   text-align: ${p => (p.textAlign ? p.textAlign : "inherit")};
+  overflow-wrap: ${p => (p.overflowWrap ? p.overflowWrap : "inherit")};
   ${p =>
     p.selectable
       ? `
@@ -63,10 +66,15 @@ const TextBase = styled.div`
 `;
 
 export default function Text(props: TextProps) {
-  const { i18nKey, components, values, children } = props;
+  const { i18nKey, components, values, count, children } = props;
 
   const inner = i18nKey ? (
-    <Trans i18nKey={i18nKey} components={components} values={values} />
+    <Trans
+      i18nKey={i18nKey}
+      components={components}
+      values={values}
+      count={count}
+    />
   ) : (
     children
   );

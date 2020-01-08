@@ -11,6 +11,10 @@
     "description": "Make sure you're using the right device.",
     "title": "Invalid device"
   },
+  "RequestFinished": {
+    "description": "This request has already been approved or rejected.",
+    "title": "Request already approved or rejected"
+  },
   "UnknownDevice": {
     "description": "Please connect an Administrator device.",
     "title": "Unknown device"
@@ -21,7 +25,7 @@
   },
   "InvalidAddress": {
     "title": "Invalid address",
-    "description": "Please enter a valid address."
+    "description": "This is not a valid {{ticker}} address"
   },
   "AddressShouldNotBeSegwit": {
     "title": "Address is SegWit",
@@ -51,6 +55,10 @@
     "title": "Auto-verification unavailable",
     "description": "Auto-verification not available: This address isn't EIP-55 compliant. Verify it carefully before creating the transaction."
   },
+  "NonEIP55AddressWhitelist": {
+    "title": "Auto-verification unavailable",
+    "description": "Auto-verification not available: This address isn't EIP-55 compliant. Verify it carefully before continuing."
+  },
   "InvalidAddressBecauseDestinationIsAlsoSource": {
     "title": "It's not possible to send funds to yourself.",
     "description": "It's not possible to send funds to yourself."
@@ -74,6 +82,14 @@
   "DeviceOnDashboardExpected": {
     "title": "User denied manager",
     "description": "Please allow Ledger manager on your device"
+  },
+  "AddressDuplicateNameCurrency": {
+    "title": "AddressDuplicateNameCurrency",
+    "description": "This name is already used by an address in the same currency."
+  },
+  "AddressDuplicateCurrencyAddress": {
+    "title": "AddressDuplicateCurrencyAddress",
+    "description": "Address already used in this currency."
   },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",

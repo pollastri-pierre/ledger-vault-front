@@ -5,6 +5,7 @@ import React from "react";
 import MUITableCell from "@material-ui/core/TableCell";
 import AccountName from "components/AccountName";
 import Box from "components/base/Box";
+import NotApplicableText from "components/base/NotApplicableText";
 import TransactionTypeIcon from "components/TransactionTypeIcon";
 import type { BlockingReasonType } from "components/BlockingReasons";
 import type { TableItem } from "../types";
@@ -24,13 +25,13 @@ function ReasonBodyCell(props: CellProps) {
         }
         if (reason.type === "Transaction") {
           return (
-            <Box horizontal>
+            <Box horizontal flow={10}>
               <TransactionTypeIcon type="SEND" />
-              Transaction
+              <span>Transaction</span>
             </Box>
           );
         }
-        return <div>{reason.type || "N/A"}</div>;
+        return <div>{reason.type || <NotApplicableText />}</div>;
       case "reason":
         return <div>{reason.message}</div>;
       default:
