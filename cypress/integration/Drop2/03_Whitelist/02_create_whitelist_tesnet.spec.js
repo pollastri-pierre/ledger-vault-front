@@ -26,7 +26,7 @@ describe("Create whitelist", function() {
     add_whitelist_address(
       "Ethereum Ropsten",
       "eth rop 1",
-      "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+      "0x435dd233A73Ee0ceCDA57D4402D21eA134D134e2",
     );
     add_whitelist_address(
       "Ethereum Ropsten",
@@ -61,7 +61,7 @@ describe("Create whitelist", function() {
     add_whitelist_address(
       "Bitcoin Testnet",
       "btc testnet 4",
-      "n1RVXgabmBNSVXJhbP8GttniwHaem2Br6y",
+      "mjCGxN2ncFnUa9Pm3QSoR4B9LkMcPZgxnN",
     );
 
     cy.contains("Next").click({ force: true });

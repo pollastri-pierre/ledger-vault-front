@@ -180,7 +180,7 @@ const DetailsLink = ({ account }: Props) => (
   <Absolute top={60} right={10}>
     <Tooltip title="Account details" placement="left">
       <Link to={`${location.pathname}/accounts/details/${account.id}/overview`}>
-        <Button>
+        <Button data-test="account_details">
           <FaInfo />
         </Button>
       </Link>

@@ -22,6 +22,7 @@ describe("Approve whitelists", function() {
     cy.get("[data-test=approve_button]").click();
     cy.get("[data-test=successfull_message]").should("contain", "Successfully");
     cy.contains("Done").click();
+    cy.wait(100);
     cy.get("[data-test=0]").click();
     cy.get("[data-test=approve_button]").click();
     cy.get("[data-test=successfull_message]").should("contain", "Successfully");

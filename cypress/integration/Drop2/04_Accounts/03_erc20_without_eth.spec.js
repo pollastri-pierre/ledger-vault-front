@@ -33,7 +33,7 @@ describe("Test Case for Account", function() {
     cy.contains("Next").click();
 
     select_creator_group("South Africa");
-    add_approval_step_group(2, "New EMEA");
+    add_approval_step_group(2, "America Ops");
 
     cy.contains("Next").click();
     cy.get("[data-test=approve_button]").click();

@@ -90,6 +90,7 @@ function AddressField(props: Props<{ recipient: string }>) {
 
   const field = hasAddressToSelect ? (
     <SelectAddress
+      inputId="address"
       isClearable
       placeholder={t("transactionCreation:steps.account.recipient")}
       canAddCustom={canAddCustomAddress}
