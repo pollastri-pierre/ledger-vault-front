@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === "test") {
     if (Object.values(ENDPOINTS).indexOf(uri) > -1) {
       return minWait(fetch(`http://localhost:5001${uri}`, options), DEMO_DELAY);
     }
+    options.credentials = "include";
     prefix = `/${prefix}`;
     if (process.env.NODE_ENV !== "production") {
       return (

@@ -23,7 +23,7 @@ const deviceNetwork = async function<T>(
   body: ?(Object | Array<Object>),
   noJson?: boolean,
 ): Promise<T> {
-  return network(uri, method, body, null, {
+  return network(uri, method, body, {
     noJson: noJson || false,
   }).catch(err => {
     console.error(err);
