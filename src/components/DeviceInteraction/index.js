@@ -22,7 +22,11 @@ import {
 } from "utils/errors";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion, getU2FPublicKey } from "device/interactions/common";
-import { INVALID_DATA, DEVICE_REJECT_ERROR_CODE } from "device";
+import {
+  INVALID_DATA,
+  DEVICE_REJECT_ERROR_CODE,
+  getPreferredTransport,
+} from "device";
 import { from } from "rxjs";
 import type { GateError } from "data/types";
 
@@ -108,7 +112,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
           interaction: interactionsWithCheckVersion[i],
         });
         if (interactionsWithCheckVersion[i].device) {
-          const ensureAppVault = withDevicePolling("")(
+          const ensureAppVault = withDevicePolling(getPreferredTransport())(
             transport =>
               from(
                 interactionsWithCheckVersion[i].action({

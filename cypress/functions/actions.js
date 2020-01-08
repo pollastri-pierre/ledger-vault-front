@@ -114,7 +114,7 @@ export function create_user(username, userID, role) {
   );
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "You can now share the registration URL with the new user.",
+    "You can now share the registration URL with the new user:",
   );
   cy.get("[data-test=close]").click();
 }
@@ -213,7 +213,7 @@ export function success_edit_account() {
   );
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Your request to edit an account has been submitted for approval.",
+    "Your request to edit this account has been submitted for approval.",
   );
   cy.contains("Done").click();
 }

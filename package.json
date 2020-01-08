@@ -1,6 +1,6 @@
 {
   "name": "ledger-vault-front",
-  "version": "2.4.3",
+  "version": "2.6.0",
   "private": true,
   "scripts": {
     "build": "rm -rf dist && NODE_ENV=production webpack --progress --hide-modules --config webpack/build.babel.js",
@@ -24,12 +24,13 @@
     "cypress:run:edit_invitation": "cypress run --spec 'cypress/integration/Drop2/01_Users/09_edit_invitation.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:reject_invitation": "cypress run --spec 'cypress/integration/Drop2/01_Users/10_reject_invitation.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:groups": "cypress run --spec 'cypress/integration/Drop2/02_Groups/*' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+    "cypress:run:whitelist": "cypress run --spec 'cypress/integration/Drop2/03_Whitelist/*' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:create_group": "cypress run --spec 'cypress/integration/Drop2/02_Groups/01_create_groups.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:approve_group": "cypress run --spec 'cypress/integration/Drop2/02_Groups/02_approve_groups.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:edit_group": "cypress run --spec 'cypress/integration/Drop2/02_Groups/03_edit_groups.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:gp_multiple_member": "cypress run --spec 'cypress/integration/Drop2/02_Groups/04_create_group_multiple_members.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:delete_group": "cypress run --spec 'cypress/integration/Drop2/02_Groups/05_delete_groups.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
-    "cypress:run:accounts": "cypress run --spec 'cypress/integration/Drop2/03_Accounts/*' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+    "cypress:run:accounts": "cypress run --spec 'cypress/integration/Drop2/04_Accounts/*' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:btc_account": "cypress run --spec 'cypress/integration/Drop2/03_Accounts/01_btc_accounts.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:erc20_without_eth": "cypress run --spec 'cypress/integration/Drop2/03_Accounts/02_erc20_without_eth.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:eth_account": "cypress run --spec 'cypress/integration/Drop2/03_Accounts/03_eth_accounts.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
@@ -172,6 +173,7 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
     "webpack-merge": "^4.2.2",
+    "webpack-obfuscator": "^0.21.0",
     "whatwg-fetch": "^3.0.0",
     "yaml-loader": "^0.5.0"
   }

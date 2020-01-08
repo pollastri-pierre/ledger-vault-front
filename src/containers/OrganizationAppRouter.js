@@ -9,7 +9,7 @@ import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
 import AlertsContainer from "components/legacy/AlertsContainer";
-import UpdateApp from "components/UpdateApp/LinksToUpdater";
+import UpdateApp from "components/UpdateApp";
 import MockDevices from "components/MockDevices";
 import GlobalStyle from "components/GlobalStyle";
 import OnboardingContainer from "components/legacy/Onboarding/OnboardingContainer";
@@ -38,7 +38,6 @@ const OrganizationComponent = ({ match, history }: Props) => {
   return (
     <Switch>
       <Route path={`${match.url}/login`} component={Login} />
-      <Route path="*/update-app" component={UpdateApp} />
       <Route
         path={`${match.url}/onboarding`}
         render={() => <OnboardingContainer match={match} history={history} />}
@@ -66,6 +65,7 @@ const OrganizationAppRouter = () => (
     <BrowserRouter>
       <AlertsContainer />
       <Switch>
+        <Route path="/update-app" component={UpdateApp} />
         <Route path="/:orga_name" component={OrganizationComponent} />
         <Route component={Welcome} />
       </Switch>

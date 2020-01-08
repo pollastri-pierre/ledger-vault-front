@@ -209,6 +209,12 @@ describe("Create whitelists", function() {
       "my3fazJ8gs8gZunPHdGRwLe99KbZ7sNdJU",
     );
     add_whitelist_address(
+      "Bitcoin Testnet",
+      "btc t3",
+      "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB",
+    );
+
+    add_whitelist_address(
       "DOGE",
       "doge1",
       "DTUQCFwJsugdnUAsn4Ep8X4hssagepJYxQ",
@@ -247,8 +253,6 @@ describe("Create whitelists", function() {
       "contain",
       "Whitelist request was successfully created!",
     );
-    cy.get("[data-test=close]")
-      .eq(1)
-      .click();
+    cy.get("[data-test=close]").click();
   });
 });
