@@ -103,7 +103,11 @@ const steps = [
         const { parentAccount } = payload;
         if (!parentAccount) return false;
         if (parentAccount.id) return true;
-        return !!parentAccount.name && parentAccount.name !== "";
+        return (
+          !!parentAccount.name &&
+          parentAccount.name !== "" &&
+          parentAccount.name !== payload.name
+        );
       }
       return true;
     },
