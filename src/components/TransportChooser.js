@@ -7,14 +7,13 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import Button from "components/base/Button";
-import Spinner from "components/base/Spinner";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 
-const FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB") === "1";
+import { getPreferredTransport, setPreferredTransport } from "device";
 
 export default function TransportChooser() {
-  const [isLoading, setLoading] = useState(false);
+  const [transport, setTransport] = useState(getPreferredTransport());
   const [isOpened, setOpened] = useState(false);
   const [anchor, setAnchor] = useState(null);
   const btnRef = useRef(null);
@@ -26,23 +25,10 @@ export default function TransportChooser() {
   };
 
   const choose = transportType => () => {
-    const value = transportType === "webusb" ? "1" : "0";
-    localStorage.setItem("FORCE_WEB_USB", value);
+    setPreferredTransport(transportType);
+    setTransport(transportType);
     toggle();
-    setLoading(true);
-    // wait to allow animation to start
-    setTimeout(() => {
-      document.location.reload();
-    }, 200);
   };
-
-  if (isLoading) {
-    return (
-      <Box mr={10} mt={10}>
-        <Spinner />
-      </Box>
-    );
-  }
 
   return (
     <Box position="relative">
@@ -55,7 +41,7 @@ export default function TransportChooser() {
       >
         <Box horizontal align="center" flow={5}>
           <FaUsb />
-          <span>{FORCE_WEB_USB ? "WebUSB" : "U2F"}</span>
+          <span>{transport === "webusb" ? "WebUSB" : "U2F"}</span>
           {isOpened ? <FaCaretUp /> : <FaCaretDown />}
         </Box>
       </Button>

@@ -35,35 +35,47 @@ for (let i = 0x6100; i <= 0x61ff; i++) {
 }
 export const PAGINATED_STATUS = all61xxStatus;
 
-const USE_TRANSPORT_U2F = true; // localStorage.getItem("U2F");
-const FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB") === "1";
+// handle legacy localstorage
+const LEGACY_FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB") === "1";
+localStorage.removeItem("FORCE_WEB_USB");
+let PREFERRED_TRANSPORT =
+  localStorage.getItem("TRANSPORT") ||
+  (LEGACY_FORCE_WEB_USB ? "webusb" : "u2f");
+localStorage.setItem("TRANSPORT", PREFERRED_TRANSPORT);
+
+export const getPreferredTransport = () => PREFERRED_TRANSPORT;
+
+export const setPreferredTransport = (transportID: string) => {
+  PREFERRED_TRANSPORT = transportID;
+  localStorage.setItem("TRANSPORT", PREFERRED_TRANSPORT);
+};
+
 const mockTransport = Promise.resolve({ close: () => Promise.resolve() });
 
-if (USE_TRANSPORT_U2F && !FORCE_WEB_USB) {
-  registerTransportModule({
-    id: "u2f",
-    open: async () => {
-      // $FlowFixMe
-      if (softwareMode()) return mockTransport;
-      // $FlowFixMe
-      const t = await LedgerTransportU2F.create();
+registerTransportModule({
+  id: "u2f",
+  open: (id: string) => {
+    if (id !== "u2f") return;
+    // $FlowFixMe
+    if (softwareMode()) return mockTransport;
+    return LedgerTransportU2F.create().then(t => {
       t.setScrambleKey("v1+");
+      // $FlowFixMe
       t.setUnwrap(true);
       t.setExchangeTimeout(360000);
       return t;
-    },
-    disconnect: () => null,
-  });
-} else {
-  registerTransportModule({
-    id: "webusb",
-    open: async () => {
-      // $FlowFixMe
-      if (softwareMode()) return mockTransport;
-      const t = await TransportUSB.create();
-      // $FlowFixMe
-      return t;
-    },
-    disconnect: () => null,
-  });
-}
+    });
+  },
+  disconnect: () => null,
+});
+
+registerTransportModule({
+  id: "webusb",
+  open: (id: string) => {
+    if (id !== "webusb") return;
+    // $FlowFixMe
+    if (softwareMode()) return mockTransport;
+    return TransportUSB.create();
+  },
+  disconnect: () => null,
+});

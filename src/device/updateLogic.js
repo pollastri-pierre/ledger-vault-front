@@ -16,7 +16,7 @@ import { from, of, concat, throwError, combineLatest } from "rxjs";
 import type { Step } from "components/UpdateApp";
 
 const ALREADY_UP_TO_DATE = "Firmware is already up-to-date.";
-export const withDeviceInfo: Observable<*> = withDevicePolling("")(
+export const withDeviceInfo: Observable<*> = withDevicePolling("webusb")(
   transport => from(getDeviceInfo(transport)),
   err => {
     // $FlowFixMe
@@ -47,7 +47,7 @@ export function installApp({
   setStep: Step => void,
   subscribeProgress: Step => (e: { progress: number }) => void,
 }): Observable<*> {
-  return withDevicePolling("")(
+  return withDevicePolling("webusb")(
     transport => {
       return from(getDeviceInfo(transport)).pipe(
         concatMap(infos =>
