@@ -23,6 +23,7 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { getFees } from "utils/transactions";
 
 import colors from "shared/colors";
+import RecalculateButton from "./RecalculateButton";
 
 type Props = {
   transaction: RippleTransaction,
@@ -51,53 +52,53 @@ function FeesFieldRippleKind(props: Props) {
     transaction.amount,
   ];
 
+  const effect = async unsubscribed => {
+    const nonce = ++instanceNonce.current;
+
+    try {
+      // check recipient
+      const recipientError = await bridge.getRecipientError(
+        restlay,
+        currency,
+        transaction.recipient,
+        account,
+      );
+      if (nonce !== instanceNonce.current || unsubscribed) return;
+      if (recipientError) {
+        setFeesStatus("idle");
+        return;
+      }
+
+      if (transaction.amount.isEqualTo(0)) return;
+
+      setFeesStatus("fetching");
+
+      // fetch fees
+      const payload = {
+        memos: [],
+        amount: transaction.amount,
+        recipient: transaction.recipient,
+      };
+
+      const estimatedFees = await getFees(account, payload, restlay);
+      if (nonce !== instanceNonce.current || unsubscribed) return;
+
+      // update tx
+      onChangeTransaction({
+        ...transaction,
+        estimatedFees: estimatedFees.fees,
+      });
+
+      setFeesStatus("idle");
+    } catch (err) {
+      console.error(err);
+      setFeesStatus("error");
+      setFeesError(err);
+    }
+  };
   useEffect(() => {
     let unsubscribed = false;
-    const effect = async () => {
-      const nonce = ++instanceNonce.current;
-
-      try {
-        // check recipient
-        const recipientError = await bridge.getRecipientError(
-          restlay,
-          currency,
-          transaction.recipient,
-          account,
-        );
-        if (nonce !== instanceNonce.current || unsubscribed) return;
-        if (recipientError) {
-          setFeesStatus("idle");
-          return;
-        }
-
-        if (transaction.amount.isEqualTo(0)) return;
-
-        setFeesStatus("fetching");
-
-        // fetch fees
-        const payload = {
-          memos: [],
-          amount: transaction.amount,
-          recipient: transaction.recipient,
-        };
-
-        const estimatedFees = await getFees(account, payload, restlay);
-        if (nonce !== instanceNonce.current || unsubscribed) return;
-
-        // update tx
-        onChangeTransaction({
-          ...transaction,
-          estimatedFees: estimatedFees.fees,
-        });
-
-        setFeesStatus("idle");
-      } catch (err) {
-        console.error(err);
-        setFeesStatus("error");
-        setFeesError(err);
-      }
-    };
-    effect();
+    effect(unsubscribed);
     return () => {
       unsubscribed = true;
     };
@@ -107,12 +108,26 @@ function FeesFieldRippleKind(props: Props) {
     onChangeTransaction({ ...transaction, estimatedFees });
   };
 
+  const reComputeFees = () => {
+    onChangeTransaction({
+      ...transaction,
+      error: null,
+      estimatedFees: BigNumber(0),
+    });
+
+    effect();
+  };
   return (
     <Box horizontal flow={20}>
       <Box noShrink grow>
-        <Label>
-          <Trans i18nKey="transactionCreation:steps.account.fees.title" />
-        </Label>
+        <Box horizontal align="flex-start" flow={5}>
+          <Label>
+            <Trans i18nKey="transactionCreation:steps.account.fees.title" />
+          </Label>
+          {(transaction.estimatedFees || feesStatus === "error") && (
+            <RecalculateButton onClick={reComputeFees} />
+          )}
+        </Box>
         <Box horizontal justify="space-between">
           <Box width={280}>
             <InputAmount
