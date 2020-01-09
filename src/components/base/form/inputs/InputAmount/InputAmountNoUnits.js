@@ -57,6 +57,7 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
     const val = formatCurrencyUnit(
       fakeUnit,
       props.bridge.getTransactionAmount(props.account, props.transaction),
+      { disableRounding: true },
     );
     this.state = {
       token,
