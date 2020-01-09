@@ -160,6 +160,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       CustomFooterElementLeft,
       WarningNext,
       requirements,
+      width,
     } = step;
 
     const stepProps = {
@@ -179,7 +180,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     };
 
     return (
-      <Box width={700} position="relative" style={styles.container}>
+      <Box width={width || 700} position="relative" style={styles.container}>
         <RichModalHeader
           onClose={onClose}
           Icon={Icon}

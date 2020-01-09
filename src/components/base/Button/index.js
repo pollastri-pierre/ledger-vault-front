@@ -39,7 +39,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   py: getPaddingY(p),
   color: "grey",
   bg: "transparent",
-  tabIndex: 0,
+  tabIndex: p.disabled ? -1 : 0,
 }))`
   user-select: none;
   ${space};
@@ -49,6 +49,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   border: none;
   display: flex;
   justify-content: center;
+  flex-shrink: 0;
   align-items: center;
   border-radius: ${p => (p.circular ? "50%" : "2px")};
   cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
@@ -90,7 +91,8 @@ function Button(props: ButtonProps, ref: any) {
     [],
   );
 
-  const handleClick = () => {
+  const handleClick = e => {
+    e && e.stopPropagation();
     if (!onClick) return;
     if (disabled) return;
     setIsLoading(true);
