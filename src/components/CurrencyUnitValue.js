@@ -24,6 +24,7 @@ export function currencyUnitValueFormat(
     showCode: true,
     alwaysShowSign,
     showAllDigits: false,
+    disableRounding: true,
   });
 }
 

@@ -47,7 +47,7 @@ function InputTokenAmount(props: Props) {
 }
 
 function sanitizeInitialValue(value, unit) {
-  const val = formatCurrencyUnit(unit, value);
+  const val = formatCurrencyUnit(unit, value, { disableRounding: true });
   return parseFloat(val) > 0 ? val : "";
 }
 
