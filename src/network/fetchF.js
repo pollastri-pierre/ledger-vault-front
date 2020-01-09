@@ -16,6 +16,19 @@ if (process.env.NODE_ENV === "test") {
       return minWait(fetch(`http://localhost:5001${uri}`, options), DEMO_DELAY);
     }
     prefix = `/${prefix}`;
+
+    // /!\ TEMPORARY - LV-2129
+    // -----------------------
+    /* eslint-disable no-console */
+    if (uri.endsWith("/challenge")) {
+      console.warn(`params: ${JSON.stringify(params)}`);
+      console.warn(`location: ${JSON.stringify(location)}`);
+      console.warn(`prefix: ${prefix}`);
+      console.warn(`API_BASE_URL: ${window.config.API_BASE_URL}`);
+      console.warn(`final url: ${window.config.API_BASE_URL + prefix + uri}`);
+    }
+    /* eslint-enable no-console */
+
     if (process.env.NODE_ENV !== "production") {
       return (
         mockAPI(uri, options) ||

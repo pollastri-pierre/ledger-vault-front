@@ -29,6 +29,16 @@ export default function<T>(
   if (method !== "GET" && body) {
     options.body = JSON.stringify(body);
   }
+
+  // /!\ TEMPORARY - LV-2129
+  // -----------------------
+  /* eslint-disable no-console */
+  if (uri.endsWith("/challenge")) {
+    console.warn("[DEBUG LV-2129] Getting challenge");
+    console.warn(`url: ${uri}`);
+  }
+  /* eslint-enable no-console */
+
   return fetchF(uri, options, fetchParams).then(response => {
     if (response.status < 200 || response.status >= 300) {
       if (response.status === 504) {
