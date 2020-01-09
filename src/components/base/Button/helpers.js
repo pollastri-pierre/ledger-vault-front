@@ -50,9 +50,18 @@ const buttonPaddingX = {
   small: 16,
   slim: 25,
 };
-export function getPaddingX({ size, circular }: ButtonProps) {
+
+const buttonSquarePadding = {
+  tiny: 5,
+  small: 8,
+  slim: 12,
+};
+export function getPaddingX({ size, circular, square }: ButtonProps) {
   if (circular) {
     return 12;
+  }
+  if (square) {
+    return (size && buttonSquarePadding[size]) || 10;
   }
   return (size && buttonPaddingX[size]) || 25;
 }
@@ -62,9 +71,12 @@ const buttonPaddingY = {
   small: 5,
   slim: 8,
 };
-export function getPaddingY({ size, circular }: ButtonProps) {
+export function getPaddingY({ size, circular, square }: ButtonProps) {
   if (circular) {
     return 12;
+  }
+  if (square) {
+    return (size && buttonSquarePadding[size]) || 10;
   }
   return (size && buttonPaddingY[size]) || 8;
 }
