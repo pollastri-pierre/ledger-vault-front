@@ -42,7 +42,9 @@ class InputAmount extends PureComponent<Props, State> {
       (props.unit && props.unit !== state.unit) ||
       !props.value.isEqualTo(state.cachedValue)
     ) {
-      const val = formatCurrencyUnit(state.unit, props.value);
+      const val = formatCurrencyUnit(state.unit, props.value, {
+        disableRounding: true,
+      });
       return {
         displayValue: props.value.isEqualTo(0) ? "" : val,
         unit: props.unit || state.unit,
@@ -126,7 +128,10 @@ class InputAmount extends PureComponent<Props, State> {
     if (value.isEqualTo(0)) return;
     const { unit } = this.state;
     this.setState({
-      displayValue: formatCurrencyUnit(unit, value, { useGrouping: false }),
+      displayValue: formatCurrencyUnit(unit, value, {
+        useGrouping: false,
+        disableRounding: true,
+      }),
     });
   };
 
@@ -135,7 +140,7 @@ class InputAmount extends PureComponent<Props, State> {
     if (value.isEqualTo(0)) return;
     const { unit } = this.state;
     this.setState({
-      displayValue: formatCurrencyUnit(unit, value),
+      displayValue: formatCurrencyUnit(unit, value, { disableRounding: true }),
     });
   };
 

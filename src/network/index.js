@@ -1,7 +1,6 @@
 // @flow
 import type { DeviceError } from "utils/errors";
 import { NetworkTimeoutError, remapError } from "utils/errors";
-import { getCookieToken } from "../redux/modules/auth";
 import fetchF from "./fetchF";
 
 export function NetworkError(obj: *) {
@@ -14,21 +13,28 @@ export default function<T>(
   uri: string,
   method: string,
   body: ?(Object | Array<Object>),
-  tokenParam: ?string,
   fetchParams: Object,
 ): Promise<T> {
-  const token = tokenParam || getCookieToken();
   const noJson = !!fetchParams && !!fetchParams.noJson;
   const noParse = !!fetchParams && !!fetchParams.noParse;
   const headers = {
     Accept: "application/json",
     "Content-Type": !fetchParams || !noJson ? "application/json" : "text/plain",
-    ...(token ? { "X-Ledger-Auth": token } : {}),
   };
   const options: Object = { headers, method };
   if (method !== "GET" && body) {
     options.body = JSON.stringify(body);
   }
+
+  // /!\ TEMPORARY - LV-2129
+  // -----------------------
+  /* eslint-disable no-console */
+  if (uri.endsWith("/challenge")) {
+    console.warn("[DEBUG LV-2129] Getting challenge");
+    console.warn(`url: ${uri}`);
+  }
+  /* eslint-enable no-console */
+
   return fetchF(uri, options, fetchParams).then(response => {
     if (response.status < 200 || response.status >= 300) {
       if (response.status === 504) {

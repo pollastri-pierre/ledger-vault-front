@@ -63,7 +63,6 @@ export default function ExportToCSV(props: Props) {
         `${config.endpoint}/export`,
         "POST",
         { columns: config.columns, params, labels },
-        undefined,
         { noParse: true },
       );
       const blob = await res.blob();

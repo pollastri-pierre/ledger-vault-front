@@ -2,7 +2,7 @@
   "title": "Mandatory updates available!",
   "info": "A new version of the Ledger Vault app and firmware must be installed on your device before you can connect to your workspace.",
   "update": "Update firmware and app",
-  "retry": "retry",
+  "retry": "Retry",
   "success": "Install successful.",
   "goToLogin": "Login to Vault",
   "goBack": "Go back",

@@ -95,7 +95,7 @@ const SelectAddress = (props: Props) => {
   );
 };
 
-const NoOptionsMessage = () => "No addresses";
+const NoOptionsMessage = () => "Unknown address";
 
 const customValueStyle = {
   singleValue: styles => ({

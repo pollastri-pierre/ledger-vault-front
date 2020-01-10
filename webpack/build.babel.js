@@ -1,5 +1,6 @@
 import merge from "webpack-merge";
 import webpack from "webpack";
+import JSObfuscator from "webpack-obfuscator";
 
 import webpackConfig from "./base";
 
@@ -42,7 +43,10 @@ export default merge(webpackConfig, {
     },
   },
 
-  plugins: [new webpack.optimize.OccurrenceOrderPlugin()],
+  plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new JSObfuscator({}, ["vendor-**.js"]),
+  ],
 
   stats: {
     colors: true,

@@ -4,17 +4,20 @@ import styled from "styled-components";
 import { DiApple, DiWindows, DiLinux } from "react-icons/di";
 import { Trans } from "react-i18next";
 import colors from "shared/colors";
-import VaultCentered from "components/VaultCentered";
-import Card from "components/base/Card";
 import { urls } from "utils/urls";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
-import Text from "components/base/Text";
+import Modal, { ModalClose } from "components/base/Modal";
 
-const Update = () => (
-  <VaultCentered>
-    <Card flow={20} width={600}>
-      <Text uppercase i18nKey="update:title" />
+type Props = {
+  isOpened: boolean,
+  onClose: () => void,
+};
+
+const Update = ({ isOpened, onClose }: Props) => (
+  <Modal isOpened={isOpened} onClose={onClose}>
+    <Box p={40} flow={20} width={600}>
+      <ModalClose onClick={onClose} />
       <InfoBox type="info" withIcon>
         <Trans i18nKey="update:infobox" />
       </InfoBox>
@@ -40,9 +43,10 @@ const Update = () => (
           <Trans i18nKey="update:support" />
         </Support>
       </Box>
-    </Card>
-  </VaultCentered>
+    </Box>
+  </Modal>
 );
+
 export default Update;
 
 const Support = styled.a`
