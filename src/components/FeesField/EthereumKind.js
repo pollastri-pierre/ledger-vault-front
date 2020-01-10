@@ -27,6 +27,7 @@ import DoubleTilde from "components/icons/DoubleTilde";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { getFees } from "utils/transactions";
 import { usePrevious } from "utils/customHooks";
+import RecalculateButton from "./RecalculateButton";
 
 type Props = {
   transaction: EthereumTransaction,
@@ -63,60 +64,71 @@ function FeesFieldEthereumKind(props: Props) {
     transaction.recipient,
     transaction.amount,
   ];
+
+  const reComputeFees = () => {
+    onChangeTransaction({
+      ...transaction,
+      error: null,
+      estimatedFees: BigNumber(0),
+    });
+
+    effect();
+  };
+
+  const effect = async unsubscribed => {
+    const nonce = ++instanceNonce.current;
+
+    try {
+      const recipientError = await bridge.getRecipientError(
+        restlay,
+        currency,
+        transaction.recipient,
+      );
+
+      if (nonce !== instanceNonce.current || unsubscribed) return;
+      if (recipientError) {
+        setFeesStatus("idle");
+        return;
+      }
+
+      setFeesStatus("fetching");
+
+      const txGetFees = {
+        amount: transaction.amount,
+        recipient: transaction.recipient,
+        gas_price: transaction.gasPrice,
+        gas_limit: transaction.gasLimit,
+      };
+      const estimatedFees = await getFees(account, txGetFees, restlay);
+
+      if (nonce !== instanceNonce.current || unsubscribed) return;
+
+      onChangeTransaction({
+        ...transaction,
+        estimatedFees: estimatedFees.fees,
+        gasPrice: estimatedFees.gas_price,
+        gasLimit: estimatedFees.gas_limit,
+      });
+
+      setFeesStatus("idle");
+    } catch (err) {
+      console.error(err);
+      onChangeTransaction({
+        ...transaction,
+        estimatedFees: BigNumber(0),
+        gasPrice: BigNumber(0),
+        gasLimit: BigNumber(0),
+      });
+      setFeesError(err);
+
+      setFeesStatus("error");
+    }
+  };
   useEffect(() => {
     let unsubscribed = false;
 
-    const effect = async () => {
-      const nonce = ++instanceNonce.current;
-
-      try {
-        const recipientError = await bridge.getRecipientError(
-          restlay,
-          currency,
-          transaction.recipient,
-        );
-
-        if (nonce !== instanceNonce.current || unsubscribed) return;
-        if (recipientError) {
-          setFeesStatus("idle");
-          return;
-        }
-
-        setFeesStatus("fetching");
-
-        const txGetFees = {
-          amount: transaction.amount,
-          recipient: transaction.recipient,
-          gas_price: transaction.gasPrice,
-          gas_limit: transaction.gasLimit,
-        };
-        const estimatedFees = await getFees(account, txGetFees, restlay);
-
-        if (nonce !== instanceNonce.current || unsubscribed) return;
-
-        onChangeTransaction({
-          ...transaction,
-          estimatedFees: estimatedFees.fees,
-          gasPrice: estimatedFees.gas_price,
-          gasLimit: estimatedFees.gas_limit,
-        });
-
-        setFeesStatus("idle");
-      } catch (err) {
-        console.error(err);
-        onChangeTransaction({
-          ...transaction,
-          estimatedFees: BigNumber(0),
-          gasPrice: BigNumber(0),
-          gasLimit: BigNumber(0),
-        });
-        setFeesError(err);
-
-        setFeesStatus("error");
-      }
-    };
     if (prevRecipient !== transaction.recipient) {
-      effect();
+      effect(unsubscribed);
     }
     return () => {
       unsubscribed = true;
@@ -196,9 +208,14 @@ function FeesFieldEthereumKind(props: Props) {
         </Box>
       </Box>
       <Box grow>
-        <Label>
-          <Trans i18nKey="transactionCreation:steps.account.fees.title" />
-        </Label>
+        <Box horizontal align="flex-start" flow={5}>
+          <Label>
+            <Trans i18nKey="transactionCreation:steps.account.fees.title" />
+          </Label>
+          {(transaction.estimatedFees || feesStatus === "error") && (
+            <RecalculateButton onClick={reComputeFees} />
+          )}
+        </Box>
         {feesStatus === "error" ? (
           <Text color={colors.grenade}>
             <TranslatedError field="description" error={feesError} />

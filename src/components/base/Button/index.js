@@ -24,9 +24,11 @@ export type ButtonProps = {|
   type?: ButtonType,
   variant?: ButtonVariant,
   disabled?: boolean,
+  noSpinner?: boolean,
   onClick?: Function,
   size?: ButtonSize,
   circular?: boolean,
+  square?: boolean,
   "data-test"?: string,
   style?: Object,
   isLoadingProp?: boolean,
@@ -71,7 +73,14 @@ export const ButtonBase = styled.div.attrs(p => ({
 
 function Button(props: ButtonProps, ref: any) {
   const isUnmounted = useRef(false);
-  const { onClick, children, disabled, isLoadingProp, ...rest } = props;
+  const {
+    onClick,
+    children,
+    disabled,
+    isLoadingProp,
+    noSpinner,
+    ...rest
+  } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
@@ -111,7 +120,7 @@ function Button(props: ButtonProps, ref: any) {
       onKeyUp={handleKeyUp}
     >
       <Container isLoading={isLoading || isLoadingProp}>{children}</Container>
-      {(isLoading || isLoadingProp) && (
+      {(isLoading || isLoadingProp) && !noSpinner && (
         <Loader size={getLoaderSize(props)} style={{ position: "absolute" }} />
       )}
     </ButtonBase>
