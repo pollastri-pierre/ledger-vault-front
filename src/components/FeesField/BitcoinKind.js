@@ -62,6 +62,7 @@ function FeesBitcoinKind(props: Props) {
     bridge,
     transaction.recipient,
     transaction.amount,
+    transaction.feeLevel,
   ];
 
   const reComputeFees = () => {
