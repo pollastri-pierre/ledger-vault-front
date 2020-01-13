@@ -9,7 +9,7 @@
       "total": "Total",
       "fees": {
         "title": "Transaction fees",
-        "recompute": "re-calculate the fees"
+        "recompute": "Recalculate the fees"
       },
       "select": "Select address",
       "recipient": "Recipient address",

@@ -37,7 +37,7 @@
     "viewOnly": "View-only account",
     "update": "Update needed"
   },
-  "view_only_provide_rules": "provide transaction rules",
+  "view_only_provide_rules": "Provide transaction rules",
   "not_active_warning": "Account is approved but not activated yet",
   "view_only_warning": "This account is view-only. Transactions cannot be created before you provide transaction rules.",
   "updated_provide_rule": "Provide transaction rules",
