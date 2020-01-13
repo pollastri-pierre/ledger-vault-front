@@ -113,7 +113,7 @@ export type Approval = {
 };
 
 export type Address = {
-  id?: number,
+  id: number,
   currency: string,
   address: string,
   name: string,

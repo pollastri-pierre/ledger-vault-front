@@ -60,6 +60,7 @@ const steps = [
     name: "Addresses",
     Step: WhitelistCreationAddresses,
     requirements: (payload: WhitelistCreationPayload) => payload.name !== "",
+    width: 880,
   },
   {
     id: "confirmation",

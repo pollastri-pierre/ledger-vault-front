@@ -32,7 +32,7 @@ const accounts = genAccounts(4);
 const whitelists = genWhitelists(10, { users, status: "ACTIVE" });
 
 const fakeNetwork = async url => {
-  await delay(1e3);
+  await delay(100);
   if (url.match(/whitelists\/[^/]*/g)) {
     return whitelists[0];
   }
@@ -47,6 +47,11 @@ const fakeNetwork = async url => {
   }
   if (url.match(/groups\/[^/]*\/history/g)) {
     return [];
+  }
+  if (url.match(/\/validation.*/)) {
+    const [, address] = /.*\/(.*)$/.exec(url);
+    // much secure btc-like address verification
+    return { is_valid: address.length >= 24 && address.length <= 35 };
   }
   if (url.startsWith("/groups")) {
     const group = denormalize(

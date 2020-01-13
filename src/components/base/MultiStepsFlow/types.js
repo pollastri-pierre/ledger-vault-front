@@ -12,6 +12,7 @@ export type MultiStepsFlowStep<T, P> = {|
   prevLabel?: React$Node,
   hideBack?: boolean,
   CustomFooterElementLeft?: React$ComponentType<StepProps<T> & P>,
+  width?: number,
 |};
 
 export type PayloadUpdater<T> = ($Shape<T>, ?() => void) => void;
