@@ -186,7 +186,7 @@ const TransactionCreationAmount = (
         <InfoBox type={matchingRulesSet ? "success" : "error"} withIcon>
           {matchingRulesSet ? (
             <span>
-              {"Amount & recipient are matching "}
+              {"Amount and recipient are matching "}
               <strong>{matchingRulesSet.name}</strong>
             </span>
           ) : (
