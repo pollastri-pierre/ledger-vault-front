@@ -2,17 +2,18 @@
 
 import React from "react";
 import invariant from "invariant";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
-import { Label, InputText, Form } from "components/base/form";
+import { Label, InputText, Form, TextArea } from "components/base/form";
 
 import type { TransactionCreationStepProps } from "../types";
 
 export default (props: TransactionCreationStepProps<any>) => {
   const { payload, updatePayload, onEnter } = props;
   const { bridge, transaction } = payload;
+  const { t } = useTranslation();
 
   invariant(bridge, "No bridge");
   invariant(transaction, "No transaction");
@@ -30,23 +31,19 @@ export default (props: TransactionCreationStepProps<any>) => {
   const inner = (
     <Box flow={20}>
       <Box>
-        <Label>
-          <Trans i18nKey="transactionCreation:steps.note.noteTitle" />
-        </Label>
+        <Label>{t("transactionCreation:steps.note.noteTitle")}</Label>
         <InputText
           autoFocus
-          placeholder="Title"
+          placeholder={t("transactionCreation:steps.note.noteTitle")}
           data-test="title_tx"
           value={transaction.note.title}
           onChange={handleChangeTitle}
         />
       </Box>
       <Box>
-        <Label>
-          <Trans i18nKey="transactionCreation:steps.note.noteContent" />
-        </Label>
-        <InputText
-          placeholder="Content"
+        <Label>{t("transactionCreation:steps.note.noteContent")}</Label>
+        <TextArea
+          placeholder={t("transactionCreation:steps.note.noteContent")}
           data-test="description_tx"
           value={transaction.note.content}
           onChange={handleChangeContent}
@@ -54,7 +51,7 @@ export default (props: TransactionCreationStepProps<any>) => {
       </Box>
       <Box alignSelf="flex-start">
         <InfoBox type="info">
-          <Trans i18nKey="transactionCreation:steps.note.noteDesc" />
+          {t("transactionCreation:steps.note.noteDesc")}
         </InfoBox>
       </Box>
     </Box>
