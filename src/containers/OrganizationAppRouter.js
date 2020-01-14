@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import counterValues from "data/counterValues";
@@ -8,9 +8,13 @@ import { Switch, Route } from "react-router";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
+import connectData from "restlay/connectData";
 import AlertsContainer from "components/legacy/AlertsContainer";
+import VersionsQuery from "api/queries/VersionsQuery";
 import UpdateApp from "components/UpdateApp";
+import type { RestlayEnvironment } from "restlay/connectData";
 import MockDevices from "components/MockDevices";
+import { VersionsContextProvider } from "components/VersionsContext";
 import GlobalStyle from "components/GlobalStyle";
 import OnboardingContainer from "components/legacy/Onboarding/OnboardingContainer";
 import { checkLogin } from "redux/modules/auth";
@@ -59,20 +63,40 @@ const OrganizationComponent = ({ match, history }: Props) => {
   );
 };
 
-const OrganizationAppRouter = () => (
-  <>
-    <GlobalStyle />
-    <BrowserRouter>
-      <AlertsContainer />
-      <Switch>
-        <Route path="/update-app" component={UpdateApp} />
-        <Route path="/:orga_name" component={OrganizationComponent} />
-        <Route component={Welcome} />
-      </Switch>
-    </BrowserRouter>
-    {process.env.NODE_ENV === "e2e" && <MockDevices />}
-  </>
-);
+const OrganizationAppRouter = ({
+  restlay,
+}: {
+  restlay: RestlayEnvironment,
+}) => {
+  const [versions, setVersions] = useState(null);
+  const update = useCallback(async () => {
+    const _versions = await restlay.fetchQuery(new VersionsQuery());
+    setVersions(_versions);
+  }, [setVersions, restlay]);
+  const versionContextValue = useMemo(
+    () => ({
+      versions,
+      update,
+    }),
+    [versions, update],
+  );
+  return (
+    <>
+      <GlobalStyle />
+      <BrowserRouter>
+        <VersionsContextProvider value={versionContextValue}>
+          <AlertsContainer />
+          <Switch>
+            <Route path="/update-app" component={UpdateApp} />
+            <Route path="/:orga_name" component={OrganizationComponent} />
+            <Route component={Welcome} />
+          </Switch>
+        </VersionsContextProvider>
+      </BrowserRouter>
+      {process.env.NODE_ENV === "e2e" && <MockDevices />}
+    </>
+  );
+};
 
 function useCheckLogin() {
   const [isLoading, setLoading] = useState(true);
@@ -92,4 +116,4 @@ function useCheckLogin() {
   return isLoading;
 }
 
-export default OrganizationAppRouter;
+export default connectData(OrganizationAppRouter);

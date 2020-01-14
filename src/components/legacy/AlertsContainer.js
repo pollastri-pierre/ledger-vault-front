@@ -16,6 +16,7 @@ import Text from "components/base/Text";
 import BlockingReasons from "components/BlockingReasons";
 import TranslatedError from "components/TranslatedError";
 import type { DeviceError } from "components/DeviceInteraction";
+import { useVersions } from "components/VersionsContext";
 
 const mapStateToProps = state => ({
   alerts: state.alerts,
@@ -44,6 +45,7 @@ export function MessagesContainer(props: {
   const { alerts, onClose } = props;
   const { error, visible, title, type, content } = alerts;
 
+  const { versions } = useVersions();
   // we don't want to display timeout and reject by user as an error
   if (
     (error &&
@@ -72,7 +74,7 @@ export function MessagesContainer(props: {
         )}
       </Text>
     );
-    const errText = JSON.stringify({ error, title, type, content });
+    const errText = JSON.stringify({ error, title, type, content, versions });
     return (
       <Modal isOpened={visible} onClose={onClose}>
         <RichModalHeader

@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Route } from "react-router-dom";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
@@ -22,6 +22,7 @@ import CheckMigration from "components/CheckMigration";
 import Box from "components/base/Box";
 import UserContextProvider, { withMe } from "components/UserContextProvider";
 import { OrganizationContextProvider } from "components/OrganizationContext";
+import { useVersions } from "components/VersionsContext";
 import VaultLayout from "components/VaultLayout";
 import VaultCentered from "components/VaultCentered";
 
@@ -78,6 +79,10 @@ const App = withMe((props: Props & { me: User }) => {
     location,
   } = props;
 
+  const { update } = useVersions();
+  useEffect(() => {
+    update();
+  }, [update]);
   const menuItems = getMenuItems({
     role: me.role,
     accounts: accounts.edges.map(e => e.node),
