@@ -140,41 +140,6 @@
     "hsm_signature": "304402205a2fe977a9854c0b85a485294fc1e6061320671ed28fee1c0496db3480e5316902205914418ddd9aac8ca6214a5c38a50544fa396b22403bba32ec4c570c29e3e7d1"
   },
   {
-    "units": [
-      {
-        "name": "ether",
-        "code": "ETH",
-        "magnitude": 18
-      },
-      {
-        "name": "Gwei",
-        "code": "Gwei",
-        "magnitude": 9
-      },
-      {
-        "name": "Mwei",
-        "code": "Mwei",
-        "magnitude": 6
-      },
-      {
-        "name": "Kwei",
-        "code": "Kwei",
-        "magnitude": 3
-      },
-      {
-        "name": "wei",
-        "code": "wei",
-        "magnitude": 0
-      }
-    ],
-    "networks": [
-      {
-        "type": "main",
-        "blockchain_name": "foundation"
-      }
-    ]
-  },
-  {
     "inherit_from": "./tokens/ethereum/erc20/common.json",
     "ticker": "ZTX",
     "name": "ZTX",
