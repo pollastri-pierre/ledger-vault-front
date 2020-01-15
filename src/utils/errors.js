@@ -1,6 +1,7 @@
 // @flow
 import { createCustomErrorClass } from "@ledgerhq/errors/lib/helpers";
 import { StatusCodes } from "@ledgerhq/hw-transport";
+import { INVALID_OR_MISSING_ATTESTATION } from "device";
 
 export const GenericError = createCustomErrorClass("GenericError");
 export const UnknownDomain = createCustomErrorClass("UnknownDomain");
@@ -53,11 +54,17 @@ export const AddressDuplicateNameCurrency = createCustomErrorClass(
 export const AddressDuplicateCurrencyAddress = createCustomErrorClass(
   "AddressDuplicateCurrencyAddress",
 );
+export const InvalidOrMissingAttestation = createCustomErrorClass(
+  "InvalidOrMissingAttestation",
+);
 
 export function remapError(err: Error) {
   // $FlowFixMe
   if (err.statusCode === 0x6020 || err.statusCode === 0x6701) {
     return new DeviceNotOnDashboard();
+  }
+  if (err.statusCode === INVALID_OR_MISSING_ATTESTATION) {
+    return new InvalidOrMissingAttestation();
   }
   if (jsonIncludes(err, "tecNO_DST_INSUF_XRP")) {
     return new TargetXRPNotActive();
