@@ -1,12 +1,16 @@
 // @flow
 
-import React from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 import colors from "shared/colors";
+import Modal from "components/base/Modal";
+import Versions from "components/Versions";
 import VaultLink from "components/VaultLink";
+import Box from "components/base/Box";
 import VaultLogo from "components/icons/Logo";
+import VersionLink from "components/VersionLink";
 import { vaultLayoutConfig } from "styles/theme";
 import { VaultLayoutMenuItem } from "./index";
 import type { MenuItem } from "./types";
@@ -22,19 +26,40 @@ const arrowRight = <FaArrowRight />;
 
 function VaultLayoutMenu(props: Props) {
   const { isOpened, onToggle, items } = props;
+  const [isVersionOpened, setVersionOpened] = useState(false);
+  const openVersionModal = useCallback(() => setVersionOpened(true), [
+    setVersionOpened,
+  ]);
+  const closeVersionModal = useCallback(() => setVersionOpened(false), [
+    setVersionOpened,
+  ]);
   return (
     <VaultLayoutMenuContainer isOpened={isOpened}>
-      <VaultLink to="/dashboard" withRole>
-        <VaultLayoutMenuHeader isOpened={isOpened}>
-          <VaultLogo width={120} />
-        </VaultLayoutMenuHeader>
-      </VaultLink>
-      <VaultLayoutToggle isOpened={isOpened} onToggle={onToggle} />
-      {items.map(item => (
-        <VaultLayoutMenuItem key={item.key} item={item} isMenuOpened={isOpened}>
-          {item.label}
-        </VaultLayoutMenuItem>
-      ))}
+      <Modal isOpened={isVersionOpened} onClose={closeVersionModal}>
+        <Versions onClose={closeVersionModal} />
+      </Modal>
+      <Box>
+        <VaultLink to="/dashboard" withRole>
+          <VaultLayoutMenuHeader isOpened={isOpened}>
+            <VaultLogo width={120} />
+          </VaultLayoutMenuHeader>
+        </VaultLink>
+        <VaultLayoutToggle isOpened={isOpened} onToggle={onToggle} />
+        {items.map(item => (
+          <VaultLayoutMenuItem
+            key={item.key}
+            item={item}
+            isMenuOpened={isOpened}
+          >
+            {item.label}
+          </VaultLayoutMenuItem>
+        ))}
+      </Box>
+      <Box>
+        <VaultVersionLinkContainer>
+          <VersionLink onClick={openVersionModal} />
+        </VaultVersionLinkContainer>
+      </Box>
     </VaultLayoutMenuContainer>
   );
 }
@@ -47,6 +72,11 @@ function VaultLayoutToggle({ isOpened, onToggle }: $Shape<Props>) {
   );
 }
 
+const VaultVersionLinkContainer = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
 const VaultLayoutMenuContainer = styled.div`
   background: white;
   position: fixed;
@@ -55,6 +85,9 @@ const VaultLayoutMenuContainer = styled.div`
   bottom: 0;
   box-shadow: -3px 2px 5px 0 ${colors.legacyTranslucentGrey2};
   border-right: 1px solid ${colors.legacyLightGrey1};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: ${p =>
     p.isOpened
       ? vaultLayoutConfig.MENU_WIDTH
