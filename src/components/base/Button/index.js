@@ -32,6 +32,7 @@ export type ButtonProps = {|
   "data-test"?: string,
   style?: Object,
   isLoadingProp?: boolean,
+  stopPropagation?: boolean,
 |};
 
 export const ButtonBase = styled.div.attrs(p => ({
@@ -80,6 +81,7 @@ function Button(props: ButtonProps, ref: any) {
     disabled,
     isLoadingProp,
     noSpinner,
+    stopPropagation,
     ...rest
   } = props;
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +94,7 @@ function Button(props: ButtonProps, ref: any) {
   );
 
   const handleClick = e => {
-    e && e.stopPropagation();
+    e && stopPropagation && e.stopPropagation();
     if (!onClick) return;
     if (disabled) return;
     setIsLoading(true);
