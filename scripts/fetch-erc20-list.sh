@@ -50,10 +50,10 @@ function fetch_list {
       SIG_FILE="$DIR_NAME/vault_signature.json"
       if [[ -e $SIG_FILE ]]; then
         OUTPUT=$(echo "$OUTPUT" | sed "s/}/, $(grep "account_parameters" "$SIG_FILE") $(grep "signature" "$SIG_FILE") }/g")
+        echo -n "$OUTPUT";
       else
         >&2 echo "Signature not found for $f"
       fi
-      echo -n "$OUTPUT";
     done < <(find "$TMP_DIR/$DIR_TO_SCAN" -name 'common.json')
   )
   FULL=$(echo "$FULL" | sed "s/\(account_parameters\|signature\)/hsm_\1/g")
