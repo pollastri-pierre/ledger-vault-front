@@ -178,6 +178,7 @@ const AddressRow = React.memo(
               type="link"
               size="small"
               data-test="delete_edit"
+              stopPropagation
               onClick={() => onRemove(addr)}
             >
               <MdClose size={13} />
