@@ -91,6 +91,10 @@
     "title": "AddressDuplicateCurrencyAddress",
     "description": "Address already exists. A single occurrence of an address can be created per currency."
   },
+  "InvalidOrMissingAttestation": {
+    "title": "InvalidOrMissingAttestation",
+    "description": "It seems the device does not contain a proper attestation."
+  },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"
