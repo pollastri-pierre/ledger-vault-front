@@ -52,6 +52,7 @@ export default (props: TransactionCreationStepProps<any>) => {
         </LineRow>
       )}
       <CollapsibleText
+        data-test="note_comments"
         label={<Trans i18nKey="transactionCreation:steps.note.noteContent" />}
         content={transaction.note.content || ""}
       />
