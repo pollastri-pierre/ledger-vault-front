@@ -165,13 +165,8 @@ export function successfull_msg_gp() {
 export function successfull_msg_wl() {
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Update Whitelist request was successfully created!",
+    "Update Whitelist request successfully created!",
   );
-  // cy.get("[data-test=success_msg]").should(
-  //  "contain",
-  //  "Your request to update this Whitelist has been submitted for approval.",
-  // );
-
   cy.contains("Done").click();
 }
 
@@ -391,7 +386,6 @@ export function revoke_users(name) {
 }
 
 export function add_whitelist_address(currency, name, address) {
-  cy.get("[data-test=add_address]").click();
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");
