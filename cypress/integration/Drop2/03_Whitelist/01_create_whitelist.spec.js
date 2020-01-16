@@ -37,7 +37,7 @@ describe("Create whitelist", function() {
     add_whitelist_address(
       "Bitcoin",
       "btc 2",
-      "bc1qhh568mfmwu7ymvwhu5e4mttpfg4ehxfpvhjs64",
+      "1Mj9jzHtAyVvM9Y274LCcfLBBBfwRiDK9V",
     );
     add_whitelist_address(
       "Ethereum",
@@ -49,7 +49,7 @@ describe("Create whitelist", function() {
     cy.get("[data-test=approve_button]").click();
     cy.get("[data-test=success_msg]").should(
       "contain",
-      "Whitelist request was successfully created!",
+      "Whitelist request successfully created!",
     );
     cy.contains("Done").click();
   });
