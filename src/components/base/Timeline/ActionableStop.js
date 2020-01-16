@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import colors from "shared/colors";
 import { TimelineStop, useReadOnly } from "components/base/Timeline";
+import type { RuleMultiAuth } from "components/MultiRules/types";
 import { EditForm } from "./EditableStop";
 import type { EditableComponent } from "./types";
 
@@ -17,7 +18,7 @@ type Props<T, P> = {
   onSubmit: T => void,
   onClick?: () => void,
   initialValue: T,
-  isValid: T => boolean,
+  isValid: (T, ?RuleMultiAuth) => boolean,
   isDisabled?: boolean,
   isMandatory?: boolean,
 };
