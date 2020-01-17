@@ -14,7 +14,7 @@ type Props = {
   noBorder?: boolean,
 };
 export default function CollapsibleText(props: Props) {
-  const { label, content, visibleContentLength, noBorder } = props;
+  const { label, content, visibleContentLength, noBorder, ...p } = props;
 
   const isExcerpt = content.length > (visibleContentLength || 60);
 
@@ -32,7 +32,9 @@ export default function CollapsibleText(props: Props) {
       }
     >
       <Box width={350} align={!isExcerpt ? "flex-end" : "initial"}>
-        <Text ellipsis>{content.length ? content : <NotApplicableText />}</Text>
+        <Text ellipsis {...p}>
+          {content.length ? content : <NotApplicableText />}
+        </Text>
       </Box>
     </LineRow>
   );
