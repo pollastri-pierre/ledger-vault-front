@@ -7,6 +7,7 @@ import type {
   RuleType,
   RuleMultiAuth,
   RuleThreshold,
+  RuleMultiAuthStep,
   RuleWhitelist,
   Rule,
 } from "./types";
@@ -37,9 +38,62 @@ export const getThresholdRule = (set: RulesSet): ?RuleThreshold =>
 export const getWhitelistRule = (set: RulesSet): ?RuleWhitelist =>
   getRuleOfType<RuleWhitelist>(set, "WHITELIST");
 
+// https://ledgerhq.atlassian.net/browse/LV-2218
+export const isMaxOutRuleBroken = (rules: RuleMultiAuth) => {
+  // if only 1 step or if step 1 contains internal group it respects the rule
+  if (!rules.data[0] || rules.data[0].group.is_internal) return false;
+
+  let i = 1;
+  let isBroken = false;
+  while (i < rules.data.length && isBroken === false) {
+    const current = rules.data[i];
+    if (current) {
+      isBroken = isRuleBreakingMaxOutQuorumRule(current, rules);
+    }
+    i++;
+  }
+  return isBroken;
+};
+
+export const getMaxQuorum = (
+  rule: RuleMultiAuthStep,
+  rules: RuleMultiAuth,
+): ?number => {
+  if (!rules.data || !rules.data[0] || !rules.data.length === 0) return;
+  if (rules.data[0].group.is_internal) return;
+
+  const groupCreatorId = rules.data[0].group.id;
+  const quorumCreator = rules.data[0].quorum;
+  const maxQuorum = rule.group.members.length - quorumCreator;
+  if (groupCreatorId === rule.group.id) {
+    return maxQuorum;
+  }
+};
+
+export const isRuleBreakingMaxOutQuorumRule = (
+  rule: RuleMultiAuthStep,
+  rules: RuleMultiAuth,
+) => {
+  if (
+    !rules.data[0] ||
+    rules.data[0].group.is_internal ||
+    rules.data[0].group.members.length === 0
+  ) {
+    return false;
+  }
+  const maxQuorum = getMaxQuorum(rule, rules);
+  if (!!maxQuorum && rule.quorum > maxQuorum) {
+    return true;
+  }
+  return false;
+};
+
 export function getRulesSetErrors(set: RulesSet): Error[] {
   const errors = [];
   const multiAuthRule = getMultiAuthRule(set);
+  if (multiAuthRule && isMaxOutRuleBroken(multiAuthRule)) {
+    errors.push(new Error("MAX OUT QUORUM"));
+  }
   if (!multiAuthRule || multiAuthRule.data.length === 0) {
     errors.push(new Error("No MULTI_AUTHORIZATION rule"));
   } else {

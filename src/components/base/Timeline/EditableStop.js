@@ -15,6 +15,7 @@ import {
 import colors from "shared/colors";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
+import type { RuleMultiAuth } from "components/MultiRules/types";
 import type { EditableComponent, DisplayableComponent } from "./types";
 
 type Props<T, P> = {
@@ -29,10 +30,10 @@ type Props<T, P> = {
   DisplayComponent: DisplayableComponent<T, P>,
   Icon: React$ComponentType<*>,
   extraProps?: P,
-  isValid: T => boolean,
+  isValid: (T, ?RuleMultiAuth) => boolean,
 };
 
-const EditableStop = <T, P>({
+const EditableStop = <T, P: Object>({
   label,
   value,
   EditComponent,
@@ -82,6 +83,7 @@ const EditableStop = <T, P>({
       <Container
         readOnly={readOnly}
         data-type="close-bubbles"
+        isValid={isValid(value, extraProps && extraProps.rule)}
         onClick={readOnly ? undefined : handleStartEdit}
       >
         <Box grow>
@@ -97,7 +99,7 @@ const EditableStop = <T, P>({
   );
 };
 
-export const EditForm = <T, P>({
+export const EditForm = <T, P: Object>({
   initialValue,
   onCancel,
   onSubmit,
@@ -112,7 +114,7 @@ export const EditForm = <T, P>({
   label: React$Node,
   EditComponent: EditableComponent<T, P>,
   extraProps?: P,
-  isValid: T => boolean,
+  isValid: (T, ?RuleMultiAuth) => boolean,
 }) => {
   const [value, setValue] = useState(cloneDeep(initialValue));
   const ref = useRef();
@@ -139,7 +141,7 @@ export const EditForm = <T, P>({
         <Button
           type="filled"
           variant="primary"
-          disabled={!isValid(value)}
+          disabled={!isValid(value, extraProps && extraProps.rule)}
           onClick={() => onSubmit(value)}
           data-test="approve_button"
         >
@@ -183,7 +185,8 @@ const Container = styled(Box).attrs({
   margin: -10px;
   padding: 10px;
   border-radius: 4px;
-  border: 1px dashed transparent;
+  border: ${p =>
+    p.isValid ? "1px dashed transparent" : `1px dashed ${colors.form.error}`};
   ${Actions} {
     visibility: hidden;
     pointer-events: none;
@@ -194,7 +197,7 @@ const Container = styled(Box).attrs({
   &:hover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.02);
-    border-color: ${colors.form.border};
+    border-color: ${p.isValid ? colors.form.border : colors.form.error};
     ${Actions} {
       visibility: visible;
       pointer-events: auto;
