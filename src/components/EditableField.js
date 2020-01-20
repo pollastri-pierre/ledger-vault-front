@@ -55,7 +55,11 @@ export default function EditableField(props: Props) {
   };
 
   const toggleEditMode = () => {
-    setEditMode(!editMode);
+    const isEditMode = !editMode;
+    setEditMode(isEditMode);
+    if (!isEditMode) {
+      setLocalValue(value);
+    }
   };
 
   const onClick = async () => {
@@ -80,24 +84,18 @@ export default function EditableField(props: Props) {
   return (
     <Box horizontal align="center" flow={10}>
       {!editMode ? (
-        <>
-          <Box flow={10} horizontal>
-            {requestStatus === "success" && (
-              <Box horizontal flow={5} justify="center" align="center">
-                <FaCheck size={11} color={colors.green} />
-                <Text i18nKey="common:saved" color={colors.green} />
-              </Box>
-            )}
-            <Text>{localValue}</Text>
-          </Box>
-          <FaPen
-            data-test="edit-icon"
-            style={styles.cursor}
-            color={colors.lead}
-            size={11}
-            onClick={toggleEditMode}
-          />
-        </>
+        <Box flow={10} horizontal align="center">
+          {requestStatus === "success" && (
+            <Box horizontal flow={5} justify="center" align="center">
+              <FaCheck size={11} color={colors.green} />
+              <Text i18nKey="common:saved" color={colors.green} />
+            </Box>
+          )}
+          <Text>{localValue}</Text>
+          <Button type="link" size="tiny" square onClick={toggleEditMode}>
+            <FaPen style={styles.cursor} color={colors.lead} size={11} />
+          </Button>
+        </Box>
       ) : (
         <Form onSubmit={onClick}>
           <Box horizontal align="center" flow={5}>
