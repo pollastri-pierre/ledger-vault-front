@@ -10,6 +10,7 @@ import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import AccountName from "components/AccountName";
+import ConvertEIP55 from "components/ConvertEIP55";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import InputAddress from "components/TransactionCreationFlow/InputAddress";
@@ -76,6 +77,12 @@ const TransactionCreationAmount = (
       }),
     );
   }
+
+  const handleChangeRecipient = recipient =>
+    onChangeTransaction(
+      bridge.editTransactionRecipient(account, transaction, recipient),
+    );
+
   return (
     <Box flow={20}>
       <Box horizontal justify="space-between" flow={20}>
@@ -106,6 +113,12 @@ const TransactionCreationAmount = (
           />
         </Box>
       </Box>
+      {currency.family === "ethereum" && (
+        <ConvertEIP55
+          value={transaction.recipient}
+          onChange={handleChangeRecipient}
+        />
+      )}
       <Box horizontal flow={20} justify="space-between">
         <Box>
           <Label>

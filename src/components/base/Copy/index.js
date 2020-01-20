@@ -14,10 +14,11 @@ import colors from "shared/colors";
 type Props = {
   text: string,
   children?: React$Node,
+  bg?: string,
 };
 
 export default function Copy(props: Props) {
-  const { text, children } = props;
+  const { text, children, bg } = props;
   const [copied, setCopied] = useState(false);
   const isUnmounted = useRef();
 
@@ -36,7 +37,7 @@ export default function Copy(props: Props) {
   }, []);
 
   return (
-    <Container>
+    <Container bg={bg}>
       <Text data-test="Copy_value" style={textStyles}>
         {children || text}
       </Text>
@@ -61,7 +62,7 @@ const textStyles = {
 
 const Container = styled.div`
   display: flex;
-  background: ${colors.form.bg};
+  background: ${p => p.bg || colors.form.bg};
   border: 1px solid ${colors.legacyLightGrey1};
   border-radius: 4px;
   padding: 2px;

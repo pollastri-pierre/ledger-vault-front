@@ -49,6 +49,9 @@ const colors = {
   translucentOcean: "rgb(39, 208, 226, 0.2)",
   translucentGrenade: "rgb(234, 46, 73, 0.1)",
 
+  helperBg: "#fffde7",
+  helperTitle: "#a99582",
+
   // NEW COLORS
   bgHover: opacity("#1ea7fd", 0.03),
   bgActive: opacity("#1ea7fd", 0.06),
