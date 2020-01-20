@@ -297,9 +297,9 @@ const UserExplanation = () => (
   </Box>
 );
 
-function resolveRedirectURL(search: string) {
+function resolveRedirectURL(search: string): string | null {
   const q = queryString.parse(search);
-  return q.redirectTo || null;
+  return q.redirectTo ? q.redirectTo.toString() : null;
 }
 
 export default withRouter(UpdateApp);

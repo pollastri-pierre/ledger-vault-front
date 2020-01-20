@@ -67,6 +67,7 @@ export default function backendDecorator(mocks: Mock[]) {
 }
 
 function match(mock, url) {
+  // $FlowFixMe
   if (isRegExp(mock.url) && mock.url.test(url)) return true;
   return url === mock.url;
 }
