@@ -2,7 +2,6 @@
 
 import memoize from "lodash/memoize";
 import keyBy from "lodash/keyBy";
-import sortBy from "lodash/sortBy";
 import { listCryptoCurrencies as listCC } from "@ledgerhq/live-common/lib/currencies";
 import type {
   CryptoCurrencyIds,
@@ -12,10 +11,18 @@ import { getCryptoCurrencyIcon as getIcon } from "@ledgerhq/live-common/lib/reac
 
 import type { ERC20Token, CurrencyOrToken } from "data/types";
 
-const rawERC20List =
-  window.config.ERC20_LIST === "dev"
-    ? require("data/erc20-list.dev.json")
-    : require("data/erc20-list.json");
+export const formatRawERC20 = (
+  data: Array<Array<string>>,
+): Array<$Shape<ERC20Token>> =>
+  data.map(arr => ({
+    ticker: arr[0],
+    name: arr[1],
+    blockchain_name: arr[2],
+    contract_address: arr[3],
+    decimals: parseInt(arr[4], 10),
+    hsm_account_parameters: arr[5],
+    hsm_signature: arr[6],
+  }));
 
 const supported: CryptoCurrencyIds[] = [
   "bitcoin",
@@ -77,12 +84,7 @@ export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
   },
 );
 
-export const listERC20Tokens: () => ERC20Token[] = memoize((): ERC20Token[] =>
-  sortBy(
-    rawERC20List.filter(t => t.hsm_signature || t.hsm_account_parameters),
-    "name",
-  ),
-);
+export const listERC20Tokens = () => window.erc20 || [];
 
 export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) =>
   !!v && "contract_address" in v;
@@ -101,8 +103,9 @@ export const getCurrencyIdFromBlockchainName = (blockchain: string) =>
 export const getCryptoCurrencyIcon = (currency: CryptoCurrency) =>
   getIcon(currency);
 
-const erc20TokensByContractAddress = keyBy(rawERC20List, "contract_address");
+const erc20TokensByContractAddress = () =>
+  keyBy(window.erc20 || [], "contract_address");
 
 export const getERC20TokenByContractAddress = (
   contractAddress: string,
-): ?ERC20Token => erc20TokensByContractAddress[contractAddress] || null;
+): ?ERC20Token => erc20TokensByContractAddress()[contractAddress] || null;
