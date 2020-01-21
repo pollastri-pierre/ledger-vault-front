@@ -27,6 +27,6 @@
   "finishEditTitle": "Account request successfully created!",
   "finishEditDesc": "Your request to edit this account has been submitted for approval.",
   "multirules": {
-    "delete_empty_rule": "Some rules are empty"
+    "delete_empty_rule": "Rules left empty will be ignored"
   }
 }

@@ -32,6 +32,7 @@ type Props = {
   options?: Option[] | GroupedOption[],
   components?: Object,
   styles?: Object,
+  selectRef?: React$ElementRef<any>,
 };
 
 const styles = {
@@ -168,7 +169,14 @@ const customStyles = {
 
 class Select extends PureComponent<Props> {
   render() {
-    const { async, creatable, components, styles, ...props } = this.props;
+    const {
+      async,
+      creatable,
+      components,
+      styles,
+      selectRef,
+      ...props
+    } = this.props;
     const Comp = creatable
       ? CreatableReactSelect
       : async
@@ -177,6 +185,7 @@ class Select extends PureComponent<Props> {
 
     return (
       <Comp
+        ref={selectRef}
         styles={{ ...customStyles, ...styles }}
         components={{ ...customComponents, ...components }}
         {...props}

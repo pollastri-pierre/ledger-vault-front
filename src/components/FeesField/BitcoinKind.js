@@ -26,6 +26,7 @@ import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import { getFees } from "utils/transactions";
 import { usePrevious } from "utils/customHooks";
+import RecalculateButton from "./RecalculateButton";
 
 import FeeSelect from "./FeeSelect";
 
@@ -61,60 +62,71 @@ function FeesBitcoinKind(props: Props) {
     bridge,
     transaction.recipient,
     transaction.amount,
+    transaction.feeLevel,
   ];
 
+  const reComputeFees = () => {
+    onChangeTransaction({
+      ...transaction,
+      estimatedFees: null,
+      estimatedMaxAmount: null,
+      error: null,
+    });
+    effect();
+  };
+
+  const effect = async unsubscribed => {
+    const nonce = ++instanceNonce.current;
+    try {
+      const recipientError = await bridge.getRecipientError(
+        restlay,
+        currency,
+        transaction.recipient,
+      );
+
+      if (nonce !== instanceNonce.current || unsubscribed) return;
+      if (recipientError) {
+        setFeesStatus("idle");
+        return;
+      }
+
+      setFeesStatus("fetching");
+
+      const txGetFees = {
+        fees_level: feeLevel || "normal",
+        amount: transaction.amount,
+        recipient: transaction.recipient || "",
+      };
+      const estimatedFees = await getFees(account, txGetFees, restlay);
+      if (nonce !== instanceNonce.current || unsubscribed) return;
+
+      onChangeTransaction({
+        ...transaction,
+        estimatedFees: estimatedFees.fees,
+        estimatedMaxAmount: estimatedFees.max_amount,
+        error: null,
+      });
+      setFeesStatus("idle");
+    } catch (err) {
+      console.error(err); // eslint-disable-line no-console
+
+      const error = remapError(err);
+
+      if (!(error instanceof AmountTooHigh)) {
+        setFeesError(error);
+      }
+      setFeesStatus("error");
+
+      onChangeTransaction({
+        ...transaction,
+        error,
+        estimatedFees: null,
+        estimatedMaxAmount: null,
+      });
+    }
+  };
   useEffect(() => {
     let unsubscribed = false;
-    const effect = async () => {
-      const nonce = ++instanceNonce.current;
-      try {
-        const recipientError = await bridge.getRecipientError(
-          restlay,
-          currency,
-          transaction.recipient,
-        );
-
-        if (nonce !== instanceNonce.current || unsubscribed) return;
-        if (recipientError) {
-          setFeesStatus("idle");
-          return;
-        }
-
-        setFeesStatus("fetching");
-
-        const txGetFees = {
-          fees_level: feeLevel || "normal",
-          amount: transaction.amount,
-          recipient: transaction.recipient || "",
-        };
-        const estimatedFees = await getFees(account, txGetFees, restlay);
-        if (nonce !== instanceNonce.current || unsubscribed) return;
-
-        onChangeTransaction({
-          ...transaction,
-          estimatedFees: estimatedFees.fees,
-          estimatedMaxAmount: estimatedFees.max_amount,
-          error: null,
-        });
-        setFeesStatus("idle");
-      } catch (err) {
-        console.error(err); // eslint-disable-line no-console
-
-        const error = remapError(err);
-
-        if (!(error instanceof AmountTooHigh)) {
-          setFeesError(error);
-        }
-        setFeesStatus("error");
-
-        onChangeTransaction({
-          ...transaction,
-          error,
-          estimatedFees: null,
-          estimatedMaxAmount: null,
-        });
-      }
-    };
 
     const feesInvalidated =
       (transaction.recipient !== prevRecipient ||
@@ -123,7 +135,7 @@ function FeesBitcoinKind(props: Props) {
       !transaction.amount.isEqualTo(0);
 
     if (feesInvalidated) {
-      effect();
+      effect(unsubscribed);
     }
     return () => {
       unsubscribed = true;
@@ -140,9 +152,14 @@ function FeesBitcoinKind(props: Props) {
   return (
     <Box horizontal flow={20}>
       <Box noShrink grow>
-        <Label>
-          <Trans i18nKey="transactionCreation:steps.account.fees.title" />
-        </Label>
+        <Box horizontal align="flex-start" flow={10}>
+          <Label>
+            <Trans i18nKey="transactionCreation:steps.account.fees.title" />
+          </Label>
+          {(transaction.estimatedFees || feesStatus === "error") && (
+            <RecalculateButton onClick={reComputeFees} />
+          )}
+        </Box>
         <Box flow={20}>
           <Box horizontal justify="space-between">
             <Box width={180}>

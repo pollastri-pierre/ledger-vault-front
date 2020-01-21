@@ -114,7 +114,7 @@ export function create_user(username, userID, role) {
   );
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "You can now share the registration URL with the new user.",
+    "You can now share the registration URL with the new user:",
   );
   cy.get("[data-test=close]").click();
 }
@@ -165,13 +165,8 @@ export function successfull_msg_gp() {
 export function successfull_msg_wl() {
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Update Whitelist request was successfully created!",
+    "Update Whitelist request successfully created!",
   );
-  // cy.get("[data-test=success_msg]").should(
-  //  "contain",
-  //  "Your request to update this Whitelist has been submitted for approval.",
-  // );
-
   cy.contains("Done").click();
 }
 
@@ -213,7 +208,7 @@ export function success_edit_account() {
   );
   cy.get("[data-test=success_msg]").should(
     "contain",
-    "Your request to edit an account has been submitted for approval.",
+    "Your request to edit this account has been submitted for approval.",
   );
   cy.contains("Done").click();
 }
@@ -391,7 +386,6 @@ export function revoke_users(name) {
 }
 
 export function add_whitelist_address(currency, name, address) {
-  cy.get("[data-test=add_address]").click();
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");

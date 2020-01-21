@@ -32,5 +32,7 @@
   },
 
   "removeRulesSetConfirm": "Are you sure you want to remove this rule?",
-  "removeRulesSetYes": "Yes, remove rule"
+  "removeRulesSetYes": "Yes, remove rule",
+  "cannot_maxout_quorum": "You can’t select more than 1 approval because this group has also been selected in the Creator step",
+  "cannot_maxout_quorum_plural": "You can’t select more than {{nb}} approvals because this group has also been selected in the Creator step"
 }

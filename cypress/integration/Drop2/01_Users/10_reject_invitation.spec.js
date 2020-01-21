@@ -18,6 +18,7 @@ describe("reject invitation", function() {
     // Reject Operator Invitation
     cy.contains("Nicole Smith").click();
     cy.get("[data-test=reject-button]").click();
+    cy.get("[data-test=Confirm]").click();
     cy.get("[data-test=successfull_message]").should(
       "contain",
       "Successfully rejected",
@@ -27,6 +28,7 @@ describe("reject invitation", function() {
     // Reject Admin Invitation
     cy.contains("Admin 4").click();
     cy.get("[data-test=reject-button]").click();
+    cy.get("[data-test=Confirm]").click();
     cy.get("[data-test=successfull_message]").should(
       "contain",
       "Successfully rejected",

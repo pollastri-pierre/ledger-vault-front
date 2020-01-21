@@ -1,15 +1,15 @@
 import { login, logout, route, approve_tx } from "../../../functions/actions";
 
-describe("Test on Operator ", function() {
+describe("Test create tx and approve it by Operator", function() {
   beforeEach(function() {
-    login(10);
+    login(22);
   });
 
   afterEach(function() {
     logout();
   });
 
-  it("Create a XRP tx", () => {
+  it("Create a XRP Transaction", () => {
     cy.server();
     route();
     cy.get("[data-test=menuItem-new-transaction]").click();
@@ -21,19 +21,15 @@ describe("Test on Operator ", function() {
       .type("{enter}");
     cy.get("[data-test=input_amount]")
       .eq(0)
-      .type("1", { force: true })
+      .type("0.0002", { force: true })
       .type("{enter}");
-    cy.wait(2500);
-    cy.get("[data-test=tag]")
-      .type("12345", { force: true })
-      .type("{enter}");
+    cy.wait(3500);
+    cy.get("[data-test=tag]").type("98766", { force: true });
     cy.contains("Next").click();
-    cy.get("[data-test=title_tx]")
-      .type("Cypress TX for XRP", { force: true })
-      .type("{enter}");
-    cy.get("[data-test=description_tx]")
-      .type("Cypress is the best sending some XRP money love", { force: true })
-      .type("{enter}");
+    cy.get("[data-test=title_tx]").type("Cypress TX for XRP", { force: true });
+    cy.get(
+      "[data-test=description_tx]",
+    ).type("Cypress is the best sending some XRP money love", { force: true });
     cy.contains("Next").click();
     cy.get("[data-test=note_comments]")
       .contains("Cypress is the best sending some XRP money love")
@@ -62,11 +58,11 @@ describe("Test on Operator ", function() {
     approve_tx();
   });
 
-  it("Approved tx by Charles", () => {
+  it("Approved tx by Thomas", () => {
     cy.server();
     route();
     logout();
-    login(22);
+    login(12);
     approve_tx();
   });
 });

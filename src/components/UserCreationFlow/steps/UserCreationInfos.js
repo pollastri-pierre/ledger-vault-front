@@ -108,7 +108,7 @@ function UserCreationInfo(props: Props) {
   );
 
   return (
-    <Box grow>
+    <Box grow flow={15}>
       <Form onSubmit={onEnter}>{inner}</Form>
       {payload.role === "ADMIN" && (
         <InfoBox type="warning" withIcon>

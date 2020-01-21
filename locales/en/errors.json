@@ -4,7 +4,7 @@
     "title": "Invalid number of approvals"
   },
   "InvalidDataDevice": {
-    "description": "Invalid data sent to the device",
+    "description": "Invalid data sent to the device.",
     "title": "Invalid data"
   },
   "NoChannelForDevice": {
@@ -25,7 +25,7 @@
   },
   "InvalidAddress": {
     "title": "Invalid address",
-    "description": "This is not a valid {{ticker}} address"
+    "description": "This {{ticker}} address is invalid."
   },
   "AddressShouldNotBeSegwit": {
     "title": "Address is SegWit",
@@ -60,12 +60,12 @@
     "description": "Auto-verification not available: This address isn't EIP-55 compliant. Verify it carefully before continuing."
   },
   "InvalidAddressBecauseDestinationIsAlsoSource": {
-    "title": "It's not possible to send funds to yourself.",
+    "title": "Invalid address",
     "description": "It's not possible to send funds to yourself."
   },
   "UserInvitationAlreadyUsed": {
-    "title": "Invite link not available",
-    "description": "The invite link has already been used"
+    "title": "Invitation link not available",
+    "description": "The invitation link has already been used."
   },
   "GenericError": {
     "description": "An error occurred. Please try again or contact Support.",
@@ -77,19 +77,23 @@
   },
   "DeviceNotOnDashboard": {
     "title": "Device not on dashboard",
-    "description": "The device is not on dashboard. Please close the Vault app."
+    "description": "The device is not on the Dashboard. Please close the Vault app."
   },
   "DeviceOnDashboardExpected": {
     "title": "User denied manager",
-    "description": "Please allow Ledger manager on your device"
+    "description": "Please allow Ledger manager on your device."
   },
   "AddressDuplicateNameCurrency": {
     "title": "AddressDuplicateNameCurrency",
-    "description": "This name is already used by an address in the same currency."
+    "description": "Name already exists. Address names must be unique per currency."
   },
   "AddressDuplicateCurrencyAddress": {
     "title": "AddressDuplicateCurrencyAddress",
-    "description": "Address already used in this currency."
+    "description": "Address already exists. A single occurrence of an address can be created per currency."
+  },
+  "InvalidOrMissingAttestation": {
+    "title": "InvalidOrMissingAttestation",
+    "description": "It seems the device does not contain a proper attestation."
   },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",

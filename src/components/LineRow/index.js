@@ -15,7 +15,7 @@ export const BoxLined = styled(Box)`
     border-top: 1px solid ${colors.argile};
   }
 `;
-type CollapsibleState = "collapsed" | "open";
+type CollapsibleState = "collapsed" | "open" | null;
 
 type LineRowProps = {
   label: React$Node,

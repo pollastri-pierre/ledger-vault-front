@@ -24,6 +24,7 @@ import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion, getU2FPublicKey } from "device/interactions/common";
 import {
   INVALID_DATA,
+  INVALID_OR_MISSING_ATTESTATION,
   DEVICE_REJECT_ERROR_CODE,
   getPreferredTransport,
 } from "device";
@@ -64,7 +65,11 @@ type State = {
 // always logs apdu for now
 listen(log => console.log(`${log.type}: ${log.message ? log.message : ""}`)); // eslint-disable-line no-console
 
-const DO_NOT_RETRY = [INVALID_DATA, DEVICE_REJECT_ERROR_CODE];
+const DO_NOT_RETRY = [
+  INVALID_DATA,
+  DEVICE_REJECT_ERROR_CODE,
+  INVALID_OR_MISSING_ATTESTATION,
+];
 
 class DeviceInteraction extends PureComponent<Props, State> {
   state = {

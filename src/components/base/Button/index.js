@@ -24,12 +24,15 @@ export type ButtonProps = {|
   type?: ButtonType,
   variant?: ButtonVariant,
   disabled?: boolean,
+  noSpinner?: boolean,
   onClick?: Function,
   size?: ButtonSize,
   circular?: boolean,
+  square?: boolean,
   "data-test"?: string,
   style?: Object,
   isLoadingProp?: boolean,
+  stopPropagation?: boolean,
 |};
 
 export const ButtonBase = styled.div.attrs(p => ({
@@ -37,7 +40,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   py: getPaddingY(p),
   color: "grey",
   bg: "transparent",
-  tabIndex: 0,
+  tabIndex: p.disabled ? -1 : 0,
 }))`
   user-select: none;
   ${space};
@@ -47,6 +50,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   border: none;
   display: flex;
   justify-content: center;
+  flex-shrink: 0;
   align-items: center;
   border-radius: ${p => (p.circular ? "50%" : "2px")};
   cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
@@ -62,7 +66,7 @@ export const ButtonBase = styled.div.attrs(p => ({
     ${p => getStyles(p, "hover")};
   }
   &:focus {
-    ${p => (p.disabled ? "" : getStyles(p, "focus"))};
+    ${p => (p.disabled || p.isLoading ? "" : getStyles(p, "focus"))};
   }
   &:active {
     ${p => getStyles(p, "active")};
@@ -71,7 +75,15 @@ export const ButtonBase = styled.div.attrs(p => ({
 
 function Button(props: ButtonProps, ref: any) {
   const isUnmounted = useRef(false);
-  const { onClick, children, disabled, isLoadingProp, ...rest } = props;
+  const {
+    onClick,
+    children,
+    disabled,
+    isLoadingProp,
+    noSpinner,
+    stopPropagation,
+    ...rest
+  } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
@@ -81,7 +93,8 @@ function Button(props: ButtonProps, ref: any) {
     [],
   );
 
-  const handleClick = () => {
+  const handleClick = e => {
+    e && stopPropagation && e.stopPropagation();
     if (!onClick) return;
     if (disabled) return;
     setIsLoading(true);
@@ -111,7 +124,7 @@ function Button(props: ButtonProps, ref: any) {
       onKeyUp={handleKeyUp}
     >
       <Container isLoading={isLoading || isLoadingProp}>{children}</Container>
-      {(isLoading || isLoadingProp) && (
+      {(isLoading || isLoadingProp) && !noSpinner && (
         <Loader size={getLoaderSize(props)} style={{ position: "absolute" }} />
       )}
     </ButtonBase>

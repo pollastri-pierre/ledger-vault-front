@@ -7,6 +7,7 @@ import { Trans } from "react-i18next";
 import Box from "components/base/Box";
 import NotApplicableText from "components/base/NotApplicableText";
 import LineRow from "components/LineRow";
+import CollapsibleText from "components/CollapsibleText";
 import OverviewTransaction from "components/OverviewTransaction";
 import AccountName from "components/AccountName";
 import Amount from "components/Amount";
@@ -21,6 +22,7 @@ export default (props: TransactionCreationStepProps<any>) => {
   const isRipple = account.account_type === "Ripple";
   const fees = bridge.getFees(account, transaction);
   const totalSpent = bridge.getTotalSpent(account, transaction);
+
   return (
     <Box>
       <OverviewTransaction
@@ -49,13 +51,11 @@ export default (props: TransactionCreationStepProps<any>) => {
           <span data-test="note_title">{transaction.note.title}</span>
         </LineRow>
       )}
-      {transaction.note.content && (
-        <LineRow
-          label={<Trans i18nKey="transactionCreation:steps.note.noteContent" />}
-        >
-          <span data-test="note_comments">{transaction.note.content}</span>
-        </LineRow>
-      )}
+      <CollapsibleText
+        data-test="note_comments"
+        label={<Trans i18nKey="transactionCreation:steps.note.noteContent" />}
+        content={transaction.note.content || ""}
+      />
       <LineRow
         label={<Trans i18nKey="transactionCreation:steps.confirmation.fees" />}
       >

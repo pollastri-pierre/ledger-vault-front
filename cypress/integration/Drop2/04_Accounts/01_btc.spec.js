@@ -28,8 +28,8 @@ describe("Test Case for Account", function() {
     add_account_name("Bitcoin", "Coinhy.pe");
     select_creator_group("APAC");
     add_amount_range("0.0000001", "1");
-    add_whitelist(0, "List Apac");
-    add_approval_step_group(0, "New EMEA");
+    add_whitelist(0, "List North ASIA");
+    add_approval_step_group(0, "Key accounts Ops");
     cy.contains("Next").click();
     cy.get("[data-test=approve_button]").click();
     success_creation_account();

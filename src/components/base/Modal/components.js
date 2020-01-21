@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -103,11 +103,24 @@ const ModalCloseContainer = styled.div`
   }
 `;
 
-export const ModalClose = ({ onClick }: { onClick?: () => void }) => (
-  <ModalCloseContainer onClick={onClick} data-test="close">
-    <IconClose size={16} />
-  </ModalCloseContainer>
-);
+export const ModalClose = ({ onClick }: { onClick?: () => void }) => {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.keyCode === 27) {
+        onClick && onClick();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+  }, [onClick]);
+  return (
+    <ModalCloseContainer onClick={onClick} data-test="close">
+      <IconClose size={16} />
+    </ModalCloseContainer>
+  );
+};
 
 const RichModalHeaderContainer = styled.div`
   border-top-left-radius: 4px;

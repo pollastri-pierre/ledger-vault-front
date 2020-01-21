@@ -3,7 +3,7 @@
   "need_approval_by_other": "This account is pending to be approved. Additional approvals are required to finalize the request. Go to the <0>Dashboard</0> to track the request.",
   "approved_still_pending": "You have already approved this account. The account will be created once the necessary amount of  Administrators have approved it.",
   "balance": "Balance",
-  "permission": "Permission",
+  "permission": "Role",
   "countervalue": "Countervalue",
   "erc20NoCountervalue": "Countervalue not available for this token",
   "erc20DisabledCountervalue": "Countervalue disabled for this token",
@@ -37,7 +37,7 @@
     "viewOnly": "View-only account",
     "update": "Update needed"
   },
-  "view_only_provide_rules": "provide transaction rules",
+  "view_only_provide_rules": "Provide transaction rules",
   "not_active_warning": "Account is approved but not activated yet",
   "view_only_warning": "This account is view-only. Transactions cannot be created before you provide transaction rules.",
   "updated_provide_rule": "Provide transaction rules",

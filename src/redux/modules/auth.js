@@ -5,39 +5,29 @@ import network from "network";
 export const LOGOUT = "auth/LOGOUT";
 export const LOGIN = "auth/LOGIN";
 
-const TOKEN_NAME = "token";
-
-export function getCookieToken() {
-  // avoid fail in test env
-  if (document.cookie) {
-    const cookieToken = getCookie(TOKEN_NAME);
-    if (cookieToken && cookieToken !== "") return cookieToken;
-  }
-  return null;
-}
-
-export function removeTokenFromCookies() {
-  removeCookie(TOKEN_NAME);
-}
-
-export function setTokenToCookies(token: string) {
-  document.cookie = `${TOKEN_NAME}=${token}; path=/`;
-}
-
 export const logout = () => async (dispatch: Dispatch<*>) => {
   try {
     await network(`/authentications/logout`, "POST");
-    removeTokenFromCookies();
-  } catch (e) {
-    removeTokenFromCookies();
+  } catch {
+    // We tried to logout and it failed, but no need to raise anything.
   }
   dispatch({
     type: LOGOUT,
   });
 };
 
-export function login(token: string) {
-  setTokenToCookies(token);
+export const checkLogin = () => async (dispatch: Dispatch<*>) => {
+  try {
+    const res = await network(`/authentications/status`, "GET");
+    if (res.authenticated === true) {
+      dispatch(login());
+    }
+  } catch {
+    // do nothing if network call fail. isAuthenticated remains false.
+  }
+};
+
+export function login() {
   return { type: LOGIN };
 }
 
@@ -47,7 +37,10 @@ export type State = {
 
 export default function reducer(
   state: State = {
-    isAuthenticated: !!getCookieToken(),
+    // Since we don't control the auth token (handled by the back)
+    // we assume that we are authenticated by default, fetch the
+    // requested page, and only set isAuth to false in case of fail
+    isAuthenticated: false,
   },
   action: Object,
 ) {
@@ -59,18 +52,4 @@ export default function reducer(
     default:
       return state;
   }
-}
-
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2)
-    return parts
-      .pop()
-      .split(";")
-      .shift();
-}
-
-function removeCookie(name) {
-  document.cookie = `${name}= ; path=/ ; expires = Thu, 01 Jan 1970 00:00:00 GMT`;
 }

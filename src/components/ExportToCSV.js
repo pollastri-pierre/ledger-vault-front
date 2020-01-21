@@ -9,6 +9,7 @@ import { FaDownload } from "react-icons/fa";
 import type { ObjectParameters } from "query-string";
 
 import TriggerErrorNotification from "components/TriggerErrorNotification";
+import Disabled from "components/Disabled";
 import Box from "components/base/Box";
 import FakeLink from "components/base/FakeLink";
 
@@ -49,6 +50,7 @@ type Props = {
 export default function ExportToCSV(props: Props) {
   const { queryParams, entityType } = props;
   const { t } = useTranslation();
+  const [isPending, setPending] = useState(false);
   const [error, setError] = useState<?Error>(null);
 
   const config = configByEntityType[entityType];
@@ -59,11 +61,11 @@ export default function ExportToCSV(props: Props) {
       t(`exportCSV:columns.${entityType}:${col}`),
     );
     try {
+      setPending(true);
       const res = await network(
         `${config.endpoint}/export`,
         "POST",
         { columns: config.columns, params, labels },
-        undefined,
         { noParse: true },
       );
       const blob = await res.blob();
@@ -76,18 +78,22 @@ export default function ExportToCSV(props: Props) {
       a.remove();
     } catch (err) {
       setError(err);
+    } finally {
+      setPending(false);
     }
   };
 
   return (
     <>
       {error && <TriggerErrorNotification error={error} />}
-      <FakeLink onClick={onExport}>
-        <Box horizontal align="center" flow={5}>
-          <FaDownload />
-          <span>Export to CSV</span>
-        </Box>
-      </FakeLink>
+      <Disabled disabled={isPending}>
+        <FakeLink onClick={onExport}>
+          <Box horizontal align="center" flow={5}>
+            <FaDownload />
+            <span>{isPending ? "Exporting..." : "Export to CSV"}</span>
+          </Box>
+        </FakeLink>
+      </Disabled>
     </>
   );
 }

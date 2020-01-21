@@ -7,7 +7,10 @@
       "balance": "Balance",
       "amount": "Amount",
       "total": "Total",
-      "fees": { "title": "Transaction fees" },
+      "fees": {
+        "title": "Transaction fees",
+        "recompute": "Recalculate the fees"
+      },
       "select": "Select address",
       "recipient": "Recipient address",
       "feesInfos": "To have your transaction confirmed faster, select a higher fee.",
