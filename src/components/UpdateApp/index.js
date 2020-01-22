@@ -11,7 +11,7 @@ import { setEnv } from "@ledgerhq/live-common/lib/env";
 import { Trans } from "react-i18next";
 import type { Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
-import { TransportWebUSBGestureRequired } from "@ledgerhq/errors";
+import { DisconnectedDeviceDuringOperation } from "@ledgerhq/errors";
 
 import {
   withDeviceInfo,
@@ -22,7 +22,7 @@ import {
 import Logs from "device/Logs";
 import type { Log as LogType } from "device/Logs";
 
-import { DeviceNotOnDashboard, remapError } from "utils/errors";
+import { remapError } from "utils/errors";
 import TranslatedError from "components/TranslatedError";
 import VaultCentered from "components/VaultCentered";
 import Box from "components/base/Box";
@@ -137,14 +137,7 @@ const reducer = (state: State, { type, payload }: Action) => {
     case "RESET":
       return initialState;
     case "SET_ERROR":
-      let error = remapError(payload); // eslint-disable-line no-case-declarations
-
-      // let's assume if they have TransportWebUSBGestureRequired, it means they are
-      // in the old app, that only have U2F support
-      if (error instanceof TransportWebUSBGestureRequired)
-        error = new DeviceNotOnDashboard();
-
-      return { ...state, step: "error", error };
+      return { ...state, step: "error", error: remapError(payload) };
     case "SET_STEP":
       return { ...state, step: payload };
     case "SET_PROGRESS":
@@ -185,7 +178,11 @@ const UpdateApp = ({ history, location }: Props) => {
 
   const setError = err => {
     dispatch({ type: "SET_ERROR", payload: err });
-    addLog("An error occured. Stopping.");
+    if (err instanceof DisconnectedDeviceDuringOperation) {
+      addLog("Device rebooting...");
+    } else {
+      addLog("An error occured. Stopping.");
+    }
   };
 
   const params = { addLog, setStep, subscribeProgress };
@@ -271,17 +268,27 @@ type DisplayErrorProps = {
   onRetry: () => void,
 };
 
-const DisplayError = ({ error, onRetry }: DisplayErrorProps) =>
-  error ? (
+const DisplayError = ({ error, onRetry }: DisplayErrorProps) => {
+  if (!error) return null;
+  const isDisconnected = error instanceof DisconnectedDeviceDuringOperation;
+  return (
     <>
-      <InfoBox type="error">
-        <TranslatedError error={error} field="description" />
+      <InfoBox type={isDisconnected ? "info" : "error"}>
+        {isDisconnected ? (
+          <span>
+            The device is rebooting or has been disconnected. Please click{" "}
+            <b>Continue</b> when the device is ready.
+          </span>
+        ) : (
+          <TranslatedError error={error} field="description" />
+        )}
       </InfoBox>
       <Button type="filled" onClick={onRetry}>
-        <Text i18nKey="update:retry" />
+        {isDisconnected ? "Continue" : <Text i18nKey="update:retry" />}
       </Button>
     </>
-  ) : null;
+  );
+};
 
 const UserExplanation = () => (
   <Box>
