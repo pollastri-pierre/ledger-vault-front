@@ -1,0 +1,8 @@
+{
+  "title": "Address must be converted",
+  "desc": "This address isn't EIP-55 compliant and must be converted before you can create the transaction. For more information:",
+  "desc2": "The converted address is:",
+  "linkURL": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md",
+  "linkLabel": "EIP-55 specification",
+  "cta": "Use converted address"
+}
