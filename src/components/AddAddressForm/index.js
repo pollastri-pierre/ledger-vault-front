@@ -18,6 +18,7 @@ import SelectCurrency from "components/SelectCurrency";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import { getBridgeForCurrency } from "bridge";
 import { InputText, Label, Form } from "components/base/form";
+import ConvertEIP55 from "components/ConvertEIP55";
 import type { Address } from "data/types";
 import colors, { opacity } from "shared/colors";
 import connectData from "restlay/connectData";
@@ -389,6 +390,11 @@ const AddressForm = connectData(
             </Box>
           </Box>
         </Box>
+        {currency && currency.family === "ethereum" && (
+          <div style={{ margin: "5px 11px 5px 0px" }}>
+            <ConvertEIP55 onChange={setAddress} value={addr.address} />
+          </div>
+        )}
       </Form>
     );
   },
