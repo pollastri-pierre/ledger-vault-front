@@ -8,6 +8,7 @@ import DoubleTilde from "components/icons/DoubleTilde";
 import FakeInputContainer from "components/base/FakeInputContainer";
 
 import Box from "components/base/Box";
+import ConvertEIP55 from "components/ConvertEIP55";
 import InfoBox from "components/base/InfoBox";
 import CounterValue from "components/CounterValue";
 import {
@@ -55,6 +56,11 @@ const TransactionCreationAmount = (
   const onChangeAmount = value =>
     onChangeTransaction(
       bridge.editTransactionAmount(account, transaction, value),
+    );
+
+  const handleChangeRecipient = recipient =>
+    onChangeTransaction(
+      bridge.editTransactionRecipient(account, transaction, recipient),
     );
 
   // input amount validation
@@ -125,6 +131,12 @@ const TransactionCreationAmount = (
           bridge={bridge}
         />
       </Box>
+      {currency.family === "ethereum" && (
+        <ConvertEIP55
+          value={transaction.recipient}
+          onChange={handleChangeRecipient}
+        />
+      )}
       <Box flow={20}>
         <Box>
           <Label>

@@ -9,8 +9,6 @@ import { TiArrowBack } from "react-icons/ti";
 import { MdClose } from "react-icons/md";
 
 import {
-  NonEIP55Address,
-  NonEIP55AddressWhitelist,
   AddressDuplicateNameCurrency,
   AddressDuplicateCurrencyAddress,
 } from "utils/errors";
@@ -20,6 +18,7 @@ import SelectCurrency from "components/SelectCurrency";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import { getBridgeForCurrency } from "bridge";
 import { InputText, Label, Form } from "components/base/form";
+import ConvertEIP55 from "components/ConvertEIP55";
 import type { Address } from "data/types";
 import colors, { opacity } from "shared/colors";
 import connectData from "restlay/connectData";
@@ -347,6 +346,7 @@ const AddressForm = connectData(
                 onChange={setName}
                 value={addr.name}
                 errors={nameError ? [nameError] : undefined}
+                warnings={warning ? [warning] : undefined}
                 onlyAscii
                 fullWidth
                 data-test="name_address"
@@ -358,7 +358,6 @@ const AddressForm = connectData(
                 value={addr.address}
                 onChange={setAddress}
                 errors={addressError ? [addressError] : undefined}
-                warnings={warning ? [remapWarningError(warning)] : undefined}
                 fullWidth
                 data-test="address"
               />
@@ -391,17 +390,15 @@ const AddressForm = connectData(
             </Box>
           </Box>
         </Box>
+        {currency && currency.family === "ethereum" && (
+          <div style={{ margin: "5px 11px 5px 0px" }}>
+            <ConvertEIP55 onChange={setAddress} value={addr.address} />
+          </div>
+        )}
       </Form>
     );
   },
 );
-
-function remapWarningError(w: Error) {
-  if (w instanceof NonEIP55Address) {
-    return new NonEIP55AddressWhitelist();
-  }
-  return w;
-}
 
 const genEmptyAddress = () => ({
   id: generateID(),

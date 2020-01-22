@@ -5,7 +5,8 @@ import { BigNumber } from "bignumber.js";
 import type { Account, TransactionCreationNote } from "data/types";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
-import { NonEIP55Address, InvalidAddress } from "utils/errors";
+import { InvalidAddress } from "utils/errors";
+import { isChecksumAddress } from "utils/eip55";
 import type { WalletBridge } from "./types";
 
 export type Transaction = {
@@ -20,18 +21,6 @@ export type Transaction = {
 
 const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
 
-const getRecipientWarning = async (recipient: string) => {
-  // TODO: temp solution until centralized
-  if (!recipient.match(/^0x[0-9a-fA-F]{40}$/)) return null;
-  const slice = recipient.substr(2);
-  const isFullUpper = slice === slice.toUpperCase();
-  const isFullLower = slice === slice.toLowerCase();
-  if (isFullUpper || isFullLower) {
-    return new NonEIP55Address();
-  }
-  return null;
-};
-
 const getRecipientError = async (restlay, currency, recipient) => {
   const isValid = await isRecipientValid(restlay, currency, recipient);
   return isValid ? null : new InvalidAddress(null, { ticker: currency.ticker });
@@ -40,8 +29,7 @@ const getRecipientError = async (restlay, currency, recipient) => {
 const isRecipientValid = async (restlay, currency, recipient) => {
   if (recipient) {
     if (!recipient.match(/^0x[0-9a-fA-F]{40}$/)) return false;
-    const warning = await getRecipientWarning(recipient);
-    if (warning) return true;
+    if (!isChecksumAddress(recipient)) return false;
     try {
       const { is_valid } = await restlay.fetchQuery(
         new ValidateAddressQuery({ currency, address: recipient }),
@@ -130,7 +118,6 @@ const EthereumBridge: WalletBridge<Transaction> = {
     return true;
   },
   getRecipientError,
-  getRecipientWarning,
 };
 
 export default EthereumBridge;
