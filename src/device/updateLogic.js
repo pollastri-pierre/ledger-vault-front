@@ -122,7 +122,7 @@ export function installFirmware({
                 addLog("Installing final firmware...");
               }),
             ),
-            firmwareUpdateMain("", latestFirmware).pipe(
+            firmwareUpdateMain("webusb", latestFirmware).pipe(
               tap(subscribeProgress("firmware-progress")),
             ),
           )
@@ -134,7 +134,7 @@ export function installFirmware({
                 addLog("Please allow Ledger Manager on your device.");
               }),
             ),
-            firmwareUpdatePrepare("", latestFirmware).pipe(
+            firmwareUpdatePrepare("webusb", latestFirmware).pipe(
               tap(subscribeProgress("osu-progress")),
             ),
             of(null).pipe(
