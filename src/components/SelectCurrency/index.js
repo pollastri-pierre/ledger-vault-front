@@ -79,14 +79,15 @@ const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
   value: c,
 }));
 
-const erc20TokensItems = listERC20Tokens().map(t => ({
-  type: "erc20token",
-  value: t,
-}));
+const erc20TokensItems = () =>
+  listERC20Tokens().map(t => ({
+    type: "erc20token",
+    value: t,
+  }));
 
 const currenciesOptions = buildOptions(currenciesItems);
-const erc20TokensOptions = buildOptions(erc20TokensItems);
-const fullOptions = [...currenciesOptions, ...erc20TokensOptions];
+const erc20TokensOptions = () => buildOptions(erc20TokensItems());
+const fullOptions = () => [...currenciesOptions, ...erc20TokensOptions()];
 
 const fuseOptions = {
   shouldSort: true,
@@ -99,7 +100,7 @@ const fuseOptions = {
 };
 
 const fuseCurrencies = new Fuse(currenciesOptions, fuseOptions);
-const fuseTokens = new Fuse(erc20TokensOptions, fuseOptions);
+const fuseTokens = () => new Fuse(erc20TokensOptions(), fuseOptions);
 
 const fetchOptions = (inputValue: string, options?: { noToken?: boolean }) =>
   new Promise(resolve => {
@@ -108,13 +109,13 @@ const fetchOptions = (inputValue: string, options?: { noToken?: boolean }) =>
         if (options && options.noToken) {
           return resolve(currenciesOptions);
         }
-        return resolve(fullOptions);
+        return resolve(fullOptions());
       }
       const resultCurrencies = fuseCurrencies.search(inputValue);
       if (options && options.noToken) {
         resolve(resultCurrencies);
       } else {
-        const resultTokens = fuseTokens.search(inputValue);
+        const resultTokens = fuseTokens().search(inputValue);
         const results = [...resultCurrencies, ...resultTokens];
         resolve(results);
       }
@@ -124,7 +125,7 @@ const fetchOptions = (inputValue: string, options?: { noToken?: boolean }) =>
 const getValueOption = (value: CurrencyOrToken): Option | null => {
   if (!value) return null;
   const isValueERC20Token = isERC20Token(value);
-  const resolved = fullOptions.find((opt: Option) => {
+  const resolved = fullOptions().find((opt: Option) => {
     const isOptERC20Token = isERC20Token(opt.data.value);
     if (isValueERC20Token !== isOptERC20Token) return false;
     if (
