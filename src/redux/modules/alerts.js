@@ -1,7 +1,6 @@
 // @flow
 import { DATA_FETCHED, DATA_FETCHED_FAIL } from "restlay/dataStore";
 import { NetworkTimeoutError } from "utils/errors";
-import { LOGOUT } from "./auth";
 
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 export const ADD_MESSAGE = "messages/ADD_MESSAGE";
@@ -98,14 +97,6 @@ export default function reducer(state: Store = initialState, action: Object) {
       const { title, content, messageType } = action;
       return { visible: true, title, content, type: messageType };
     }
-    case LOGOUT:
-      return {
-        visible: true,
-        title: "See you soon!",
-        content:
-          "You have been successfully logged out. You can now safely close your web browser.",
-        type: "success",
-      };
     case REMOVE_MESSAGE:
       return { ...state, visible: false };
     default:
