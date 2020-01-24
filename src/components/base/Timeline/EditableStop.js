@@ -16,6 +16,7 @@ import colors from "shared/colors";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
 import type { RuleMultiAuth } from "components/MultiRules/types";
+import { Form } from "components/base/form";
 import type { EditableComponent, DisplayableComponent } from "./types";
 
 type Props<T, P> = {
@@ -118,36 +119,39 @@ export const EditForm = <T, P: Object>({
 }) => {
   const [value, setValue] = useState(cloneDeep(initialValue));
   const ref = useRef();
+  const handleSubmit = () => onSubmit(value);
 
   useClickOther("close-bubbles", ref, onCancel);
 
   return (
     <ShadowStopInner ref={ref}>
       <ShadowStopInnerTitle onClose={onCancel}>{label}</ShadowStopInnerTitle>
-      <EditComponent
-        value={value}
-        onChange={setValue}
-        extraProps={extraProps}
-      />
-      <Box horizontal justify="space-between" flow={5} pt={20}>
-        <Button
-          type="link"
-          variant="info"
-          data-test="cancel"
-          onClick={onCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          type="filled"
-          variant="primary"
-          disabled={!isValid(value, extraProps && extraProps.rule)}
-          onClick={() => onSubmit(value)}
-          data-test="approve_button"
-        >
-          {label}
-        </Button>
-      </Box>
+      <Form onSubmit={handleSubmit}>
+        <EditComponent
+          value={value}
+          onChange={setValue}
+          extraProps={extraProps}
+        />
+        <Box horizontal justify="space-between" flow={5} pt={20}>
+          <Button
+            type="link"
+            variant="info"
+            data-test="cancel"
+            onClick={onCancel}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="filled"
+            variant="primary"
+            disabled={!isValid(value, extraProps && extraProps.rule)}
+            onClick={handleSubmit}
+            data-test="approve_button"
+          >
+            {label}
+          </Button>
+        </Box>
+      </Form>
     </ShadowStopInner>
   );
 };
