@@ -3,8 +3,10 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
+import { connect } from "react-redux";
 
 import connectData from "restlay/connectData";
+import { resetRequest } from "redux/modules/requestReplayStore";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import TryAgain from "components/TryAgain";
@@ -33,11 +35,16 @@ import {
   serializeRulesSetsForPOST,
   isValidRulesSet,
   isEmptyRulesSet,
+  convertEditDataIntoRules,
 } from "components/MultiRules/helpers";
 import type { RulesSet } from "components/MultiRules/types";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
+import type {
+  EditAccountReplay,
+  CreateAccountReplay,
+} from "redux/modules/requestReplayStore";
 
-import type { Account } from "data/types";
+import type { Account, Group, User } from "data/types";
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
 import AccountCreationName from "./steps/AccountCreationName";
 import AccountCreationRules from "./steps/AccountCreationRules";
@@ -261,7 +268,13 @@ const AccountEdit = connectData(
         additionalProps={props}
         onClose={props.close}
         isEditMode
-        initialPayload={deserialize(props.account)}
+        initialPayload={mergeEditData(
+          props.account,
+          props.requestToReplay,
+          props.users.edges.map(e => e.node),
+          props.groups.edges.map(e => e.node),
+        )}
+        payloadToCompareTo={props.account}
         initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
       />
     </GrowingCard>
@@ -288,10 +301,16 @@ const AccountCreation = connectData(
       <MultiStepsFlow
         Icon={FaMoneyCheck}
         title={title}
-        initialPayload={initialPayload}
+        initialPayload={
+          (props.requestToReplay &&
+            deserialize(props.requestToReplay.entity)) ||
+          initialPayload
+        }
         steps={steps}
         additionalProps={props}
+        payloadToCompareTo={initialPayload}
         onClose={props.close}
+        initialCursor={props.request ? 3 : 0}
       />
     </GrowingCard>
   ),
@@ -307,14 +326,46 @@ const AccountCreation = connectData(
   },
 );
 
-const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
+const Wrapper = ({
+  match,
+  close,
+  requestToReplay,
+  resetRequest,
+}: {
+  match: Match,
+  close: Function,
+  requestToReplay: EditAccountReplay | CreateAccountReplay,
+  resetRequest: void => void,
+}) => {
+  const closeAndEmptyStore = () => {
+    resetRequest();
+    close();
+  };
   if (match.params.accountId) {
-    return <AccountEdit accountId={match.params.accountId} close={close} />;
+    return (
+      <AccountEdit
+        accountId={match.params.accountId}
+        close={closeAndEmptyStore}
+        requestToReplay={requestToReplay}
+      />
+    );
   }
-  return <AccountCreation close={close} />;
+  return (
+    <AccountCreation
+      close={closeAndEmptyStore}
+      requestToReplay={requestToReplay}
+    />
+  );
 };
 
-export default Wrapper;
+const mapStateToProps = state => ({
+  requestToReplay: state.requestReplay,
+});
+const mapDispatch = {
+  resetRequest,
+};
+
+export default connect(mapStateToProps, mapDispatch)(Wrapper);
 
 export const deserialize: Account => AccountCreationPayload = account => {
   return {
@@ -335,6 +386,36 @@ export const deserialize: Account => AccountCreationPayload = account => {
         : null,
   };
 };
+
+function mergeEditData(
+  account: Account,
+  requestToReplay: EditAccountReplay,
+  users: User[],
+  groups: Group[],
+) {
+  const acc = deserialize(account);
+  if (
+    requestToReplay &&
+    requestToReplay.edit_data &&
+    requestToReplay.edit_data.name
+  ) {
+    Object.assign(acc, { name: requestToReplay.edit_data.name });
+  }
+  if (
+    requestToReplay &&
+    requestToReplay.edit_data &&
+    requestToReplay.edit_data.governance_rules
+  ) {
+    Object.assign(acc, {
+      rulesSets: convertEditDataIntoRules(
+        requestToReplay.edit_data.governance_rules,
+        users,
+        groups,
+      ),
+    });
+  }
+  return acc;
+}
 
 export function serializePayload(
   payload: AccountCreationPayload,

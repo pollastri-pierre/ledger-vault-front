@@ -2,9 +2,11 @@
 
 import React from "react";
 import { Trans } from "react-i18next";
+import { connect } from "react-redux";
 import { FaUser } from "react-icons/fa";
 import connectData from "restlay/connectData";
 
+import { resetRequest } from "redux/modules/requestReplayStore";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Button from "components/base/Button";
 import Box from "components/base/Box";
@@ -13,6 +15,8 @@ import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess"
 
 import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
 import type { RestlayEnvironment } from "restlay/connectData";
+import type { User } from "data/types";
+import type { CreateUserInvitationReplay } from "redux/modules/requestReplayStore";
 
 import UserCreationRole from "./steps/UserCreationRole";
 import UserCreationInfos, { isUserIDValid } from "./steps/UserCreationInfos";
@@ -99,12 +103,19 @@ const steps = [
 
 const title = <Trans i18nKey="inviteUser:inviteLink" />;
 
-function UserCreationFlow(props: { close: () => void }) {
+function UserCreationFlow(props: {
+  close: () => void,
+  requestToReplay: ?CreateUserInvitationReplay,
+}) {
+  const { requestToReplay } = props;
   return (
     <MultiStepsFlow
       Icon={FaUser}
       title={title}
-      initialPayload={initialPayload}
+      initialPayload={
+        requestToReplay ? purgePayload(requestToReplay.entity) : initialPayload
+      }
+      payloadToCompareTo={initialPayload}
       steps={steps}
       onClose={props.close}
       additionalProps={props}
@@ -112,4 +123,23 @@ function UserCreationFlow(props: { close: () => void }) {
   );
 }
 
-export default connectData(UserCreationFlow);
+function purgePayload(entity: User) {
+  return {
+    role: entity.role,
+    userID: entity.user_id || "",
+    username: entity.username,
+    url: "",
+    request_id: null,
+  };
+}
+
+const mapStateToProps = state => ({
+  requestToReplay: state.requestReplay,
+});
+const mapDispatch = {
+  resetRequest,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatch,
+)(connectData(UserCreationFlow));

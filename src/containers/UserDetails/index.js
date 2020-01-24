@@ -79,6 +79,7 @@ function UserDetails(props: Props) {
       <FetchEntityHistory
         key="history"
         url={`/people/${user.id}/history`}
+        entity={user}
         entityType="user"
       />
     </EntityModal>

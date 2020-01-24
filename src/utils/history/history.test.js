@@ -51,6 +51,10 @@ describe("deserializeHistory", () => {
             type: "EDITED",
             createdBy: groupHistory[1][0].created_by,
             createdOn: groupHistory[1][0].created_on,
+            edit_data: {
+              members: [12],
+              name: "group",
+            },
             approvalsSteps: [
               {
                 quorum: 2,

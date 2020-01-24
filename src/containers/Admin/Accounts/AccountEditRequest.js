@@ -17,6 +17,7 @@ import Text from "components/base/Text";
 import colors, { opacity, darken } from "shared/colors";
 import type { Account, User, Group, Whitelist } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
+import { convertEditDataIntoRules } from "components/MultiRules/helpers";
 
 type Props = {
   account: Account,
@@ -27,19 +28,23 @@ type Props = {
 
 function AccountEditRequest(props: Props) {
   const { account, users, whitelists, groups } = props;
+  if (!account.last_request) return null;
   const { governance_rules, last_request } = account;
-
-  if (!last_request) return null;
 
   const isAccountMigration = last_request.type === "MIGRATE_ACCOUNT";
   const editData = last_request.edit_data || null;
   const hasNameChanged = editData && account.name !== editData.name;
 
+  const allUsers = users.edges.map(e => e.node);
+  const allGroups = groups.edges.map(e => e.node);
+  const allWhitelists = whitelists.edges.map(e => e.node);
+
   const newRules = isAccountMigration
     ? governance_rules
     : editData
-    ? editData.governance_rules
+    ? convertEditDataIntoRules(editData.governance_rules, allUsers, allGroups)
     : null;
+
   const oldRules = isAccountMigration ? null : governance_rules;
   const currencyOrToken = getAccountCurrencyOrToken(account);
 
@@ -53,9 +58,9 @@ function AccountEditRequest(props: Props) {
         >
           <MultiRules
             textMode
-            users={users.edges.map(n => n.node)}
-            whitelists={whitelists.edges.map(n => n.node)}
-            groups={groups.edges.map(n => n.node)}
+            users={allUsers}
+            whitelists={allWhitelists}
+            groups={allGroups}
             rulesSets={oldRules}
             currencyOrToken={currencyOrToken}
           />
@@ -69,9 +74,9 @@ function AccountEditRequest(props: Props) {
         >
           <MultiRules
             textMode
-            users={users.edges.map(n => n.node)}
-            whitelists={whitelists.edges.map(n => n.node)}
-            groups={groups.edges.map(n => n.node)}
+            users={allUsers}
+            whitelists={allWhitelists}
+            groups={allGroups}
             rulesSets={newRules}
             currencyOrToken={currencyOrToken}
           />

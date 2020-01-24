@@ -20,6 +20,7 @@ export type PayloadUpdater<T> = ($Shape<T>, ?() => void) => void;
 export type StepProps<T> = {
   payload: T,
   initialPayload: T,
+  payloadToCompareTo: T,
   updatePayload: PayloadUpdater<T>,
   transitionTo: string => void,
   isEditMode?: boolean,

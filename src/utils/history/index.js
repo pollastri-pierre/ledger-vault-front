@@ -1,6 +1,12 @@
 // @flow
 
-import type { User, GenericRequest } from "data/types";
+import type {
+  User,
+  GenericRequest,
+  GroupEditData,
+  WhitelistEditData,
+  AccountEditData,
+} from "data/types";
 
 // TODO: LOL
 type GateHistory = *;
@@ -36,6 +42,7 @@ export type VaultHistoryStep = {
   createdBy: User,
   approvalsSteps?: Array<?VaultHistoryApprovalStep>,
   blockerRequest?: GenericRequest,
+  edit_data?: GroupEditData | AccountEditData | WhitelistEditData,
 };
 
 export type VaultHistoryItem = {
@@ -60,6 +67,9 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
         };
         if (gateStep.blocker_request) {
           step.blockerRequest = gateStep.blocker_request;
+        }
+        if (gateStep.edit_data) {
+          step.edit_data = gateStep.edit_data;
         }
         if (gateStep.approvals_steps) {
           Object.assign(step, {
