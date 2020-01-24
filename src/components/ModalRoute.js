@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import { Route } from "react-router-dom";
 import Modal from "components/base/Modal";
 import type { MemoryHistory } from "history";
+import { UserContext } from "components/UserContextProvider";
 
 const isEmptyChildren = children => React.Children.count(children) === 0;
 
@@ -37,6 +38,8 @@ class ModalRoute extends Component<{
 }> {
   _unmounted: boolean = false;
 
+  static contextType = UserContext;
+
   componentWillUnmount() {
     this._unmounted = true;
   }
@@ -49,7 +52,7 @@ class ModalRoute extends Component<{
     if (this._unmounted) return;
     const { history } = this.props;
     history.push({
-      pathname: resolveCloseURL(history, this.lastPath),
+      pathname: resolveCloseURL(history, this.lastPath, this.context),
       search: this.lastSearch || "",
     });
   };
@@ -115,28 +118,66 @@ const modalsRoutes = [
   /(.*)\/details\/[0-9]+\/.+$/,
 ];
 
+const deepModalRoutes = [
+  {
+    regex: /(.*)\/tasks\/(.*)\/details\/.+$/,
+    redirect: (id, me) =>
+      `/${
+        window.location.pathname.split("/")[1]
+      }/${me.role.toLowerCase()}/tasks`,
+    regexId: null,
+  },
+  {
+    regex: /(.*)\/accounts\/view\/[0-9]+\/.+$/,
+    redirect: (id, me) =>
+      id &&
+      `/${
+        window.location.pathname.split("/")[1]
+      }/${me.role.toLowerCase()}/accounts/view/${id}`,
+    regexId: /\/accounts\/view\/[0-9]+/,
+  },
+];
+
 const usePrevFirst = [
   /.*\/dashboard$/,
   /.*\/tasks$/,
   /.*\/accounts\/view\/[0-9]+$/,
 ];
 
-function getModalClosePath(p) {
-  let match;
+function getModalClosePath(p, me) {
+  let regularMatch;
+  let nestedMatch;
+
   // using find allow to stop parcourir the array when first match
   modalsRoutes.find(regex => {
-    match = p.match(regex);
-    return match;
+    regularMatch = p.match(regex);
+    return regularMatch;
   });
-  return match ? match[1] : null;
+
+  deepModalRoutes.find(({ regex, redirect, regexId }) => {
+    const match = p.match(regex);
+    if (match) {
+      const subStringId = regexId && p.match(regexId);
+      const matchId = subStringId && subStringId[0].match(/\d+/g);
+      const id = matchId && matchId[0];
+      nestedMatch = redirect(id, me);
+      return true;
+    }
+    return false;
+  });
+
+  if (nestedMatch) {
+    return nestedMatch;
+  }
+  return regularMatch ? regularMatch[1] : null;
 }
 
-function resolveCloseURL(history, lastPath) {
+function resolveCloseURL(history, lastPath, me) {
   const { pathname: actualURL } = history.location;
-  if (!lastPath) return getModalClosePath(actualURL) || "/";
+  if (!lastPath) return getModalClosePath(actualURL, me) || "/";
   if (lastPath && usePrevFirst.find(r => lastPath.match(r))) {
     return lastPath;
   }
-  const prevModalClosePath = getModalClosePath(actualURL);
+  const prevModalClosePath = getModalClosePath(actualURL, me);
   return prevModalClosePath || lastPath || "/";
 }
