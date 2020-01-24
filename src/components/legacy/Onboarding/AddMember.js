@@ -11,6 +11,7 @@ import { onboardingRegisterFlow } from "device/interactions/hsmFlows";
 import ProfileIcon from "components/icons/thin/Profile";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
+import { Form } from "components/base/form";
 import type { Organization } from "data/types";
 
 type Props = {
@@ -33,49 +34,54 @@ const AddMember = ({ finish, organization }: Props) => {
     setError(e);
   };
 
+  const handleSubmit = () => setRegistering(!registering);
+
   return (
-    <Box p={40} pb={20} flow={20} width={500}>
-      {error && <TriggerErrorNotification error={error} />}
-      <Text size="large">Add new admin</Text>
-      <Box horizontal flow={30} mt={80} align="center">
-        <ProfileIconContainer>
-          <ProfileIcon color="white" />
-        </ProfileIconContainer>
-        <Box flow={20}>
-          <InputField
-            placeholder="Username"
-            name="username"
-            maxLength={19}
-            onlyAscii
-            value={username}
-            onChange={setUsername}
-          />
+    <Form onSubmit={handleSubmit}>
+      <Box p={40} pb={20} flow={20} width={500}>
+        {error && <TriggerErrorNotification error={error} />}
+        <Text size="large">Add new admin</Text>
+        <Box horizontal flow={30} mt={80} align="center">
+          <ProfileIconContainer>
+            <ProfileIcon color="white" />
+          </ProfileIconContainer>
+          <Box flow={20}>
+            <InputField
+              autoFocus
+              placeholder="Username"
+              name="username"
+              maxLength={19}
+              onlyAscii
+              value={username}
+              onChange={setUsername}
+            />
+          </Box>
+        </Box>
+        <Box horizontal justify="flex-end" pt={20}>
+          {registering ? (
+            <DeviceInteraction
+              onSuccess={onSuccess}
+              interactions={onboardingRegisterFlow}
+              onError={onError}
+              additionalFields={{
+                organization,
+                username,
+                role: "admin",
+              }}
+            />
+          ) : (
+            <Button
+              disabled={!username}
+              type="filled"
+              data-test="dialog-button"
+              onClick={handleSubmit}
+            >
+              Continue
+            </Button>
+          )}
         </Box>
       </Box>
-      <Box horizontal justify="flex-end" pt={20}>
-        {registering ? (
-          <DeviceInteraction
-            onSuccess={onSuccess}
-            interactions={onboardingRegisterFlow}
-            onError={onError}
-            additionalFields={{
-              organization,
-              username,
-              role: "admin",
-            }}
-          />
-        ) : (
-          <Button
-            disabled={!username}
-            type="filled"
-            data-test="dialog-button"
-            onClick={() => setRegistering(!registering)}
-          >
-            Continue
-          </Button>
-        )}
-      </Box>
-    </Box>
+    </Form>
   );
 };
 
