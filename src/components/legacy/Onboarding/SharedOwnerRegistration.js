@@ -7,7 +7,12 @@ import type { Translate, Organization, GateError } from "data/types";
 import DeviceInteraction from "components/DeviceInteraction";
 import { onboardingRegisterFlow } from "device/interactions/hsmFlows";
 import Modal from "components/base/Modal";
-import { Title, Introduction, NoMembers, AddUser } from "components/Onboarding";
+import {
+  Title,
+  Introduction,
+  NoMembers,
+  AddUser,
+} from "components/legacy/Onboarding";
 import { withTranslation, Trans } from "react-i18next";
 import Box from "components/base/Box";
 import Text from "components/base/Text";

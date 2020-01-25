@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import type { Translate } from "data/types";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
-import { Introduction, SubTitle, Title } from "components/Onboarding";
+import { Introduction, SubTitle, Title } from "components/legacy/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import People from "components/icons/thin/People";
 import colors from "shared/colors";

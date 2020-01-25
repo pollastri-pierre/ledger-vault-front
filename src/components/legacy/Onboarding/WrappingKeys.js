@@ -5,7 +5,7 @@ import { generateWrappingKeyFlow } from "device/interactions/generateWrappingKey
 import { withTranslation, Trans } from "react-i18next";
 import type { Translate } from "data/types";
 import Box from "components/base/Box";
-import { Title, Introduction } from "components/Onboarding";
+import { Title, Introduction } from "components/legacy/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import { connect } from "react-redux";
 import { SpinnerCentered } from "components/base/Spinner";

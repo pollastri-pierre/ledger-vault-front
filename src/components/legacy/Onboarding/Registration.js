@@ -6,7 +6,12 @@ import { withTranslation } from "react-i18next";
 
 import { addMessage } from "redux/modules/alerts";
 import Modal from "components/base/Modal";
-import { Title, Introduction, AddUser, NoMembers } from "components/Onboarding";
+import {
+  Title,
+  Introduction,
+  AddUser,
+  NoMembers,
+} from "components/legacy/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import Disabled from "components/Disabled";
 import {

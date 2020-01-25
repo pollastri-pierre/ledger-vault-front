@@ -10,7 +10,7 @@ import Trash from "components/icons/thin/Trash";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import RecoverySheet from "components/icons/thin/RecoverySheet";
 import DialogButton from "components/legacy/DialogButton";
-import { Title, Introduction } from "components/Onboarding";
+import { Title, Introduction } from "components/legacy/Onboarding";
 import Footer from "./Footer";
 
 type StepProps = {

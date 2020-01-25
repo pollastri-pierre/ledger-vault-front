@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Trans } from "react-i18next";
 
 import Box from "components/base/Box";
-import { Title, Introduction } from "components/Onboarding";
+import { Title, Introduction } from "components/legacy/Onboarding";
 import { Radio } from "components/base/form";
 import HelpLink from "components/HelpLink";
 import DialogButton from "components/legacy/DialogButton";

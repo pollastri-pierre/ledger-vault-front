@@ -4,7 +4,7 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
 import type { Translate } from "data/types";
-import { Title, Introduction } from "components/Onboarding";
+import { Title, Introduction } from "components/legacy/Onboarding";
 import Disabled from "components/Disabled";
 import DialogButton from "components/legacy/DialogButton";
 import { addMessage } from "redux/modules/alerts";
