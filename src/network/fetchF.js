@@ -1,10 +1,15 @@
 // @flow
-import mockAPI from "data/mock-api";
 import { ENDPOINTS } from "device/VaultDeviceHTTP";
 import { minWait } from "utils/promise";
 
 let fetchF; // eslint-disable-line import/no-mutable-exports
 const DEMO_DELAY = 0; // put 1000 for demos ahah
+
+let mockAPI;
+
+if (process.env.NODE_ENV !== "production") {
+  mockAPI = require("data/mock-api").default;
+}
 
 if (process.env.NODE_ENV === "test") {
   fetchF = mockAPI;
