@@ -11,19 +11,6 @@ import { getCryptoCurrencyIcon as getIcon } from "@ledgerhq/live-common/lib/reac
 
 import type { ERC20Token, CurrencyOrToken } from "data/types";
 
-export const formatRawERC20 = (
-  data: Array<Array<string>>,
-): Array<$Shape<ERC20Token>> =>
-  data.map(arr => ({
-    ticker: arr[0],
-    name: arr[1],
-    blockchain_name: arr[2],
-    contract_address: arr[3],
-    decimals: parseInt(arr[4], 10),
-    hsm_account_parameters: arr[5],
-    hsm_signature: arr[6],
-  }));
-
 const supported: CryptoCurrencyIds[] = [
   "bitcoin",
   "bitcoin_cash",
