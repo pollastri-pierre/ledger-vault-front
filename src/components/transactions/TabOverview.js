@@ -24,13 +24,14 @@ export default function TabOverview(props: Props) {
   const isRipple = account.account_type === "Ripple";
 
   const totalSpent =
-    (transaction.amount && transaction.amount.plus(transaction.fees)) ||
-    (transaction.price && transaction.price.amount.plus(transaction.fees));
+    account.account_type === "Erc20"
+      ? transaction.amount
+      : transaction.amount.plus(transaction.fees);
 
   return (
     <Box>
       <OverviewTransaction
-        amount={transaction.amount || transaction.price.amount}
+        amount={transaction.amount}
         account={account}
         transactionType={transaction.type}
       />
@@ -93,6 +94,9 @@ export default function TabOverview(props: Props) {
         )}
         <LineRow label={<Trans i18nKey="transactionDetails:overview.fees" />}>
           <Amount disableERC20 account={account} value={transaction.fees} />
+        </LineRow>
+        <LineRow label={<Trans i18nKey="transactionDetails:overview.amount" />}>
+          <Amount account={account} value={transaction.amount} />
         </LineRow>
         <LineRow label={<Trans i18nKey="transactionDetails:overview.total" />}>
           <Amount account={account} value={totalSpent} strong />
