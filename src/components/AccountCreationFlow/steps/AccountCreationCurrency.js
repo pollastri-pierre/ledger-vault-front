@@ -207,7 +207,7 @@ function EthAccountsRadio({
         <Radio color="primary" checked={account !== null} />
         <Box my={15}>
           <Trans i18nKey="newAccount:erc20.selectExisting" />
-          <Box mt={10}>
+          <Box mt={10} width={380}>
             <SelectAccount
               accounts={accounts}
               value={account || accounts[0]}
