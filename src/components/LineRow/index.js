@@ -91,7 +91,7 @@ export default function LineRow(props: LineRowProps) {
         )}
       </BoxLined>
       {isCollapsibleContentVisible && collapsibleChildren && (
-        <Box>{collapsibleChildren}</Box>
+        <Box style={{ wordBreak: "break-word" }}>{collapsibleChildren}</Box>
       )}
     </>
   );
