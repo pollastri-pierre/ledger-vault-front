@@ -12,7 +12,6 @@ import RestlayProvider from "restlay/RestlayProvider";
 import network from "network";
 import theme, { styledTheme } from "styles/theme";
 import OrganizationAppRouter from "containers/OrganizationAppRouter";
-import { formatRawERC20 } from "utils/cryptoCurrencies";
 
 import i18n from "./i18n";
 
@@ -64,9 +63,7 @@ if (module.hot) {
 
 function storeTokenList(list) {
   window.erc20 = sortBy(
-    formatRawERC20(list).filter(
-      t => t.hsm_signature || t.hsm_account_parameters,
-    ),
+    list.filter(t => t.hsm_signature || t.hsm_account_parameters),
     "name",
   );
 }
