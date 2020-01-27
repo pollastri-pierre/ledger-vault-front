@@ -62,6 +62,13 @@ export default (props: TransactionCreationStepProps<any>) => {
         <Amount account={account} value={fees} disableERC20 />
       </LineRow>
       <LineRow
+        label={
+          <Trans i18nKey="transactionCreation:steps.confirmation.amount" />
+        }
+      >
+        <Amount account={account} value={transaction.amount} />
+      </LineRow>
+      <LineRow
         label={<Trans i18nKey="transactionCreation:steps.confirmation.total" />}
         tooltipInfoMessage={
           isERC20 && (
