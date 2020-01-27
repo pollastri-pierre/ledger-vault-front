@@ -35,6 +35,7 @@ export default function<T>(
   }
   /* eslint-enable no-console */
 
+  if (!fetchF) return Promise.reject(new Error("Uninitialized fetchF"));
   return fetchF(uri, options, fetchParams).then(response => {
     if (response.status < 200 || response.status >= 300) {
       if (response.status === 504) {

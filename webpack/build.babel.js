@@ -1,4 +1,5 @@
 import merge from "webpack-merge";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import webpack from "webpack";
 import JSObfuscator from "webpack-obfuscator";
 
@@ -44,7 +45,9 @@ export default merge(webpackConfig, {
   },
 
   plugins: [
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.optimize.OccurrenceOrderPlugin(),
+    ...(process.env.ANALYZE_BUNDLE ? [new BundleAnalyzerPlugin()] : []),
     new JSObfuscator({}, ["vendor-**.js"]),
   ],
 
