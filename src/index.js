@@ -49,7 +49,7 @@ if (window.config.ERC20_LIST === "dev") {
     render(OrganizationAppRouter);
   });
 } else {
-  import("data/erc20-list.dev.json").then(module => {
+  import("data/erc20-list.json").then(module => {
     storeTokenList(module.default);
     render(OrganizationAppRouter);
   });
