@@ -9,6 +9,7 @@
     "recipient": "Recipient address",
     "identifier": "Hash",
     "status": "Status",
+    "amount": "Amount",
     "total": "Total amount"
   },
   "note": {
