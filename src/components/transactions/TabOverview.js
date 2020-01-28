@@ -34,6 +34,7 @@ export default function TabOverview(props: Props) {
         amount={transaction.amount}
         account={account}
         transactionType={transaction.type}
+        created_on={transaction.created_on}
       />
       <Box>
         <LineRow
