@@ -13,7 +13,7 @@
 set -e
 
 # directory where repos will be cloned
-VAULT_WORKSPACE=${VAULT_WORKSPACE:-$HOME/.vault}
+VAULT_WORKSPACE_DIR=${VAULT_WORKSPACE_DIR:-$HOME/.vault}
 
 function usage() {
   echo -e "\033[2m"
@@ -126,7 +126,7 @@ function notifyReady() {
 }
 
 function run_scenario() {
-  cd "$VAULT_WORKSPACE/ledger-vault-api/tests/integration"
+  cd "$VAULT_WORKSPACE_DIR/ledger-vault-api/tests/integration"
   if ! [[ -d venv ]]; then
     python3 -m venv venv
     (
@@ -138,25 +138,25 @@ function run_scenario() {
   (
     # shellcheck disable=SC1091
     source venv/bin/activate
-    bash "$VAULT_WORKSPACE/scenarios/$1"
+    bash "$VAULT_WORKSPACE_DIR/scenarios/$1"
   )
   cd - &>/dev/null
 }
 
 function stop_containers() {
-  cd "$VAULT_WORKSPACE/vault-integration"
+  cd "$VAULT_WORKSPACE_DIR/vault-integration"
   docker-compose stop --timeout 1
   cd - &>/dev/null
 }
 
 function down_containers() {
-  cd "$VAULT_WORKSPACE/vault-integration"
+  cd "$VAULT_WORKSPACE_DIR/vault-integration"
   docker-compose down --remove-orphans
   cd - &>/dev/null
 }
 
 function up_containers() {
-  cd "$VAULT_WORKSPACE/vault-integration"
+  cd "$VAULT_WORKSPACE_DIR/vault-integration"
   docker-compose up --build -d
   cd - &>/dev/null
 }
@@ -164,7 +164,7 @@ function up_containers() {
 function sync_containers() {
   # if NO_PULL is set, skip the docker-compose pull phase
   if [[ -z "$NO_PULL" ]]; then
-    cd "$VAULT_WORKSPACE/vault-integration"
+    cd "$VAULT_WORKSPACE_DIR/vault-integration"
     docker-compose pull
     cd - &>/dev/null
   fi
@@ -201,7 +201,7 @@ function display_env() {
 }
 
 function ensure_env_fetched() {
-  mkdir -p "$VAULT_WORKSPACE"
+  mkdir -p "$VAULT_WORKSPACE_DIR"
   if ! command -v hsmaas &>/dev/null; then
     echo "hsmaas not found. installing..."
     pip3 install git+ssh://git@github.com/LedgerHQ/vault-scripts.git@master --user
@@ -212,12 +212,12 @@ function ensure_env_fetched() {
 }
 
 function copy_scenarios() {
-  mkdir -p "$VAULT_WORKSPACE/scenarios"
-  cp scripts/scenarios/* "$VAULT_WORKSPACE/scenarios"
+  mkdir -p "$VAULT_WORKSPACE_DIR/scenarios"
+  cp scripts/scenarios/* "$VAULT_WORKSPACE_DIR/scenarios"
 }
 
 function list_scenarios() {
-  for filename in "$VAULT_WORKSPACE"/scenarios/*; do
+  for filename in "$VAULT_WORKSPACE_DIR"/scenarios/*; do
     printf "     \033[34m%-22s\033[39m%s\n" "$(basename "$filename")" "$(grep DESC "$filename" | sed 's/^# DESC //g')"
   done
 }
@@ -231,7 +231,7 @@ function ensure_set() {
 
 function sync_repo() {
   printf "\033[34m- syncing %s on branch \033[35m%s\033[34m... \033[0m" "$1" "$2"
-  cd "$VAULT_WORKSPACE"
+  cd "$VAULT_WORKSPACE_DIR"
   if ! [[ -d "$1" ]]; then
     git clone "git@github.com:LedgerHQ/$1.git" >/dev/null
   fi
@@ -262,7 +262,7 @@ function install_firmware() {
   echo ""
   echo -e "\033[1m=> About to upgrade \033[33;1m$CURRENT_FIRMWARE\033[39;1m into \033[33;1m$EXPECTED_FIRMWARE\033[0m"
   echo ""
-  cd "$VAULT_WORKSPACE"
+  cd "$VAULT_WORKSPACE_DIR"
   if ! [[ -d ledgerblue ]]; then
     virtualenv ledgerblue
     # shellcheck disable=SC1091
