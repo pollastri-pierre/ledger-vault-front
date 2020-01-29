@@ -3,7 +3,7 @@
 
 # ------
 UPSTREAM=git@github.com:LedgerHQ/crypto-assets.git
-OUTPUT_FILES="master,erc20-list test_signatures,erc20-list.dev"
+OUTPUT_FILES="vault3.0.0fix,erc20-list test_signatures,erc20-list.dev"
 OUTPUT_PATH=src/data
 DIR_TO_SCAN=tokens/ethereum/erc20
 # ------
