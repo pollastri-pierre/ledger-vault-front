@@ -17,13 +17,6 @@ export function login(id) {
 
 export function logout() {
   cy.get("[data-test=logout]").click({ force: true });
-  cy.wait(1500);
-  cy.get(".top-message-body")
-    .contains(
-      "You have been successfully logged out. You can now safely close your web browser.",
-    )
-    .get(".top-message-title")
-    .contains("See you soon!");
 }
 
 /**
