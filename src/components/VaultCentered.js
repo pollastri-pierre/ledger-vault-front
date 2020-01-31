@@ -8,6 +8,8 @@ import HelpLink from "components/HelpLink";
 import Text from "components/base/Text";
 import CenteredLayout from "components/base/CenteredLayout";
 
+import productVersion from "../version";
+
 export default function VaultCentered({ children }: { children: React$Node }) {
   return (
     <CenteredLayout>
@@ -16,7 +18,7 @@ export default function VaultCentered({ children }: { children: React$Node }) {
         {children}
       </div>
       <Box align="center" mt={40}>
-        <Text size="small">Vault - v{VAULT_FRONT_VERSION}</Text>
+        <Text size="small">Ledger Vault - {productVersion}</Text>
       </Box>
     </CenteredLayout>
   );

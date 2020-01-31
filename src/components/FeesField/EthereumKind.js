@@ -70,6 +70,8 @@ function FeesFieldEthereumKind(props: Props) {
       ...transaction,
       error: null,
       estimatedFees: BigNumber(0),
+      gasPrice: null,
+      gasLimit: null,
     });
 
     effect();
@@ -96,8 +98,8 @@ function FeesFieldEthereumKind(props: Props) {
       const txGetFees = {
         amount: transaction.amount,
         recipient: transaction.recipient,
-        gas_price: transaction.gasPrice,
-        gas_limit: transaction.gasLimit,
+        gas_price: null,
+        gas_limit: null,
       };
       const estimatedFees = await getFees(account, txGetFees, restlay);
 

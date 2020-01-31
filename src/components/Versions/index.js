@@ -7,6 +7,8 @@ import { RichModalHeader } from "components/base/Modal";
 import styled from "styled-components";
 import { useVersions } from "components/VersionsContext";
 
+import productVersion from "../../version";
+
 const Versions = ({ onClose }: { onClose: void => void }) => {
   const { versions } = useVersions();
   if (!versions) return null;
@@ -16,8 +18,12 @@ const Versions = ({ onClose }: { onClose: void => void }) => {
       <Container>
         <VersionContainer>
           <VersionLine>
-            <Component>Front</Component>
-            <ComponentVersion>v{VAULT_FRONT_VERSION}</ComponentVersion>
+            <Component>Ledger Vault</Component>
+            <ComponentVersion>{productVersion}</ComponentVersion>
+          </VersionLine>
+          <VersionLine>
+            <Component>front-end</Component>
+            <ComponentVersion>{VAULT_FRONT_VERSION}</ComponentVersion>
           </VersionLine>
           <VersionLine>
             <Component>ledger-vault-api</Component>
@@ -65,8 +71,6 @@ const Container = styled(Box).attrs({
   background: white;
 `;
 const VersionContainer = styled(Box).attrs({
-  flow: 10,
-  p: 20,
   justify: "center",
 })`
   background: ${colors.legacyLightGrey5};
@@ -89,6 +93,7 @@ const VersionLine = styled(Box).attrs({
   justify: "space-between",
 })`
   border-bottom: 1px solid #e8e8e8;
+  padding: 10px;
   &:last-child {
     border: none;
   }
