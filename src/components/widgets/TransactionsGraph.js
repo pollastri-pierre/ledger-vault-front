@@ -27,7 +27,6 @@ function TransactionsGraph(props: Props) {
           }
           account={account}
           nbDays={30}
-          granularity="HOUR"
         />
       </SoftCard>
     </Widget>
@@ -38,7 +37,7 @@ const start = new Date();
 start.setMonth(start.getMonth() - 1);
 
 export default connectWidget(TransactionsGraph, {
-  height: 300,
+  height: 426,
   queries: {
     transactions: SearchTransactions,
   },

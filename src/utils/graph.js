@@ -1,5 +1,4 @@
 // @flow
-import { BigNumber } from "bignumber.js";
 import moment from "moment";
 
 import type { Account, Transaction } from "data/types";
@@ -32,101 +31,67 @@ export function append(NODES: Object, key: string, node: Object) {
   NODES[key] = node;
 }
 
-const shortenDate = (date: string | Date, granularity: string): string => {
-  if (granularity === "DAY") return moment(date).format("YYYY-MM-DD");
-  if (granularity === "HOUR") return moment(date).format("YYYY-MM-DD:HH");
-
-  throw Error("Invalid granularity");
-};
-
-const groupTransactions = (
-  transactions: Transaction[],
-  granularity: string,
-) => {
-  /*
-    reformattedTransactions is a HashMap where key is a date ( with or without
-    hour depending on the granularity and value an array of transactions
-  */
-  const reformattedTransactions = {};
-  if (!transactions || transactions.length === 0)
-    return reformattedTransactions;
-  transactions.forEach(transaction => {
-    const key = shortenDate(transaction.created_on, granularity);
-
-    if (!reformattedTransactions[key]) reformattedTransactions[key] = [];
-
-    reformattedTransactions[key].push(transaction);
-  });
-
-  return reformattedTransactions;
-};
-
-const DAY_INCREMENT = 24 * 60 * 60 * 1000;
-const HOUR_INCREMENT = 60 * 60 * 1000;
-
 type BuildGraphDataProps = {
   account: Account,
   nbDays: number,
   transactions: Transaction[],
-  granularity: string,
 };
 
+const sortTransactions = transactions => {
+  const res = [...transactions];
+  res.sort((a, b) => (moment(a.created_on).isBefore(b.created_on) ? 1 : -1));
+  return res;
+};
 export const buildGraphData = ({
   account,
   nbDays,
   transactions,
-  granularity,
 }: BuildGraphDataProps) => {
-  const reformattedTransactions = groupTransactions(transactions, granularity);
-  const data = [];
+  const sortedTransactions = sortTransactions(transactions);
+
+  const rangeDateMin = moment()
+    .subtract(nbDays, "days")
+    .startOf("day");
+  const rangeDateMax = moment().startOf("day");
+
   let { balance } = account;
-  let today = moment()
-    .startOf("day")
-    .toDate();
 
-  // Create the first dot
-  data.unshift({ date: today, value: balance.toNumber() });
+  const data = [
+    {
+      date: rangeDateMax.valueOf(),
+      value: balance.toNumber(),
+      dateClean: moment(rangeDateMax).format("YYYY MM DD HH:mm:ss"),
+    },
 
-  // Multiplying by 24 to get hour granularity
-  for (let i = granularity === "DAY" ? nbDays : nbDays * 24; i > 0; i--) {
-    const transactionAtCurrentDate =
-      reformattedTransactions[shortenDate(today, granularity)];
+    ...sortedTransactions
+      .filter(tx => moment(tx.created_on).isBetween(rangeDateMin, rangeDateMax))
+      .map(tx => {
+        const { type, amount, fees } = tx;
+        switch (type) {
+          case "SEND":
+            if (account.account_type === "Erc20")
+              balance = balance.plus(amount.plus(fees));
+            balance = balance.plus(amount);
+            break;
+          case "RECEIVE":
+            balance = balance.minus(amount);
+            break;
+          default:
+            break;
+        }
 
-    if (transactionAtCurrentDate) {
-      // Mark the beginning of a transaction
-      data.unshift({ date: today, value: balance.toNumber() });
+        return {
+          date: moment(tx.created_on).valueOf(),
+          value: balance.toNumber(),
+          dateClean: moment(tx.created_on).format("YYYY MM DD HH:mm:ss"),
+        };
+      }),
+    {
+      date: rangeDateMin.valueOf(),
+      value: balance.toNumber(),
+      dateClean: moment(rangeDateMin).format("YYYY MM DD HH:mm:ss"),
+    },
+  ];
 
-      const totalSpentToday = transactionAtCurrentDate.reduce(
-        (total, currentTransaction) => {
-          const { type, amount, fees } = currentTransaction;
-          switch (type) {
-            case "SEND":
-              if (account.account_type === "Erc20")
-                return total.plus(amount.plus(fees));
-              return total.plus(amount);
-            case "RECEIVE":
-              return total.minus(amount);
-            default:
-              return 0;
-          }
-        },
-        new BigNumber(0),
-      );
-      balance = balance.plus(totalSpentToday);
-
-      // Mark the end of a transaction
-      data.unshift({ date: today, value: balance.toNumber() });
-    }
-
-    if (granularity === "DAY") {
-      today = new Date(today - DAY_INCREMENT);
-    }
-    if (granularity === "HOUR") {
-      today = new Date(today - HOUR_INCREMENT);
-    }
-  }
-
-  // Create the last dot
-  data.unshift({ date: today, value: balance.toNumber() });
   return data;
 };
