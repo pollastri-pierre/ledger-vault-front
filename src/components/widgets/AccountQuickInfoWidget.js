@@ -55,26 +55,23 @@ const AccountQuickInfoHeader = ({ account }: Props) => {
   );
   return (
     <PageHeaderActions title={account.name}>
-      {me.role === "OPERATOR" ? (
-        <Box horizontal flow={10}>
-          {isSendDisabled ? (
+      <Box horizontal flow={10}>
+        {me.role === "OPERATOR" &&
+          (isSendDisabled ? (
             sendBtn
           ) : (
             <Link to={`${account.id}/send/${account.id}`}>{sendBtn}</Link>
-          )}
-          <Link to={`${account.id}/receive/${account.id}`}>
-            <Button size="small" type="filled">
-              <Box horizontal flow={5} align="center">
-                <IconReceive size={10} />
-                <Text i18nKey="accountView:receiveButton" />
-              </Box>
-            </Button>
-          </Link>
-          <SyncButton account={account} />
-        </Box>
-      ) : (
+          ))}
+        <Link to={`${account.id}/receive/${account.id}`}>
+          <Button size="small" type="filled">
+            <Box horizontal flow={5} align="center">
+              <IconReceive size={10} />
+              <Text i18nKey="accountView:receiveButton" />
+            </Box>
+          </Button>
+        </Link>
         <SyncButton account={account} />
-      )}
+      </Box>
     </PageHeaderActions>
   );
 };
