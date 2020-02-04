@@ -19,6 +19,8 @@ import CenteredLayout from "components/base/CenteredLayout";
 import TryAgain from "components/TryAgain";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import LineRow from "components/LineRow";
+import TransportChooser from "components/TransportChooser";
+import Absolute from "components/base/Absolute";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";
@@ -96,6 +98,11 @@ function RegisterUser(props: Props) {
                 {renderUserIcon()}
               </Box>
             </ModalHeader>
+
+            <Absolute top={10} right={10}>
+              <TransportChooser />
+            </Absolute>
+
             <Box mt={15}>
               <LineRow
                 label={<Trans i18nKey="inviteUser:registration.username" />}
