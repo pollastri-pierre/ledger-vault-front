@@ -37,11 +37,10 @@ for (let i = 0x6100; i <= 0x61ff; i++) {
 export const PAGINATED_STATUS = all61xxStatus;
 
 // handle legacy localstorage
-const LEGACY_FORCE_WEB_USB = localStorage.getItem("FORCE_WEB_USB") === "1";
 localStorage.removeItem("FORCE_WEB_USB");
-let PREFERRED_TRANSPORT =
-  localStorage.getItem("TRANSPORT") ||
-  (LEGACY_FORCE_WEB_USB ? "webusb" : "u2f");
+
+// PREFERRED_TRANSPORT = webusb if no TRANSPORT is found in localstorage
+let PREFERRED_TRANSPORT = localStorage.getItem("TRANSPORT") || "webusb";
 localStorage.setItem("TRANSPORT", PREFERRED_TRANSPORT);
 
 export const getPreferredTransport = () => PREFERRED_TRANSPORT;
