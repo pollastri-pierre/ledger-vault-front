@@ -2,15 +2,15 @@
 import React, { useMemo } from "react";
 import { Trans } from "react-i18next";
 import {
-  getTransactionExplorer,
   getDefaultExplorerView,
+  getTransactionExplorer,
 } from "@ledgerhq/live-common/lib/explorers";
 import { FaExchangeAlt, FaExternalLinkAlt } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import connectData from "restlay/connectData";
-import TransactionWithAccountQuery from "api/queries/TransactionWithAccountQuery";
-import ProfileQuery from "api/queries/ProfileQuery";
+import TransactionQuery from "api/queries/TransactionQuery";
+import AccountQuery from "api/queries/AccountQuery";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import { CardError } from "components/base/Card";
 import Button from "components/base/Button";
@@ -18,7 +18,7 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 import EntityModal from "components/EntityModal";
 import { FetchEntityHistory } from "components/EntityHistory";
-import type { Transaction, Account } from "data/types";
+import type { Account, Transaction } from "data/types";
 
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
@@ -26,17 +26,12 @@ import TabDetails from "./TabDetails";
 
 type Props = {
   close: () => void,
-  transactionWithAccount: {
-    transaction: Transaction,
-    account: Account,
-  },
+  transaction: Transaction,
+  account: Account,
 };
 
-function TransactionDetails(props: Props) {
-  const {
-    transactionWithAccount: { transaction, account },
-    close,
-  } = props;
+function TransactionDetailsComponent(props: Props) {
+  const { close, transaction, account } = props;
 
   const note = transaction.notes[0];
   const currency = getCryptoCurrencyById(account.currency);
@@ -63,13 +58,9 @@ function TransactionDetails(props: Props) {
   ) : null;
 
   const refreshDataQuery = useMemo(
-    () =>
-      new TransactionWithAccountQuery({
-        transactionId: String(transaction.id),
-      }),
+    () => new TransactionQuery({ transactionId: String(transaction.id) }),
     [transaction.id],
   );
-
   return (
     <EntityModal
       growing
@@ -94,14 +85,29 @@ function TransactionDetails(props: Props) {
   );
 }
 
-export default connectData(TransactionDetails, {
+export default connectData(
+  props => (
+    <TransactionDetails accountId={props.transaction.account_id} {...props} />
+  ),
+  {
+    RenderError: CardError,
+    RenderLoading: GrowingSpinner,
+    queries: {
+      transaction: TransactionQuery,
+    },
+    propsToQueryParams: props => ({
+      transactionId: props.match.params.transactionId || "",
+    }),
+  },
+);
+
+const TransactionDetails = connectData(TransactionDetailsComponent, {
   RenderError: CardError,
   RenderLoading: GrowingSpinner,
   queries: {
-    transactionWithAccount: TransactionWithAccountQuery,
-    profile: ProfileQuery,
+    account: AccountQuery,
   },
   propsToQueryParams: props => ({
-    transactionId: props.match.params.transactionId || "",
+    accountId: props.accountId,
   }),
 });
