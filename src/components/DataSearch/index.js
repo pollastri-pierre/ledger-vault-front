@@ -47,11 +47,16 @@ type State = {
   error: ?Error,
 };
 
+const BLACKLIST_PARAMS = ["requestID"];
+
 class DataSearch extends PureComponent<Props<*>, State> {
   constructor(props) {
     super(props);
     const { history, Query } = this.props;
-    const queryParams = history ? qs.parse(window.location.search) : {};
+    const queryParams = omit(
+      history ? qs.parse(window.location.search) : {},
+      BLACKLIST_PARAMS,
+    );
 
     // if no pageSize is given in the url,
     // we take the one defined in the Query ( by building a fake query to have the instance )
