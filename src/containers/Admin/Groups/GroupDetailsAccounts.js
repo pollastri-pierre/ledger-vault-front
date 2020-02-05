@@ -25,14 +25,7 @@ class GroupDetailsAccounts extends PureComponent<Props> {
         <NoDataPlaceholder title={<Trans i18nKey="group:no_accounts_yet" />} />
       );
     }
-    return (
-      <AccountsList
-        accounts={allAccounts}
-        compact
-        display="grid"
-        tileWidth={250}
-      />
-    );
+    return <AccountsList accounts={allAccounts} />;
   }
 }
 
