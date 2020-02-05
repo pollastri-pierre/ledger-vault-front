@@ -71,7 +71,7 @@ export default function TabOverview(props: Props) {
         {isRipple && (
           <LineRow
             label={
-              <Trans i18nKey="transactionCreation:steps.amount.destinationTag" />
+              <Trans i18nKey="transactionCreation:steps.account.destinationTag" />
             }
           >
             {transaction.destination_tag}
