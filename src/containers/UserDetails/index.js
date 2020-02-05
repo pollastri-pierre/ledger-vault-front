@@ -14,6 +14,8 @@ import { useMe } from "components/UserContextProvider";
 import { FetchEntityHistory } from "components/EntityHistory";
 import UserDetailsOverview from "./UD-Overview";
 import UserDetailsPermissions from "./UD-Permissions";
+import UserDetailsGroups from "./UD-Groups";
+import UserDetailsAccounts from "./UD-Accounts";
 
 type Props = {
   user: User,
@@ -65,6 +67,12 @@ function UserDetails(props: Props) {
       revokeParams={revokeParams}
     >
       <UserDetailsOverview key="overview" user={user} />
+      {user.role === "OPERATOR" && (
+        <UserDetailsAccounts userID={user.id} key="accounts" />
+      )}
+      {user.role === "OPERATOR" && (
+        <UserDetailsGroups userID={user.id} key="groups" />
+      )}
       {user.role === "OPERATOR" && showPermissionTab && (
         <UserDetailsPermissions key="permissions" user={user} />
       )}
