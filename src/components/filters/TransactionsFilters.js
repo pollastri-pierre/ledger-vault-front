@@ -14,6 +14,7 @@ import {
   FieldText,
   FieldSelect,
   FieldStatuses,
+  FieldDestinationTag,
 } from "components/filters";
 
 type Props = FieldsGroupProps & {
@@ -62,11 +63,7 @@ export default function TransactionsFilters(props: Props) {
       <FieldAccount />
       <FieldDate />
       <FieldText title="Label" queryKey="label" placeholder="Label" />
-      <FieldText
-        title="Destination tag"
-        queryKey="destination_tag"
-        placeholder="Destination tag"
-      />
+      <FieldDestinationTag />
     </FiltersCard>
   );
 }

@@ -121,7 +121,6 @@ class WrappableField extends Component<Props, State> {
       inPlace,
     } = this.props;
     const { isOpened, pos } = this.state;
-
     const renderChildren = () =>
       typeof children === "function"
         ? children({ toggle: this.toggle })
@@ -212,6 +211,13 @@ const InlineLabel = styled(Box).attrs({
   }
 `;
 
+const Loading = styled(InlineLabel)`
+  min-height: 40px;
+  border: 1px solid;
+  border-radius: 2px;
+  border-color: ${colors.legacyLightGrey1};
+`;
+
 const Menu = styled(Box).attrs({
   position: "absolute",
   p: 10,
@@ -241,9 +247,9 @@ const styles = {
 };
 
 export const WrappableFieldLoading = ({ width }: { width: number }) => (
-  <InlineLabel interactive={false} style={{ width }}>
+  <Loading interactive={false} style={{ width }}>
     Loading...
-  </InlineLabel>
+  </Loading>
 );
 
 export default WrappableField;

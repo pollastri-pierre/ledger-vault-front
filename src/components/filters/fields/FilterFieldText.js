@@ -13,6 +13,7 @@ type Props = FieldProps & {
   title: React$Node,
   placeholder: string,
   queryKey: string,
+  disabled?: boolean,
 };
 
 class FilterFieldText extends PureComponent<Props> {
@@ -43,7 +44,7 @@ class FilterFieldText extends PureComponent<Props> {
   };
 
   render() {
-    const { queryParams, queryKey, placeholder, title } = this.props;
+    const { queryParams, queryKey, placeholder, title, disabled } = this.props;
 
     const isActive = !!queryParams[queryKey];
 
@@ -57,6 +58,7 @@ class FilterFieldText extends PureComponent<Props> {
         <InputText
           ref={this.inputRef}
           autoFocus
+          disabled={disabled}
           defaultValue={queryParams[queryKey] || ""}
           onChange={this.handleChange}
           placeholder={placeholder}

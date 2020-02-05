@@ -17,6 +17,7 @@ export { default as FieldMembers } from "./fields/FilterFieldMembers";
 export { default as FieldRequestActivity } from "./fields/FilterFieldRequestActivity";
 export { default as FieldGroup } from "./fields/FilterFieldGroup";
 export { default as FieldAccount } from "./fields/FilterFieldAccount";
+export { default as FieldDestinationTag } from "./fields/FilterFieldDestinationTag";
 export { default as FieldUser } from "./fields/FilterFieldUser";
 
 // High levels filters groups, used diretly inside pages
