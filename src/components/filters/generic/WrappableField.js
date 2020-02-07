@@ -16,6 +16,7 @@ type Props = {
   closeOnChange: any,
   isActive: boolean,
   width: number,
+  labelWidth?: number,
   inPlace?: boolean,
 };
 
@@ -118,10 +119,10 @@ class WrappableField extends Component<Props, State> {
       RenderCollapsed,
       isActive,
       width,
+      labelWidth,
       inPlace,
     } = this.props;
     const { isOpened, pos } = this.state;
-
     const renderChildren = () =>
       typeof children === "function"
         ? children({ toggle: this.toggle })
@@ -135,7 +136,7 @@ class WrappableField extends Component<Props, State> {
           onClick={this.toggle}
           isOpened={isOpened}
           isActive={isActive}
-          width={inPlace ? width || undefined : undefined}
+          width={inPlace ? width || undefined : labelWidth || undefined}
         >
           <Box horizontal align="center" overflow="hidden" flow={5} grow>
             <Text
@@ -157,10 +158,19 @@ class WrappableField extends Component<Props, State> {
     return (
       <Box
         position="relative"
-        borderRadius={5}
+        borderRadius={4}
         bg={isActive && !isOpened ? ACTIVE_COLOR : colors.white}
         ref={this.ref}
-        style={{ border: `1px solid ${borderColor}` }}
+        style={{
+          border: `1px solid ${borderColor}`,
+          borderTop: isOpened && inPlace ? "none" : `1px solid ${borderColor}`,
+          borderBottom:
+            isOpened && inPlace
+              ? "none"
+              : `1px solid ${isOpened ? "transparent" : borderColor}`,
+          borderBottomLeftRadius: !inPlace && isOpened ? 0 : 4,
+          borderBottomRightRadius: !inPlace && isOpened ? 0 : 4,
+        }}
       >
         {inner}
         {isOpened && !inPlace && (
@@ -180,20 +190,14 @@ const InlineLabel = styled(Box).attrs({
   color: colors.shark,
   position: "relative",
 })`
-  border: 1px solid;
   user-select: none;
   max-width: 400px;
-  min-height: 40px;
+  min-height: 38px;
   padding: 5px 10px;
 
-  border-radius: 2px;
-  border-color: ${p =>
-    p.isOpened
-      ? colors.legacyLightGrey1
-      : p.isActive
-      ? "transparent"
-      : "transparent"};
-  border-bottom-color: ${p => (p.isOpened ? colors.white : "")};
+  border-bottom: ${p => (p.isOpened ? "1px solid white" : "none")};
+  border-bottom-left-radius: ${p => (p.isOpened ? 0 : "4px")};
+  border-bottom-right-radius: ${p => (p.isOpened ? 0 : "4px")};
   z-index: ${p => (p.isOpened ? 30 : 0)};
   transition: 100ms linear background-color;
   pointer-events: ${p => (p.interactive === false ? "none" : "auto")};
@@ -212,6 +216,14 @@ const InlineLabel = styled(Box).attrs({
   }
 `;
 
+const Loading = styled(InlineLabel)`
+  min-height: 40px;
+  border: 1px solid;
+  border-radius: 4px;
+  border-color: ${colors.legacyLightGrey1};
+  background-color: ${colors.legacyLightGrey2};
+`;
+
 const Menu = styled(Box).attrs({
   position: "absolute",
   p: 10,
@@ -219,13 +231,13 @@ const Menu = styled(Box).attrs({
   opacity: ${p => (p.pos === "unset" ? 0 : 1)};
   top: 100%;
   margin-top: -1px;
-  left: ${p => (p.pos === "left" ? 0 : "auto")};
-  right: ${p => (p.pos === "right" ? 0 : "auto")};
+  left: ${p => (p.pos === "left" ? "-1px" : "auto")};
+  right: ${p => (p.pos === "right" ? "-1px" : "auto")};
   width: ${p => p.width}px;
   background: ${colors.white};
   border: 1px solid ${colors.legacyLightGrey1};
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   border-top-right-radius: 2px;
   box-shadow: 0 3px 3px 0 ${colors.legacyTranslucentGrey1};
   z-index: 20;
@@ -241,9 +253,9 @@ const styles = {
 };
 
 export const WrappableFieldLoading = ({ width }: { width: number }) => (
-  <InlineLabel interactive={false} style={{ width }}>
+  <Loading interactive={false} style={{ width }}>
     Loading...
-  </InlineLabel>
+  </Loading>
 );
 
 export default WrappableField;
