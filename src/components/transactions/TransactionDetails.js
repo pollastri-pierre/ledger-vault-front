@@ -11,8 +11,7 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import connectData from "restlay/connectData";
 import TransactionQuery from "api/queries/TransactionQuery";
 import AccountQuery from "api/queries/AccountQuery";
-import { isMemberOfFirstApprovalStep } from "utils/users";
-import { isAccountSpendable } from "utils/transactions";
+import { isAccountNotSpendableWithReason } from "utils/transactions";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import { CardError } from "components/base/Card";
 import Button from "components/base/Button";
@@ -83,11 +82,7 @@ function TransactionDetailsComponent(props: Props) {
         url={`/transactions/${transaction.id}/history`}
         entityType="transaction"
         entity={transaction}
-        preventReplay={() => {
-          return (
-            !isMemberOfFirstApprovalStep(account) && isAccountSpendable(account)
-          );
-        }}
+        preventReplay={isAccountNotSpendableWithReason(account)}
       />
     </EntityModal>
   );

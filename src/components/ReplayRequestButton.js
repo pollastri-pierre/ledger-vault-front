@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -57,9 +58,14 @@ export const getUrlFromRequest = (
 type Props = {
   setRequest: RequestReplay => void,
   request: RequestReplay,
+  disabledReason: ?string,
 };
 
-const ReplayRequestButton = ({ request, setRequest }: Props) => {
+const ReplayRequestButton = ({
+  request,
+  setRequest,
+  disabledReason,
+}: Props) => {
   const { t } = useTranslation();
   const me = useMe();
   const history = useHistory();
@@ -70,16 +76,38 @@ const ReplayRequestButton = ({ request, setRequest }: Props) => {
     history.push(getUrlFromRequest(request, pathname, me));
   };
 
+  const button = (
+    <Button
+      type="filled"
+      size="small"
+      onClick={onClick}
+      disabled={!!disabledReason}
+    >
+      <Box horizontal flow={5} align="center">
+        <FaRedoAlt size={11} />
+        <div>{t("history:replay")}</div>
+      </Box>
+    </Button>
+  );
+  let inner;
+  // have to wrap it inside a DIV because disabled button swallow hover event
+  if (disabledReason) {
+    inner = (
+      <Tooltip
+        title={t(disabledReason, {
+          entityType: request.entity.entityType.toLowerCase(),
+        })}
+      >
+        <div>{button}</div>
+      </Tooltip>
+    );
+  } else {
+    inner = button;
+  }
+
   return (
     <Box align="flex-end">
-      <Box>
-        <Button type="filled" size="small" onClick={onClick}>
-          <Box horizontal flow={5} align="center">
-            <FaRedoAlt size={11} />
-            <div>{t("history:replay")}</div>
-          </Box>
-        </Button>
-      </Box>
+      <Box>{inner}</Box>
     </Box>
   );
 };

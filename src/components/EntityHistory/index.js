@@ -47,7 +47,7 @@ type Props = {
   history: VaultHistory,
   entityType: EntityType,
   entity?: Entity,
-  preventReplay?: () => Boolean,
+  preventReplay?: string[],
 };
 
 const createItemByEntity = {
@@ -158,7 +158,7 @@ const HistoryItem = ({
   entityType: EntityType,
   isInitiallyOpened: boolean,
   entity?: Entity,
-  preventReplay?: () => Boolean,
+  preventReplay?: string[],
 }) => {
   const status = getItemStatus(item);
   const [isCollapsed, setCollapsed] = useState(!isInitiallyOpened);
@@ -169,12 +169,12 @@ const HistoryItem = ({
   const isAdmin = me.role === "ADMIN";
   const isTransaction = entity && entity.entityType === "TRANSACTION";
 
-  const isReplayAvailable =
-    entity &&
-    !hasPendingRequest(entity) &&
-    STATUS_REPLAY_ALLOWED.indexOf(status) > -1 &&
-    (!isTransaction || (isTransaction && !isAdmin)) &&
-    (!preventReplay || (preventReplay && !preventReplay()));
+  const isReplayHidden =
+    STATUS_REPLAY_ALLOWED.indexOf(status) === -1 || (isAdmin && isTransaction);
+
+  const disabledReason =
+    (entity && hasPendingRequest(entity) && "reasons:pending") ||
+    (preventReplay && preventReplay.length > 0 && preventReplay[0]);
 
   return (
     <HistoryItemContainer>
@@ -199,13 +199,14 @@ const HistoryItem = ({
               step={step}
             />
           ))}
-          {isReplayAvailable && (
+          {!isReplayHidden && (
             <ReplayRequestButton
               request={{
                 entity,
                 type: item.type,
                 edit_data: item.steps[0].edit_data,
               }}
+              disabledReason={disabledReason}
             />
           )}
         </HistoryItemBody>
@@ -438,15 +439,18 @@ export function FetchEntityHistory({
   url,
   entityType,
   entity,
+  preventReplay,
 }: {
   url: string,
   entityType: "user" | "group" | "account" | "transaction" | "whitelist",
   entity?: Entity,
+  preventReplay?: string[],
 }) {
   return (
     <Fetch url={url} deserialize={deserializeHistory}>
       {history => (
         <EntityHistory
+          preventReplay={preventReplay}
           history={history}
           entityType={entityType}
           entity={entity}
