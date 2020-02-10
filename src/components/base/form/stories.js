@@ -2,10 +2,9 @@
 
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import { text } from "@storybook/addon-knobs";
+import { boolean, text } from "@storybook/addon-knobs";
 import { FaLink } from "react-icons/fa";
-
-import { InputText, TextArea } from "components/base/form";
+import { InputText, Switch, TextArea } from "components/base/form";
 
 const p = () => ({
   value: text("value", ""),
@@ -56,3 +55,15 @@ storiesOf("components/form/TextArea", module)
   .add("hints", () => (
     <TextArea autoFocus value={text("value", "text area")} hints={hints} />
   ));
+
+const SwitchDemo = () => {
+  const [checked, setChecked] = React.useState(false);
+  return (
+    <Switch
+      value={checked}
+      onChange={value => setChecked(value)}
+      disabled={boolean("disabled", false)}
+    />
+  );
+};
+storiesOf("components/form", module).add("Switch", () => <SwitchDemo />);

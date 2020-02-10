@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Trans } from "react-i18next";
-import Switch from "@material-ui/core/Switch";
 
 import connectData from "restlay/connectData";
 import SuspendUserMutation from "api/mutations/SuspendUserMutation";
@@ -10,6 +9,7 @@ import UnsuspendUserMutation from "api/mutations/UnsuspendUserMutation";
 import LineRow from "components/LineRow";
 import type { User } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
+import { Switch } from "components/base/form";
 
 export default ({ user }: { user: User }) => (
   <>
@@ -50,7 +50,7 @@ const RowSuspend = connectData(({ user, restlay }: RowSuspendProps) => {
 
   return (
     <LineRow label={label} tooltipInfoMessage={tooltip}>
-      <Switch color="primary" checked={isSuspended} onClick={handleClick} />
+      <Switch value={isSuspended} onChange={handleClick} />
     </LineRow>
   );
 });
