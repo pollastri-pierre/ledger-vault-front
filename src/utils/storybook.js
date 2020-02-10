@@ -5,7 +5,8 @@ import { denormalize } from "normalizr-gre";
 import RestlayProvider from "restlay/RestlayProvider";
 import schema from "data/schema";
 import keyBy from "lodash/keyBy";
-import Checkbox from "@material-ui/core/Checkbox";
+
+import { Checkbox } from "components/base/form";
 import Box from "components/base/Box";
 import Select from "components/base/Select";
 import Modal from "components/base/Modal";
