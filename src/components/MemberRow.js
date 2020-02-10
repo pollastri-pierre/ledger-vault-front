@@ -5,7 +5,6 @@ import colors from "shared/colors";
 import styled from "styled-components";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import Checkbox from "./form/Checkbox";
 
 const Container = styled(Box)`
   border-bottom: 1px solid ${colors.argile};
@@ -15,8 +14,6 @@ const Container = styled(Box)`
 `;
 class MemberRow extends Component<{
   onSelect?: (pub_key: string) => void,
-  checked?: boolean,
-  editable?: boolean,
   member: User,
 }> {
   onClick = () => {
@@ -25,7 +22,7 @@ class MemberRow extends Component<{
   };
 
   render() {
-    const { member, onSelect, checked, editable } = this.props;
+    const { member } = this.props;
     return (
       <Container
         horizontal
@@ -37,20 +34,6 @@ class MemberRow extends Component<{
           <Text color={colors.black}>{member.username}</Text>
           <Text color={colors.steel}>{member.role || "Administrator"}</Text>
         </Box>
-        {editable && (
-          <Text
-            size="small"
-            color={colors.steel}
-            i18nKey="common:clickToEdit"
-          />
-        )}
-        {onSelect && !editable && (
-          <Checkbox
-            checked={checked}
-            labelFor={member.id}
-            handleInputChange={this.onClick}
-          />
-        )}
       </Container>
     );
   }
