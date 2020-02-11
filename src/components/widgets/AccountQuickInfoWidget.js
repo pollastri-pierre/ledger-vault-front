@@ -7,7 +7,7 @@ import { FaCoins, FaInfo, FaTicketAlt, FaLink, FaCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import EntityStatus from "components/EntityStatus";
+import EntityStatus, { APPROVED_LIKE_STATUS } from "components/EntityStatus";
 import CounterValue from "components/CounterValue";
 import ApproverRole from "components/ApproverRole";
 import IconSend from "components/icons/Send";
@@ -62,14 +62,16 @@ const AccountQuickInfoHeader = ({ account }: Props) => {
           ) : (
             <Link to={`${account.id}/send/${account.id}`}>{sendBtn}</Link>
           ))}
-        <Link to={`${account.id}/receive/${account.id}`}>
-          <Button size="small" type="filled">
-            <Box horizontal flow={5} align="center">
-              <IconReceive size={10} />
-              <Text i18nKey="accountView:receiveButton" />
-            </Box>
-          </Button>
-        </Link>
+        {APPROVED_LIKE_STATUS.includes(account.status) && (
+          <Link to={`${account.id}/receive/${account.id}`}>
+            <Button size="small" type="filled">
+              <Box horizontal flow={5} align="center">
+                <IconReceive size={10} />
+                <Text i18nKey="accountView:receiveButton" />
+              </Box>
+            </Button>
+          </Link>
+        )}
         <SyncButton account={account} />
       </Box>
     </PageHeaderActions>
