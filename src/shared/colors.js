@@ -66,7 +66,8 @@ const colors = {
   paleViolet: "#f0eaf3",
   paleBlue: "#d1eef9",
   palePink: "#fbe1e1",
-
+  // FORM COMPONENTS
+  switchRoundUnCheck: "#fafafa",
   // LEGACY
   legacyLightBlue: "#27d0e280",
   legacyLightBlue2: "rgba(39, 208, 226, 0.04)",
