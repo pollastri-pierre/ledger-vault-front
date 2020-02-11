@@ -176,6 +176,10 @@ const HistoryItem = ({
     (entity && hasPendingRequest(entity) && "reasons:pending") ||
     (preventReplay && preventReplay.length > 0 && preventReplay[0]);
 
+  // TODO to be removed when LV-2276 is done
+  const tmpDisableAccountCreationReplay =
+    entity && entity.entityType === "ACCOUNT" && item.type === "CREATE";
+
   return (
     <HistoryItemContainer>
       <HistoryItemHeader
@@ -199,7 +203,7 @@ const HistoryItem = ({
               step={step}
             />
           ))}
-          {!isReplayHidden && (
+          {!isReplayHidden && !tmpDisableAccountCreationReplay && (
             <ReplayRequestButton
               request={{
                 entity,
