@@ -21,7 +21,12 @@ type Props = {
 };
 
 // gate has a weird status management
-const APPROVED_LIKE_STATUS = ["SUBMITTED", "ACTIVE", "MIGRATED", "VIEW_ONLY"];
+export const APPROVED_LIKE_STATUS = [
+  "SUBMITTED",
+  "ACTIVE",
+  "MIGRATED",
+  "VIEW_ONLY",
+];
 
 class EntityStatus extends PureComponent<Props> {
   render() {
