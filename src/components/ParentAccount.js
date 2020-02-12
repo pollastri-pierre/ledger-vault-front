@@ -4,7 +4,6 @@
  * accounts to retrieve info
  * */
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import type { Account } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
@@ -12,6 +11,7 @@ import SearchAccounts from "api/queries/SearchAccounts";
 import connectData from "restlay/connectData";
 import AccountName from "components/AccountName";
 import VaultLink from "components/VaultLink";
+import Spinner from "components/base/Spinner";
 
 type Props = {
   id: number,
@@ -30,12 +30,7 @@ const ParentAccount = (props: Props) => {
   );
 };
 
-// FIXME don't know why I had to wrap it inside a div, otherwise i had a weird effect
-const RenderLoading = () => (
-  <div>
-    <CircularProgress size={12} />
-  </div>
-);
+const RenderLoading = () => <Spinner size="small" />;
 
 export default connectData(ParentAccount, {
   RenderLoading,
