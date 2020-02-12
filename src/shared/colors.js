@@ -106,6 +106,11 @@ const colors = {
   legacyTranslucentGrenade: "#ea2e492b",
   legacyGrenade: "#b14656",
   legacyViolet: "#777799",
+
+  shadows: {
+    material:
+      "0px 5px 5px -3px rgba(0, 0, 0, 0.04), 0px 8px 10px 1px rgba(0, 0, 0, 0.04), 0px 3px 14px 2px rgba(0, 0, 0, 0.04);",
+  },
 };
 
 const toast = {
