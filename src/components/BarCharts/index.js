@@ -63,4 +63,5 @@ const BarCharts = ({
   );
 };
 
-export default BarCharts;
+// $FlowFixMe
+export default React.memo(BarCharts);
