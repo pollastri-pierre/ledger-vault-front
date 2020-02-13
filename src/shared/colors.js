@@ -19,7 +19,7 @@ const formShadows = {
 form.shadow = formShadows;
 
 const colors = {
-  spinner: "hsl(0, 0%, 60%)",
+  spinner: "hsl(0, 0%, 70%)",
   bLive: "#6490f1",
   night: "#1d2028",
   mouse: "#e2e2e2",
