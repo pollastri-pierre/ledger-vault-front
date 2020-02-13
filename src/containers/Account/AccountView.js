@@ -37,7 +37,7 @@ function AccountView(props: Props) {
               <Box flex={1}>
                 <SubAccountsWidget account={account} />
               </Box>
-            ) : account.account_type === "Bitcoin" ? (
+            ) : account.account_type === "Bitcoin" && false ? (
               <Box flex={2}>
                 <UtxoGraphWidget account={account} />
               </Box>
