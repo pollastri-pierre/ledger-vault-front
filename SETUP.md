@@ -49,4 +49,7 @@ export WALLET_DAEMON_VERSION=develop
 export VAULT_API_VERSION=develop
 export HSM_DRIVER_VERSION=develop
 export DEVICE_API_VERSION=develop
+
+export VAULT_HSM_CLIENT_CERT_PATH=/path/to/certificate/vault-team-and-servers.pfx
+export VAULT_HSM_CLIENT_CERT_PWD=<password>
 ```
