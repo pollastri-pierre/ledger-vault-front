@@ -17,7 +17,7 @@ type Icon = {
   color?: string,
 };
 
-type Alignment = "left" | "right";
+type Alignment = "left" | "right" | "center";
 
 type Props = InputProps<string> & {
   IconLeft?: React$ComponentType<Icon>,
@@ -141,7 +141,7 @@ const StyledInput = styled.input`
   width: ${p => (p.width ? `${p.width}px` : "100%")};
   height: 40px;
   border-radius: 4px;
-  text-align: ${p => (p.align === "right" ? "right" : "left")};
+  text-align: ${p => p.align || "left"};
   border: 1px solid
     ${p =>
       p.hasError
