@@ -13,11 +13,11 @@ import { login } from "redux/modules/auth";
 import VaultCentered from "components/VaultCentered";
 import Button from "components/base/Button";
 import Absolute from "components/base/Absolute";
-import InputField from "components/InputField";
 import TransportChooser from "components/TransportChooser";
 import Text from "components/base/Text";
 import Card from "components/base/Card";
 import Box from "components/base/Box";
+import { Form, InputText } from "components/base/form";
 
 const mapDispatchToProps = { login, addMessage, addError };
 
@@ -34,12 +34,6 @@ function Welcome(props: { history: MemoryHistory }) {
   const [domain, setDomain] = useState(process.env.ORGANIZATION_NAME || "");
 
   const onChange = (domain: string) => setDomain(domain);
-
-  const onKeyPress = (e: SyntheticKeyboardEvent<Document>) => {
-    if (e.key === "Enter") {
-      onSubmit();
-    }
-  };
 
   const onSubmit = async () => {
     if (MIGRATION_REDIRECTION) {
@@ -59,15 +53,15 @@ function Welcome(props: { history: MemoryHistory }) {
         </Absolute>
         <Box flow={20} px={20} pt={60} align="center">
           <FaUser color={colors.lightGrey} size={32} />
-          <InputField
-            value={domain}
-            autoFocus
-            autoComplete="off"
-            InputProps={inputProps}
-            onKeyPress={onKeyPress}
-            onChange={onChange}
-            placeholder={t("welcome:placeholder_domain")}
-          />
+          <Form onSubmit={onSubmit}>
+            <InputText
+              value={domain}
+              autoFocus
+              onChange={onChange}
+              placeholder={t("welcome:placeholder_domain")}
+              align="center"
+            />
+          </Form>
           <Text i18nKey="welcome:domain_description" />
           <Absolute right={20} bottom={20}>
             <Button
@@ -84,14 +78,5 @@ function Welcome(props: { history: MemoryHistory }) {
     </VaultCentered>
   );
 }
-
-const inputProps = {
-  inputProps: {
-    style: {
-      textAlign: "center",
-      paddingBottom: 20,
-    },
-  },
-};
 
 export default connect(null, mapDispatchToProps)(Welcome);

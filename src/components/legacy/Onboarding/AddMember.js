@@ -4,14 +4,13 @@ import styled from "styled-components";
 
 import Button from "components/base/Button";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
-import InputField from "components/InputField";
 import colors from "shared/colors";
 import DeviceInteraction from "components/DeviceInteraction";
 import { onboardingRegisterFlow } from "device/interactions/hsmFlows";
 import ProfileIcon from "components/icons/thin/Profile";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import { Form } from "components/base/form";
+import { InputText, Form } from "components/base/form";
 import type { Organization } from "data/types";
 
 type Props = {
@@ -46,10 +45,9 @@ const AddMember = ({ finish, organization }: Props) => {
             <ProfileIcon color="white" />
           </ProfileIconContainer>
           <Box flow={20}>
-            <InputField
+            <InputText
               autoFocus
               placeholder="Username"
-              name="username"
               maxLength={19}
               onlyAscii
               value={username}
