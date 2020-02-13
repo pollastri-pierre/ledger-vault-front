@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "components/base/Tooltip";
 import { FaInfoCircle } from "react-icons/fa";
 import { BigNumber } from "bignumber.js";
 import { connect } from "react-redux";
@@ -137,7 +137,7 @@ class CounterValue extends PureComponent<Props> {
             lineHeight: 1,
           }}
         >
-          <Tooltip title={`Source: ${exchange}`}>
+          <Tooltip content={`Source: ${exchange}`}>
             <FaInfoCircle size={12} color={colors.mouse} />
           </Tooltip>
         </span>

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "components/base/Tooltip";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 import colors from "shared/colors";
@@ -61,7 +61,7 @@ export default function LineRow(props: LineRowProps) {
             {label}
           </Text>
           {tooltipInfoMessage && (
-            <Tooltip title={tooltipInfoMessage} placement="right">
+            <Tooltip content={tooltipInfoMessage}>
               <InfoCircle size={10} color={colors.lead} />
             </Tooltip>
           )}

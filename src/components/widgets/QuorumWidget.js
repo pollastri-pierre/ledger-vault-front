@@ -4,10 +4,10 @@ import React from "react";
 import { Trans } from "react-i18next";
 import type { MemoryHistory } from "history";
 import type { Location } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
 import { FaPen } from "react-icons/fa";
 
 import RequestsQuery from "api/queries/RequestsQuery";
+import Tooltip from "components/base/Tooltip";
 import type { Connection } from "restlay/ConnectionQuery";
 import type { GenericRequest } from "data/types";
 import { useOrganization } from "components/OrganizationContext";
@@ -40,7 +40,7 @@ function QuorumWidget(props: Props) {
     !updateQuorumRequest && !revokeAdminRequest && !addAdminRequest;
   let editBtn = (
     <Absolute top={10} right={10}>
-      <Tooltip title="Edit Admin Rule" placement="left">
+      <Tooltip content="Edit Admin Rule">
         <Button
           disabled={!canEdit}
           onClick={onEdit}
@@ -54,7 +54,7 @@ function QuorumWidget(props: Props) {
   if (!canEdit) {
     editBtn = (
       <Tooltip
-        title={
+        content={
           <Trans
             i18nKey={
               addAdminRequest

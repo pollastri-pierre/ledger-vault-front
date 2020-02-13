@@ -1,7 +1,7 @@
 // @flow
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "components/base/Tooltip";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
 import { FaPlus, FaCheck } from "react-icons/fa";
@@ -172,7 +172,7 @@ const AddressRow = React.memo(
           <Box ellipsis>{addr.address}</Box>
         </Box>
         <Box {...LAYOUT.actions}>
-          <Tooltip title={t("whitelists:create.remove_addr")} placement="top">
+          <Tooltip content={t("whitelists:create.remove_addr")}>
             <Button
               type="link"
               size="small"
@@ -364,19 +364,18 @@ const AddressForm = connectData(
             </Box>
             <Box {...LAYOUT.actions}>
               {onCancel && (
-                <Tooltip title={t("common:cancel")} placement="top">
+                <Tooltip content={t("common:cancel")}>
                   <Button onClick={onCancel} data-test="cancel_button">
                     <TiArrowBack size={16} />
                   </Button>
                 </Tooltip>
               )}
               <Tooltip
-                title={
+                content={
                   isEdit
                     ? t("whitelists:create.edit_addr")
                     : t("whitelists:create.add_addr")
                 }
-                placement="top"
               >
                 <Button
                   onClick={handleSubmit}

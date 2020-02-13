@@ -109,7 +109,9 @@ const colors = {
 
   shadows: {
     material:
-      "0px 5px 5px -3px rgba(0, 0, 0, 0.04), 0px 8px 10px 1px rgba(0, 0, 0, 0.04), 0px 3px 14px 2px rgba(0, 0, 0, 0.04);",
+      "0px 5px 5px -3px rgba(0, 0, 0, 0.04), 0px 8px 10px 1px rgba(0, 0, 0, 0.04), 0px 3px 14px 2px rgba(0, 0, 0, 0.04)",
+    material2:
+      "0px 5px 5px -3px rgba(0, 0, 0, 0.1), 0px 8px 10px 1px rgba(0, 0, 0, 0.1)",
   },
 };
 

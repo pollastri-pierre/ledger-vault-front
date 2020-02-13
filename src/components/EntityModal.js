@@ -7,7 +7,7 @@ import { FaPen } from "react-icons/fa";
 import { withRouter, matchPath } from "react-router";
 import { Link } from "react-router-dom";
 import type { Location, Match } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "components/base/Tooltip";
 
 import {
   RichModalHeader,
@@ -164,7 +164,7 @@ function EditButton({ url, disabled }: { url: string, disabled?: boolean }) {
   const { t } = useTranslation();
   const inner = (
     <Link replace to={url} data-test="edit-button">
-      <Tooltip title={t("entityModal:edit")} placement="left">
+      <Tooltip content={t("entityModal:edit")}>
         <Button>
           <FaPen />
         </Button>

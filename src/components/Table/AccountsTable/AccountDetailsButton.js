@@ -51,11 +51,7 @@ function AccountTableSubmenu(props: Props) {
 
   return (
     <Box horizontal>
-      <OpenExternal
-        url={`/accounts/view/${account.id}`}
-        tooltipTitle={<Trans i18nKey="entityModal:edit" />}
-        tooltipPlacement="bottom"
-      />
+      <OpenExternal url={`/accounts/view/${account.id}`} />
       <Menu>
         <MenuButtonStyleIcon onClick={e => preventRowClick(e)}>
           <FaEllipsisV />

@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useMemo } from "react";
-import Tooltip from "@material-ui/core/Tooltip";
 import { useTranslation } from "react-i18next";
 import noop from "lodash/noop";
 import type { ObjectParameters } from "query-string";
@@ -14,6 +13,7 @@ import type { FieldProps } from "components/filters/types";
 import { WrappableFieldLoading } from "components/filters/generic/WrappableField";
 import type { Connection } from "restlay/ConnectionQuery";
 import { InputText } from "components/base/form";
+import Tooltip from "components/base/Tooltip";
 
 type Props = FieldProps & {
   accountsConnection: Connection<Account>,
@@ -41,10 +41,7 @@ function FilterFieldDestinationTag(props: Props) {
 
   if (!canFilter)
     return (
-      <Tooltip
-        title={t("transaction:info.noXrpTransaction")}
-        placement="top-start"
-      >
+      <Tooltip content={t("transaction:info.noXrpTransaction")}>
         <InputText
           width={200}
           disabled
