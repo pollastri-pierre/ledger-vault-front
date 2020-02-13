@@ -70,6 +70,7 @@ export const getModalTabLink = (
 };
 
 export const isRequestPending = (request: GenericRequest) =>
+  request.status !== "EXPIRED" &&
   request.status !== "APPROVED" &&
   request.status !== "BLOCKED" &&
   request.status !== "ABORTED";
