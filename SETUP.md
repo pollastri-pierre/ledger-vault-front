@@ -36,3 +36,17 @@ Please send me your GPG public key so I can send you the certif
 ```
 gpg --armor --export <email>
 ```
+
+### Env file
+
+Put this somewhere (my 2cents: `~/.private`) and ensure it is sourced by your shell
+
+```
+export VAULT_COMPARTMENT_ID=<RANDOM BETWEEN 800 AND 999>
+export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20200110/process
+
+export WALLET_DAEMON_VERSION=develop
+export VAULT_API_VERSION=develop
+export HSM_DRIVER_VERSION=develop
+export DEVICE_API_VERSION=develop
+```
