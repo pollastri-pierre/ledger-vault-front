@@ -626,6 +626,3 @@ export type FreshAddress = {
   derivation_path: string,
 };
 
-export type Utxo = {
-  value: BigNumber,
-};

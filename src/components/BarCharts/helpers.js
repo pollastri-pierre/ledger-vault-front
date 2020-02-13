@@ -3,10 +3,12 @@
 /* eslint-disable import/extensions */
 import BigNumber from "bignumber.js/bignumber.js";
 
-import type { Utxo } from "data/types";
 import type { BarChartsData } from "./types";
 
-export function groupData(data: Utxo[], granularity: number): BarChartsData[] {
+export function groupData(
+  data: Array<{ value: BigNumber }>,
+  granularity: number,
+): BarChartsData[] {
   if (granularity < 1) {
     console.warn("Invalid granularity value");
     granularity = 1;
