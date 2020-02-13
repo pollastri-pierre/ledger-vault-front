@@ -28,7 +28,7 @@ import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import RequestsQuery from "api/queries/RequestsQuery";
 import Query from "restlay/Query";
 
-import { extractErrorContent } from "redux/modules/alerts";
+import { extractErrorContent } from "utils/errors";
 import { approveFlow, createAndApprove } from "device/interactions/hsmFlows";
 import connectData from "restlay/connectData";
 import colors from "shared/colors";

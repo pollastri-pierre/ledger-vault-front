@@ -5,7 +5,9 @@ import network from "network";
 export const LOGOUT = "auth/LOGOUT";
 export const LOGIN = "auth/LOGIN";
 
-export const logout = () => async (dispatch: Dispatch<*>) => {
+export const logout = (params: ?{ autoLogin: boolean } = {}) => async (
+  dispatch: Dispatch<*>,
+) => {
   try {
     await network(`/authentications/logout`, "POST");
   } catch {
@@ -13,6 +15,7 @@ export const logout = () => async (dispatch: Dispatch<*>) => {
   }
   dispatch({
     type: LOGOUT,
+    payload: { autoLogin: params ? params.autoLogin : false },
   });
 };
 
@@ -46,9 +49,9 @@ export default function reducer(
 ) {
   switch (action.type) {
     case LOGOUT:
-      return { isAuthenticated: false };
+      return { isAuthenticated: false, autoLogin: action.payload.autoLogin };
     case LOGIN:
-      return { isAuthenticated: true };
+      return { isAuthenticated: true, autoLogin: false };
     default:
       return state;
   }

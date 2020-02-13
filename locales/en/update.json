@@ -5,7 +5,6 @@
   "retry": "Retry",
   "success": "Install successful.",
   "goToLogin": "Login to Vault",
-  "goBack": "Go back",
   "infobox": "Your application is not up to date. Download our ledger-update software so you can update your app and your firmware. Contact support if needed.",
   "steps": {
     "title": "Device update required",

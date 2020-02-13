@@ -3,13 +3,12 @@ import { PureComponent } from "react";
 import { connect } from "react-redux";
 import { NetworkError } from "network";
 
-import { NoChannelForDevice } from "utils/errors";
 import {
-  addMessage,
-  addError,
+  NoChannelForDevice,
   extractErrorTitle,
   extractErrorContent,
-} from "redux/modules/alerts";
+} from "utils/errors";
+import { addMessage, addError } from "redux/modules/alerts";
 import type { GateError } from "data/types";
 
 type Props = {

@@ -81,10 +81,10 @@ class OnboardingContainer extends Component<Props, State> {
     socket.on("connect", () => {
       socket.emit("authenticate", {
         token: "onboarding",
-        orga: this.props.match.params.orga_name,
+        orga: this.props.match.params.workspace,
       });
     });
-    socket.on(`${this.props.match.params.orga_name}/onboarding`, () => {
+    socket.on(`${this.props.match.params.workspace}/onboarding`, () => {
       this.onNewOnboardingState();
     });
   }
@@ -186,5 +186,6 @@ export default connect(
     queries: {
       organization: OrganizationQuery,
     },
+    RenderError: ({ error }) => `error ${error.toString()}`,
   }),
 );

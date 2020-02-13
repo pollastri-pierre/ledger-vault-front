@@ -55,6 +55,10 @@ export const InvalidOrMissingAttestation = createCustomErrorClass(
   "InvalidOrMissingAttestation",
 );
 
+export const NoWorkspaceForDevice = createCustomErrorClass(
+  "NoWorkspaceForDevice",
+);
+
 export function remapError(err: Error) {
   // $FlowFixMe
   if (err.statusCode === 0x6020 || err.statusCode === 0x6701) {
@@ -87,4 +91,24 @@ function jsonIncludes(err: Error, msg: string) {
 function jsonIncludesRegex(err: Error, regex: RegExp) {
   // $FlowFixMe
   return err.json && err.json.message && regex.test(err.json.message);
+}
+
+// code is intentionally defensive
+export function extractErrorTitle(error: *): string {
+  const title =
+    error.json && (error.json.code || error.json.message)
+      ? error.json.code && typeof error.json.code === "number"
+        ? `Error ${error.json.code}`
+        : error.json.message || "Unexpected error"
+      : error.message
+      ? error.message
+      : "Error";
+  return title || "Unexpected error";
+}
+
+export function extractErrorContent(
+  error: *,
+  defaultValue: ?string = "Unexpected error",
+): string {
+  return error.json ? error.json.message : error.message || defaultValue;
 }

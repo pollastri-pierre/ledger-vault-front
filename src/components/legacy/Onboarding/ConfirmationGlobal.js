@@ -17,11 +17,9 @@ import Footer from "./Footer";
 
 const ConfirmationGlobal = ({
   onboarding,
-  match,
   history,
   t,
 }: {
-  match: *,
   history: *,
   onboarding: *,
   t: Translate,
@@ -63,7 +61,12 @@ const ConfirmationGlobal = ({
           <DialogButton
             highlight
             onTouchTap={() => {
-              history.push(`/${match.params.orga_name}`);
+              const redirect = "/";
+              if (process.env.NODE_ENV === "production") {
+                window.location.href = redirect;
+              } else {
+                history.push(redirect);
+              }
             }}
           >
             {t("common:continue")}

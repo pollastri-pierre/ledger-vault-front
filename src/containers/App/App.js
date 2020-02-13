@@ -12,11 +12,11 @@ import ProfileQuery from "api/queries/ProfileQuery";
 import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import TryAgain from "components/TryAgain";
-import Spinner from "components/base/Spinner";
 import Content from "containers/Content";
 import Modals from "containers/Modals";
 import Card from "components/base/Card";
 import Text from "components/base/Text";
+import { LoginLoading } from "components/Login";
 import VaultLink from "components/VaultLink";
 import CheckMigration from "components/CheckMigration";
 import Box from "components/base/Box";
@@ -24,7 +24,6 @@ import UserContextProvider, { withMe } from "components/UserContextProvider";
 import { OrganizationContextProvider } from "components/OrganizationContext";
 import { useVersions } from "components/VersionsContext";
 import VaultLayout from "components/VaultLayout";
-import VaultCentered from "components/VaultCentered";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -92,7 +91,7 @@ const App = withMe((props: Props & { me: User }) => {
   });
 
   const handleLogout = () => {
-    const org = match.params.orga_name || "";
+    const org = match.params.workspace || "";
     history.push(`/${org}/logout`);
   };
 
@@ -121,16 +120,8 @@ const RenderError = ({ error, restlay }: *) => (
   </Box>
 );
 
-const RenderLoading = () => (
-  <VaultCentered>
-    <Card align="center" justify="center" height={350}>
-      <Spinner />
-    </Card>
-  </VaultCentered>
-);
-
 export default connectData(AppWrapper, {
-  RenderLoading,
+  RenderLoading: LoginLoading,
   RenderError,
   queries: {
     me: ProfileQuery,

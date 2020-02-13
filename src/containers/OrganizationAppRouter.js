@@ -16,15 +16,23 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import MockDevices from "components/MockDevices";
 import { VersionsContextProvider } from "components/VersionsContext";
 import GlobalStyle from "components/GlobalStyle";
-import OnboardingContainer from "components/legacy/Onboarding/OnboardingContainer";
+import Onboarding from "components/Onboarding";
+import PrivateRoute from "components/PrivateRoute";
+import Logout from "components/Logout";
+import { LoginLoading } from "components/Login";
 import { checkLogin } from "redux/modules/auth";
-import Welcome from "./Welcome";
-import Login from "./Login";
 
 import App from "./App/App";
-import Logout from "./Login/Logout";
-import PrivateRoute from "./Login/PrivateRoute";
-import RegisterUser from "./RegisterUser";
+
+let Login;
+let LoginDevice;
+let RegisterUser;
+
+if (process.env.NODE_ENV !== "production") {
+  Login = require("components/Login").default;
+  LoginDevice = require("components/Login").LoginDevice;
+  RegisterUser = require("containers/RegisterUser").default;
+}
 
 const { PollingProvider } = counterValues;
 
@@ -37,20 +45,19 @@ const OrganizationComponent = ({ match, history }: Props) => {
   const isLoggedLoading = useCheckLogin();
 
   // return nothing while checking for user logged or not
-  if (isLoggedLoading) return null;
+  if (isLoggedLoading) return <LoginLoading />;
 
   return (
     <Switch>
-      <Route path={`${match.url}/login`} component={Login} />
-      <Route
-        path={`${match.url}/onboarding`}
-        render={() => <OnboardingContainer match={match} history={history} />}
-      />
-      <Route
-        path={`${match.url}/logout`}
-        render={() => <Logout match={match} />}
-      />
-      <Route path={`${match.url}/register/:urlID`} component={RegisterUser} />
+      {process.env.NODE_ENV !== "production" && (
+        // in production, Onboarding is handled in a different bundle
+        <Route path="/:workspace/onboarding" component={Onboarding} />
+      )}
+      {process.env.NODE_ENV !== "production" && (
+        // in production, Register is handled in a different bundle
+        <Route path="/:workspace/register/:urlID" component={RegisterUser} />
+      )}
+      <Route path="/:workspace/logout" component={Logout} />
       <PollingProvider>
         <PrivateRoute
           path={`${match.url}/`}
@@ -88,8 +95,15 @@ const OrganizationAppRouter = ({
           <AlertsContainer />
           <Switch>
             <Route path="/update-app" component={UpdateDevice} />
-            <Route path="/:orga_name" component={OrganizationComponent} />
-            <Route component={Welcome} />
+            {process.env.NODE_ENV !== "production" && (
+              // in production, Onboarding is handled in a different bundle
+              <Route path="/" exact component={Login} />
+            )}
+            {process.env.NODE_ENV !== "production" && (
+              // in production, Onboarding is handled in a different bundle
+              <Route path="/:workspace/login" exact component={LoginDevice} />
+            )}
+            <Route path="/:workspace" component={OrganizationComponent} />
           </Switch>
         </VersionsContextProvider>
       </BrowserRouter>
