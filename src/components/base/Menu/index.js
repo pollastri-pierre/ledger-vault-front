@@ -7,6 +7,7 @@ export { Menu } from "@reach/menu-button";
 
 export const MenuButtonStyle = styled(MenuButton)`
   cursor: pointer;
+  background: transparent;
   border: none;
   padding: 0;
 
@@ -18,7 +19,9 @@ export const MenuButtonStyle = styled(MenuButton)`
 `;
 export const MenuButtonStyleIcon = styled(MenuButtonStyle)`
   width: 30px;
-  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: ${colors.lightGrey};
 
   &:hover,
@@ -26,6 +29,10 @@ export const MenuButtonStyleIcon = styled(MenuButtonStyle)`
     outline: none;
     box-shadow: none;
     color: ${colors.mediumGrey};
+  }
+
+  &:active {
+    color: ${colors.shark};
   }
 `;
 
@@ -51,7 +58,6 @@ export const MenuListStyle = styled(MenuList)`
   border-radius: 4px;
   width: 108px;
   padding: 10px 0;
-  background: ${colors.white};
   box-shadow: ${colors.shadows.material};
   border: none !important;
   &:focus {
