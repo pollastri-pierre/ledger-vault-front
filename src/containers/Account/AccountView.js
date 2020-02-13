@@ -16,6 +16,7 @@ import {
   SubAccountsWidget,
   TransactionsGraphWidget,
   connectWidget,
+  UtxoGraphWidget,
 } from "components/widgets";
 
 type Props = {
@@ -32,11 +33,15 @@ function AccountView(props: Props) {
         <Box flow={20} grow>
           <AccountQuickInfoWidget account={account} />
           <ResponsiveContainer>
-            {account.account_type === "Ethereum" && (
+            {account.account_type === "Ethereum" ? (
               <Box flex={1}>
                 <SubAccountsWidget account={account} />
               </Box>
-            )}
+            ) : account.account_type === "Bitcoin" ? (
+              <Box flex={2}>
+                <UtxoGraphWidget account={account} />
+              </Box>
+            ) : null}
             {isBalanceAvailable(account) && (
               <Box flex={2} style={{ minWidth: 500 }}>
                 <TransactionsGraphWidget account={account} />
