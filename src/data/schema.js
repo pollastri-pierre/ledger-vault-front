@@ -12,6 +12,7 @@ const Currency = create("currencies", {}, "name");
 const Fiat = create("fiats");
 
 const Address = create("Address");
+const Utxo = create("Utxo", {}, "address");
 const Account = create("accounts", {
   fresh_addresses: Address,
 });
@@ -55,4 +56,5 @@ export default {
   Fiat,
   Balance,
   Activity,
+  Utxo,
 };

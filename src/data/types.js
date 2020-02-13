@@ -626,3 +626,9 @@ export type FreshAddress = {
   derivation_path: string,
 };
 
+export type UTXO = {
+  address: string,
+  height: number,
+  confirmations: number,
+  amount: BigNumber,
+};
