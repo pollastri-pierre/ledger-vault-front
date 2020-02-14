@@ -2,6 +2,7 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
+import { connect } from "react-redux";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import { createAndApprove } from "device/interactions/hsmFlows";
@@ -14,6 +15,11 @@ import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import UpdateDescriptionButton from "components/GroupCreationFlow/UpdateDescriptionButton";
 import { handleCancelOnDevice } from "utils/request";
+import { resetRequest } from "redux/modules/requestReplayStore";
+import type {
+  EditGroupReplay,
+  CreateGroupReplay,
+} from "redux/modules/requestReplayStore";
 
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
@@ -31,7 +37,7 @@ import GroupCreationInfos from "./GroupCreationInfos";
 import GroupCreationConfirmation from "./GroupCreationConfirmation";
 import type { GroupCreationPayload } from "./types";
 
-const initialPayload: GroupCreationPayload = {
+const _initialPayload: GroupCreationPayload = {
   name: "",
   description: "",
   members: [],
@@ -56,16 +62,20 @@ const steps = [
       initialPayload,
       restlay,
       onSuccess,
+      payloadToCompareTo,
     }: {
       payload: GroupCreationPayload,
       initialPayload: GroupCreationPayload,
       onClose: Function,
       isEditMode?: boolean,
+      payloadToCompareTo: GroupCreationPayload,
       restlay: RestlayEnvironment,
       onSuccess: () => void,
     }) => {
       // if only description changed
-      if (onlyDescriptionChangedGeneric(payload, initialPayload, "members")) {
+      if (
+        onlyDescriptionChangedGeneric(payload, payloadToCompareTo, "members")
+      ) {
         return <UpdateDescriptionButton payload={payload} onClose={onClose} />;
       }
       const data = serializePayload(payload);
@@ -81,7 +91,9 @@ const steps = [
           onSuccess={() => {
             onSuccess();
           }}
-          disabled={!hasEditOccuredGeneric(payload, initialPayload, "members")}
+          disabled={
+            !hasEditOccuredGeneric(payload, payloadToCompareTo, "members")
+          }
           additionalFields={{
             type: isEditMode ? "EDIT_GROUP" : "CREATE_GROUP",
             data,
@@ -132,12 +144,48 @@ const steps = [
   },
 ];
 
-const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
-  if (match.params.groupId) {
-    return <GroupEdit groupId={match.params.groupId} close={close} />;
-  }
-  return <GroupCreation close={close} />;
+const mapStateToProps = state => ({
+  requestToReplay: state.requestReplay,
+});
+const mapDispatch = {
+  resetRequest,
 };
+const Wrapper = connect(
+  mapStateToProps,
+  mapDispatch,
+)(
+  ({
+    match,
+    close,
+    resetRequest,
+    requestToReplay,
+  }: {
+    match: Match,
+    close: Function,
+    requestToReplay: EditGroupReplay | CreateGroupReplay,
+    resetRequest: void => void,
+  }) => {
+    const closeAndEmptyStore = () => {
+      resetRequest();
+      close();
+    };
+    if (match.params.groupId) {
+      return (
+        <GroupEdit
+          groupId={match.params.groupId}
+          close={closeAndEmptyStore}
+          requestToReplay={requestToReplay}
+        />
+      );
+    }
+    return (
+      <GroupCreation
+        close={closeAndEmptyStore}
+        requestToReplay={requestToReplay}
+      />
+    );
+  },
+);
 
 const GroupEdit = connectData(
   props => (
@@ -149,7 +197,12 @@ const GroupEdit = connectData(
             <Trans i18nKey="group:create.editTitle" />: {props.group.name}
           </Text>
         }
-        initialPayload={purgePayload(props.group)}
+        initialPayload={mergeEditData(
+          props.group,
+          props.requestToReplay,
+          props.operators.edges.map(e => e.node),
+        )}
+        payloadToCompareTo={props.group}
         steps={steps}
         additionalProps={{ ...props }}
         onClose={props.close}
@@ -176,7 +229,12 @@ const GroupCreation = connectData(
       <MultiStepsFlow
         Icon={FaUsers}
         title={<Trans i18nKey="group:create.title" />}
-        initialPayload={initialPayload}
+        initialPayload={
+          (props.requestToReplay &&
+            purgeCreatePayload(props.requestToReplay.entity)) ||
+          _initialPayload
+        }
+        payloadToCompareTo={_initialPayload}
         steps={steps}
         additionalProps={props}
         onClose={props.close}
@@ -197,12 +255,38 @@ const GroupCreation = connectData(
 
 export default Wrapper;
 
-// get rid of uneeded fields
-function purgePayload(group: Group) {
+function mergeEditData(
+  group: Group,
+  requestToReplay: EditGroupReplay,
+  operators,
+) {
+  if (!requestToReplay || !requestToReplay.edit_data)
+    return purgeEditPayload(group);
+
+  const { edit_data } = requestToReplay;
+
   return {
     id: group.id,
-    name: group.name,
+    name: edit_data.name || group.name,
     description: group.description,
+    members: edit_data.members
+      ? edit_data.members
+          .map(id => operators.find(o => o.id === id))
+          .filter(Boolean)
+      : group.members,
+  };
+}
+// get rid of uneeded fields
+function purgeEditPayload(group: Group) {
+  return {
+    id: group.id,
+    ...purgeCreatePayload(group),
+  };
+}
+function purgeCreatePayload(group: Group) {
+  return {
+    name: group.name,
+    description: group.description || "",
     members: group.members,
   };
 }

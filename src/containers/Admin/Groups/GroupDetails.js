@@ -63,6 +63,7 @@ function GroupDetails(props: Props) {
       <FetchEntityHistory
         key="history"
         url={`/groups/${group.id}/history`}
+        entity={group}
         entityType="group"
       />
     </EntityModal>

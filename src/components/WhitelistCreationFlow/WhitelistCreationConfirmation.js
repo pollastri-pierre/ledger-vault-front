@@ -16,16 +16,16 @@ import type { WhitelistCreationStepProps } from "./types";
 type Props = WhitelistCreationStepProps;
 
 const WhitelistCreationConfirmation = (props: Props) => {
-  const { payload, initialPayload } = props;
+  const { payload, payloadToCompareTo } = props;
   return (
     <Box flow={20}>
       <WhitelistDetails whitelist={payload} />
-      {!hasEditOccuredWhitelist(payload, initialPayload) ? (
+      {!hasEditOccuredWhitelist(payload, payloadToCompareTo) ? (
         <InfoBox type="info" withIcon>
           <Trans i18nKey="whitelists:create.no_edit" />
         </InfoBox>
       ) : (
-        onlyDescriptionChangedWhitelist(payload, initialPayload) && (
+        onlyDescriptionChangedWhitelist(payload, payloadToCompareTo) && (
           <InfoBox type="info" withIcon>
             <Trans i18nKey="whitelists:create.no_hsm_validation" />
           </InfoBox>

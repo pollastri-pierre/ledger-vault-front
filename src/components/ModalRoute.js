@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import { Route } from "react-router-dom";
 import Modal from "components/base/Modal";
 import type { MemoryHistory } from "history";
+import type { User } from "data/types";
 import { UserContext } from "components/UserContextProvider";
 
 const isEmptyChildren = children => React.Children.count(children) === 0;
@@ -50,6 +51,7 @@ class ModalRoute extends Component<{
 
   onClose = () => {
     if (this._unmounted) return;
+    // this.props.resetRequest();
     const { history } = this.props;
     history.push({
       pathname: resolveCloseURL(history, this.lastPath, this.context),
@@ -118,10 +120,18 @@ const modalsRoutes = [
   /(.*)\/details\/[0-9]+\/.+$/,
 ];
 
-const deepModalRoutes = [
+export const deepModalRoutes = [
+  {
+    regex: /(.*)\/tasks\/(.*)\/new/,
+    redirect: (id: ?string, me: User) =>
+      `/${
+        window.location.pathname.split("/")[1]
+      }/${me.role.toLowerCase()}/tasks`,
+    regexId: null,
+  },
   {
     regex: /(.*)\/tasks\/(.*)\/details\/.+$/,
-    redirect: (id, me) =>
+    redirect: (id: ?string, me: User) =>
       `/${
         window.location.pathname.split("/")[1]
       }/${me.role.toLowerCase()}/tasks`,
@@ -129,7 +139,7 @@ const deepModalRoutes = [
   },
   {
     regex: /(.*)\/accounts\/view\/[0-9]+\/.+$/,
-    redirect: (id, me) =>
+    redirect: (id: ?string, me: User) =>
       id &&
       `/${
         window.location.pathname.split("/")[1]
@@ -144,7 +154,7 @@ const usePrevFirst = [
   /.*\/accounts\/view\/[0-9]+$/,
 ];
 
-function getModalClosePath(p, me) {
+export function getModalClosePath(p: string, me: User) {
   let regularMatch;
   let nestedMatch;
 

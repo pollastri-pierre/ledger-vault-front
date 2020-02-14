@@ -3,9 +3,13 @@
 import React, { useMemo } from "react";
 import invariant from "invariant";
 import { Trans } from "react-i18next";
+import { connect } from "react-redux";
 import { FaMoneyCheck } from "react-icons/fa";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import connectData from "restlay/connectData";
+import { getBridgeForCurrency } from "bridge";
+import { resetRequest } from "redux/modules/requestReplayStore";
 import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
@@ -23,6 +27,7 @@ import { CardError } from "components/base/Card";
 import { createAndApprove } from "device/interactions/hsmFlows";
 import Amount from "components/Amount";
 import { isAccountSpendable } from "utils/transactions";
+import type { Account } from "data/types";
 
 import { getBridgeAndTransactionFromAccount } from "./steps/TransactionCreationAccount";
 import TransactionCreationAmount from "./steps/TransactionCreationAmount";
@@ -158,51 +163,97 @@ const steps = [
 ];
 
 const title = <Trans i18nKey="transactionCreation:title" />;
+const mapStateToProps = state => ({
+  requestToReplay: state.requestReplay,
+});
+const mapDispatch = {
+  resetRequest,
+};
 
-export default connectData(
-  props => {
-    const { match, accounts } = props;
-    const cursor = 0;
-    let payload = initialPayload;
+export default connect(
+  mapStateToProps,
+  mapDispatch,
+)(
+  connectData(
+    props => {
+      const { match, accounts, close, resetRequest, requestToReplay } = props;
+      const cursor = 0;
+      let payload = initialPayload;
 
-    const filteredAccounts = useMemo(
-      () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
-      [accounts],
-    );
-    const acc =
-      match.params && match.params.id
-        ? filteredAccounts.find(a => a.id === parseInt(match.params.id, 10))
-        : filteredAccounts[0];
-    const { bridge, account, transaction } = getBridgeAndTransactionFromAccount(
-      acc,
-    );
-    payload = { ...initialPayload, account, transaction, bridge };
-    return (
-      <GrowingCard>
-        <MultiStepsFlow
-          Icon={FaMoneyCheck}
-          title={title}
-          initialPayload={payload}
-          steps={steps}
-          additionalProps={props}
-          initialCursor={cursor}
-          onClose={props.close}
-        />
-      </GrowingCard>
-    );
-  },
-  {
-    RenderLoading: GrowingSpinner,
-    RenderError: CardError,
-    queries: {
-      accounts: AccountsQuery,
-      whitelists: SearchWhitelists,
+      const filteredAccounts = useMemo(
+        () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
+        [accounts],
+      );
+      const acc =
+        match.params && match.params.id
+          ? filteredAccounts.find(a => a.id === parseInt(match.params.id, 10))
+          : filteredAccounts[0];
+      const {
+        bridge,
+        account,
+        transaction,
+      } = getBridgeAndTransactionFromAccount(acc);
+      payload = { ...initialPayload, account, transaction, bridge };
+      const closeAndEmptyStore = () => {
+        resetRequest();
+        close();
+      };
+      return (
+        <GrowingCard>
+          <MultiStepsFlow
+            Icon={FaMoneyCheck}
+            title={title}
+            payloadToCompareTo={initialPayload}
+            initialPayload={
+              (requestToReplay &&
+                purgePayload(requestToReplay.entity, filteredAccounts)) ||
+              payload
+            }
+            steps={steps}
+            additionalProps={props}
+            initialCursor={cursor}
+            onClose={closeAndEmptyStore}
+          />
+        </GrowingCard>
+      );
     },
-    propsToQueryParams: () => ({
-      pageSize: -1,
-    }),
-  },
+    {
+      RenderLoading: GrowingSpinner,
+      RenderError: CardError,
+      queries: {
+        accounts: AccountsQuery,
+        whitelists: SearchWhitelists,
+      },
+      propsToQueryParams: () => ({
+        pageSize: -1,
+      }),
+    },
+  ),
 );
+
+const purgePayload = (
+  data: *,
+  accounts: Account[],
+): TransactionCreationPayload<any> => {
+  const account = accounts.find(a => a.id === data.account_id);
+  const currency = getCryptoCurrencyById(data.currency);
+  if (!account) throw new Error("Account not spendable");
+  if (!currency) throw new Error("no valid currency");
+  return {
+    transaction: {
+      fees_level: data.fees_level,
+      note: data.notes[0] || { title: null, note: null },
+      gas_price: null,
+      gas_limit: null,
+      fees: null,
+      recipient: data.recipient,
+      amount: data.amount,
+      whitelist_id: data.whitelist_id,
+    },
+    account,
+    bridge: getBridgeForCurrency(currency),
+  };
+};
 
 function serializePayload(payload: TransactionCreationPayload<*>) {
   const { transaction, account } = payload;

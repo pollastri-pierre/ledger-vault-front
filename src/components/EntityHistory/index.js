@@ -23,6 +23,8 @@ import {
 } from "react-icons/fa";
 import { MdEdit, MdDelete, MdClear, MdCheck } from "react-icons/md";
 
+import { hasPendingRequest } from "utils/entities";
+import { useMe } from "components/UserContextProvider";
 import type {
   VaultHistoryApproval,
   VaultHistoryApprovalStep,
@@ -30,18 +32,22 @@ import type {
   VaultHistoryItem,
   VaultHistory,
 } from "utils/history";
+import type { Entity } from "data/types";
 import { deserializeHistory } from "utils/history";
 import colors from "shared/colors";
 import Status from "components/Status";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import Fetch from "components/Fetch";
+import ReplayRequestButton from "components/ReplayRequestButton";
 
 type EntityType = "user" | "group" | "account" | "transaction" | "whitelist";
 
 type Props = {
   history: VaultHistory,
   entityType: EntityType,
+  entity?: Entity,
+  preventReplay?: string[],
 };
 
 const createItemByEntity = {
@@ -83,7 +89,11 @@ const stepIconsByType = {
 };
 
 const CollapseIcon = ({ collapsed }: { collapsed: boolean }) =>
-  collapsed ? <FaAngleDown size={12} /> : <FaAngleUp size={12} />;
+  collapsed ? (
+    <FaAngleDown className="collapse" size={12} />
+  ) : (
+    <FaAngleUp className="collapse" size={12} />
+  );
 
 const ApprovalIcon = styled.div`
   width: 20px;
@@ -110,7 +120,7 @@ const approvalIcons = {
 };
 
 function EntityHistory(props: Props) {
-  const { history, entityType } = props;
+  const { history, entityType, entity, preventReplay } = props;
   const openedRequestID = resolveOpenedRequestID();
 
   if (!history || !history.length) {
@@ -121,9 +131,11 @@ function EntityHistory(props: Props) {
     <Box flow={10} style={{ maxWidth: 600 }}>
       {history.map((item, i) => (
         <HistoryItem
+          preventReplay={preventReplay}
           key={i}
           entityType={entityType}
           item={item}
+          entity={entity}
           isInitiallyOpened={
             openedRequestID === null || history.length === 1
               ? i === history.length - 1
@@ -139,14 +151,35 @@ const HistoryItem = ({
   item,
   entityType,
   isInitiallyOpened,
+  entity,
+  preventReplay,
 }: {
   item: VaultHistoryItem,
   entityType: EntityType,
   isInitiallyOpened: boolean,
+  entity?: Entity,
+  preventReplay?: string[],
 }) => {
   const status = getItemStatus(item);
   const [isCollapsed, setCollapsed] = useState(!isInitiallyOpened);
   const onToggle = () => setCollapsed(!isCollapsed);
+  const STATUS_REPLAY_ALLOWED = ["BLOCKED", "ABORTED", "EXPIRED", "FAILED"];
+  const me = useMe();
+
+  const isAdmin = me.role === "ADMIN";
+  const isTransaction = entity && entity.entityType === "TRANSACTION";
+
+  const isReplayHidden =
+    STATUS_REPLAY_ALLOWED.indexOf(status) === -1 || (isAdmin && isTransaction);
+
+  const disabledReason =
+    (entity && hasPendingRequest(entity) && "reasons:pending") ||
+    (preventReplay && preventReplay.length > 0 && preventReplay[0]);
+
+  // TODO to be removed when LV-2276 is done
+  const tmpDisableAccountCreationReplay =
+    entity && entity.entityType === "ACCOUNT" && item.type === "CREATE";
+
   return (
     <HistoryItemContainer>
       <HistoryItemHeader
@@ -170,6 +203,16 @@ const HistoryItem = ({
               step={step}
             />
           ))}
+          {!isReplayHidden && !tmpDisableAccountCreationReplay && (
+            <ReplayRequestButton
+              request={{
+                entity,
+                type: item.type,
+                edit_data: item.steps[0].edit_data,
+              }}
+              disabledReason={disabledReason}
+            />
+          )}
         </HistoryItemBody>
       )}
     </HistoryItemContainer>
@@ -203,11 +246,11 @@ const HistoryItemHeaderContainer = styled.div`
   justify-content: space-between;
   cursor: pointer;
 
-  & svg {
+  & .collapse {
     color: ${colors.textLight};
   }
 
-  &:hover svg {
+  &:hover .collapse {
     color: ${colors.text};
   }
 `;
@@ -399,13 +442,24 @@ function getItemStatus(item: VaultHistoryItem) {
 export function FetchEntityHistory({
   url,
   entityType,
+  entity,
+  preventReplay,
 }: {
   url: string,
   entityType: "user" | "group" | "account" | "transaction" | "whitelist",
+  entity?: Entity,
+  preventReplay?: string[],
 }) {
   return (
     <Fetch url={url} deserialize={deserializeHistory}>
-      {history => <EntityHistory history={history} entityType={entityType} />}
+      {history => (
+        <EntityHistory
+          preventReplay={preventReplay}
+          history={history}
+          entityType={entityType}
+          entity={entity}
+        />
+      )}
     </Fetch>
   );
 }

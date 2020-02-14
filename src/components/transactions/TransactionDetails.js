@@ -11,6 +11,7 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import connectData from "restlay/connectData";
 import TransactionQuery from "api/queries/TransactionQuery";
 import AccountQuery from "api/queries/AccountQuery";
+import { isAccountNotSpendableWithReason } from "utils/transactions";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import { CardError } from "components/base/Card";
 import Button from "components/base/Button";
@@ -72,15 +73,17 @@ function TransactionDetailsComponent(props: Props) {
       refreshDataQuery={refreshDataQuery}
     >
       <TabOverview key="overview" transaction={transaction} account={account} />
-      <FetchEntityHistory
-        key="history"
-        url={`/transactions/${transaction.id}/history`}
-        entityType="transaction"
-      />
       {transaction.status === "SUBMITTED" && (
         <TabDetails key="details" transaction={transaction} account={account} />
       )}
       <TabLabel key="note" note={note} />
+      <FetchEntityHistory
+        key="history"
+        url={`/transactions/${transaction.id}/history`}
+        entityType="transaction"
+        entity={transaction}
+        preventReplay={isAccountNotSpendableWithReason(account)}
+      />
     </EntityModal>
   );
 }

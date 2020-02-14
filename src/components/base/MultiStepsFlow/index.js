@@ -18,6 +18,7 @@ import type {
 
 type Props<T, P> = {
   initialPayload: T,
+  payloadToCompareTo: T,
   Icon: React$ComponentType<*>,
   title: React$Node,
   steps: MultiStepsFlowStepType<T, P>[],
@@ -141,6 +142,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       title,
       initialPayload,
       additionalProps,
+      payloadToCompareTo,
       onClose,
     } = this.props;
     const { cursor, payload } = this.state;
@@ -166,6 +168,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     const stepProps = {
       payload,
       initialPayload,
+      payloadToCompareTo,
       WarningNext,
       hideBack,
       CustomFooterElementLeft,
@@ -223,6 +226,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
               payload={payload}
               onClose={onClose}
               onSuccess={this.onCtaFinish}
+              payloadToCompareTo={payloadToCompareTo}
               isEditMode={this.props.isEditMode}
               initialPayload={initialPayload}
               transitionTo={this.transitionTo}

@@ -40,6 +40,7 @@ const WhitelistDetails = (props: Props) => {
         <FetchEntityHistory
           key="history"
           url={`/whitelists/${whitelist.id}/history`}
+          entity={whitelist}
           entityType="whitelist"
         />
       )}
