@@ -2643,6 +2643,19 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
+"@reach/tooltip@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@reach/tooltip/-/tooltip-0.8.2.tgz#3e5ca86571cf34b1382d46c8d79b00d443369431"
+  integrity sha512-7D1Oql+Z8ldZ0ZFytE39xLwlbI0etujiWNw6aJ4Jhl5Ggt/ULjxcZYv/8W4lmaiCuHhnl0gMzhH/S/+L+l4vjQ==
+  dependencies:
+    "@reach/auto-id" "^0.8.2"
+    "@reach/portal" "^0.8.2"
+    "@reach/rect" "^0.8.2"
+    "@reach/utils" "^0.8.2"
+    "@reach/visually-hidden" "^0.8.2"
+    prop-types "^15.7.2"
+    tslib "^1.10.0"
+
 "@reach/utils@^0.8.2":
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.8.2.tgz#0adb27de5038a9c9d1c302aee7ae7de4260a36b8"
@@ -2650,6 +2663,13 @@
   dependencies:
     tslib "^1.10.0"
     warning "^4.0.3"
+
+"@reach/visually-hidden@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@reach/visually-hidden/-/visually-hidden-0.8.2.tgz#2b58a2c69ab1c41838b8fef8a1d7370106a6d69c"
+  integrity sha512-U9KdaC1/YzskqAARqSc/ikOdZRbRkAUixwKIFbTsooUCXK+yAE08ikEoKSmCwDuGXxn7vgCit1ur4i994Ohzdw==
+  dependencies:
+    tslib "^1.10.0"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"

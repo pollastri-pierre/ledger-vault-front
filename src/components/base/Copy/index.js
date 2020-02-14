@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useRef, useEffect } from "react";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "components/base/Tooltip";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
@@ -45,7 +45,7 @@ export default function Copy(props: Props) {
       >
         {children || text}
       </Text>
-      <Tooltip title={copied ? "Copied!" : "Copy"} placement="right">
+      <Tooltip content={copied ? "Copied!" : "Copy"}>
         <CopyToClipboard data-test="Copy" text={text} onCopy={onCopy}>
           <IconContainer>
             <FaCopy size={compact ? 11 : 16} />

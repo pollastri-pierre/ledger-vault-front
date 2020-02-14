@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaCoins, FaInfo, FaTicketAlt, FaLink, FaCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import Tooltip from "@material-ui/core/Tooltip";
 
 import EntityStatus, { APPROVED_LIKE_STATUS } from "components/EntityStatus";
 import CounterValue from "components/CounterValue";
@@ -26,6 +25,7 @@ import PageHeaderActions from "components/base/PageHeaderActions";
 import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/legacy/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import Tooltip from "components/base/Tooltip";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import { isAccountSpendable } from "utils/transactions";
 import Widget from "./Widget";
@@ -177,7 +177,7 @@ const WidgetContent = ({ account }: Props) => {
 
 const DetailsLink = ({ account }: Props) => (
   <Absolute top={60} right={10}>
-    <Tooltip title="Account details" placement="left">
+    <Tooltip content="Account details">
       <Link to={`${location.pathname}/accounts/details/${account.id}/overview`}>
         <Button data-test="account_details">
           <FaInfo />
