@@ -30,7 +30,7 @@ const ApprovalStepParameters = (props: Props) => {
 
   return (
     <Box flow={20}>
-      <Text>1. Choose members or group</Text>
+      <Text>1. Select operators or a group</Text>
       <Box>
         <SelectApprovals
           rule={rule}
@@ -45,7 +45,7 @@ const ApprovalStepParameters = (props: Props) => {
           isGroup={step.group.is_internal === false}
         />
       </Box>
-      <Text>2. Number of required approvals:</Text>
+      <Text>2. Number of approvals required:</Text>
       <Box align="center" pt={20}>
         <NumberChooser
           value={step.quorum}
