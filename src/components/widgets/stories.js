@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import BigNumber from "bignumber.js";
 import { storiesOf } from "@storybook/react";
 
 import pageDecorator from "stories/pageDecorator";
@@ -11,12 +12,14 @@ import {
   ActivityWidget,
   AccountsWidget,
   RequestsWidget,
+  UtxoGraphWidget,
 } from "components/widgets";
 
-import { genAccounts, genUsers } from "data/mock-entities";
+import { genAccounts, genUsers, genUtxos } from "data/mock-entities";
 
 const users = genUsers(20);
 const accounts = genAccounts(10, { users });
+const utxos = genUtxos(100);
 
 const mocks = [
   {
@@ -31,6 +34,10 @@ const mocks = [
     url: "/activity/me",
     res: wrap => wrap([]),
   },
+  {
+    url: "/utxos-mocks?pageSize=-1",
+    res: wrap => wrap(utxos),
+  },
 ];
 
 storiesOf("widgets", module)
@@ -40,4 +47,7 @@ storiesOf("widgets", module)
   .add("QuorumWidget", () => <QuorumWidget />)
   .add("ActivityWidget", () => <ActivityWidget />)
   .add("AccountsWidget", () => <AccountsWidget />)
-  .add("RequestsWidget", () => <RequestsWidget />);
+  .add("RequestsWidget", () => <RequestsWidget />)
+  .add("UtxoGraph", () => (
+    <UtxoGraphWidget account={{ id: 1, balance: BigNumber(2) }} />
+  ));

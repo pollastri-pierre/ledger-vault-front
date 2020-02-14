@@ -21,7 +21,7 @@ function TransactionsGraph(props: Props) {
     <Widget title="Your balance during the last 30 days">
       <SoftCard>
         <BalanceGraph
-          height={350}
+          height={400}
           transactions={
             transactions.edges ? transactions.edges.map(el => el.node) : []
           }

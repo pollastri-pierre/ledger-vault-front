@@ -1,14 +1,27 @@
 // @flow
 
 import React, { useEffect, useRef, useState, useMemo } from "react";
+import type { BigNumber as BigNumberType } from "bignumber.js";
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 
-import type { Utxo } from "data/types";
 import { groupData } from "./helpers";
 
-type BarChartsProps = { data: Utxo[], granularity: number, height: number };
+type Data = { value: BigNumberType };
+type BarChartsProps = {
+  data: Data[],
+  granularity: number,
+  height: number,
+  colors?: { main?: string, hover?: string },
+  tooltipFormatter?: string => string,
+};
 
-const BarCharts = ({ data, granularity, height }: BarChartsProps) => {
+const BarCharts = ({
+  data,
+  granularity,
+  height,
+  colors,
+  tooltipFormatter,
+}: BarChartsProps) => {
   const containerRef = useRef(null);
   const [width, setWidth] = useState(0);
 
@@ -29,17 +42,26 @@ const BarCharts = ({ data, granularity, height }: BarChartsProps) => {
     };
   }, []);
 
+  const hoverColor =
+    colors && colors.hover ? { cursor: { fill: colors.hover } } : {};
+  const mainColor = colors && colors.main ? { fill: colors.main } : {};
+
+  const defaultFormatter = value => value;
   return (
     <div ref={containerRef}>
       <BarChart width={width} height={height} data={groupedData}>
         <CartesianGrid strokeDasharray="3 3" />
         <YAxis dataKey="count" />
         <XAxis dataKey="interval" hide />
-        <Tooltip labelFormatter={value => `Interval : ${value}`} />
-        <Bar dataKey="count" fill="#8884d8" />
+        <Tooltip
+          labelFormatter={tooltipFormatter || defaultFormatter}
+          {...hoverColor}
+        />
+        <Bar dataKey="count" {...mainColor} />
       </BarChart>
     </div>
   );
 };
 
-export default BarCharts;
+// $FlowFixMe
+export default React.memo(BarCharts);

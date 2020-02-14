@@ -270,6 +270,32 @@ function genUser(): User {
   };
 }
 
+function genUtxo() {
+  const amount = BigNumber(
+    faker.random.number({
+      min: 1,
+      max: 599999999,
+    }),
+  );
+  const height = faker.random.number({ min: 55559, max: 69897 });
+  const confirmations = faker.random.number({ min: 0, max: 555 });
+  return {
+    address: faker.random.alphaNumeric(34),
+    confirmations,
+    height,
+    amount,
+  };
+}
+
+export const genUtxos = nb => {
+  const utxos = [];
+  for (let i = 0; i < nb; i++) {
+    utxos.push(genUtxo());
+  }
+
+  return utxos;
+};
+
 const genTransaction = ({
   account,
   users,
@@ -477,12 +503,15 @@ const accounts = genAccounts(20, { users });
 const transactions = genTransactions(100, { accounts, users });
 const whitelists = genWhitelists(10, { users });
 const groups = genGroups(4, { users });
+const utxos = genUtxos(100);
 
 export default {
   accounts: keyBy(accounts, "id"),
   accountsArray: accounts,
   groups: keyBy(groups, "id"),
   groupsArray: groups,
+  utxos: keyBy(utxos, "address"),
+  utxosArray: utxos,
   users: keyBy(users, "id"),
   usersArray: users,
   transactions: keyBy(transactions, "id"),
