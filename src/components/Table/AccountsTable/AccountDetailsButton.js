@@ -32,12 +32,10 @@ function preventRowClick(e) {
 function AccountTableSubmenu(props: Props) {
   const { account, history } = props;
 
-  function handleOverview(e) {
-    preventRowClick(e);
+  function handleOverview() {
     history.push(`accounts/details/${account.id}/overview`);
   }
-  function handleEdit(e) {
-    preventRowClick(e);
+  function handleEdit() {
     history.push(`${location.pathname}/accounts/edit/${account.id}`);
   }
 

@@ -159,6 +159,9 @@ const OpenExternalContainer = styled.div`
     &:focus {
       color: ${colors.mediumGrey};
     }
+    &:active {
+      color: ${colors.shark};
+    }
   }
 `;
 
