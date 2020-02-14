@@ -23,9 +23,12 @@ type Props = {
   account: Account,
 };
 
+const DISPLAY_UTXO_GRAPH = false;
+
 function AccountView(props: Props) {
   const { account } = props;
   const me = useMe();
+
   return (
     <Box flow={20} key={account.id}>
       <AccountWarning account={account} me={me} />
@@ -37,7 +40,7 @@ function AccountView(props: Props) {
               <Box flex={1}>
                 <SubAccountsWidget account={account} />
               </Box>
-            ) : account.account_type === "Bitcoin" && false ? (
+            ) : account.account_type === "Bitcoin" && DISPLAY_UTXO_GRAPH ? (
               <Box flex={2}>
                 <UtxoGraphWidget account={account} />
               </Box>
