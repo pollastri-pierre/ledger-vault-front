@@ -80,6 +80,7 @@ const Container = styled.div`
 `;
 
 const IconContainer = styled.div`
+  height: 100%;
   cursor: pointer;
   width: 30px;
   flex-shrink: 0;
