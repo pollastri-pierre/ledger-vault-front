@@ -13,6 +13,8 @@ type Props = FieldProps & {
   title: React$Node,
   placeholder: string,
   queryKey: string,
+  disabled?: boolean,
+  width?: number,
 };
 
 class FilterFieldText extends PureComponent<Props> {
@@ -43,12 +45,20 @@ class FilterFieldText extends PureComponent<Props> {
   };
 
   render() {
-    const { queryParams, queryKey, placeholder, title } = this.props;
+    const {
+      queryParams,
+      queryKey,
+      placeholder,
+      title,
+      disabled,
+      width,
+    } = this.props;
 
     const isActive = !!queryParams[queryKey];
 
     return (
       <WrappableField
+        labelWidth={width}
         label={title}
         isActive={isActive}
         RenderCollapsed={this.Collapsed}
@@ -57,6 +67,7 @@ class FilterFieldText extends PureComponent<Props> {
         <InputText
           ref={this.inputRef}
           autoFocus
+          disabled={disabled}
           defaultValue={queryParams[queryKey] || ""}
           onChange={this.handleChange}
           placeholder={placeholder}

@@ -136,29 +136,41 @@ export const Table = styled(MUITable)`
 `;
 
 export const OpenExternal = ({ url }: { url: string }) => (
-  <VaultLink
-    withRole
-    target="_blank"
-    to={url}
-    onClick={e => e.stopPropagation()}
-    title="Open in a new tab"
-  >
-    <OpenExternalContainer>
-      <FaExternalLinkAlt />
-    </OpenExternalContainer>
-  </VaultLink>
+  <OpenExternalContainer>
+    <VaultLink
+      withRole
+      target="_blank"
+      to={url}
+      onClick={e => e.stopPropagation()}
+      title="Open in a new tab"
+    >
+      <OpenExternalInner>
+        <FaExternalLinkAlt />
+      </OpenExternalInner>
+    </VaultLink>
+  </OpenExternalContainer>
 );
 
 const OpenExternalContainer = styled.div`
+  a {
+    outline: none;
+    color: ${colors.lightGrey};
+    &:hover,
+    &:focus {
+      color: ${colors.mediumGrey};
+    }
+    &:active {
+      color: ${colors.shark};
+    }
+  }
+`;
+
+const OpenExternalInner = styled.div`
   width: 30px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${colors.lightGrey};
-  &:hover {
-    color: ${colors.mediumGrey};
-  }
 `;
 
 function resolveSort(queryParams: ?ObjectParameters) {

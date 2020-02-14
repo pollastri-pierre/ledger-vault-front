@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import ReactDOM from "react-dom";
+import sortBy from "lodash/sortBy";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import { I18nextProvider } from "react-i18next";
@@ -41,11 +42,28 @@ const render = Component => {
     );
 };
 
-render(OrganizationAppRouter);
+if (window.config.ERC20_LIST === "dev") {
+  import("data/erc20-list.dev.json").then(module => {
+    storeTokenList(module.default);
+    render(OrganizationAppRouter);
+  });
+} else {
+  import("data/erc20-list.json").then(module => {
+    storeTokenList(module.default);
+    render(OrganizationAppRouter);
+  });
+}
 
 if (module.hot) {
   module.hot.accept("containers/OrganizationAppRouter", () => {
     const nextContainer = require("containers/OrganizationAppRouter").default;
     render(nextContainer);
   });
+}
+
+function storeTokenList(list) {
+  window.erc20 = sortBy(
+    list.filter(t => t.hsm_signature || t.hsm_account_parameters),
+    "name",
+  );
 }

@@ -6,6 +6,7 @@ export { default as RequestsWidget } from "./RequestsWidget";
 export { default as LastTransactionsWidget } from "./LastTransactionsWidget";
 export { default as AssetsDistributionWidget } from "./AssetsDistributionWidget";
 export { default as TransactionsGraphWidget } from "./TransactionsGraph";
+export { default as UtxoGraphWidget } from "./UtxoGraph";
 export { default as AccountQuickInfoWidget } from "./AccountQuickInfoWidget";
 export { default as AccountLastTransactionsWidget } from "./AccountLastTransactionsWidget";
 export { default as SubAccountsWidget } from "./SubAccountsWidget";

@@ -104,32 +104,37 @@ const customStyles = {
       ? "rotate(-180deg)"
       : "rotate(0deg)",
   }),
-  control: (styles, state) => ({
-    ...styles,
-    minHeight: 40,
-    borderColor: `${
+  control: (styles, state) => {
+    const borderColor =
       state.menuIsOpen || state.isFocused
         ? state.selectProps.hasError
           ? colors.form.error
           : state.selectProps.hasError
           ? colors.form.warning
           : colors.form.focus
-        : colors.form.border
-    } !important`,
-    borderRadius: 4,
-    boxShadow:
-      state.menuIsOpen || state.isFocused
-        ? state.selectProps.hasError
-          ? colors.form.shadow.error
-          : state.selectProps.hasWarning
-          ? colors.form.shadow.warning
-          : colors.form.shadow.focus
-        : "none",
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-    borderBottomLeftRadius: state.menuIsOpen ? 0 : 4,
-    borderBottomRightRadius: state.menuIsOpen ? 0 : 4,
-  }),
+        : colors.form.border;
+    return {
+      ...styles,
+      minHeight: 40,
+      borderColor: `${borderColor} !important`,
+      borderRadius: 4,
+      boxShadow:
+        state.menuIsOpen || state.isFocused
+          ? state.selectProps.hasError
+            ? colors.form.shadow.error
+            : state.selectProps.hasWarning
+            ? colors.form.shadow.warning
+            : colors.form.shadow.focus
+          : "none",
+      borderTopLeftRadius: 4,
+      borderTopRightRadius: 4,
+      borderBottomLeftRadius: state.menuIsOpen ? 0 : 4,
+      borderBottomRightRadius: state.menuIsOpen ? 0 : 4,
+      borderBottomColor: state.menuIsOpen
+        ? "transparent !important"
+        : `${borderColor} !important`,
+    };
+  },
   valueContainer: styles => ({
     ...styles,
     padding: "5px 8px",

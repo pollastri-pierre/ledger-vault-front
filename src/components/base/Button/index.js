@@ -33,6 +33,7 @@ export type ButtonProps = {|
   style?: Object,
   isLoadingProp?: boolean,
   stopPropagation?: boolean,
+  tabIndex?: number,
 |};
 
 export const ButtonBase = styled.div.attrs(p => ({
@@ -40,7 +41,7 @@ export const ButtonBase = styled.div.attrs(p => ({
   py: getPaddingY(p),
   color: "grey",
   bg: "transparent",
-  tabIndex: p.disabled ? -1 : 0,
+  tabIndex: p.disabled ? -1 : p.tabIndex || 0,
 }))`
   user-select: none;
   ${space};
@@ -82,6 +83,7 @@ function Button(props: ButtonProps, ref: any) {
     isLoadingProp,
     noSpinner,
     stopPropagation,
+    tabIndex,
     ...rest
   } = props;
   const [isLoading, setIsLoading] = useState(false);
@@ -122,6 +124,7 @@ function Button(props: ButtonProps, ref: any) {
       onClick={handleClick}
       ref={ref}
       onKeyUp={handleKeyUp}
+      tabIndex={tabIndex}
     >
       <Container isLoading={isLoading || isLoadingProp}>{children}</Container>
       {(isLoading || isLoadingProp) && !noSpinner && (

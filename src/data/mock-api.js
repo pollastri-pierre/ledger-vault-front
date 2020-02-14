@@ -10,6 +10,13 @@ const mockSync = (uri, method) => {
 
   if (method === "GET") {
     switch (uri) {
+      case "/utxos-mocks?pageSize=-1": {
+        const edges = mockEntities.utxosArray.map(key => ({
+          node: denormalize(key, schema.Utxo, mockEntities),
+          cursor: key.address,
+        }));
+        return { edges, pageInfo: { hasNextPage: false } };
+      }
       case "/accounts-mocks": {
         return denormalize(
           Object.keys(mockEntities.accounts),

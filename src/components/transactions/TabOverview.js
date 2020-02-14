@@ -34,6 +34,7 @@ export default function TabOverview(props: Props) {
         amount={transaction.amount}
         account={account}
         transactionType={transaction.type}
+        created_on={transaction.created_on}
       />
       <Box>
         <LineRow
@@ -70,7 +71,7 @@ export default function TabOverview(props: Props) {
         {isRipple && (
           <LineRow
             label={
-              <Trans i18nKey="transactionCreation:steps.amount.destinationTag" />
+              <Trans i18nKey="transactionCreation:steps.account.destinationTag" />
             }
           >
             {transaction.destination_tag}

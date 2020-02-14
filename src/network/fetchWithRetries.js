@@ -25,6 +25,7 @@ function fetchWithRetries(
 
   let requestsAttempted = 0;
   let requestStartTime = 0;
+  if (!fetchF) return Promise.reject(new Error("Uninitialized fetchF"));
   return new Promise((resolve, reject) => {
     /**
      * Sends a request to the server that will timeout after `fetchTimeout`.

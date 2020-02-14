@@ -5,5 +5,8 @@
     "confirmed": "confirmed by the network",
     "created": "created by",
     "sent": "sent to the blockchain"
+  },
+  "info": {
+    "noXrpTransaction": "Filter available for XRP accounts only."
   }
 }

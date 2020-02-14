@@ -19,7 +19,7 @@ const formShadows = {
 form.shadow = formShadows;
 
 const colors = {
-  spinner: "hsl(0, 0%, 60%)",
+  spinner: "hsl(0, 0%, 70%)",
   bLive: "#6490f1",
   night: "#1d2028",
   mouse: "#e2e2e2",
@@ -66,7 +66,8 @@ const colors = {
   paleViolet: "#f0eaf3",
   paleBlue: "#d1eef9",
   palePink: "#fbe1e1",
-
+  // FORM COMPONENTS
+  switchRoundUnCheck: "#fafafa",
   // LEGACY
   legacyLightBlue: "#27d0e280",
   legacyLightBlue2: "rgba(39, 208, 226, 0.04)",
@@ -105,6 +106,11 @@ const colors = {
   legacyTranslucentGrenade: "#ea2e492b",
   legacyGrenade: "#b14656",
   legacyViolet: "#777799",
+
+  shadows: {
+    material:
+      "0px 5px 5px -3px rgba(0, 0, 0, 0.04), 0px 8px 10px 1px rgba(0, 0, 0, 0.04), 0px 3px 14px 2px rgba(0, 0, 0, 0.04);",
+  },
 };
 
 const toast = {

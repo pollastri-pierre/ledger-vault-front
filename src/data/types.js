@@ -625,3 +625,10 @@ export type FreshAddress = {
   address: string,
   derivation_path: string,
 };
+
+export type UTXO = {
+  address: string,
+  height: number,
+  confirmations: number,
+  amount: BigNumber,
+};

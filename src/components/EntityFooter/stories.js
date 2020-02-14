@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useReducer } from "react";
-import Switch from "@material-ui/core/Switch";
 import moment from "moment";
 import { Trans } from "react-i18next";
 import { components } from "react-select";
@@ -29,7 +28,7 @@ import UserContextProvider from "components/UserContextProvider";
 import Modal from "components/base/Modal";
 import Box from "components/base/Box";
 import Select from "components/base/Select";
-import { Label } from "components/base/form";
+import { Label, Switch } from "components/base/form";
 import Status from "components/Status";
 import EntityFooter from "components/EntityFooter";
 
@@ -347,35 +346,43 @@ const Wrapper = () => {
               {reqTypeOpt && reqTypeOpt.data ? (
                 <>
                   <Label>Options</Label>
-                  <Box
-                    horizontal
-                    align="center"
-                    style={{ cursor: "pointer" }}
-                    onClick={toggleCurrentStep}
-                    ml={-10}
-                  >
-                    <Switch checked={state.inCurrentStep} />
-                    <div>User in current step</div>
-                  </Box>
-                  <Box
-                    horizontal
-                    align="center"
-                    style={{ cursor: "pointer" }}
-                    onClick={toggleApproved}
-                    ml={-10}
-                  >
-                    <Switch checked={state.hasApproved} />
-                    <div>User has approved</div>
-                  </Box>
-                  <Box
-                    horizontal
-                    align="center"
-                    style={{ cursor: "pointer" }}
-                    onClick={toggleFail}
-                    ml={-10}
-                  >
-                    <Switch checked={state.reqFail} />
-                    <div>Make any request fail</div>
+                  <Box flow={10}>
+                    <Box
+                      horizontal
+                      align="center"
+                      style={{ cursor: "pointer" }}
+                      onClick={toggleCurrentStep}
+                      flow={10}
+                    >
+                      <Switch
+                        onChange={toggleCurrentStep}
+                        value={state.inCurrentStep}
+                      />
+                      <div>User in current step</div>
+                    </Box>
+                    <Box
+                      horizontal
+                      align="center"
+                      style={{ cursor: "pointer" }}
+                      onClick={toggleApproved}
+                      flow={10}
+                    >
+                      <Switch
+                        onChange={toggleApproved}
+                        value={state.hasApproved}
+                      />
+                      <div>User has approved</div>
+                    </Box>
+                    <Box
+                      horizontal
+                      align="center"
+                      style={{ cursor: "pointer" }}
+                      onClick={toggleFail}
+                      flow={10}
+                    >
+                      <Switch onChange={toggleFail} value={state.reqFail} />
+                      <div>Make any request fail</div>
+                    </Box>
                   </Box>
                 </>
               ) : null}

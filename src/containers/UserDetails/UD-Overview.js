@@ -59,7 +59,7 @@ class UserDetailsOverview extends PureComponent<Props> {
         : null;
 
     return (
-      <Box pt={20}>
+      <Box>
         <LineRow label={<Trans i18nKey="userDetails:username" />}>
           {isPendingRegistration ? (
             <EditableField

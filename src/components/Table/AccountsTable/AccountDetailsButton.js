@@ -1,21 +1,23 @@
 // @flow
 
 import React from "react";
-import styled from "styled-components";
 import { withRouter } from "react-router";
 import { Trans } from "react-i18next";
-import { useMe } from "components/UserContextProvider";
-import type { MemoryHistory } from "history";
-import Menu from "@material-ui/core/Menu";
-import { hasPendingRequest } from "utils/entities";
-import MenuItem from "@material-ui/core/MenuItem";
-
 import { FaEllipsisV } from "react-icons/fa";
+import type { MemoryHistory } from "history";
 
+import {
+  Menu,
+  MenuButtonStyleIcon,
+  MenuListStyle,
+  MenuItemStyle,
+} from "components/base/Menu";
+import { hasPendingRequest } from "utils/entities";
 import { OpenExternal } from "components/Table/TableBase";
 import Box from "components/base/Box";
 import { EDIT_ALLOWED_STATUS } from "components/EntityModal";
 import type { Account } from "data/types";
+import { useMe } from "components/UserContextProvider";
 
 type Props = {
   account: Account,
@@ -30,27 +32,13 @@ function preventRowClick(e) {
 function AccountTableSubmenu(props: Props) {
   const { account, history } = props;
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  function handleClick(e) {
-    preventRowClick(e);
-    setAnchorEl(e.currentTarget);
-  }
-
-  function handleOverview(e) {
-    preventRowClick(e);
-    setAnchorEl(null);
+  function handleOverview() {
     history.push(`accounts/details/${account.id}/overview`);
   }
-  function handleEdit(e) {
-    preventRowClick(e);
-    setAnchorEl(null);
+  function handleEdit() {
     history.push(`${location.pathname}/accounts/edit/${account.id}`);
   }
-  function handleCloseMenu(e) {
-    preventRowClick(e);
-    setAnchorEl(null);
-  }
+
   const me = useMe();
   const hasPendingReq = hasPendingRequest(account);
 
@@ -66,52 +54,23 @@ function AccountTableSubmenu(props: Props) {
         tooltipTitle={<Trans i18nKey="entityModal:edit" />}
         tooltipPlacement="bottom"
       />
-      <Btn
-        aria-controls={account.id}
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <FaEllipsisV size={14} />
-      </Btn>
-      <Menu
-        id={account.id}
-        anchorEl={anchorEl}
-        disableAutoFocusItem
-        open={Boolean(anchorEl)}
-        onClose={handleCloseMenu}
-      >
-        <StyledMenuItem onClick={handleOverview}>
-          <Trans i18nKey="accountDetails:tableSubmenu.overview" />
-        </StyledMenuItem>
-        {isAbleToEdit && (
-          <StyledMenuItem onClick={handleEdit}>
-            <Trans i18nKey="accountDetails:tableSubmenu.edit" />
-          </StyledMenuItem>
-        )}
+      <Menu>
+        <MenuButtonStyleIcon onClick={e => preventRowClick(e)}>
+          <FaEllipsisV />
+        </MenuButtonStyleIcon>
+        <MenuListStyle>
+          <MenuItemStyle onSelect={handleOverview}>
+            <Trans i18nKey="accountDetails:tableSubmenu.overview" />
+          </MenuItemStyle>
+          {isAbleToEdit && (
+            <MenuItemStyle onSelect={handleEdit}>
+              <Trans i18nKey="accountDetails:tableSubmenu.edit" />
+            </MenuItemStyle>
+          )}
+        </MenuListStyle>
       </Menu>
     </Box>
   );
 }
 
 export default withRouter(AccountTableSubmenu);
-
-const StyledMenuItem = styled(MenuItem)`
-  && {
-    font-size: 13px;
-    &:hover {
-      color: ${p => p.theme.colors.blue};
-    }
-  }
-`;
-
-const Btn = styled.div`
-  height: 40px;
-  width: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: ${p => p.theme.colors.mediumGrey};
-  &:hover {
-    color: ${p => p.theme.colors.shark};
-  }
-`;

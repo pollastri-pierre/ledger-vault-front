@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import React, { PureComponent } from "react";
-import Switch from "@material-ui/core/Switch";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaCopy } from "react-icons/fa";
 import { logout, login } from "redux/modules/auth";
@@ -9,6 +8,7 @@ import { connect } from "react-redux";
 
 import colors from "shared/colors";
 import Text from "components/base/Text";
+import { Switch } from "components/base/form";
 
 const DEVICE_API_URL = "http://localhost:5001";
 
@@ -69,6 +69,9 @@ const styles = {
     cursor: "pointer",
     alignSelf: "center",
     padding: 10,
+  },
+  switchContainer: {
+    margin: 8,
   },
 };
 
@@ -210,41 +213,42 @@ class MockDevices extends PureComponent {
                 <Text size="small" uppercase style={styles.autoLogout}>
                   Auto logout ?
                 </Text>
-                <Switch
-                  onChange={this.changeAutoLogout}
-                  checked={autoLogout}
-                  label="autologout"
-                />
+                <div style={styles.switchContainer}>
+                  <Switch onChange={this.changeAutoLogout} value={autoLogout} />
+                </div>
               </div>
               <div style={styles.rowContainer}>
                 <Text size="small" uppercase style={styles.autoLogout}>
                   Show wrapping / shared ?
                 </Text>
-                <Switch
-                  onChange={this.onboardingToggle}
-                  checked={showOnboarding}
-                  label="show onboarding"
-                />
+                <div style={styles.switchContainer}>
+                  <Switch
+                    onChange={this.onboardingToggle}
+                    value={showOnboarding}
+                  />
+                </div>
               </div>
               <div style={styles.rowContainer}>
                 <Text size="small" uppercase style={styles.autoLogout}>
                   Reject next action
                 </Text>
-                <Switch
-                  onChange={this.rejectNextActionToggle}
-                  checked={rejectNextAction}
-                  label="reject next action"
-                />
+                <div style={styles.switchContainer}>
+                  <Switch
+                    onChange={this.rejectNextActionToggle}
+                    value={rejectNextAction}
+                  />
+                </div>
               </div>
               <div style={styles.rowContainer}>
                 <Text size="small" uppercase style={styles.autoLogout}>
                   force hardware
                 </Text>
-                <Switch
-                  onChange={this.forceHardwareToggle}
-                  checked={forceHardware}
-                  label="show onboarding"
-                />
+                <div style={styles.switchContainer}>
+                  <Switch
+                    onChange={this.forceHardwareToggle}
+                    value={forceHardware}
+                  />
+                </div>
               </div>
             </>
           )}
