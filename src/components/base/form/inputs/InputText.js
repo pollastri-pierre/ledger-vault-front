@@ -99,6 +99,7 @@ class InputText extends PureComponent<Props, State> {
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
+          type="text"
           {...props}
           value={value}
           onChange={this.handleChange}
