@@ -4,6 +4,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { FaExclamationCircle } from "react-icons/fa";
 import { TransportOpenUserCancelled } from "@ledgerhq/errors";
+import styled from "styled-components";
+
 import colors, { opacity } from "shared/colors";
 import Alert from "components/legacy/Alert";
 import { closeMessage } from "redux/modules/alerts";
@@ -99,15 +101,16 @@ export function MessagesContainer(props: {
   }
 
   return (
-    <Alert
-      onClose={onClose}
-      open={visible && type !== "reason"}
-      autoHideDuration={4000}
-      title={title}
-      theme={type}
-    >
-      <div>{content}</div>
-    </Alert>
+    <AlertsContainer>
+      <Alert
+        onClose={onClose}
+        open={visible && type !== "reason"}
+        title={title}
+        type={type}
+      >
+        <div>{content}</div>
+      </Alert>
+    </AlertsContainer>
   );
 }
 
@@ -116,5 +119,13 @@ const styles = {
     wordBreak: "break-word",
   },
 };
+
+const AlertsContainer = styled.div`
+  width: 100%;
+  z-index: 102; // Modal z-index is 101
+  position: absolute;
+  display: flex;
+  justify-content: center;
+`;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessagesContainer);
