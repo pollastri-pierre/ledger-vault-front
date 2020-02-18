@@ -1,110 +1,84 @@
 // @flow
-import { withStyles } from "@material-ui/core/styles";
-import React from "react";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
+
+import React, { useEffect } from "react";
+import styled from "styled-components";
 
 import IconCheck from "../icons/Validate";
 import IconError from "../icons/Error";
 import colors from "../../shared/colors";
 
-const common = {
-  padding: "30px",
-  width: "380px",
-  fontFamily: "inherit",
-  fontSize: "11px",
-  lineHeight: "1.82",
-  boxShadow: `0 10px 10px 0 ${colors.legacyTranslucentGrey7}`,
-};
-const error = {
-  root: {
-    background: colors.grenade,
-    ...common,
-  },
-};
-const success = {
-  root: {
-    background: colors.ocean,
-    ...common,
-  },
-};
-
-function Snack(props: { message: *, classes: Object }) {
-  const { message, classes } = props;
-  return <SnackbarContent message={message} classes={{ root: classes.root }} />;
-}
-
-const Error = withStyles(error)(Snack);
-const Success = withStyles(success)(Snack);
-
-function Alert(props: {
-  children: *,
+type AlertProp = {
+  children: React$Node,
   open: boolean,
-  theme: string,
+  type: string,
   title: React$Node,
-}) {
-  const { title, children, theme: themeName, ...newProps } = props;
-  let iconDiv = null;
-  let titleDiv = null;
-  const theme = {};
+  onClose: () => void,
+};
 
-  switch (themeName) {
-    case "success":
-      theme.icon = <IconCheck color={colors.white} size={38} />;
-      break;
+const ICON_SIZE = 38;
+const DISPLAY_DURATION = 4000;
 
-    case "error":
-      theme.icon = <IconError color={colors.white} size={38} />;
-      break;
+const Alert = ({ children, open, type, title, onClose }: AlertProp) => {
+  useEffect(() => {
+    let timeOutId;
 
-    default:
-      theme.color = false;
-      theme.icon = false;
-      break;
-  }
+    if (open) {
+      timeOutId = setTimeout(onClose, DISPLAY_DURATION);
+    }
 
-  if (theme.icon) {
-    iconDiv = <div style={{ marginRight: 30 }}>{theme.icon}</div>;
-  }
-
-  if (title) {
-    titleDiv = (
-      <div
-        className="top-message-title"
-        style={{
-          fontWeight: 600,
-          textTransform: "uppercase",
-          marginBottom: "10px",
-        }}
-      >
-        {title}
-      </div>
-    );
-  }
-
-  const content = (
-    <div style={{ display: "flex" }}>
-      {iconDiv}
-      <div>
-        {titleDiv}
-        <div className="top-message-body">{children}</div>
-      </div>
-    </div>
-  );
+    return () => {
+      clearTimeout(timeOutId);
+    };
+  }, [open, onClose]);
 
   return (
-    <Snackbar
-      {...newProps}
-      className="top-message"
-      anchorOrigin={{ vertical: "top", horizontal: "center" }}
-    >
-      {themeName === "error" ? (
-        <Error message={content} />
-      ) : (
-        <Success message={content} />
-      )}
-    </Snackbar>
+    <Container open={open} className="top-message" onClick={onClose}>
+      <Content type={type}>
+        <Icon>
+          {type === "success" ? (
+            <IconCheck color={colors.white} size={ICON_SIZE} />
+          ) : (
+            <IconError color={colors.white} size={ICON_SIZE} />
+          )}
+        </Icon>
+        <div>
+          <Title className="top-message-title">{title}</Title>
+
+          <div className="top-message-body">{children}</div>
+        </div>
+      </Content>
+    </Container>
   );
-}
+};
 
 export default Alert;
+
+const Container = styled.div`
+  display: flex;
+  position: absolute;
+  transform: translateY(${p => (p.open ? "0" : "-100%")});
+  transition: 300m s cubic-bezier(0.65, 0.09, 0.35, 1.41) transform;
+  cursor: pointer;
+`;
+
+const Icon = styled.div`
+  margin-right: 30px;
+`;
+
+const Content = styled.div`
+  display: flex;
+  border-radius: 5px;
+  color: ${colors.white};
+  background: ${p => (p.type === "error" ? colors.grenade : colors.ocean)};
+  padding: 30px;
+  padding-top: 40px;
+  margin-top: -10px;
+  line-height: 2;
+  box-shadow: ${colors.shadows.material};
+`;
+
+const Title = styled.div`
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+`;
