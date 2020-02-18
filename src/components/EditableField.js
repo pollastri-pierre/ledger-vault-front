@@ -93,7 +93,12 @@ export default function EditableField(props: Props) {
           )}
           <Text>{localValue}</Text>
           <Button type="link" size="tiny" square onClick={toggleEditMode}>
-            <FaPen style={styles.cursor} color={colors.lead} size={11} />
+            <FaPen
+              data-test="edit-icon"
+              style={styles.cursor}
+              color={colors.lead}
+              size={11}
+            />
           </Button>
         </Box>
       ) : (
