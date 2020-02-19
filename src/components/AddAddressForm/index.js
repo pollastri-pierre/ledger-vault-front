@@ -26,7 +26,7 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Button from "components/base/Button";
 import { maxLengthNonAsciiHints } from "components/base/hints";
-import { usePrevious } from "utils/customHooks";
+import usePrevious from "hooks/usePrevious";
 
 const NB_MAX_ADDRESSES = 100;
 
