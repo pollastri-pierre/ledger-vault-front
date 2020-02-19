@@ -26,7 +26,7 @@ import { Label, InputAmount } from "components/base/form";
 import DoubleTilde from "components/icons/DoubleTilde";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { getFees } from "utils/transactions";
-import { usePrevious } from "utils/customHooks";
+import usePrevious from "hooks/usePrevious";
 import RecalculateButton from "./RecalculateButton";
 
 type Props = {

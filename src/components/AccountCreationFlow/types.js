@@ -9,7 +9,7 @@ import type { StepProps } from "components/base/MultiStepsFlow/types";
 
 export type ParentAccount = { id: number } | { name: string };
 
-export type AccountCreationPayload = {
+export type AccountCreationPayload = {|
   id?: number,
   name: string,
   accountStatus: string,
@@ -17,7 +17,7 @@ export type AccountCreationPayload = {
   currency: CryptoCurrency | null,
   erc20token: ERC20Token | null,
   parentAccount: ParentAccount | null,
-};
+|};
 
 export type AccountCreationUpdatePayload = (
   $Shape<AccountCreationPayload>,

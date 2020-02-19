@@ -25,7 +25,7 @@ import { Label } from "components/base/form";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import { getFees } from "utils/transactions";
-import { usePrevious } from "utils/customHooks";
+import usePrevious from "hooks/usePrevious";
 import RecalculateButton from "./RecalculateButton";
 
 import FeeSelect from "./FeeSelect";
