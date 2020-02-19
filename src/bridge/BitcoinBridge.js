@@ -5,7 +5,7 @@ import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import type { Account, TransactionCreationNote } from "data/types";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
-import { InvalidAddress, AddressShouldNotBeSegwit } from "utils/errors";
+import { InvalidAddress } from "utils/errors";
 import ExtraFieldBitcoinKind from "components/ExtraFields/BitcoinKind";
 import type { UtxoPickingStrategy } from "utils/utxo";
 import type { WalletBridge } from "./types";
@@ -43,10 +43,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
 const getRecipientError = async (restlay, currency, recipient) => {
   const isValid = await isRecipientValid(restlay, currency, recipient);
   if (!isValid) return new InvalidAddress(null, { ticker: currency.ticker });
-
-  const isSegwit = isAddressSegwit(currency, recipient);
-
-  return isSegwit ? new AddressShouldNotBeSegwit() : null;
+  return null;
 };
 
 const BitcoinBridge: WalletBridge<Transaction> = {
@@ -131,12 +128,5 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   },
   getRecipientError,
 };
-
-function isAddressSegwit(currency, recipient) {
-  if (currency.id === "bitcoin" || currency.id === "bitcoin_testnet") {
-    return recipient.startsWith("bc1");
-  }
-  return false;
-}
 
 export default BitcoinBridge;
