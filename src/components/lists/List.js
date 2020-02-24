@@ -43,6 +43,7 @@ const ListItemContainer = styled(({ tileWidth, ...p }) => <div {...p} />)(p => {
       ? `
           width: ${p.tileWidth ? p.tileWidth : 300}px;
           border: 1px solid ${colors.form.border};
+          border-radius: 4px;
           margin: 5px;
         `
       : ``;

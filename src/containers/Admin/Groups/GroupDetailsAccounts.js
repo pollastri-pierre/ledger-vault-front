@@ -9,11 +9,16 @@ import NoDataPlaceholder from "components/NoDataPlaceholder";
 import AccountsInGroupQuery from "api/queries/AccountsInGroupQuery";
 import { SpinnerCentered } from "components/base/Spinner";
 import type { Connection } from "restlay/ConnectionQuery";
+import type { AccountsListConfig } from "components/lists/AccountsList";
 
 import AccountsList from "components/lists/AccountsList";
 
 type Props = {
   accounts: Connection<Account>,
+};
+
+const ACCOUNTS_LIST_CONFIG: AccountsListConfig = {
+  displayBalance: false,
 };
 
 class GroupDetailsAccounts extends PureComponent<Props> {
@@ -25,7 +30,14 @@ class GroupDetailsAccounts extends PureComponent<Props> {
         <NoDataPlaceholder title={<Trans i18nKey="group:no_accounts_yet" />} />
       );
     }
-    return <AccountsList accounts={allAccounts} />;
+    return (
+      <AccountsList
+        display="grid"
+        tileWidth={250}
+        accounts={allAccounts}
+        config={ACCOUNTS_LIST_CONFIG}
+      />
+    );
   }
 }
 

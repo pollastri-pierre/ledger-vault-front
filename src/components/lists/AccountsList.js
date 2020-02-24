@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useMemo } from "react";
 
 import colors from "shared/colors";
 import AccountIcon from "components/AccountIcon";
@@ -14,15 +14,29 @@ import { List, ListEmpty, ListItem } from "./List";
 
 type Display = "list" | "grid";
 
+export type AccountsListConfig = {|
+  displayBalance: boolean,
+|};
+
 type Props = {
   accounts: Account[],
   display?: Display,
   tileWidth?: number,
   compact?: boolean,
+  config?: AccountsListConfig,
+};
+
+const DEFAULT_CONFIG: AccountsListConfig = {
+  displayBalance: true,
 };
 
 export default function AccountsList(props: Props) {
-  const { accounts, display, tileWidth, compact } = props;
+  const { accounts, display, tileWidth, compact, config: _config } = props;
+
+  const config: AccountsListConfig = useMemo(
+    () => ({ ...DEFAULT_CONFIG, ..._config }),
+    [_config],
+  );
 
   if (!accounts.length) {
     return <ListEmpty>No accounts</ListEmpty>;
@@ -52,14 +66,16 @@ export default function AccountsList(props: Props) {
                 </Text>
               </Box>
             </Box>
-            <Box noShrink>
-              <Text fontWeight="semiBold">
-                <CurrencyAccountValue
-                  account={account}
-                  value={account.balance}
-                />
-              </Text>
-            </Box>
+            {config.displayBalance && (
+              <Box noShrink>
+                <Text fontWeight="semiBold">
+                  <CurrencyAccountValue
+                    account={account}
+                    value={account.balance}
+                  />
+                </Text>
+              </Box>
+            )}
           </Box>
         </ListItem>
       ))}
