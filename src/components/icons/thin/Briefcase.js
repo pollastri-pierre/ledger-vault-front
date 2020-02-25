@@ -1,44 +1,25 @@
 // @flow
 import React, { PureComponent } from "react";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+
+import colors from "shared/colors";
 
 const styles = {
-  common: {
-    fill: "none",
-    stroke: "#cccccc",
-    strokeMiterlimit: 10,
-    strokeWidth: 2,
-  },
+  fill: "none",
+  stroke: colors.legacyGrey,
+  strokeMiterlimit: 10,
+  strokeWidth: 2,
 };
 
-type Props = { classes: Object, className?: string, color?: string };
-class Briefcase extends PureComponent<Props> {
-  static defaultProps = {
-    color: "#cccccc",
-  };
-
+class Briefcase extends PureComponent<*> {
   render() {
-    const { classes, className, ...rest } = this.props;
+    const { ...rest } = this.props;
     return (
       <svg viewBox="0 0 32 29.82" {...rest}>
         <g id="Layer_2" data-name="Layer 2">
           <g id="Line">
             <g id="Briefcase">
-              <rect
-                className={classnames(classes.common, className)}
-                x="1"
-                y="5.14"
-                width="30"
-                height="23.68"
-              />
-              <rect
-                className={classnames(classes.common, className)}
-                x="12.41"
-                y="1"
-                width="7.18"
-                height="4.14"
-              />
+              <rect style={styles} x="1" y="5.14" width="30" height="23.68" />
+              <rect style={styles} x="12.41" y="1" width="7.18" height="4.14" />
             </g>
           </g>
         </g>
@@ -47,4 +28,4 @@ class Briefcase extends PureComponent<Props> {
   }
 }
 
-export default withStyles(styles)(Briefcase);
+export default Briefcase;
