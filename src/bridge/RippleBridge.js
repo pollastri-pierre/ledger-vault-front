@@ -69,6 +69,7 @@ const RippleBridge: WalletBridge<Transaction> = {
     ...t,
     amount,
     estimatedFees: null,
+    error: null,
   }),
 
   getTransactionError: (a: Account, t: Transaction) => t.error,

@@ -77,6 +77,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     amount,
     estimatedFees: null,
     estimatedMaxAmount: null,
+    error: null,
   }),
 
   getTransactionError: (a: Account, t: Transaction) => t.error,
