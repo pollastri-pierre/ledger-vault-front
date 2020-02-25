@@ -13,7 +13,7 @@ import Button from "components/base/Button";
 import { setRequest } from "redux/modules/requestReplayStore";
 import type { User } from "data/types";
 import type { RequestReplay } from "redux/modules/requestReplayStore";
-import { getModalClosePath } from "components/ModalRoute";
+import { getModalClosePath } from "utils/modal";
 
 const mapDispatch = {
   setRequest,
