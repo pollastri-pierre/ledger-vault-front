@@ -95,7 +95,7 @@ class InputText extends PureComponent<Props, State> {
         <StyledInput
           // prevent LastPass autocomplete see https://stackoverflow.com/a/44984917
           data-lpignore="true"
-          autoComplete="off"
+          autoComplete="new-password"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
