@@ -39,10 +39,7 @@ const Menu = ({
 }) => (
   <MenuContainer>
     <div style={{ marginBottom: 10 }}>
-      <MenuLinkOnboarding
-        heading
-        selected={onboarding.state === "EMPTY_PARTITION"}
-      >
+      <MenuLinkOnboarding selected={onboarding.state === "EMPTY_PARTITION"}>
         <span style={{ textTransform: "uppercase" }}>
           {t("onboarding:menu.welcome")}
         </span>

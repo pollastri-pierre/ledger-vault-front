@@ -1,70 +1,53 @@
 // @flow
-import React, { Component } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withStyles } from "@material-ui/core/styles";
+import React from "react";
+import styled from "styled-components";
 
 import colors from "shared/colors";
 
-const styles = {
-  root: {
-    fontSize: 11,
-    fontWeight: 600,
-    paddingLeft: 40,
-    height: 23,
-  },
-  head: {
-    fontSize: 11,
-    fontWeight: 600,
-    paddingLeft: 40,
-    height: 28,
-  },
-  selected: {
-    "&:hover": {
-      backgroundColor: "none",
-    },
-    "& > span": {
-      color: "black!important",
-    },
-  },
-  disabled: {
-    fontSize: 11,
-    fontWeight: 600,
-    paddingLeft: 40,
-    opacity: 0.2,
-  },
+type MenuLinkOnboardingType = {
+  children: React$Node,
+  color?: string,
+  selected: boolean,
 };
 
-class MenuLinkOnboarding extends Component<{
-  step: string,
-  classes: Object,
-  children: *,
-  color: string,
-  selected: boolean,
-  onGoToStep: Function,
-  heading: boolean,
-}> {
-  triggerView() {
-    this.props.onGoToStep(this.props.step);
-  }
+const MenuLinkOnboarding = ({
+  children,
+  color,
+  selected,
+}: MenuLinkOnboardingType) => {
+  return (
+    <MenuLink selected={selected} color={color}>
+      <Span> {children}</Span>
+    </MenuLink>
+  );
+};
 
-  render() {
-    const { classes, heading, selected, color, children } = this.props;
-    const rootCSS = heading ? classes.head : classes.root;
-    return (
-      <MenuItem
-        style={{
-          color: color || colors.ocean,
-        }}
-        button
-        disabled={!selected}
-        disableRipple
-        selected={selected}
-        classes={{ root: rootCSS, selected: classes.selected }}
-      >
-        <span style={{ color: colors.steel }}>{children}</span>
-      </MenuItem>
-    );
-  }
-}
+const MenuLink = styled.div`
+  height: 28px;
+  font-size: 11px;
+  font-weight: 600;
+  padding-left: 40px;
+  opacity: ${p => (p.selected ? 1 : 0.5)};
+  display: flex;
+  align-items: center;
 
-export default withStyles(styles)(MenuLinkOnboarding);
+  ${p =>
+    p.selected
+      ? `
+      &:before {
+        left: 0;
+        width: 5px;
+        height: 28px;
+        content: "";
+        position: absolute;
+        background-color: ${p.color} ;
+      }
+    `
+      : ""}
+`;
+
+const Span = styled.span`
+  color: ${colors.steel};
+`;
+
+export default MenuLinkOnboarding;
