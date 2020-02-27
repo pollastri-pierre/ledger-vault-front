@@ -1,13 +1,14 @@
 // @flow
-import { connect } from "react-redux";
-import { withTranslation } from "react-i18next";
-import Modal from "components/base/Modal";
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { withTranslation } from "react-i18next";
+
+import { addMessage } from "redux/modules/alerts";
+import Modal from "components/base/Modal";
 import { Title, Introduction, AddUser, NoMembers } from "components/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import Disabled from "components/Disabled";
-import { addMessage } from "redux/modules/alerts";
 import {
   getRegistrationChallenge,
   addMember,
@@ -19,32 +20,19 @@ import type { User, Translate, Organization } from "data/types";
 import Footer from "./Footer";
 import AddMember from "./AddMember";
 
-const membersList = {
-  base: {
-    maxHeight: 272,
-    overflow: "auto",
-  },
-  row: {
-    cursor: "pointer",
-  },
-};
-const MembersList = withStyles(membersList)(
-  ({
-    classes,
-    members,
-  }: {
-    classes: { [$Keys<typeof membersList>]: string },
-    members: Array<User>,
-  }) => (
-    <div className={classes.base}>
-      {members.map((member, k) => (
-        <MemberRow
-          key={k} // eslint-disable-line react/no-array-index-key
-          member={member}
-        />
-      ))}
-    </div>
-  ),
+const MemeberListContainer = styled.div`
+  max-height: 272px;
+  overflow: auto;
+`;
+const MembersList = ({ members }: { members: Array<User> }) => (
+  <MemeberListContainer>
+    {members.map((member, k) => (
+      <MemberRow
+        key={k} // eslint-disable-line react/no-array-index-key
+        member={member}
+      />
+    ))}
+  </MemeberListContainer>
 );
 
 const mapStateToProps = state => ({
