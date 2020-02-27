@@ -61,10 +61,6 @@ context("Register the Administrators", () => {
 
       cy.contains("continue").click();
       cy.wait("@next");
-      cy.contains("more").click();
-      cy.contains("more").click();
-      cy.contains("more").click();
-      cy.contains("less").click();
       cy.contains("continue").click();
       cy.wait("@next");
       cy.wait("@challenge");

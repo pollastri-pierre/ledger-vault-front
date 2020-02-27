@@ -46,6 +46,7 @@ const AddMember = ({ finish, organization }: Props) => {
           </ProfileIconContainer>
           <Box flow={20}>
             <InputText
+              name="username"
               autoFocus
               placeholder="Username"
               maxLength={19}
