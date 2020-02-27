@@ -58,7 +58,6 @@ context("Onboarding e2e", () => {
       cy.wait("@open-session");
       cy.wait("@generate-key-fragments");
       cy.wait("@authenticate");
-      cy.wait(3000);
 
       // Third WPK
       cy.request("POST", DEVICE, {
@@ -101,6 +100,8 @@ context("Onboarding e2e", () => {
     cy.wait("@register");
     cy.wait("@register-data");
     cy.wait("@authenticate");
+    // wait for the modal to close
+    cy.wait(500);
 
     // Second Admin
     cy.request("POST", DEVICE, {
@@ -117,6 +118,8 @@ context("Onboarding e2e", () => {
       cy.wait("@register");
       cy.wait("@register-data");
       cy.wait("@authenticate");
+      // wait for the modal to close
+      cy.wait(500);
 
       // Thrid Admin
       cy.request("POST", DEVICE, {
@@ -137,10 +140,6 @@ context("Onboarding e2e", () => {
           .eq(1)
           .click();
         cy.wait("@next");
-        cy.contains("more").click();
-        cy.contains("more").click();
-        cy.contains("more").click();
-        cy.contains("less").click();
         cy.get("[data-test=dialog-button]")
           .eq(1)
           .click();
@@ -174,6 +173,8 @@ context("Onboarding e2e", () => {
       cy.wait("@register");
       cy.wait("@register-data");
       cy.wait("@authenticate");
+      // wait for the modal to close
+      cy.wait(500);
 
       // Shared Owner 2
       cy.request("POST", DEVICE, { device_number: 8 }).then(() => {
@@ -184,9 +185,10 @@ context("Onboarding e2e", () => {
         cy.wait("@register");
         cy.wait("@register-data");
         cy.wait("@authenticate");
+        // wait for the modal to close
+        cy.wait(500);
 
         // Shared Owner 3
-        cy.wait(3000);
         cy.request("POST", DEVICE, { device_number: 9 }).then(() => {
           cy.contains("Add shared-owner").click();
           cy.wait("@get-public-key");
@@ -285,8 +287,6 @@ context("Onboarding e2e", () => {
     switch_device(4);
     cy.contains("Continue").click();
     cy.wait(1000);
-    cy.get("input[type=text]").type(orga_name);
-    cy.get("[data-test=continue_button]").click();
     cy.wait("@get-public-key");
     cy.wait("@authenticate");
     cy.wait(1000);

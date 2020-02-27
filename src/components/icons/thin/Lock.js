@@ -6,7 +6,7 @@ import colors from "shared/colors";
 class Lock extends PureComponent<*> {
   render() {
     return (
-      <svg viewBox="0 0 25.1 32">
+      <svg viewBox="0 0 25.1 32" style={{ width: 25 }}>
         <defs />
         <title>lock</title>
         <g id="Layer_2" data-name="Layer 2">
