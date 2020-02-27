@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import styled from "styled-components";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -34,7 +35,7 @@ const styles = {
   },
 };
 
-class MenuLinkOnboarding extends Component<{
+class MenuLinkOnboardingOld extends Component<{
   step: string,
   classes: Object,
   children: *,
@@ -67,4 +68,38 @@ class MenuLinkOnboarding extends Component<{
   }
 }
 
-export default withStyles(styles)(MenuLinkOnboarding);
+type MenuLinkOnboardingType = {
+  step: string,
+  children: React$Node,
+  color: string,
+  selected: boolean,
+  onGoToStep: () => void,
+  heading: boolean,
+};
+const MenuLink = styled.div`
+  height: 28px;
+  font-size: 11px;
+  font-weight: 600;
+  padding-left: 40px;
+  opacity: 0.5;
+`;
+
+const Span = styled.span`
+  color: colors.steel;
+`;
+const MenuLinkOnboarding = ({
+  step,
+  children,
+  color,
+  selected,
+  onGoToStep,
+  heading,
+}: MenuLinkOnboardingType) => {
+  return (
+    <MenuLink>
+      <Span> {children}</Span>
+    </MenuLink>
+  );
+};
+// export default MenuLinkOnboarding;
+export default withStyles(styles)(MenuLinkOnboardingOld);
