@@ -77,6 +77,15 @@ function FeesBitcoinKind(props: Props) {
 
   const effect = async unsubscribed => {
     const nonce = ++instanceNonce.current;
+
+    // VFE-98: even if we don't fetch fees if amount is equal to 0,
+    // we still want to invalidate any pending fees fetching, and
+    // reset the loading state
+    if (transaction.amount.isEqualTo(0)) {
+      setFeesStatus("idle");
+      return;
+    }
+
     try {
       const recipientError = await bridge.getRecipientError(
         restlay,
@@ -108,6 +117,7 @@ function FeesBitcoinKind(props: Props) {
       });
       setFeesStatus("idle");
     } catch (err) {
+      if (nonce !== instanceNonce.current || unsubscribed) return;
       console.error(err); // eslint-disable-line no-console
 
       const error = remapError(err);
@@ -129,10 +139,9 @@ function FeesBitcoinKind(props: Props) {
     let unsubscribed = false;
 
     const feesInvalidated =
-      (transaction.recipient !== prevRecipient ||
-        !transaction.amount.isEqualTo(prevAmount) ||
-        transaction.feeLevel !== prevFeeLevel) &&
-      !transaction.amount.isEqualTo(0);
+      transaction.recipient !== prevRecipient ||
+      !transaction.amount.isEqualTo(prevAmount) ||
+      transaction.feeLevel !== prevFeeLevel;
 
     if (feesInvalidated) {
       effect(unsubscribed);
