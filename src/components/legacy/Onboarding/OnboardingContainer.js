@@ -8,7 +8,7 @@ import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import { SpinnerCentered } from "components/base/Spinner";
 import HelpLink from "components/HelpLink";
-import Logo from "components/Logo";
+import Logo from "components/icons/Logo";
 import CenteredLayout from "components/base/CenteredLayout";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -111,7 +111,7 @@ class OnboardingContainer extends Component<Props, State> {
         <Container fatalError={onboarding.fatal_error}>
           <Absolute top={-52} width={WIDTH}>
             <Box horizontal justify="space-between">
-              <Logo />
+              <Logo width={120} />
               <HelpLink>
                 <Text size="small" fontWeight="bold" uppercase>
                   HELP

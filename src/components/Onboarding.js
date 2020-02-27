@@ -1,344 +1,219 @@
 // @flow
 import React from "react";
+import styled from "styled-components";
 import colors from "shared/colors";
 import People from "components/icons/thin/People";
 import Plus from "components/icons/full/Plus";
-import { withStyles } from "@material-ui/core/styles";
 import Profile from "components/icons/thin/Profile";
-import cx from "classnames";
 
-const careful = {
-  base: {
-    padding: 10,
-    background: colors.legacyLightBlue,
-    marginTop: 20,
-    alignItems: "center",
-    fontWeight: "bold",
-    color: colors.legacyBlue,
-    borderRadius: 4,
-    display: "flex",
-  },
-  icon: {
-    width: 20,
-    color: colors.white,
-    height: 20,
-    borderRadius: "50%",
-    textAlign: "center",
-    fontWeight: "bold",
-    marginRight: 15,
-    background: colors.ocean,
-  },
-};
-export const Careful = withStyles(careful)(({ children, classes }) => (
-  <div className={classes.base}>
-    <div className={classes.icon}>!</div>
+export const Careful = ({ children }: { children: React$Node }) => (
+  <CarefulContainer>
+    <CarefulIcon>!</CarefulIcon>
     <div> {children}</div>
-  </div>
-));
+  </CarefulContainer>
+);
 
-const addUser = {
-  base: {
-    color: colors.ocean,
-    textDecoration: "none",
-    textTransform: "uppercase",
-    fontSize: 11,
-    fontWeight: 600,
-    position: "absolute",
-    cursor: "pointer",
-    top: 8,
-    right: 0,
-  },
-  icon: {
-    width: 11,
-    marginRight: 10,
-    verticalAlign: "middle",
-  },
+const CarefulIcon = styled.div`
+  width: 20px;
+  color: ${colors.white};
+  height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  margin-right: 15px;
+  background: ${colors.ocean};
+`;
+
+const CarefulContainer = styled.div`
+  padding: 10px;
+  background: ${colors.legacyLightBlue};
+  margin-top: 20px;
+  align-items: center;
+  font-weight: bold;
+  color: ${colors.legacyBlue};
+  border-radius: 4px;
+  display: flex;
+`;
+
+type AddUserProps = {
+  onClick: () => void,
+  children: React$Node,
 };
-export const AddUser = withStyles(addUser)(({ onClick, children, classes }) => (
-  <div onClick={onClick} className={classes.base}>
-    <Plus className={classes.icon} />
+
+export const AddUser = ({ onClick, children }: AddUserProps) => (
+  <AddUserContainer onClick={onClick}>
+    <Plus style={{ width: 11, marginRight: 10, verticalAlign: "middle" }} />
     <span>{children}</span>
+  </AddUserContainer>
+);
+
+const AddUserContainer = styled.div`
+  color: ${colors.ocean};
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  cursor: pointer;
+  top: 8px;
+  right: 0;
+  display: flex;
+  align-items: center;
+`;
+
+export const NoMembers = ({ label, info }: { label: *, info: * }) => (
+  <NoMembersContainer>
+    <People
+      color={colors.legacyGrey}
+      style={{ height: 29, display: "block", margin: "auto", marginBottom: 21 }}
+    />
+    <NoMembersLabel>{label}</NoMembersLabel>
+    <NoMembersInfo>{info}</NoMembersInfo>
+  </NoMembersContainer>
+);
+
+const NoMembersInfo = styled.div`
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.82;
+  margin: 0;
+`;
+
+const NoMembersLabel = styled.div`
+  font-size: 11px;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 5px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+const NoMembersContainer = styled.div`
+  font-size: 11px;
+  line-height: 1.82;
+  text-align: center;
+  width: 264px;
+  margin: auto;
+  margin-top: 110;
+`;
+
+export const ProfileIcon = () => (
+  <div style={{ marginBottom: 10 }}>
+    <Profile color={colors.legacyGrey} style={{ width: 28 }} />
   </div>
-));
-const noMembers = {
-  base: {
-    fontSize: 11,
-    lineHeight: 1.82,
-    textAlign: "center",
-    width: 264,
-    margin: "auto",
-    marginTop: 110,
-  },
-  label: {
-    fontSize: 11,
-    fontWeight: 600,
-    margin: 0,
-    marginBottom: 5,
-    textAlign: "center",
-    textTransform: "uppercase",
-  },
-  info: {
-    fontSize: 11,
-    textAlign: "center",
-    lineHeight: 1.82,
-    margin: 0,
-  },
-};
-
-export const NoMembers = withStyles(noMembers)(
-  ({
-    classes,
-    label,
-    info,
-  }: {
-    classes: { [$Keys<typeof noMembers>]: string },
-    label: *,
-    info: *,
-  }) => (
-    <div className={classes.base}>
-      <People
-        color={colors.legacyGrey}
-        style={{
-          height: 29,
-          display: "block",
-          margin: "auto",
-          marginBottom: 21,
-        }}
-      />
-      <div className={classes.label}>{label}</div>
-      <div className={classes.info}>{info}</div>
-    </div>
-  ),
-);
-const listItem = {
-  base: {
-    fontSize: 13,
-    lineHeight: 1.54,
-    padding: 0,
-    margin: 0,
-    listStyleType: "none",
-    display: "flex",
-    position: "relative",
-    paddingBottom: 15,
-    paddingTop: 15,
-    "&:after": {
-      height: 1,
-      width: "100%",
-      backgroundColor: colors.argile,
-      position: "absolute",
-      content: '""',
-      bottom: 0,
-    },
-    "&:first-child": {
-      paddingTop: 0,
-    },
-    "&:last-child:after": {
-      display: "none",
-    },
-    "& a": {
-      textDecoration: "none",
-      textTransform: "uppercase",
-      fontSize: 12,
-      fontWeight: 600,
-      color: colors.ocean,
-    },
-  },
-  number: {
-    fontSize: 16,
-    margin: "0 15px 15px 0",
-  },
-};
-
-const step = {
-  base: {
-    fontSize: 13,
-    color: colors.steel,
-    padding: "15px 0 15px 0",
-    borderBottom: `1px solid ${colors.argile}`,
-    "&:last-child": {
-      border: 0,
-    },
-  },
-  active: {
-    // fontSize: 16,
-    color: colors.black,
-    "&:before": {
-      content: '""',
-      width: 6,
-      height: 6,
-      borderRadius: "50%",
-      background: colors.ocean,
-      display: "inline-block",
-      marginRight: 10,
-      verticalAlign: "middle",
-    },
-  },
-};
-
-const profile = {
-  base: {
-    width: 28,
-  },
-};
-export const ProfileIcon = withStyles(profile)(
-  ({ classes }: { classes: { [$Keys<typeof profile>]: string } }) => (
-    <div style={{ marginBottom: 10 }}>
-      <Profile color={colors.legacyGrey} className={classes.base} />
-    </div>
-  ),
 );
 
-export const Step = withStyles(
-  step,
-)(
-  ({
-    classes,
-    className,
-    label,
-    active,
-  }: {
-    classes: { [$Keys<typeof step>]: string },
-    label: string,
-    active: boolean,
-    className?: string,
-  }) => (
-    <div className={cx(classes.base, className, { [classes.active]: active })}>
-      {label}
-    </div>
-  ),
-);
-
-export const ListItem = withStyles(listItem)(
-  ({
-    children,
-    number,
-    classes,
-  }: {
-    children: React$Node,
-    number?: number,
-    classes: { [$Keys<typeof listItem>]: string },
-  }) => (
-    <li className={classes.base}>
-      {number && <span className={classes.number}>{number}.</span>}
-      <span>{children}</span>
-    </li>
-  ),
-);
-
-const list = {
-  base: {
-    margin: 0,
-    padding: 0,
-    marginBottom: 30,
-  },
+type StepProps = {
+  label: string,
+  active: boolean,
+  className?: string,
 };
 
-export const List = withStyles(
-  list,
-)(
-  ({
-    children,
-    classes,
-  }: {
-    children: React$Node,
-    classes: { [$Keys<typeof list>]: string },
-  }) => <ul className={classes.base}>{children}</ul>,
+export const Step = ({ className, label, active }: StepProps) => (
+  <StepContainer className={className} active={active}>
+    {label}
+  </StepContainer>
 );
 
-const title = {
-  base: {
-    fontSize: 18,
-    letterSpacing: -0.2,
-    fontWeight: "bold",
-    margin: "8px 0 30px 0",
-  },
+const StepContainer = styled.div`
+  font-size: 13px;
+  color: ${p => (p.active ? colors.black : colors.steel)};
+  padding: 15px 0 15px 0;
+  border-bottom: 1px solid ${colors.argile};
+  &:last-child {
+    border: 0;
+    ${p =>
+      p.active
+        ? `
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: ${colors.ocean};
+      display: inline-block;
+      margin-right: 10px;
+      vertical-align: middle;
+    `
+        : ""}
+  }
+`;
+
+type ListItemProps = {
+  children: React$Node,
+  number?: number,
 };
 
-export const Title = withStyles(
-  title,
-)(
-  ({
-    classes,
-    children,
-  }: {
-    children: React$Node,
-    classes: { [$Keys<typeof title>]: string },
-  }) => <h2 className={classes.base}>{children}</h2>,
+export const ListItem = ({ children, number }: ListItemProps) => (
+  <ListItemContainer>
+    {number && <ListItemNumber>{number}.</ListItemNumber>}
+    <span>{children}</span>
+  </ListItemContainer>
 );
 
-const introduction = {
-  base: {
-    fontSize: 13,
-    lineHeight: 1.52,
-    margin: "0 0 30px 0",
-    "& strong": {
-      fontWeight: 600,
-    },
-  },
-};
-export const Introduction = withStyles(
-  introduction,
-)(
-  ({
-    classes,
-    children,
-  }: {
-    children: React$Node,
-    classes: { [$Keys<typeof introduction>]: string },
-  }) => <p className={classes.base}>{children}</p>,
-);
+const ListItemNumber = styled.span`
+  font-size: 16px;
+  margin: 0 15px 15px 0;
+`;
 
-const subtitle = {
-  base: {
-    fontSize: 11,
-    fontWeight: 600,
-    display: "block",
-    textTransform: "uppercase",
-    margin: "0 0 22px 0",
-  },
-};
+const ListItemContainer = styled.li`
+  font-size: 13px;
+  line-height: 1.54;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  display: flex;
+  position: relative;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  &:after {
+    height: 1px;
+    width: 100%;
+    background-color: ${colors.argile};
+    position: absolute;
+    content: "";
+    bottom: 0;
+  }
+  &:first-child {
+    padding-top: 0;
+  }
+  &:last-child:after {
+    display: none;
+  }
+  & a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    color: ${colors.ocean};
+  }
+`;
 
-export const SubTitle = withStyles(
-  subtitle,
-)(
-  ({
-    classes,
-    children,
-    className,
-  }: {
-    classes: { [$Keys<typeof subtitle>]: string },
-    children: React$Node,
-    className?: string,
-  }) => <span className={cx(classes.base, className)}>{children}</span>,
-);
+export const List = styled.ul`
+  margin: 0;
+  padding: 0;
+  marginbottom: 30px;
+`;
 
-const toContinue = {
-  base: {
-    fontSize: 11,
-    lineHeight: 1.82,
-  },
-};
-export const ToContinue = withStyles(
-  toContinue,
-)(
-  ({
-    classes,
-    children,
-  }: {
-    classes: { [$Keys<typeof subtitle>]: string },
-    children: React$Node,
-  }) => <span className={classes.base}>{children}</span>,
-);
+export const Title = styled.h2`
+  font-size: 18px;
+  letter-spacing: -0.2px;
+  font-weight: bold;
+  margin: 8px 0 30px 0;
+`;
 
-export const Awaiting = withStyles({
-  base: {
-    color: colors.steel,
-    fontWeight: 600,
-    fontSize: 11,
-    textTransform: "uppercase",
-  },
-})(({ classes, device }) => (
-  <span className={classes.base}>
-    awaiting {device ? "device" : "server"}...
-  </span>
-));
+export const Introduction = styled.p`
+  font-size: 13px;
+  line-height: 1.52;
+  margin: 0 0 30px 0;
+  & strong {
+    font-weight: 600;
+  }
+`;
+
+export const SubTitle = styled.span`
+  font-size: 11px;
+  font-weight: 600;
+  display: block;
+  text-transform: uppercase;
+  margin: 0 0 22px 0;
+`;

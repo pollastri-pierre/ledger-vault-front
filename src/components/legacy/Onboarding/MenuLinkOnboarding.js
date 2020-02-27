@@ -40,7 +40,7 @@ const MenuLink = styled.div`
         height: 28px;
         content: "";
         position: absolute;
-        background-color: ${p.color} ;
+        background-color: ${p.color || colors.ocean};
       }
     `
       : ""}
