@@ -1,11 +1,11 @@
 // @flow
 import React from "react";
-import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
 import type { Translate } from "data/types";
 import { Title, Introduction } from "components/Onboarding";
+import Disabled from "components/Disabled";
 import DialogButton from "components/legacy/DialogButton";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
@@ -18,6 +18,7 @@ const mapDispatch = (dispatch: *) => ({
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type)),
 });
+
 const AdministrationScheme = ({
   number,
   total,
@@ -37,7 +38,7 @@ const AdministrationScheme = ({
 }) => (
   <div>
     <Title>{t("onboarding:administrators_scheme.title")}</Title>
-    <Container is_editable={!is_editable}>
+    <Disabled disabled={!is_editable}>
       <Introduction>
         {t("onboarding:administrators_scheme.description")}
       </Introduction>
@@ -48,7 +49,7 @@ const AdministrationScheme = ({
         max={total - 1}
         min={2}
       />
-    </Container>
+    </Disabled>
     <Footer
       nextState
       render={(onNext, onPrevious) => {
@@ -81,11 +82,6 @@ const AdministrationScheme = ({
     />
   </div>
 );
-
-const Container = styled.div`
-  opacity: ${p => (p.is_editable ? 0.3 : undefined)};
-  pointer-events: ${p => (p.is_editable ? "none" : undefined)};
-`;
 export default connect(
   mapStateToProps,
   mapDispatch,

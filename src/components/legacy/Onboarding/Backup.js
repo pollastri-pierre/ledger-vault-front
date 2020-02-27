@@ -73,11 +73,11 @@ const Backup = ({ t }: { t: Translate }) => (
 const StepsContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20;
+  margin-bottom: 20px;
 `;
 
 const StepElements = styled.div`
-  font-size: 11;
+  font-size: 11px;
   line-height: 1.82;
   flex: 0.3;
 `;

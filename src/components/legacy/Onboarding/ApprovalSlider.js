@@ -94,7 +94,7 @@ const Flex = styled.div`
 
 const Bold = styled.div`
   font-size: 13px;
-  font-weight: 600px;
+  font-weight: 600;
 `;
 
 const Bars = styled.div`
@@ -131,7 +131,7 @@ const Require = styled.span`
   color: ${colors.ocean};
   font-size: 11px;
   text-transform: uppercase;
-  font-weight: 600px;
+  font-weight: 600;
   cursor: pointer;
 `;
 

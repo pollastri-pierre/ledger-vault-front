@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const Li = styled.li`
   font-size: 13px;
-  line-height: 1.54px;
+  line-height: 1.54;
 `;
 
 const Number = styled.span`

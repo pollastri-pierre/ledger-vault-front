@@ -27,9 +27,11 @@ class ConfirmationCancel extends Component<Props, State> {
     value: "0",
   };
 
-  // $FlowFixMe
-  handleChange = event => {
-    this.setState({ value: event.target.value });
+  handleChange = (event: SyntheticInputEvent<*>) => {
+    const { value } = event.target;
+    if (value === "0" || value === "1" || value === "2") {
+      this.setState({ value });
+    }
   };
 
   render() {
@@ -103,7 +105,7 @@ class ConfirmationCancel extends Component<Props, State> {
 
 const Footer = styled.div`
   position: absolute;
-  bottom: -40;
+  bottom: -40px;
   right: 0;
 `;
 
