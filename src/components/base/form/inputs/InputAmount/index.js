@@ -116,10 +116,13 @@ class InputAmount extends PureComponent<Props, State> {
   };
 
   onChange = (str: string) => {
+    const { value } = this.props;
     const { unit } = this.state;
     const r = sanitizeValueString(unit, str);
     const satoshiValue = BigNumber(r.value);
-    this.props.onChange(satoshiValue);
+    if (!satoshiValue.isEqualTo(value)) {
+      this.props.onChange(satoshiValue);
+    }
     this.setState({ displayValue: r.display, cachedValue: satoshiValue });
   };
 
