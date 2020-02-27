@@ -1,29 +1,20 @@
 // @flow
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import styled from "styled-components";
 
-const styles = {
-  base: {
-    fontSize: 13,
-    lineHeight: 1.54,
-  },
-  number: {
-    fontSize: 16,
-  },
-};
-const ListItem = ({
-  children,
-  number,
-  classes,
-}: {
-  children: any,
-  number: number,
-  classes: { [$Keys<typeof styles>]: string },
-}) => (
-  <li className={classes.base}>
-    <span className={classes.number}>{number}.</span>
+const Li = styled.li`
+  font-size: 13px;
+  line-height: 1.54px;
+`;
+
+const Number = styled.span`
+  font-size: 16px;
+`;
+const ListItem = ({ children, number }: { children: any, number: number }) => (
+  <Li>
+    <Number>{number}.</Number>
     <span>{children}</span>
-  </li>
+  </Li>
 );
 
-export default withStyles(styles)(ListItem);
+export default ListItem;

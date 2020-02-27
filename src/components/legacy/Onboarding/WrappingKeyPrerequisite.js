@@ -1,58 +1,27 @@
 // @flow
 import React from "react";
+import styled from "styled-components";
+import { withTranslation } from "react-i18next";
+
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
-import { withTranslation } from "react-i18next";
 import DialogButton from "components/legacy/DialogButton";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
-
-import { withStyles } from "@material-ui/core/styles";
 import People from "components/icons/thin/People";
 import colors from "shared/colors";
 import { RequirementUnit, BlueDevice } from "./Requirements";
 import Footer from "./Footer";
 
-const styles = {
-  requirements: {
-    display: "flex",
-    fontSize: 11,
-    lineHeight: 1.82,
-    justifyContent: "space-between",
-    marginBottom: 40,
-  },
-  notrequired: {
-    opacity: 0.5,
-    position: "relative",
-    "&:before": {
-      content: '""',
-      position: "absolute",
-      width: 1,
-      height: 80,
-      background: colors.argile,
-      left: -30,
-      top: 30,
-    },
-  },
-  flexcolumn: {
-    display: "flex",
-  },
-};
-const Prerequisite = ({
-  classes,
-  t,
-}: {
-  classes: { [$Keys<typeof styles>]: string },
-  t: Translate,
-}) => (
+const Prerequisite = ({ t }: { t: Translate }) => (
   <div>
     <Title>{t("onboarding:wrapping_key_prerequisite.title")}</Title>
     <Introduction>
       {t("onboarding:wrapping_key_prerequisite.description")}
     </Introduction>
-    <div className={classes.requirements}>
+    <Requirements>
       <div>
         <SubTitle>{t("onboarding:required")}</SubTitle>
-        <div className={classes.flexcolumn}>
+        <FlexColumn>
           <RequirementUnit
             icon={<People color={colors.legacyGrey} style={{ height: 29 }} />}
           >
@@ -64,9 +33,9 @@ const Prerequisite = ({
           <RequirementUnit icon={<Cryptosteel style={{ marginLeft: 37 }} />}>
             {t("onboarding:cryptosteels")}
           </RequirementUnit>
-        </div>
+        </FlexColumn>
       </div>
-    </div>
+    </Requirements>
     <Footer
       render={(onNext, onPrevious) => (
         <>
@@ -82,4 +51,16 @@ const Prerequisite = ({
   </div>
 );
 
-export default withStyles(styles)(withTranslation()(Prerequisite));
+const Requirements = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  line-height: 1.82;
+  margin-bottom: 40px;
+`;
+
+const FlexColumn = styled.div`
+  display: flex;
+`;
+
+export default withTranslation()(Prerequisite);

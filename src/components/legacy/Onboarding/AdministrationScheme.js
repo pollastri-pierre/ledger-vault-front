@@ -1,22 +1,16 @@
 // @flow
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import cx from "classnames";
-import type { Translate } from "data/types";
+import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
+
+import type { Translate } from "data/types";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
 import ApprovalSlider from "./ApprovalSlider";
 
-const styles = {
-  disabled: {
-    opacity: 0.3,
-    pointerEvents: "none",
-  },
-};
 const mapStateToProps = state => ({
   onboarding: state.onboarding,
 });
@@ -28,7 +22,6 @@ const AdministrationScheme = ({
   number,
   total,
   onChange,
-  classes,
   is_editable,
   onboarding,
   onAddMessage,
@@ -38,14 +31,13 @@ const AdministrationScheme = ({
   total: number,
   onChange: Function,
   onAddMessage: Function,
-  classes: { [$Keys<typeof styles>]: string },
   onboarding: Object,
   is_editable: boolean,
   t: Translate,
 }) => (
   <div>
     <Title>{t("onboarding:administrators_scheme.title")}</Title>
-    <div className={cx({ [classes.disabled]: !is_editable })}>
+    <Container is_editable={!is_editable}>
       <Introduction>
         {t("onboarding:administrators_scheme.description")}
       </Introduction>
@@ -56,7 +48,7 @@ const AdministrationScheme = ({
         max={total - 1}
         min={2}
       />
-    </div>
+    </Container>
     <Footer
       nextState
       render={(onNext, onPrevious) => {
@@ -90,7 +82,11 @@ const AdministrationScheme = ({
   </div>
 );
 
+const Container = styled.div`
+  opacity: ${p => (p.is_editable ? 0.3 : undefined)};
+  pointer-events: ${p => (p.is_editable ? "none" : undefined)};
+`;
 export default connect(
   mapStateToProps,
   mapDispatch,
-)(withStyles(styles)(withTranslation()(AdministrationScheme)));
+)(withTranslation()(AdministrationScheme));

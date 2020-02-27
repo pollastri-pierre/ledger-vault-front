@@ -1,25 +1,17 @@
 // @flow
 import React, { Component } from "react";
 import { Title, Introduction } from "components/Onboarding";
-import HelpLink from "components/HelpLink";
-import DialogButton from "components/legacy/DialogButton";
-import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { Trans } from "react-i18next";
 
-const styles = {
-  base: {},
-  footer: {
-    position: "absolute",
-    bottom: -40,
-    right: 0,
-  },
-};
+import styled from "styled-components";
+import HelpLink from "components/HelpLink";
+import DialogButton from "components/legacy/DialogButton";
+
 type Props = {
-  classes: { [$Keys<typeof styles>]: string },
   toggle: Function,
   wipe: Function,
   title: string,
@@ -35,16 +27,17 @@ class ConfirmationCancel extends Component<Props, State> {
     value: "0",
   };
 
+  // $FlowFixMe
   handleChange = event => {
     this.setState({ value: event.target.value });
   };
 
   render() {
-    const { classes, step, entity, title, toggle, wipe } = this.props;
+    const { step, entity, title, toggle, wipe } = this.props;
     const { value } = this.state;
 
     return (
-      <div className={classes.base}>
+      <div>
         <Title>{title}</Title>
         <Introduction>
           <Trans i18nKey="onboarding:confirmation_cancel.desc" entity={step} />
@@ -85,7 +78,7 @@ class ConfirmationCancel extends Component<Props, State> {
             />
           </RadioGroup>
         </FormControl>
-        <div className={classes.footer}>
+        <Footer>
           {value === "0" && (
             <DialogButton highlight onTouchTap={toggle}>
               Go back
@@ -102,10 +95,16 @@ class ConfirmationCancel extends Component<Props, State> {
               <DialogButton highlight>Contact Support</DialogButton>
             </HelpLink>
           )}
-        </div>
+        </Footer>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(ConfirmationCancel);
+const Footer = styled.div`
+  position: absolute;
+  bottom: -40;
+  right: 0;
+`;
+
+export default ConfirmationCancel;
