@@ -26,7 +26,6 @@ import { Label, InputAmount } from "components/base/form";
 import DoubleTilde from "components/icons/DoubleTilde";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { getFees } from "utils/transactions";
-import usePrevious from "hooks/usePrevious";
 import RecalculateButton from "./RecalculateButton";
 
 type Props = {
@@ -44,7 +43,6 @@ function FeesFieldEthereumKind(props: Props) {
 
   const { transaction, account, bridge, restlay, onChangeTransaction } = props;
   const currency = getCryptoCurrencyById(account.currency);
-  const prevRecipient = usePrevious(transaction.recipient);
 
   const gasPriceUnit = currency.units[1];
 
@@ -80,6 +78,14 @@ function FeesFieldEthereumKind(props: Props) {
   const effect = async unsubscribed => {
     const nonce = ++instanceNonce.current;
 
+    // VFE-98: even if we don't fetch fees if amount is equal to 0,
+    // we still want to invalidate any pending fees fetching, and
+    // reset the loading state
+    if (transaction.amount.isEqualTo(0)) {
+      setFeesStatus("idle");
+      return;
+    }
+
     try {
       const recipientError = await bridge.getRecipientError(
         restlay,
@@ -114,7 +120,7 @@ function FeesFieldEthereumKind(props: Props) {
 
       setFeesStatus("idle");
     } catch (err) {
-      console.error(err);
+      if (nonce !== instanceNonce.current || unsubscribed) return;
       onChangeTransaction({
         ...transaction,
         estimatedFees: BigNumber(0),
@@ -128,10 +134,7 @@ function FeesFieldEthereumKind(props: Props) {
   };
   useEffect(() => {
     let unsubscribed = false;
-
-    if (prevRecipient !== transaction.recipient) {
-      effect(unsubscribed);
-    }
+    effect(unsubscribed);
     return () => {
       unsubscribed = true;
     };
