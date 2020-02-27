@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -10,6 +9,7 @@ import { FaRedoAlt } from "react-icons/fa";
 import { useMe } from "components/UserContextProvider";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
+import Tooltip from "components/base/Tooltip";
 import { setRequest } from "redux/modules/requestReplayStore";
 import type { User } from "data/types";
 import type { RequestReplay } from "redux/modules/requestReplayStore";
@@ -94,7 +94,7 @@ const ReplayRequestButton = ({
   if (disabledReason) {
     inner = (
       <Tooltip
-        title={t(disabledReason, {
+        content={t(disabledReason, {
           entityType: request.entity.entityType.toLowerCase(),
         })}
       >
