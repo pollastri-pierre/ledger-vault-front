@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import MUITableCell from "@material-ui/core/TableCell";
+import { TableCell } from "components/Table/TableBase";
 import AccountName from "components/AccountName";
 import Box from "components/base/Box";
 import NotApplicableText from "components/base/NotApplicableText";
@@ -39,9 +39,7 @@ function ReasonBodyCell(props: CellProps) {
     }
   };
 
-  return (
-    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
-  );
+  return <TableCell align={item.body.align}>{renderCellMapper()}</TableCell>;
 }
 
 export default ReasonBodyCell;

@@ -2,8 +2,7 @@
 
 import React from "react";
 
-import MUITableCell from "@material-ui/core/TableCell";
-
+import { TableCell } from "components/Table/TableBase";
 import Text from "components/base/Text";
 import CounterValue from "components/CounterValue";
 import AccountName from "components/AccountName";
@@ -65,9 +64,9 @@ function TransactionBodyCell(props: CellProps) {
   };
 
   return (
-    <MUITableCell align={item.body.align} size={item.body.size}>
+    <TableCell align={item.body.align} size={item.body.size}>
       {renderCellMapper()}
-    </MUITableCell>
+    </TableCell>
   );
 }
 

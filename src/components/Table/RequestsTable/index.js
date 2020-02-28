@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useState } from "react";
-import MUITableBody from "@material-ui/core/TableBody";
 import type { ObjectParameters } from "query-string";
 
 import NoDataPlaceholder from "components/NoDataPlaceholder";
@@ -48,7 +47,7 @@ function RequestsTable(props: Props) {
           onSortChange={onSortChange}
           queryParams={queryParams}
         />
-        <MUITableBody>{data.map(Request)}</MUITableBody>
+        <tbody>{data.map(Request)}</tbody>
       </Table>
     </TableScroll>
   );

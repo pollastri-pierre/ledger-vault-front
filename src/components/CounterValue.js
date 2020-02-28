@@ -127,7 +127,7 @@ class CounterValue extends PureComponent<Props> {
     return disableTooltip ? (
       inner
     ) : (
-      <span>
+      <span style={{ whiteSpace: "nowrap" }}>
         {inner}
         <span
           style={{
