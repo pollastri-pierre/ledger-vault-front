@@ -6,7 +6,7 @@ import { withTranslation } from "react-i18next";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
 import DialogButton from "components/legacy/DialogButton";
-import { Title, Introduction, SubTitle } from "components/Onboarding";
+import { Title, Introduction, SubTitle } from "components/legacy/Onboarding";
 import People from "components/icons/thin/People";
 import colors from "shared/colors";
 import { RequirementUnit, BlueDevice } from "./Requirements";

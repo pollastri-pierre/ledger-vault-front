@@ -3,7 +3,12 @@ import React from "react";
 import type { Translate } from "data/types";
 import { withTranslation } from "react-i18next";
 import DialogButton from "components/legacy/DialogButton";
-import { Title, List, ListItem, Introduction } from "components/Onboarding";
+import {
+  Title,
+  List,
+  ListItem,
+  Introduction,
+} from "components/legacy/Onboarding";
 import LinkCongureDevice from "./LinkCongureDevice";
 import Footer from "./Footer";
 

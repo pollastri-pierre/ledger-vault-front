@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 
 import colors from "shared/colors";
-import { Title } from "components/Onboarding";
+import { Title } from "components/legacy/Onboarding";
 import type { Translate } from "data/types";
 import Box from "components/base/Box";
 import Text from "components/base/Text";

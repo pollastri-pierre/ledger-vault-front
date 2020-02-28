@@ -10,7 +10,7 @@ import { SpinnerCentered } from "components/base/Spinner";
 import type { Translate } from "data/types";
 import { withTranslation, Trans } from "react-i18next";
 import { connect } from "react-redux";
-import { Title, Introduction } from "components/Onboarding";
+import { Title, Introduction } from "components/legacy/Onboarding";
 import Fragment from "components/legacy/Onboarding/Fragments";
 import DialogButton from "components/legacy/DialogButton";
 import {

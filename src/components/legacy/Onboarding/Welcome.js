@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import DialogButton from "components/legacy/DialogButton";
 import type { Translate } from "data/types";
-import { Title, Introduction, SubTitle } from "components/Onboarding";
+import { Title, Introduction, SubTitle } from "components/legacy/Onboarding";
 import Footer from "./Footer";
 import Requirements from "./Requirements";
 

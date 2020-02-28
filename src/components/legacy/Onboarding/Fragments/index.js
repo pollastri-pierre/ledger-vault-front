@@ -8,7 +8,7 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 import DeviceInteraction from "components/DeviceInteraction";
 import ValidateBadge from "components/icons/full/ValidateBadge";
-import { ProfileIcon } from "components/Onboarding";
+import { ProfileIcon } from "components/legacy/Onboarding";
 
 import type { GateError } from "data/types";
 import type { Interaction } from "components/DeviceInteraction";
