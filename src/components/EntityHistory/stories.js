@@ -5,6 +5,7 @@ import { storiesOf } from "@storybook/react";
 
 import EntityHistory from "components/EntityHistory";
 import Box from "components/base/Box";
+import backendDecorator from "stories/backendDecorator";
 
 import { deserializeHistory } from "utils/history";
 import groupHistory from "utils/history/fixtures/groupHistory.json";
@@ -33,4 +34,6 @@ function Wrapper() {
   );
 }
 
-storiesOf("components", module).add("EntityHistory", () => <Wrapper />);
+storiesOf("components", module)
+  .addDecorator(backendDecorator([]))
+  .add("EntityHistory", () => <Wrapper />);
