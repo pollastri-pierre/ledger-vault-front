@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 
-import MUITableBody from "@material-ui/core/TableBody";
-
 import type { ObjectParameters } from "query-string";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 
@@ -50,7 +48,7 @@ function WhitelistsTable(props: Props) {
           onSortChange={onSortChange}
           queryParams={queryParams}
         />
-        <MUITableBody>{data.map(WhitelistComponent)}</MUITableBody>
+        <tbody>{data.map(WhitelistComponent)}</tbody>
       </Table>
     </TableScroll>
   );

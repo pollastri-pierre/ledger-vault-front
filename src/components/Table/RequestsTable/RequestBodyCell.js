@@ -1,8 +1,8 @@
 // @flow
 
 import React from "react";
-import MUITableCell from "@material-ui/core/TableCell";
 
+import { TableCell } from "components/Table/TableBase";
 import EntityStatus from "components/EntityStatus";
 import { TransactionCreationRequestTitle } from "components/lists/RequestsList";
 import DateFormat from "components/DateFormat";
@@ -44,9 +44,7 @@ function RequestBodyCell(props: CellProps) {
     }
   };
 
-  return (
-    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
-  );
+  return <TableCell align={item.body.align}>{renderCellMapper()}</TableCell>;
 }
 
 export default RequestBodyCell;

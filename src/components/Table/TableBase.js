@@ -3,12 +3,7 @@
 import React, { PureComponent } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import styled from "styled-components";
-import MUITable from "@material-ui/core/Table";
 import type { ObjectParameters, ObjectParameter } from "query-string";
-
-import MUITableCell from "@material-ui/core/TableCell";
-import MUITableHead from "@material-ui/core/TableHead";
-import MUITableRow from "@material-ui/core/TableRow";
 
 import VaultLink from "components/VaultLink";
 import Text from "components/base/Text";
@@ -29,19 +24,19 @@ export class TableHeader extends PureComponent<TableHeaderProps> {
     const { tableDefinition, onSortChange, queryParams } = this.props;
 
     return (
-      <MUITableHead>
-        <MUITableRow>
+      <thead>
+        <TableRow>
           {tableDefinition.map(item => (
             <HeaderCellComponent
               key={item.body.prop}
               item={item}
               onSortChange={onSortChange}
               queryParams={queryParams}
-              style={getExtraCellStyle(item.body.prop)}
+              size={item.body.size}
             />
           ))}
-        </MUITableRow>
-      </MUITableHead>
+        </TableRow>
+      </thead>
     );
   }
 }
@@ -50,7 +45,7 @@ type Props = {
   item: TableItem,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  style?: Object,
+  size?: string,
 };
 
 class HeaderCellComponent extends PureComponent<Props> {
@@ -80,13 +75,13 @@ class HeaderCellComponent extends PureComponent<Props> {
   };
 
   render() {
-    const { item, queryParams, onSortChange, style } = this.props;
+    const { item, queryParams, onSortChange, size } = this.props;
     const { orderBy, order } = resolveSort(queryParams);
     const direction = resolveDirection(
       orderBy === item.body.prop ? order : null,
     );
     return (
-      <HeaderCell align={item.header.align} key={item.body.prop} style={style}>
+      <HeaderCell align={item.header.align} key={item.body.prop} size={size}>
         {item.header.sortable && onSortChange ? (
           <TableSort
             align={item.header.align}
@@ -102,37 +97,48 @@ class HeaderCellComponent extends PureComponent<Props> {
   }
 }
 
-const HeaderCell = styled(MUITableCell)`
-  && {
-    background-color: ${colors.form.bg};
-    border-bottom-color: ${colors.legacyLightGrey1};
+const HeaderCell = styled.td`
+  background-color: ${colors.form.bg};
+  border-top: none !important;
+  border-bottom-color: ${colors.legacyLightGrey1};
+  width: ${p => (p.size === "small" ? "50px" : "auto")};
+  padding: ${p => (p.size === "small" ? "10px" : "4px 56px 4px 24px")};
+  text-align: ${p => p.align || "left"};
+`;
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  tr td {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  tr:last-child td {
+    border-bottom: none;
   }
 `;
 
-export const Table = styled(MUITable)`
-  && {
-    user-select: none;
-    tr td {
-      border: none;
-      border-top: 1px solid rgba(0, 0, 0, 0.05);
+export const TableRow = styled.tr`
+  height: 48px;
+  ${p =>
+    p.onClick
+      ? `
+    cursor: pointer;
+    &:hover td {
+      background: ${opacity(colors.bLive, 0.03)};
     }
-    tr:hover {
-      background: ${colors.white};
-    }
-    tr:last-child td {
-      border-bottom: none;
-    }
-    tr:active td {
+    &:active td {
       transition: 100ms linear background;
-      background: ${opacity(colors.blue, 0.09)} !important;
+      background: ${opacity(colors.bLive, 0.09)} !important;
     }
-    tr:hover td {
-      background: ${opacity(colors.blue, 0.05)};
-    }
-    .MuiTableCell-body {
-      color: inherit;
-    }
-  }
+  `
+      : ""}
+`;
+
+export const TableCell = styled.td`
+  padding: ${p => (p.size === "small" ? "10px" : "4px 56px 4px 24px")};
+  text-align: ${p => p.align || "left"};
+  width: ${p => (p.size === "small" ? "50px" : "auto")};
 `;
 
 export const OpenExternal = ({ url }: { url: string }) => (
@@ -188,13 +194,4 @@ function resolveDirection(
     : potentialDirection === "desc"
     ? "desc"
     : null;
-}
-
-export function getExtraCellStyle(cellID: string) {
-  if (cellID === "details") {
-    return {
-      padding: 10,
-      width: 50,
-    };
-  }
 }

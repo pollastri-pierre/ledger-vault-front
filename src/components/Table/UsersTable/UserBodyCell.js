@@ -2,8 +2,7 @@
 
 import React from "react";
 
-import MUITableCell from "@material-ui/core/TableCell";
-
+import { TableCell } from "components/Table/TableBase";
 import EntityStatus from "components/EntityStatus";
 import DateFormat from "components/DateFormat";
 import UserRoleFormatter from "components/UserRoleFormatter";
@@ -40,9 +39,7 @@ function UserBodyCell(props: CellProps) {
     }
   };
 
-  return (
-    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
-  );
+  return <TableCell align={item.body.align}>{renderCellMapper()}</TableCell>;
 }
 
 export default UserBodyCell;

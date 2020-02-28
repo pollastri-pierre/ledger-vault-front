@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 
-import MUITableBody from "@material-ui/core/TableBody";
-
 import type { ObjectParameters } from "query-string";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 
@@ -49,7 +47,7 @@ function GroupsTable(props: Props) {
           onSortChange={onSortChange}
           queryParams={queryParams}
         />
-        <MUITableBody>{data.map(GroupComponent)}</MUITableBody>
+        <tbody>{data.map(GroupComponent)}</tbody>
       </Table>
     </TableScroll>
   );

@@ -2,10 +2,8 @@
 
 import React from "react";
 
-import MUITableRow from "@material-ui/core/TableRow";
-
 import type { Account, Transaction } from "data/types";
-
+import { TableRow } from "components/Table/TableBase";
 import type { TableDefinition } from "../types";
 import TransactionBodyCell from "./TransactionBodyCell";
 
@@ -16,8 +14,6 @@ type TransactionRowProps = {
   tableDefinition: TableDefinition,
 };
 
-const transactionRowHover = { cursor: "pointer" };
-
 function TransactionRow(props: TransactionRowProps) {
   const { transaction, account, onClick, tableDefinition } = props;
 
@@ -26,12 +22,7 @@ function TransactionRow(props: TransactionRowProps) {
   };
 
   return (
-    <MUITableRow
-      key={transaction.id}
-      hover={!!onClick}
-      style={onClick ? transactionRowHover : undefined}
-      onClick={onClick ? handleClick : undefined}
-    >
+    <TableRow onClick={onClick ? handleClick : undefined}>
       {tableDefinition.map(item => (
         <TransactionBodyCell
           account={account}
@@ -40,7 +31,7 @@ function TransactionRow(props: TransactionRowProps) {
           key={item.body.prop}
         />
       ))}
-    </MUITableRow>
+    </TableRow>
   );
 }
 

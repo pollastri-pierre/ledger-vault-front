@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 
-import MUITableBody from "@material-ui/core/TableBody";
-
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 import type { BlockingReasonType } from "components/BlockingReasons";
 
@@ -41,7 +39,7 @@ function ReasonsTable(props: Props) {
     <TableScroll>
       <Table>
         <TableHeader tableDefinition={tableDefinition} type="reasons" />
-        <MUITableBody>{data.map(Reason)}</MUITableBody>
+        <tbody>{data.map(Reason)}</tbody>
       </Table>
     </TableScroll>
   );
