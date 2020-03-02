@@ -128,7 +128,6 @@ function genAccount(
   const approvals = genApprovals(nbApprovalsToGenerate, {
     users: administrators,
   });
-  const whitelists = genWhitelists(3, { users });
   const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
   const status = approvals.find(a => a.type === "ABORT")
     ? "REVOKED"
@@ -168,12 +167,6 @@ function genAccount(
                   : genGroup({ users, status: "ACTIVE" }),
               },
             ],
-          },
-          {
-            type: "WHITELIST",
-            data: extra.whitelists
-              ? extra.whitelists.map(w => w.id)
-              : whitelists,
           },
         ],
       },
