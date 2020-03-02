@@ -170,11 +170,11 @@ workflows:
     triggers:
       - schedule:
           # Run every night at 2 am on weekdays.
-          cron: "55 13 * * 1-5"
+          cron: "0 14 * * 1-5"
           filters:
             branches:
               only:
-                - develop
+                - VFE-110-run-e2e-tests-nightly
     jobs:
       - e2e_tests:
           context: dockerhub
