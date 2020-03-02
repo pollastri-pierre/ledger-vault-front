@@ -56,7 +56,7 @@ export default Alert;
 const Container = styled.div`
   display: flex;
   position: absolute;
-  transform: translateY(${p => (p.open ? "0" : "-100%")});
+  transform: translateY(${p => (p.open ? "0" : "-110%")});
   transition: 300m s cubic-bezier(0.65, 0.09, 0.35, 1.41) transform;
   cursor: pointer;
 `;
