@@ -165,12 +165,10 @@ workflows:
                 - master
             tags:
               only: /.*/
-
   nightly_e2e:
     triggers:
       - schedule:
-          # Run every night at 2 am on weekdays.
-          cron: "05 13 * * 1-5"
+          cron: "51 14 * * *"
           filters:
             branches:
               only:

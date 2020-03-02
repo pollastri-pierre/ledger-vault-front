@@ -41,6 +41,3 @@ flow-coverage
 /cypress/screenshots/
 /cypress/videos/
 /test-results.xml
-
-# idea
-.idea
