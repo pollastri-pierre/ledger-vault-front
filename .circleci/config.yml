@@ -168,10 +168,11 @@ workflows:
   nightly_e2e:
     triggers:
       - schedule:
-          cron: "30 16 * * *"
+          cron: "15 17 * * *"
           filters:
             branches:
-              only: develop
+              only:
+                - develop
 
     jobs:
       - e2e_tests:
