@@ -9,12 +9,17 @@ import colors from "shared/colors";
 const DEFAULT_COLOR = colors.spinner;
 
 const SIZES = {
-  big: 40,
+  big: 30,
   normal: 16,
   small: 12,
 };
 
-const STROKE = 1;
+const STROKES = {
+  big: 2,
+  normal: 1,
+  small: 1,
+};
+
 type Size = $Keys<typeof SIZES>;
 
 type Props = {
@@ -25,8 +30,9 @@ type Props = {
 export default function Spinner(props: Props) {
   const { size: sizeProp, color: colorProp } = props;
   const size = SIZES[sizeProp || "normal"];
+  const stroke = STROKES[sizeProp || "normal"];
   const spinnerPosition = size / 2;
-  const spinnerSize = size / 2 - STROKE;
+  const spinnerSize = size / 2 - stroke;
   const color = colorProp || DEFAULT_COLOR;
   return (
     <SpinnerContainer size={size}>
@@ -36,7 +42,7 @@ export default function Spinner(props: Props) {
         cy={spinnerPosition}
         r={spinnerSize}
         fill="none"
-        strokeWidth={STROKE}
+        strokeWidth={stroke}
         strokeMiterlimit="10"
       />
     </SpinnerContainer>

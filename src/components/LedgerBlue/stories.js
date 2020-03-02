@@ -11,6 +11,7 @@ import {
   OsUpdater,
   DashBoard,
   UpdateFirmware,
+  AllowManager,
 } from "components/LedgerBlue/screens";
 
 const label = "Size";
@@ -35,6 +36,11 @@ storiesOf("LedgerBlue", module)
   .add("DashBoard", () => (
     <LedgerBlue size={select(label, options, "small")}>
       <DashBoard displayFullText={boolean("displayFullText", false)} />
+    </LedgerBlue>
+  ))
+  .add("AllowManager", () => (
+    <LedgerBlue size={select(label, options, "small")}>
+      <AllowManager displayFullText={boolean("displayFullText", false)} />
     </LedgerBlue>
   ))
   .add("UpdateFirmware", () => (

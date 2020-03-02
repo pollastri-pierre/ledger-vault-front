@@ -12,11 +12,10 @@ const ScrollingBlock = styled.div`
   left: 0;
   bottom: 0;
   background-color: ${colors.cream};
-
+  justify-content: ${p => (p.noVerticalAlign ? "flex-start" : "center")};
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   overflow: auto;
 `;
 
@@ -35,8 +34,14 @@ const Inner = styled.div`
   align-items: center;
 `;
 
-export default ({ children }: { children: React$Node }) => (
-  <ScrollingBlock>
+export default ({
+  children,
+  noVerticalAlign,
+}: {
+  children: React$Node,
+  noVerticalAlign?: boolean,
+}) => (
+  <ScrollingBlock noVerticalAlign={noVerticalAlign}>
     <Outer>
       <Inner>{children}</Inner>
     </Outer>

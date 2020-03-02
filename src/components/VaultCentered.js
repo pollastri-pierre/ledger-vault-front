@@ -10,10 +10,16 @@ import CenteredLayout from "components/base/CenteredLayout";
 
 import productVersion from "../version";
 
-export default function VaultCentered({ children }: { children: React$Node }) {
+export default function VaultCentered({
+  children,
+  noVerticalAlign,
+}: {
+  children: React$Node,
+  noVerticalAlign?: boolean,
+}) {
   return (
-    <CenteredLayout>
-      <div width={540}>
+    <CenteredLayout noVerticalAlign={noVerticalAlign}>
+      <div style={{ minWidth: 540 }}>
         <LogoRow />
         {children}
       </div>
@@ -25,7 +31,13 @@ export default function VaultCentered({ children }: { children: React$Node }) {
 }
 
 const LogoRow = () => (
-  <Box horizontal justify="space-between" align="center" mb={10} width={520}>
+  <Box
+    horizontal
+    justify="space-between"
+    align="center"
+    mb={10}
+    style={{ minWidth: 540 }}
+  >
     <Logo width={120} />
     <HelpLink
       style={styles.help}

@@ -3,7 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FaWrench } from "react-icons/fa";
-import { AiOutlineExclamation } from "react-icons/ai";
+import { AiOutlineExclamation, AiTwotoneTool } from "react-icons/ai";
 import { GoGear } from "react-icons/go";
 
 import Spinner from "components/base/Spinner";
@@ -18,7 +18,7 @@ type UpdateScreenProps = {
   title: string,
   description: string,
   actions?: React$Node,
-  displayFullText: boolean,
+  displayFullText?: boolean,
 };
 
 const EmptyTextField = styled.div`
@@ -94,7 +94,7 @@ const Description = styled.div`
 `;
 
 type ActionButtonsProps = {
-  displayFullText: boolean,
+  displayFullText?: boolean,
   size: string,
 };
 const ActionButtons = ({ displayFullText, size }: ActionButtonsProps) => (
@@ -129,7 +129,7 @@ const Button = styled.div`
   font-size: 0.7m;
 `;
 type DashBoardScreenProps = {
-  displayFullText: boolean,
+  displayFullText?: boolean,
   Icon: React$ComponentType<*>,
 };
 const DashBoardScreen = ({ displayFullText, Icon }: DashBoardScreenProps) => {
@@ -303,7 +303,7 @@ const IconInfo = styled.div`
   color: ${colors.black}
   position: absolute;
 `;
-type ScreenProps = { displayFullText: boolean };
+type ScreenProps = { displayFullText?: boolean };
 
 const ICON_SIZE = {
   small: 12,
@@ -327,7 +327,6 @@ export const OsUpdater = ({ displayFullText }: ScreenProps) => (
   <UpdateScreen
     title={"OS UPDATER"}
     Icon={AiOutlineExclamation}
-    actions
     iconCircle
     displayFullText={displayFullText}
     description={
@@ -335,11 +334,22 @@ export const OsUpdater = ({ displayFullText }: ScreenProps) => (
     }
   />
 );
+export const AllowManager = ({ displayFullText }: ScreenProps) => (
+  <UpdateScreen
+    iconCircle
+    Icon={AiTwotoneTool}
+    title="ALLOW MANAGER"
+    description="Allow Ledger app to manage your applications and device settings"
+    actions
+    displayFullText={displayFullText}
+  />
+);
 
+const SpinnerIcon = () => <Spinner color={colors.legacyDarkGrey1} />;
 export const Processing = ({ displayFullText }: ScreenProps) => (
   <UpdateScreen
     title={"Processing..."}
-    Icon={() => <Spinner />}
+    Icon={SpinnerIcon}
     displayFullText={displayFullText}
     description={"Please wait, this operation may take a few moments."}
   />

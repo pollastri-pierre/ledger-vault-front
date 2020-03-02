@@ -7,6 +7,40 @@
   "goToLogin": "Login to Vault",
   "goBack": "Go back",
   "infobox": "Your application is not up to date. Download our ledger-update software so you can update your app and your firmware. Contact support if needed.",
+  "steps": {
+    "osu": {
+      "doing": "Installing OS Updater",
+      "done": "osu updated",
+      "to-do": "Install OS Updater"
+    },
+    "reboot-osu": {
+      "done": "Device rebooted",
+      "doing": "Device is rebooting",
+      "to-do": "Device will reboot"
+    },
+    "final": {
+      "done": "Main firmware installed",
+      "doing": "Installing main firmware",
+      "to-do": "Install main firmware"
+    },
+    "reboot-final": {
+      "doing": "Device is rebooting",
+      "to-do": "Device will reboot",
+      "done": "Device rebooted"
+    },
+    "app": {
+      "doing": "Installing app",
+      "to-do": "Install app",
+      "done": "App installed"
+    },
+    "waitReboot": "Your device should be rebooting, click on continue when you are back on device's dashboard.",
+    "waitProcessing": "Please wait while the device is processing",
+    "promptDenyTitle": "Allow installation",
+    "promptDeny": "Accept or deny the instatllion the device",
+    "continueAfterReboot": "Continue",
+    "ready": "Device ready",
+    "ready-to-login": "Your device is ready to use the vault. You can login to the platform."
+  },
   "userSteps": {
     "step1": "On your device, click the close icon in the top right corner to go back to the <0>Dashboard</0>.",
     "step2": "On the web app, click <0>Update firmware and app</0>."
