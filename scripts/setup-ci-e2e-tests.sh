@@ -3,12 +3,6 @@
 
 set -e
 
-# exit properly if commit doesn't contain --e2e
-if ! (git log --oneline -n 1 --pretty=format:%B | grep -- '--e2e' &>/dev/null); then
-  echo "Commit message or description does not contain --e2e, skipping tests."
-  exit 0
-fi
-
 export ORGANIZATION_API_TOKEN=''
 export WALLET_DAEMON_VERSION=develop
 export VAULT_API_VERSION=develop
