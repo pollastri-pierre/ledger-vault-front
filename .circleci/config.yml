@@ -133,16 +133,9 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - e2e_tests:
-          requires:
-            - run_tests
-          filters:
-            tags:
-              only: /.*/
       - build:
           requires:
             - run_tests
-            - e2e_tests
           filters:
             tags:
               only: /.*/
@@ -172,3 +165,15 @@ workflows:
                 - master
             tags:
               only: /.*/
+  nightly_e2e:
+    triggers:
+      - schedule:
+          cron: "15 17 * * *"
+          filters:
+            branches:
+              only:
+                - develop
+
+    jobs:
+      - e2e_tests:
+          context: dockerhub
