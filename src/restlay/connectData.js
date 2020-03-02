@@ -127,7 +127,7 @@ const defaultOpts = {
 };
 
 const extractInputProps = <Props>(props: ClazzProps<Props>): Props => {
-  const { dataStore, dispatch, ...rest } = props; // eslint-disable-line no-unused-vars
+  const { dataStore, ...rest } = props; // eslint-disable-line no-unused-vars
   return rest;
 };
 
