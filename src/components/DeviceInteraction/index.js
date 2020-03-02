@@ -3,6 +3,7 @@ import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import { withRouter } from "react-router";
 import type { MemoryHistory } from "history";
+import type { Dispatch } from "redux";
 import {
   withDevicePolling,
   genericCanRetryOnError,
@@ -54,6 +55,7 @@ type Props = {
   onSuccess: Object => void,
   onError: (DeviceInteractionError, Object) => void,
   light?: boolean,
+  dispatch: Dispatch,
 };
 
 type State = {
@@ -99,6 +101,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
       noCheckVersion,
       restlay,
       history,
+      dispatch,
     } = this.props;
 
     // always checking app version first unless opt-out by the consumer component
@@ -107,8 +110,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
       noCheckVersion || localStorage.getItem("NO_CHECK_VERSION")
         ? [getU2FPublicKey, ...interactions]
         : [getU2FPublicKey, checkVersion, ...interactions];
-
-    const responses = { ...additionalFields, restlay };
+    const responses = { ...additionalFields, restlay, dispatch };
 
     for (let i = 0; i < interactionsWithCheckVersion.length; i++) {
       try {
