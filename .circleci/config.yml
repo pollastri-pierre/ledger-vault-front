@@ -127,6 +127,7 @@ jobs:
             fi
 
 workflows:
+  version: 2.1
   build_publish:
     jobs:
       - run_tests:
@@ -168,11 +169,11 @@ workflows:
   nightly_e2e:
     triggers:
       - schedule:
-          cron: "14 15 * * *"
+          cron: "37 15 * * *"
           filters:
             branches:
-              tags:
-                only: /.*/
+              only: VFE-110-run-e2e-tests-nightly
+              
     jobs:
       - e2e_tests:
           context: dockerhub
