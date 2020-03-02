@@ -104,6 +104,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   ) => ({
     ...t,
     feeLevel,
+    estimatedFees: null,
   }),
 
   getTransactionNote: (t: Transaction) => t.note,

@@ -24,6 +24,7 @@ type Option = {
 export default (props: Props) => {
   const { value, onChange } = props;
   const option = options.find(o => o.value === value);
-  const handleChange = (option: ?Option) => option && onChange(option.value);
+  const handleChange = (option: ?Option) =>
+    option && value !== option.value && onChange(option.value);
   return <Select value={option} options={options} onChange={handleChange} />;
 };
