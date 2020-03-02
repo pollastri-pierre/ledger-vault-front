@@ -170,7 +170,7 @@ workflows:
     triggers:
       - schedule:
           # Run every night at 2 am on weekdays.
-          cron: "0 14 * * 1-5"
+          cron: "05 13 * * 1-5"
           filters:
             branches:
               only:
