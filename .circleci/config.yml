@@ -168,7 +168,7 @@ workflows:
   nightly_e2e:
     triggers:
       - schedule:
-          cron: "15 17 * * *"
+          cron: "0 1 * * 1-5"
           filters:
             branches:
               only:
