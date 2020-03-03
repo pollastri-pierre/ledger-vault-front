@@ -36,6 +36,7 @@ export const UserInvitationAlreadyUsed = createCustomErrorClass(
   "UserInvitationAlreadyUsed",
 );
 
+export const UserIdAlreadyUsed = createCustomErrorClass("UserIdAlreadyUsed");
 export const NetworkTimeoutError = createCustomErrorClass(
   "NetworkTimeoutError",
 );
@@ -71,10 +72,19 @@ export function remapError(err: Error) {
   if (jsonIncludes(err, "Action not implemented in this state")) {
     return new RequestFinished();
   }
+
+  if (jsonIncludesRegex(err, /Model '[^']+' of type 'User' already exists/)) {
+    return new UserIdAlreadyUsed();
+  }
   return err;
 }
 
 function jsonIncludes(err: Error, msg: string) {
   // $FlowFixMe
   return err.json && err.json.message && err.json.message.includes(msg);
+}
+
+function jsonIncludesRegex(err: Error, regex: RegExp) {
+  // $FlowFixMe
+  return err.json && err.json.message && regex.test(err.json.message);
 }
