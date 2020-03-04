@@ -2,6 +2,7 @@
 
 import React from "react";
 import Tooltip from "@reach/tooltip";
+import styled from "styled-components";
 
 import colors from "shared/colors";
 
@@ -22,10 +23,14 @@ const toolTipStyle = {
   boxShadow: colors.shadows.material2,
 };
 
+const Container = styled.div`
+  flex-shrink: 0;
+`;
+
 export default ({ children, content }: ToolTipProps) => {
   return (
     <Tooltip label={content} style={toolTipStyle}>
-      <div>{children}</div>
+      <Container>{children}</Container>
     </Tooltip>
   );
 };
