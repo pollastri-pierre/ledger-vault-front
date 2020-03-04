@@ -6,17 +6,14 @@
   "administrators": "Administrators",
   "administrators_configuration": {
     "configure_device": "configure my device",
-    "description":
-      "Follow these steps to intialize the Ledger Blue Enterprise. This device is needed to access and use the Vault platform.",
-    "step1":
-      "Get the Ledger Blue Enterprise and the Recovery Sheet from the sealed box.",
+    "description": "Follow these steps to intialize the Ledger Blue Enterprise. This device is needed to access and use the Vault platform.",
+    "step1": "Get the Ledger Blue Enterprise and the Recovery Sheet from the sealed box.",
     "step2": "Initialize the Ledger Blue Enterprise",
     "step3": "Store the Recovery Sheet in a safe place.",
     "title": "Initialization"
   },
   "administrators_prerequisite": {
-    "description":
-      "In the following steps, we'll add Administrators to your workspace and initialize their Ledger Blue Enterprise.",
+    "description": "In the following steps, we'll add Administrators to your workspace and initialize their Ledger Blue Enterprise.",
     "shared_owners": "Shared-Owners",
     "title": "Prerequisites",
     "wkey_custodians": "Wrapping Key Custodians"
@@ -26,17 +23,12 @@
     "add_member_title": "add a new administrator",
     "at_least": "At least 3 Administrators are required to continue",
     "click_edit": "Edit",
-    "description":
-      "Register the Administrators of your workspace. Administrators can perform sensitive actions such as creating accounts.",
-    "description_strong":
-      "It's not possible to delete Administrators once they're created.",
+    "description": "Register the Administrators of your workspace. Administrators can perform sensitive actions such as creating accounts.",
+    "description_strong": "It's not possible to delete Administrators once they're created.",
     "device_modal": {
-      "step1":
-        "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
-      "step2":
-        "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
-      "step3":
-        "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
+      "step1": "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
+      "step2": "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
+      "step3": "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
       "title": "Registration"
     },
     "modal_title_add": "Add new Administrator",
@@ -44,8 +36,7 @@
     "title": "Registration"
   },
   "administrators_scheme": {
-    "description":
-      "This step allows you to define the number of approvals you must collect from all registered Administrators to authorize sensitive actions.",
+    "description": "This step allows you to define the number of approvals you must collect from all registered Administrators to authorize sensitive actions.",
     "nb_required": "Requires the approval of {{count}} Administrators",
     "out_of": "out of {{total}}",
     "require_less": "less",
@@ -53,14 +44,12 @@
     "title": "Admin rule"
   },
   "backup": {
-    "description":
-      "Back up your 24-word recovery phrase in the Ledger Cryptosteel.",
+    "description": "Back up your 24-word recovery phrase in the Ledger Cryptosteel.",
     "step1": "Grab your Recovery Sheet",
     "step2": "Set up your Ledger Cryptosteel",
     "step3": "Destroy your Recovery Sheet",
     "title": "Backup",
-    "warning":
-      "Don't destroy the Recovery Sheet before the 24 words are secured on the Ledger Cryptosteel."
+    "warning": "Don't destroy the Recovery Sheet before the 24 words are secured on the Ledger Cryptosteel."
   },
   "blue_green": "Ledger Blue Enterprise devices",
   "blue_orange": "Ledger Blue Enterprise devices",
@@ -77,37 +66,28 @@
     "desc": "It looks like you've canceled the {{entity}}.",
     "mistake": "You've made a mistake when registering {{entity}}.",
     "oops": "Oops! you clicked <0>Cancel</0> by mistake...",
-    "security":
-      "You believe the security of your Ledger Vault might be compromised"
+    "security": "You believe the security of your Ledger Vault might be compromised"
   },
   "cryptosteels": "Ledger Cryptosteels",
   "master_seed_configuration": {
     "configure_device": "configure my device",
-    "description":
-      "Follow these steps to initialize the Ledger Blue Enterprise.",
-    "step1":
-      "Get the Ledger Blue Enterprise and the Recovery Sheet from the sealed box.",
+    "description": "Follow these steps to initialize the Ledger Blue Enterprise.",
+    "step1": "Get the Ledger Blue Enterprise and the Recovery Sheet from the sealed box.",
     "step2": "Initialize the Ledger Blue Enterprise",
-    "step3":
-      "Ensure your Ledger Cryptosteel is safely secured and your Recovery Sheet is destroyed.",
+    "step3": "Ensure your Ledger Cryptosteel is safely secured and your Recovery Sheet is destroyed.",
     "title": "Initialization"
   },
   "master_seed_prerequisite": {
-    "description":
-      "In this last step, we'll generate your company's master seed, which is the private cryptographic key created from the three Shared-Owners Ledger Blue Enterprise devices.",
+    "description": "In this last step, we'll generate your company's master seed, which is the private cryptographic key created from the three Shared-Owners Ledger Blue Enterprise devices.",
     "title": "Prerequisites",
     "wkey_custodians": "Wrapping Key Custodians"
   },
   "master_seed_provisionning": {
-    "description":
-      "Click <0>Get seed</0> and connect the Ledger Blue Enterprise of the first Shared-Owner, and repeat this step for the remaining two Shared-Owners.",
+    "description": "Click <0>Get seed</0> and connect the Ledger Blue Enterprise of the first Shared-Owner, and repeat this step for the remaining two Shared-Owners.",
     "device_modal": {
-      "step1":
-        "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
-      "step2":
-        "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
-      "step3":
-        "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
+      "step1": "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
+      "step2": "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
+      "step3": "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
       "title": "Generate Master Seed"
     },
     "generate_seed": "Get seed",
@@ -119,16 +99,12 @@
     "title": "Create master seed"
   },
   "master_seed_signin": {
-    "ask_admin":
-      "Sign in each Administrator one by one using their Ledger Blue Enterprise.",
+    "ask_admin": "Sign in each Administrator one by one using their Ledger Blue Enterprise.",
     "description": "Sign in to confirm your registration.",
     "device_modal": {
-      "step1":
-        "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
-      "step2":
-        "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
-      "step3":
-        "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
+      "step1": "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
+      "step2": "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
+      "step3": "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
       "title": "Sign in with your device"
     },
     "members_present": "Administrators",
@@ -138,8 +114,7 @@
     "signin": "Sign in",
     "signin_next": "Sign in next Administrator",
     "title": "Sign in",
-    "to_continue":
-      "Ask each administrator to sign in using their Ledger Blue devices."
+    "to_continue": "Ask each administrator to sign in using their Ledger Blue devices."
   },
   "menu": {
     "administrators": {
@@ -181,24 +156,20 @@
   "so_registration": {
     "add": "Add shared-owner",
     "add_new": "add a new shared-owner",
-    "desc":
-      "Click <0>Add Shared-Owner</0> and connect the Ledger Blue Enterprise of the Shared-Owner, and repeat this step for the remaining two Shared-Owners.",
-    "description_strong":
-      "It's not possible to delete Shared-Owners once they're created.",
+    "desc": "Click <0>Add Shared-Owner</0> and connect the Ledger Blue Enterprise of the Shared-Owner, and repeat this step for the remaining two Shared-Owners.",
+    "description_strong": "It's not possible to delete Shared-Owners once they're created.",
     "so_nb_required": "3 Shared-Owners are required to continue",
     "title": "Registration"
   },
   "so_validation": {
-    "desc":
-      "Get the quorum of Administrators to sign in to finalize the registration of Shared-Owners.",
+    "desc": "Get the quorum of Administrators to sign in to finalize the registration of Shared-Owners.",
     "title": "Approve registration"
   },
   "team_members": "3+ Administrators",
   "tocontinue": "to continue",
   "vault_briefcase": "Ledger Vault briefcase",
   "welcome": {
-    "description":
-      "The Onboarding wizard will guide you through the configuration of your Ledger Vault workspace in three steps:",
+    "description": "The Onboarding wizard will guide you through the configuration of your Ledger Vault workspace in three steps:",
     "start": "Get Started",
     "step1": "First, we'll encrypt your workspace.",
     "step2": "Next, we'll add Administrators.",
@@ -207,15 +178,11 @@
   },
   "wkey_custodians": "3 Wrapping Key Custodians",
   "wrapping_key": {
-    "description":
-      "Click <0>Get Wrapping Key</0> and connect the Ledger Blue Enterprise of the first Wrapping Key Custodian, and repeat this step for the remaining two Wrapping Key Custodians.",
+    "description": "Click <0>Get Wrapping Key</0> and connect the Ledger Blue Enterprise of the first Wrapping Key Custodian, and repeat this step for the remaining two Wrapping Key Custodians.",
     "device_modal": {
-      "step1":
-        "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
-      "step2":
-        "Enter your PIN code to unlock your device, then open the Vault app from the Ledger Blue Enterprise dashboard.",
-      "step3":
-        "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
+      "step1": "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
+      "step2": "Enter your PIN code to unlock your device, then open the Vault app from the Ledger Blue Enterprise dashboard.",
+      "step3": "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
       "title": "Generate Vault Wrapping Key"
     },
     "generate": "Get Wrapping Key",
@@ -223,26 +190,21 @@
     "remaining": "remaining",
     "signed": "signed in",
     "signin": "SIGN IN",
-    "signin_desc":
-      "Sign in each Wrapping Key Custodians one by one by using their Ledger Blue Enterprise",
+    "signin_desc": "Sign in each Wrapping Key Custodians one by one by using their Ledger Blue Enterprise",
     "step1": "1st Wrapping Key Custodian",
     "step2": "2nd Wrapping Key Custodian",
     "step3": "3rd Wrapping Key Custodian",
     "title": "Create Wrapping Key"
   },
   "wrapping_key_init": {
-    "description":
-      "Follow these steps to initialize the Ledger Blue Enterprise. This device is needed to update the Ledger Vault platform.",
-    "step1":
-      "Get the Ledger Blue Enterprise and the Recovery Sheet from the sealed box.",
+    "description": "Follow these steps to initialize the Ledger Blue Enterprise. This device is needed to update the Ledger Vault platform.",
+    "step1": "Get the Ledger Blue Enterprise and the Recovery Sheet from the sealed box.",
     "step2": "Initialize the Ledger Blue Enterprise.",
-    "step3":
-      "Ensure your Ledger Cryptosteel is safely secured and your Recovery Sheet is destroyed.",
+    "step3": "Ensure your Ledger Cryptosteel is safely secured and your Recovery Sheet is destroyed.",
     "title": "Initialization"
   },
   "wrapping_key_prerequisite": {
-    "description":
-      "In the following steps, Wrapping Key Custodians will initialize their Ledger Blue Enterprise to generate your organization's partition.",
+    "description": "In the following steps, Wrapping Key Custodians will initialize their Ledger Blue Enterprise to generate your organization's partition.",
     "shared_owners": "Shared-Owners",
     "title": "Prerequisites"
   }

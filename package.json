@@ -47,7 +47,7 @@
     "cypress:run:revoke_admin": "cypress run --spec 'cypress/integration/Drop2/06_Admin/02_revoke.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "lint": "eslint src test webpack cypress",
     "flow-typed": "bash scripts/install-flow-typed.sh",
-    "prettier": "prettier --write \"{src,webpack,test,cypress,.storybook,cypress}/**/*.{js,json}\"",
+    "prettier": "prettier --write \"{src,webpack,test,cypress,.storybook,cypress,locales}/**/*.{js,json}\"",
     "start": "NODE_ENV=development webpack-dev-server --https --cert=certificate/localhost.crt --key=certificate/localhost.key --config webpack/dev.babel.js",
     "starte2e": "NODE_ENV=e2e webpack-dev-server --https --cert=certificate/localhost.crt --key=certificate/localhost.key --config webpack/dev.babel.js",
     "dev": "NODE_ENV=e2e ORGANIZATION_NAME=ledger1 webpack-dev-server --https --cert=certificate/localhost.crt --key=certificate/localhost.key --config webpack/dev.babel.js",

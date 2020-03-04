@@ -59,6 +59,10 @@
     "title": "Invitation link not available",
     "description": "The invitation link has already been used."
   },
+  "UserIdAlreadyUsed": {
+    "title": "User ID already used",
+    "description": "This user ID has already been registered and can't be used again. Please contact your Administrator"
+  },
   "GenericError": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"
