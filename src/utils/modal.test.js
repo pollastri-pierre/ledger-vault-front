@@ -54,6 +54,14 @@ describe("/utils/modal", () => {
       );
     });
 
+    it("new account from accounts page", () => {
+      testModalClosePath(
+        { role: "admin" },
+        "/ledger1/admin/accounts/new",
+        "/ledger1/admin/accounts",
+      );
+    });
+
     it("group details overview", () => {
       testModalClosePath(
         { role: "admin" },
@@ -62,7 +70,7 @@ describe("/utils/modal", () => {
       );
     });
 
-    it(" users new", () => {
+    it("users new", () => {
       testModalClosePath(
         { role: "admin" },
         "/ledger1/admin/users/new",
