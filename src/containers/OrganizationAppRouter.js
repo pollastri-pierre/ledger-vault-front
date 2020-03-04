@@ -11,7 +11,7 @@ import type { MemoryHistory } from "history";
 import connectData from "restlay/connectData";
 import AlertsContainer from "components/legacy/AlertsContainer";
 import VersionsQuery from "api/queries/VersionsQuery";
-import UpdateApp from "components/UpdateApp";
+import UpdateDevice from "components/UpdateDevice";
 import type { RestlayEnvironment } from "restlay/connectData";
 import MockDevices from "components/MockDevices";
 import { VersionsContextProvider } from "components/VersionsContext";
@@ -87,7 +87,7 @@ const OrganizationAppRouter = ({
         <VersionsContextProvider value={versionContextValue}>
           <AlertsContainer />
           <Switch>
-            <Route path="/update-app" component={UpdateApp} />
+            <Route path="/update-app" component={UpdateDevice} />
             <Route path="/:orga_name" component={OrganizationComponent} />
             <Route component={Welcome} />
           </Switch>
