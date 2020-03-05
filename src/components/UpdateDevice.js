@@ -60,7 +60,7 @@ type State = {
 };
 const UpdateDevice = ({ isDemoMode }: { isDemoMode?: boolean }) => {
   const initialState = {
-    currentFirmware: null,
+    currentFirmware: isDemoMode ? { version: "2.1.1-ee", isOSU: false } : null,
     expectedApp: window.config.APP_VERSION,
     error: null,
     loading: false,
