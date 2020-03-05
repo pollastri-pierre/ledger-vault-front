@@ -413,17 +413,11 @@ const retryOnClick = (obs: Observable<*>) => {
   return obs.pipe(
     catchError(error => {
       const errorRemaped = remapError(error);
-      if (error instanceof DisconnectedDevice) {
-        return empty();
-      }
       return concat(of({ error: errorRemaped }), throwError(errorRemaped));
     }),
     retryWhen(err => {
       return err.pipe(
-        concatMap(error => {
-          if (error instanceof DisconnectedDevice) {
-            return throwError(error);
-          }
+        concatMap(() => {
           return resumeSubject$.pipe(take(1));
         }),
       );
