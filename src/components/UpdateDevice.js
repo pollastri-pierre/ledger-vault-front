@@ -58,7 +58,7 @@ type State = {
   loading: boolean,
   advancedMode: boolean,
 };
-const UpdateDevice = () => {
+const UpdateDevice = ({ isDemoMode }: { isDemoMode?: boolean }) => {
   const initialState = {
     currentFirmware: null,
     expectedApp: window.config.APP_VERSION,
@@ -117,6 +117,7 @@ const UpdateDevice = () => {
               expectedApp={state.expectedApp}
               currentFirmware={state.currentFirmware}
               transitions={transitions}
+              isDemoMode={isDemoMode}
               apps={apps}
             />
             {advancedMode ? (
