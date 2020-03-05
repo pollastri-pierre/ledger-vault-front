@@ -314,7 +314,7 @@ const StartStep = ({
 
             <Box>
               <Box>
-                <Text fontWeight="bold">Your device need to be updated</Text>
+                <Text fontWeight="bold">Device update required</Text>
                 <Text>
                   <ul>
                     {plan.map(step => (
@@ -340,7 +340,7 @@ const StartStep = ({
           </Box>
         </Container>
       ) : (
-        <Text fontWeight="bold">Your device need to be updated</Text>
+        <Text fontWeight="bold">Device update required</Text>
       )}
     </TimelineStop>
   );
