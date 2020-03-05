@@ -38,9 +38,22 @@ function QuorumWidget(props: Props) {
   const revokeAdminRequest = getRevokeAdminReq(requests);
   const canEdit =
     !updateQuorumRequest && !revokeAdminRequest && !addAdminRequest;
-  let editBtn = (
+  let toolTipContent = "Edit Admin Rule";
+  if (!canEdit)
+    toolTipContent = (
+      <Trans
+        i18nKey={
+          addAdminRequest
+            ? "adminDashboard:cantEditAdminRules_createAdmin"
+            : revokeAdminRequest
+            ? "adminDashboard:cantEditAdminRules_revokeAdmin"
+            : "adminDashboard:cantEditAdminRules_alreadyEdit"
+        }
+      />
+    );
+  const editBtn = (
     <Absolute top={10} right={10}>
-      <Tooltip content="Edit Admin Rule">
+      <Tooltip content={toolTipContent}>
         <Button
           disabled={!canEdit}
           onClick={onEdit}
@@ -51,25 +64,6 @@ function QuorumWidget(props: Props) {
       </Tooltip>
     </Absolute>
   );
-  if (!canEdit) {
-    editBtn = (
-      <Tooltip
-        content={
-          <Trans
-            i18nKey={
-              addAdminRequest
-                ? "adminDashboard:cantEditAdminRules_createAdmin"
-                : revokeAdminRequest
-                ? "adminDashboard:cantEditAdminRules_revokeAdmin"
-                : "adminDashboard:cantEditAdminRules_alreadyEdit"
-            }
-          />
-        }
-      >
-        {editBtn}
-      </Tooltip>
-    );
-  }
   return (
     <Widget title="Admin rule" height={300}>
       <Card grow align="center" justify="center">
