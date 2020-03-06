@@ -73,7 +73,7 @@
   },
   "DeviceNotOnDashboard": {
     "title": "Device not on dashboard",
-    "description": "The device is not on the Dashboard. Please close the Vault app."
+    "description": "You must be on the Dashboard. Please close the Vault app on your device."
   },
   "DeviceOnDashboardExpected": {
     "title": "User denied manager",
