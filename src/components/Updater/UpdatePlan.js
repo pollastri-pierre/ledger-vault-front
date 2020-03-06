@@ -3,7 +3,6 @@
 import React, { useEffect, useReducer, useMemo, memo } from "react";
 import invariant from "invariant";
 import { Trans } from "react-i18next";
-import { Link } from "react-router-dom";
 import type Transport from "@ledgerhq/hw-transport";
 import { Subject, empty, from, of, concat, Observable, throwError } from "rxjs";
 import { DisconnectedDevice } from "@ledgerhq/errors";
@@ -25,6 +24,7 @@ import { withDevicePolling } from "@ledgerhq/live-common/lib/hw/deviceAccess";
 import Timeline, { TimelineStop } from "components/base/Timeline";
 import { remapError } from "utils/errors";
 import Box from "components/base/Box";
+import ProdLink from "components/base/ProdLink";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
 import { getTransitionTo } from "device/update/registry";
@@ -387,7 +387,7 @@ const EndStep = ({ finished }: { finished: boolean }) => (
             </Box>
 
             <Button size="small" type="link">
-              <Link to="/">Sign in</Link>
+              <ProdLink to="/">Sign in</ProdLink>
             </Button>
           </Box>
         </Container>
@@ -395,7 +395,6 @@ const EndStep = ({ finished }: { finished: boolean }) => (
     </TimelineStop>
   </>
 );
-
 const getStepKey = (step: VaultUpdatePlanStep) => {
   if (step.type === "app") return `app_${step.app.version}`;
   return `firm_${step.transition.from.version}`;
