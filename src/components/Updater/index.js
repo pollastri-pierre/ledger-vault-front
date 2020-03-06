@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 
 import { getUpdatePlan } from "device/update/registry";
 import InfoBox from "components/base/InfoBox";
+import Box from "components/base/Box";
 import type { VaultFirmwareTransition, VaultApp } from "device/update/registry";
 
 import UpdatePlan from "./UpdatePlan";
@@ -38,11 +39,13 @@ const Updater = (props: Props) => {
   }, [expectedApp, currentFirmware, transitions, apps]);
 
   return plan ? (
-    <UpdatePlan
-      plan={plan}
-      currentFirmware={currentFirmware}
-      isDemoMode={isDemoMode}
-    />
+    <Box width={700}>
+      <UpdatePlan
+        plan={plan}
+        currentFirmware={currentFirmware}
+        isDemoMode={isDemoMode}
+      />
+    </Box>
   ) : (
     <InfoBox type="error">
       <div>

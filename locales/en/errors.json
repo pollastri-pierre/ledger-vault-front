@@ -91,6 +91,18 @@
     "title": "InvalidOrMissingAttestation",
     "description": "It seems the device does not contain a proper attestation."
   },
+  "ManagerDeviceLocked": {
+    "title": "ManagerDeviceLocked",
+    "description": "Unlock your device"
+  },
+  "UserRefusedFirmwareUpdate": {
+    "title": "UserRefusedFirmwareUpdate",
+    "description": "You must authorize the update. Try again."
+  },
+  "UserRefusedAllowManager": {
+    "title": "UserRefusedAllowManager",
+    "description": "You must authorize the update. Try again."
+  },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"

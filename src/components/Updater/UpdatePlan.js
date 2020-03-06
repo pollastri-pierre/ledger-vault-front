@@ -2,6 +2,7 @@
 
 import React, { useEffect, useReducer, useMemo, memo } from "react";
 import invariant from "invariant";
+import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import type Transport from "@ledgerhq/hw-transport";
 import { Subject, empty, from, of, concat, Observable, throwError } from "rxjs";
@@ -42,7 +43,7 @@ import { Container } from "./components";
 const targetId = 0x31010004;
 const perso = "perso_11";
 
-const DEMO_DELAY = 1;
+const DEMO_DELAY = 50;
 
 type Props = {|
   plan: VaultUpdatePlan,
@@ -314,23 +315,22 @@ const StartStep = ({
 
             <Box>
               <Box>
-                <Text fontWeight="bold">Device update required</Text>
-                <Text>
-                  <ul>
-                    {plan.map(step => (
-                      <li key={getStepKey(step)}>
-                        <UpdateStepDesc step={step} />
-                      </li>
-                    ))}
-                  </ul>
-                </Text>
+                <Text fontWeight="bold" i18nKey="update:steps.title" />
+                <Box flow={5} pt={20}>
+                  {plan.map((step, i) => (
+                    <Text>
+                      <strong>Step {i + 1}. </strong>
+                      <UpdateStepDesc step={step} />
+                    </Text>
+                  ))}
+                </Box>
               </Box>
             </Box>
           </Box>
           <Box mt={20}>
             <Text>
-              The process will take approximatively{" "}
-              <strong>{getNbMinutes(plan)}&nbsp;minutes</strong>.
+              <Trans i18nKey="update:steps.estimatedTime" />:{" "}
+              <strong>{getNbMinutes(plan)} minutes</strong>.
             </Text>
           </Box>
           <Box mt={20} style={{ width: "100%" }} align="flex-end">
@@ -340,7 +340,7 @@ const StartStep = ({
           </Box>
         </Container>
       ) : (
-        <Text fontWeight="bold">Device update required</Text>
+        <Text fontWeight="bold" i18nKey="update:steps.title" />
       )}
     </TimelineStop>
   );
@@ -364,7 +364,7 @@ const useResetOnPlanChange = (plan, dispatch, currentFirmware) => {
 };
 
 const getNbMinutes = (plan: VaultUpdatePlan) =>
-  plan.reduce((acc, cur) => acc + (cur.type === "app" ? 2 : 5), 0);
+  plan.reduce((acc, cur) => acc + (cur.type === "app" ? 1 : 2), 0);
 
 const EndStep = ({ finished }: { finished: boolean }) => (
   <>
@@ -376,7 +376,7 @@ const EndStep = ({ finished }: { finished: boolean }) => (
     >
       {!finished ? (
         <div>
-          <strong>Device is ready</strong>
+          <strong>Device updated</strong>
         </div>
       ) : (
         <Container>
@@ -387,7 +387,7 @@ const EndStep = ({ finished }: { finished: boolean }) => (
             </Box>
 
             <Button size="small" type="link">
-              <Link to="/">Login</Link>
+              <Link to="/">Sign in</Link>
             </Button>
           </Box>
         </Container>

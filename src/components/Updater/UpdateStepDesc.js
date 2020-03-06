@@ -16,16 +16,17 @@ const UpdateStepDesc = (props: Props) => {
 
   return step.type === "firm" ? (
     <>
-      Update firmware from{" "}
+      Update firmware version from{" "}
       <strong>
         {step.transition.from.version}
-        {isOSUToFinal ? "-OSU" : ""}
-      </strong>{" "}
+        {isOSUToFinal ? "-OSU" : ""}{" "}
+      </strong>
+      <span />
       to <strong>{step.transition.to.version}</strong>
     </>
   ) : (
     <>
-      Install Vault App <strong>{step.app.version}</strong>
+      Update Vault app version to <strong>{step.app.version}</strong>
     </>
   );
 };
