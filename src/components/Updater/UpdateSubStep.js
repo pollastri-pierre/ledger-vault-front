@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { FaArrowRight, FaCheck } from "react-icons/fa";
 import { MdError } from "react-icons/md";
 import { useSpring, animated } from "react-spring";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 import { TimelineStop } from "components/base/Timeline";
 
@@ -182,8 +182,8 @@ const ErrorScreen = ({
 }) => (
   <Container style={{ width: 500 }}>
     <Box p={20} flow={20}>
-      <Box align="center">
-        <MdError color="red" size={16} />
+      <Box align="center" flow={8}>
+        <MdError color="red" size={22} />
         <Text color="red" textAlign="center">
           <TranslatedError error={error} field="description" />
         </Text>
@@ -197,14 +197,21 @@ const ErrorScreen = ({
 const PromptScreen = () => (
   <Box width={300} flow={20}>
     <Text i18nKey="update:steps.promptDenyTitle" fontWeight="bold" />
-    <Text i18nKey="update:steps.promptDeny" />
+    <Text>
+      <Trans i18nKey="update:steps.promptDeny" components={<strong />} />
+    </Text>
   </Box>
 );
 
 const AllowPermissionScreen = () => (
-  <Box>
-    <Text fontWeight="bold">Permission</Text>
-    <Text>You have to accept the update on your device</Text>
+  <Box flow={10}>
+    <Text fontWeight="bold" i18nKey="update:steps.allowManagerTitle" />
+    <Text>
+      <Trans
+        i18nKey="update:steps.allowManagerContent"
+        components={<strong />}
+      />
+    </Text>
   </Box>
 );
 const ProcessingScreen = ({
@@ -214,7 +221,7 @@ const ProcessingScreen = ({
   substep: SubStep,
   t: Function,
 }) => (
-  <Box flow={10}>
+  <Box flow={20}>
     <Box>
       <Text fontWeight="bold">{t(`update:steps.${substep.type}.doing`)}</Text>
       <Text i18nKey="update:steps.waitProcessing" />
@@ -238,9 +245,19 @@ const WaitForReboot = ({
   loading: boolean,
   onClick: Function,
 }) => (
-  <Box width={300} flow={20}>
-    <Text fontWeight="bold">Device rebooting</Text>
-    <Text i18nKey="update:steps.waitReboot" />
+  <Box width={340} flow={20}>
+    <Text fontWeight="bold" i18nKey="update:steps.deviceRebooting" />
+    <ol>
+      <li>
+        <Trans i18nKey="update:steps.waitReboot1" components={<strong />} />
+      </li>
+      <li>
+        <Trans i18nKey="update:steps.waitReboot2" />
+      </li>
+      <li>
+        <Trans i18nKey="update:steps.waitReboot3" />
+      </li>
+    </ol>
     <Box position="relative">
       <Button type="filled" onClick={onClick} isLoadingProp={!error && loading}>
         <Text i18nKey="update:steps.continueAfterReboot" />

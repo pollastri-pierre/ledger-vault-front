@@ -129,7 +129,7 @@ const UpdateDevice = ({ isDemoMode }: { isDemoMode?: boolean }) => {
                 style={{ background: colors.legacyLightGrey5, borderRadius: 4 }}
               >
                 <Box align="center" horizontal flow={5}>
-                  <span>Current firm version:</span>
+                  <span>Current firmware version:</span>
                   <Box width={120}>
                     <Select
                       value={currentFirmwareOption}
@@ -162,7 +162,7 @@ const UpdateDevice = ({ isDemoMode }: { isDemoMode?: boolean }) => {
             ) : (
               <Box alignSelf="flex-end">
                 <Button type="link" size="small" onClick={setAdvancedMode}>
-                  Advanced mode
+                  Advanced settings
                 </Button>
               </Box>
             )}
