@@ -45,24 +45,31 @@ const getCurrencyLikeUnit = decimals => ({
   name: "",
 });
 
+const resetState = (props: Props<*>) => {
+  const token = getERC20TokenByContractAddress(props.account.contract_address);
+
+  const fakeUnit = getCurrencyLikeUnit(token ? token.decimals : 0);
+
+  const val = formatCurrencyUnit(
+    fakeUnit,
+    props.bridge.getTransactionAmount(props.account, props.transaction),
+    { disableRounding: true },
+  );
+  return {
+    token,
+    displayValue: parseFloat(val) > 0 ? val : "",
+  };
+};
+
 class AmountNoUnits extends PureComponent<Props<*>, State> {
   constructor(props: Props<*>) {
     super(props);
-    const token = getERC20TokenByContractAddress(
-      this.props.account.contract_address,
-    );
+    this.state = resetState(props);
+  }
 
-    const fakeUnit = getCurrencyLikeUnit(token ? token.decimals : 0);
-
-    const val = formatCurrencyUnit(
-      fakeUnit,
-      props.bridge.getTransactionAmount(props.account, props.transaction),
-      { disableRounding: true },
-    );
-    this.state = {
-      token,
-      displayValue: parseFloat(val) > 0 ? val : "",
-    };
+  // TODO  rewrite this component with hooks
+  static getDerivedStateFromProps(props: Props<*>) {
+    return resetState(props);
   }
 
   onChange = (amount: string) => {
