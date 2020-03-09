@@ -12,5 +12,8 @@ storiesOf("entities/Transaction", module)
   .addDecorator(StoryRouter())
   .addDecorator(EntityModalDecorator("TRANSACTION"))
   .add("Transaction details", () => (
-    <TransactionDetails match={{ params: { transactionId: 0 } }} history={[]} />
+    <TransactionDetails
+      match={{ params: { transactionId: 123 } }}
+      history={[]}
+    />
   ));
