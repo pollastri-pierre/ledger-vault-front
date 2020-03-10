@@ -8,7 +8,7 @@ import colors from "shared/colors";
 
 export default styled(Box).attrs(p => ({
   align: "center",
-  justify: "flex-end",
+  justify: p.leftAlign ? "flex-start" : "flex-end",
   horizontal: true,
   px: 10,
   borderRadius: 4,

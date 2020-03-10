@@ -42,7 +42,24 @@ const AccountQuickInfoWidget = (props: Props) => (
   </div>
 );
 
-const AccountQuickInfoHeader = ({ account }: Props) => {
+export const AccountQuickInfoHeaderUtxo = ({ account }: Props) => {
+  const me = useMe();
+  return (
+    <PageHeaderActions title={account.name}>
+      <Box horizontal flow={10}>
+        <SyncButton account={account} />
+        {me.role === "OPERATOR" && (
+          <Button size="small" type="filled">
+            <Link to={`${account.id}/consolidate/${account.id}`}>
+              Consolidate
+            </Link>
+          </Button>
+        )}
+      </Box>
+    </PageHeaderActions>
+  );
+};
+export const AccountQuickInfoHeader = ({ account }: Props) => {
   const me = useMe();
   const isSendDisabled = !isAccountSpendable(account);
   const sendBtn = (

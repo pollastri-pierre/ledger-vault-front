@@ -1,16 +1,22 @@
 // @flow
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import { BigNumber } from "bignumber.js";
 import invariant from "invariant";
 import { Trans, useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { FaMoneyCheck } from "react-icons/fa";
+import { FaMoneyCheck, FaInfoCircle } from "react-icons/fa";
+import { IoMdHelpBuoy } from "react-icons/io";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
+import type { RestlayEnvironment } from "restlay/connectData";
+import HelpLink from "components/HelpLink";
+import VaultLink from "components/VaultLink";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import Modal from "components/base/Modal";
 import connectData from "restlay/connectData";
 import { getBridgeForCurrency } from "bridge";
 import { resetRequest } from "redux/modules/requestReplayStore";
-import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
 import SearchWhitelists from "api/queries/SearchWhitelists";
@@ -34,7 +40,10 @@ import TransactionCreationAmount from "./steps/TransactionCreationAmount";
 import TransactionCreationNote from "./steps/TransactionCreationNote";
 import TransactionCreationConfirmation from "./steps/TransactionCreationConfirmation";
 
-import type { TransactionCreationPayload } from "./types";
+import type {
+  TransactionCreationPayload,
+  serializePayloadProps,
+} from "./types";
 
 const initialPayload: TransactionCreationPayload<any> = {
   transaction: null,
@@ -173,6 +182,8 @@ const mapDispatch = {
   resetRequest,
 };
 
+type MaxUtxoErrorType = ?{ amount: BigNumber };
+
 export default connect(
   mapStateToProps,
   mapDispatch,
@@ -180,6 +191,7 @@ export default connect(
   connectData(
     props => {
       const { match, accounts, close, resetRequest, requestToReplay } = props;
+      const [utxoError, setUtxoError] = useState<MaxUtxoErrorType>(null);
       const cursor = 0;
       let payload = initialPayload;
 
@@ -203,6 +215,15 @@ export default connect(
       };
       return (
         <GrowingCard>
+          <Modal isOpened={!!utxoError}>
+            {!!utxoError && (
+              <UtxoErrorModal
+                setUtxoError={setUtxoError}
+                account={acc}
+                amount={utxoError.amount}
+              />
+            )}
+          </Modal>
           <MultiStepsFlow
             Icon={FaMoneyCheck}
             title={title}
@@ -213,7 +234,7 @@ export default connect(
               payload
             }
             steps={steps}
-            additionalProps={props}
+            additionalProps={{ ...props, setUtxoError }}
             initialCursor={cursor}
             onClose={closeAndEmptyStore}
           />
@@ -233,6 +254,45 @@ export default connect(
     },
   ),
 );
+
+const UtxoErrorModal = ({
+  setUtxoError,
+  amount,
+  account,
+}: {
+  setUtxoError: MaxUtxoErrorType => void,
+  amount: BigNumber,
+  account: Account,
+}) => {
+  return (
+    <Box p={30} flow={20} align="center" justify="center" width={400}>
+      <Box>
+        <FaInfoCircle size={36} color="black" />
+      </Box>
+      <Box>
+        To send more than{" "}
+        <CurrencyAccountValue value={amount} account={account} /> , you have to
+        consolidate your account {account.name} to proceed the transaction.
+      </Box>
+      <Box align="center" justify="center" horizontal flow={5}>
+        <IoMdHelpBuoy size={20} />{" "}
+        <Text fontWeight="semiBold">
+          <HelpLink>What is consolidation?</HelpLink>
+        </Text>
+      </Box>
+      <Box horizontal flow={20} pt={20}>
+        <Button type="outline" onClick={() => setUtxoError(null)}>
+          Change amount
+        </Button>
+        <Button type="filled">
+          <VaultLink withRole to={`/dashboard/consolidate/${account.id}`}>
+            Consolidate
+          </VaultLink>
+        </Button>
+      </Box>
+    </Box>
+  );
+};
 
 const purgePayload = (
   data: *,
@@ -258,7 +318,7 @@ const purgePayload = (
   };
 };
 
-function serializePayload(payload: TransactionCreationPayload<*>) {
+export function serializePayload(payload: serializePayloadProps) {
   const { transaction, account } = payload;
 
   invariant(transaction && account, "invalid payload");
@@ -270,19 +330,24 @@ function serializePayload(payload: TransactionCreationPayload<*>) {
   };
 
   if (account.account_type === "Bitcoin") {
+    invariant(transaction.feeLevel, "Invalid payload");
     Object.assign(tx, {
       fees_level: transaction.feeLevel,
     });
   }
 
   if (account.account_type === "Ethereum" || account.account_type === "Erc20") {
+    // $FlowFixMe
+    const { gasPrice, gasLimit } = transaction;
+    invariant(gasPrice && gasLimit, "Invalid transaction");
     Object.assign(tx, {
-      gas_price: transaction.gasPrice.toFixed(),
-      gas_limit: transaction.gasLimit.toFixed(),
+      gas_price: gasPrice.toFixed(),
+      gas_limit: gasLimit.toFixed(),
     });
   }
 
   if (account.account_type === "Ripple") {
+    invariant(transaction.estimatedFees, "Invalid transaction");
     Object.assign(tx, {
       memos: [],
       destination_tag: transaction.destinationTag || null,

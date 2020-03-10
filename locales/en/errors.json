@@ -35,6 +35,10 @@
     "title": "Not enough funds",
     "description": "You don't have enough funds to create this transaction."
   },
+  "TooManyUTXOs": {
+    "title": "Too much UTXOs selected",
+    "description": "Please choose a smaller number"
+  },
   "ERC20FeesExceedParentAccountBalance": {
     "title": "Not enough funds",
     "description": "The parent Ethereum account must be credited to pay the confirmation fees of this transaction."

@@ -175,6 +175,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
+      goNext: this.next,
       onEnter: () => {
         if (!requirements || requirements(payload)) {
           this.next();
@@ -226,6 +227,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
               payload={payload}
               onClose={onClose}
               onSuccess={this.onCtaFinish}
+              goNext={this.next}
               payloadToCompareTo={payloadToCompareTo}
               isEditMode={this.props.isEditMode}
               initialPayload={initialPayload}

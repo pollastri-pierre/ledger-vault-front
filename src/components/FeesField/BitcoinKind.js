@@ -105,6 +105,7 @@ function FeesBitcoinKind(props: Props) {
       const txGetFees = {
         fees_level: feeLevel || "normal",
         amount: transaction.amount,
+        utxo: transaction.expectedNbUTXOs,
         recipient: transaction.recipient || "",
       };
       const estimatedFees = await getFees(account, txGetFees, restlay);

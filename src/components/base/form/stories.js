@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 
-import React from "react";
+import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
 import { boolean, text } from "@storybook/addon-knobs";
 import { FaLink } from "react-icons/fa";
-import { InputText, Switch, TextArea } from "components/base/form";
+import { InputText, Switch, TextArea, InputNumber } from "components/base/form";
 
 const p = () => ({
   value: text("value", ""),
@@ -46,6 +46,15 @@ storiesOf("components/form/InputText", module)
   .add("hints", () => (
     <InputText autoFocus value={text("value", "40420.aa")} hints={hints} />
   ));
+
+const InputNumberWrapper = () => {
+  const [value, setValue] = useState(0);
+  return <InputNumber value={value} onChange={setValue} />;
+};
+
+storiesOf("components/form", module)
+  .addDecorator(story => <div style={{ maxWidth: 200 }}>{story()}</div>)
+  .add("InputNumber", () => <InputNumberWrapper />);
 
 storiesOf("components/form/TextArea", module)
   .addDecorator(story => <div style={{ maxWidth: 400 }}>{story()}</div>)

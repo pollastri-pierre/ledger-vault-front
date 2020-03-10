@@ -32,6 +32,7 @@ type Props<T> = {
   restlay: RestlayEnvironment,
   Query: (*) => ConnectionQuery<*, *>,
   extraProps: Object,
+  queryExtraProps?: Object,
   onQueryParamsChange?: ObjectParameters => void,
   onRowClick?: T => void,
   listenMutations?: Mutation<any, any>[],
@@ -105,7 +106,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
   _isUnmounted = false;
 
   fetch = async () => {
-    const { Query, restlay } = this.props;
+    const { Query, restlay, queryExtraProps } = this.props;
     const { queryParams } = this.state;
 
     const _requestId = ++this._requestId;
@@ -115,7 +116,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
     let patch = null;
 
     try {
-      const query = new Query(queryParams);
+      const query = new Query({ ...queryParams, ...(queryExtraProps || {}) });
       const dataStore = restlay.getStore();
       const dataFromCache =
         queryCacheIsFresh(dataStore, query) &&

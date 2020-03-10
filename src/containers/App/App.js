@@ -1,6 +1,9 @@
 // @flow
 import React, { useState, useCallback, useEffect } from "react";
-import { Route } from "react-router-dom";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+import { useTranslation } from "react-i18next";
+import { Route, withRouter, NavLink } from "react-router-dom";
+import styled from "styled-components";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 import { FaArrowLeft } from "react-icons/fa";
@@ -11,6 +14,7 @@ import SearchAccounts from "api/queries/SearchAccounts";
 import ProfileQuery from "api/queries/ProfileQuery";
 import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
+import AccountQuery from "api/queries/AccountQuery";
 import TryAgain from "components/TryAgain";
 import Content from "containers/Content";
 import Modals from "containers/Modals";
@@ -57,16 +61,95 @@ const AppWrapper = ({ me, organization, restlay, ...props }: Props) => {
   );
 };
 
-const TopBarContent = () => (
-  <Route path="/:org/:role/accounts/view/:id">
-    <VaultLink withRole to="/accounts?meta_status=APPROVED&meta_status=PENDING">
-      <Box horizontal align="center" flow={5} py={10}>
-        <FaArrowLeft />
-        <Text i18nKey="accountView:backButton" />
-      </Box>
-    </VaultLink>
-  </Route>
+const SubMenuItem = styled(NavLink)`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  height: 60px;
+  &.active:after {
+    position: absolute;
+    margin-top: -3px;
+    top: 100%;
+    content: "";
+    width: 100%;
+    height: 3px;
+    background: ${p => p.borderColor};
+  }
+`;
+
+const removeSuffix = pathname => {
+  const arr = pathname.split("/");
+  return arr.slice(0, arr.length - 1).join("/");
+};
+// we need the account to know
+// - the color
+// - the currency family
+const TopBarAccountMenu = withRouter(
+  connectData(
+    props => {
+      const { location, account } = props;
+      const { t } = useTranslation();
+      const currency = getCryptoCurrencyById(account.currency);
+      if (!currency || currency.family !== "bitcoin") return false;
+
+      const pathArray = location.pathname.split("/");
+
+      const overviewLink =
+        pathArray[pathArray.length - 1] === "utxo"
+          ? removeSuffix(location.pathname)
+          : location.pathname;
+
+      const utxoLink =
+        pathArray[pathArray.length - 1] === "utxo"
+          ? location.pathname
+          : `${location.pathname}/utxo`;
+
+      return (
+        <Box horizontal align="center" flow={20}>
+          <SubMenuItem borderColor={currency.color} exact to={overviewLink}>
+            {t("accountView:overview")}
+          </SubMenuItem>
+          <SubMenuItem exact borderColor={currency.color} to={utxoLink}>
+            {t("accountView:UTXOs")}
+          </SubMenuItem>
+        </Box>
+      );
+    },
+    {
+      queries: {
+        account: AccountQuery,
+      },
+      propsToQueryParams: props => ({
+        accountId: props.match.params.id,
+      }),
+    },
+  ),
 );
+const TopBarContent = () => {
+  return (
+    <Route
+      path={[
+        "/:org/:role/accounts/view/:id",
+        "/:org/:role/accounts/view/:id/utxo",
+      ]}
+    >
+      <Box horizontal flow={20} align="center">
+        <VaultLink
+          withRole
+          to="/accounts?meta_status=APPROVED&meta_status=PENDING"
+        >
+          <Box horizontal align="center" flow={5} py={10}>
+            <FaArrowLeft />
+            <Text i18nKey="accountView:backButton" />
+          </Box>
+        </VaultLink>
+        <TopBarAccountMenu />
+      </Box>
+    </Route>
+  );
+};
 
 const App = withMe((props: Props & { me: User }) => {
   const {
