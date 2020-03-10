@@ -68,8 +68,14 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
   }
 
   // TODO  rewrite this component with hooks
-  static getDerivedStateFromProps(props: Props<*>) {
-    return resetState(props);
+  static getDerivedStateFromProps(props: Props<*>, state: State) {
+    const token = getERC20TokenByContractAddress(
+      props.account.contract_address,
+    );
+    if (token !== state.token) {
+      return resetState(props);
+    }
+    return state;
   }
 
   onChange = (amount: string) => {
