@@ -99,7 +99,7 @@ export default connectData(
       transaction: TransactionQuery,
     },
     propsToQueryParams: props => ({
-      transactionId: props.match.params.transactionId || "",
+      transactionId: props.match.params.transactionId,
     }),
   },
 );

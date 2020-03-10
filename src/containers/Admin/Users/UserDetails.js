@@ -29,6 +29,6 @@ export default connectData(AdminDetails, {
     user: UserQuery,
   },
   propsToQueryParams: props => ({
-    userID: props.match.params.userID || "",
+    userID: props.match.params.userID,
   }),
 });

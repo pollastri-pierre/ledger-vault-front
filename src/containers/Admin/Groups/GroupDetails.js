@@ -78,7 +78,7 @@ export default connectData(GroupDetails, {
     operators: UsersQuery,
   },
   propsToQueryParams: props => ({
-    groupId: props.match.params.groupId || "",
+    groupId: props.match.params.groupId,
     role: "OPERATOR",
   }),
 });
