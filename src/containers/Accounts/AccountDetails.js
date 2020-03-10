@@ -82,6 +82,6 @@ export default connectData(withMe(AccountDetails), {
     pendingTransactions: PendingTransactionsForAccountQuery,
   },
   propsToQueryParams: props => ({
-    accountId: props.match.params.accountId || "",
+    accountId: props.match.params.accountId,
   }),
 });

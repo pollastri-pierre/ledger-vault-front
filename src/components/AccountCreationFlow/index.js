@@ -290,7 +290,7 @@ const AccountEdit = connectData(
       groups: GroupsForAccountCreationQuery,
     },
     propsToQueryParams: props => ({
-      accountId: props.accountId || "",
+      accountId: props.accountId,
     }),
   },
 );

@@ -205,7 +205,7 @@ const WhitelistEdit = connectData(
       whitelist: WhitelistQuery,
     },
     propsToQueryParams: props => ({
-      whitelistId: props.whitelistId || "",
+      whitelistId: props.whitelistId,
     }),
   },
 );
