@@ -21,6 +21,7 @@ type Props = {
   unitLeft?: boolean,
   hideCV?: boolean,
   unit?: ?Unit,
+  initialUnit?: Unit,
   width?: number | string,
   unitsWidth?: number,
   isDisabled?: boolean,
@@ -58,8 +59,8 @@ class InputAmount extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    const { value, currency, unit: propUnit } = props;
-    const unit = propUnit || currency.units[0];
+    const { value, currency, unit: propUnit, initialUnit } = props;
+    const unit = propUnit || initialUnit || currency.units[0];
     const val = formatCurrencyUnit(unit, value);
     this.state = {
       unit,

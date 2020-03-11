@@ -143,7 +143,7 @@ function FeesFieldRippleKind(props: Props) {
               width="100%"
               unitLeft
               hideCV
-              unit={last(currency.units)}
+              initialUnit={last(currency.units)}
               currency={currency}
               placeholder={feesStatus === "fetching" ? "Loading..." : "0"}
               onChange={onFeesChange}
