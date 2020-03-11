@@ -68,7 +68,7 @@ const UpdateDevice = ({ isDemoMode }: { isDemoMode?: boolean }) => {
   };
   const [state, setState] = useState<State>(initialState);
   const currentFirmwareOption = useMemo(() => {
-    const { currentFirmware } = state;
+    const currentFirmware = state.currentFirmware;
     if (!currentFirmware) return null;
     const option = firmwaresOptions.find(
       o => o.value === currentFirmware.version,
