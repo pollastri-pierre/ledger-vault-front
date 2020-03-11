@@ -171,7 +171,7 @@ export function getDuplicateRulesSet(
 }
 
 export function serializeRulesSetsForPOST(sets: RulesSet[]) {
-  return sets.map<any>(set => ({
+  return sets.filter(isValidRulesSet).map<any>(set => ({
     name: set.name,
     rules: set.rules.map(rule => {
       if (rule.type === "MULTI_AUTHORIZATIONS") {

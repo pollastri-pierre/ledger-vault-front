@@ -467,11 +467,8 @@ export function serializePayload(
 }
 
 export function areRulesSetsValid(rulesSets: RulesSet[]) {
-  if (!rulesSets.length) return false;
-  if (rulesSets.length === 1 && isEmptyRulesSet(rulesSets[0])) return false;
-  return rulesSets
-    .map(r => isEmptyRulesSet(r) || isValidRulesSet(r))
-    .every(Boolean);
+  // we consider rules sets valids if at least one is valid
+  return rulesSets.find(isValidRulesSet) !== undefined;
 }
 
 export function hasEmptyRules(rulesSets: RulesSet[]) {
