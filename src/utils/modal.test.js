@@ -54,6 +54,14 @@ describe("/utils/modal", () => {
       );
     });
 
+    it("user creation request from dashboard", () => {
+      testModalClosePath(
+        { role: "admin" },
+        "/ledger1/admin/dashboard/users/details/13/overview",
+        "/ledger1/admin/dashboard",
+      );
+    });
+
     it("new account from accounts page", () => {
       testModalClosePath(
         { role: "admin" },

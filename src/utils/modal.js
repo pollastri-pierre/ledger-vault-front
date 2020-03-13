@@ -11,7 +11,7 @@ import type { User } from "data/types";
 
 const modalsRoutes = [
   /(.*)\/send$/,
-  /(.*\/dashboard)\/accounts\/new$/,
+  /(.*\/dashboard)\/.+$/,
   /(.*)\/receive$/,
   /(.*)\/admin-rules$/,
   /(.*)\/new$/,
