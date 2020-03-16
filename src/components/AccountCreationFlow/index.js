@@ -45,6 +45,7 @@ import type {
 } from "redux/modules/requestReplayStore";
 
 import type { Account, Group, User } from "data/types";
+import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
 import AccountCreationName from "./steps/AccountCreationName";
 import AccountCreationRules from "./steps/AccountCreationRules";
@@ -71,6 +72,14 @@ export const initialPayload: AccountCreationPayload = {
   currency: null,
   erc20token: null,
   parentAccount: null,
+};
+
+const cleanRules = (
+  payload: AccountCreationPayload,
+  updatePayload: PayloadUpdater<AccountCreationPayload>,
+) => {
+  const rulesSets = payload.rulesSets.filter(isValidRulesSet);
+  updatePayload({ ...payload, rulesSets });
 };
 
 const steps = [
@@ -118,6 +127,7 @@ const steps = [
       }
       return true;
     },
+    onNext: cleanRules,
   },
   {
     id: "confirmation",
