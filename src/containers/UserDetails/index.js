@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useMemo } from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { FaUser } from "react-icons/fa";
 import EntityModal from "components/EntityModal";
 import Box from "components/base/Box";
@@ -25,13 +25,14 @@ type Props = {
 function UserDetails(props: Props) {
   const { user, close } = props;
   const me = useMe();
+  const { t } = useTranslation();
   const isActuallyMyself = user.id === me.id;
   const revokeParams = isActuallyMyself
     ? null
     : {
-        buttonLabel: <Trans i18nKey="common:revoke" />,
-        confirmTitle: <Trans i18nKey="userDetails:revokeWarning.title" />,
-        confirmLabel: <Trans i18nKey="userDetails:revokeWarning.confirm" />,
+        buttonLabel: t("common:revoke"),
+        confirmTitle: t("userDetails:revokeWarning.title"),
+        confirmLabel: t("userDetails:revokeWarning.confirm"),
         confirmContent: (
           <Box flow={15} align="flex-start">
             <Text

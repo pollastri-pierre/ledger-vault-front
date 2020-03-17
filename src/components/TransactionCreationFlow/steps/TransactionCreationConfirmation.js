@@ -2,7 +2,7 @@
 
 import React from "react";
 import invariant from "invariant";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import Box from "components/base/Box";
 import NotApplicableText from "components/base/NotApplicableText";
@@ -22,6 +22,7 @@ export default (props: TransactionCreationStepProps<any>) => {
   const isRipple = account.account_type === "Ripple";
   const fees = bridge.getFees(account, transaction);
   const totalSpent = bridge.getTotalSpent(account, transaction);
+  const { t } = useTranslation();
 
   return (
     <Box>
@@ -30,50 +31,32 @@ export default (props: TransactionCreationStepProps<any>) => {
         account={account}
         transactionType="SEND"
       />
-      <LineRow
-        label={
-          <Trans i18nKey="transactionCreation:steps.confirmation.identifier" />
-        }
-      >
+      <LineRow label={t("transactionCreation:steps.confirmation.identifier")}>
         <Copy text={transaction.recipient} />
       </LineRow>
-      <LineRow
-        label={
-          <Trans i18nKey="transactionCreation:steps.confirmation.account" />
-        }
-      >
+      <LineRow label={t("transactionCreation:steps.confirmation.account")}>
         <AccountName account={account} />
       </LineRow>
       {transaction.note.title && (
-        <LineRow
-          label={<Trans i18nKey="transactionCreation:steps.note.noteTitle" />}
-        >
+        <LineRow label={t("transactionCreation:steps.note.noteTitle")}>
           <span data-test="note_title">{transaction.note.title}</span>
         </LineRow>
       )}
       <CollapsibleText
         data-test="note_comments"
-        label={<Trans i18nKey="transactionCreation:steps.note.noteContent" />}
+        label={t("transactionCreation:steps.note.noteContent")}
         content={transaction.note.content || ""}
       />
-      <LineRow
-        label={<Trans i18nKey="transactionCreation:steps.confirmation.fees" />}
-      >
+      <LineRow label={t("transactionCreation:steps.confirmation.fees")}>
         <Amount account={account} value={fees} disableERC20 />
       </LineRow>
-      <LineRow
-        label={
-          <Trans i18nKey="transactionCreation:steps.confirmation.amount" />
-        }
-      >
+      <LineRow label={t("transactionCreation:steps.confirmation.amount")}>
         <Amount account={account} value={transaction.amount} />
       </LineRow>
       <LineRow
-        label={<Trans i18nKey="transactionCreation:steps.confirmation.total" />}
+        label={t("transactionCreation:steps.confirmation.total")}
         tooltipInfoMessage={
-          isERC20 && (
-            <Trans i18nKey="transactionCreation:steps.confirmation.totalERC20Info" />
-          )
+          isERC20 && t("transactionCreation:steps.confirmation.totalERC20Info")
         }
       >
         {totalSpent !== null && (
@@ -81,11 +64,7 @@ export default (props: TransactionCreationStepProps<any>) => {
         )}
       </LineRow>
       {isRipple && (
-        <LineRow
-          label={
-            <Trans i18nKey="transactionCreation:steps.account.destinationTag" />
-          }
-        >
+        <LineRow label={t("transactionCreation:steps.account.destinationTag")}>
           {transaction.destinationTag ? (
             transaction.destinationTag
           ) : (

@@ -244,29 +244,32 @@ const WaitForReboot = ({
   error: ?Error,
   loading: boolean,
   onClick: Function,
-}) => (
-  <Box width={340} flow={20}>
-    <Text fontWeight="bold" i18nKey="update:steps.deviceRebooting" />
-    <ol>
-      <li>
-        <Trans i18nKey="update:steps.waitReboot1" components={<strong />} />
-      </li>
-      <li>
-        <Trans i18nKey="update:steps.waitReboot2" />
-      </li>
-      <li>
-        <Trans i18nKey="update:steps.waitReboot3" />
-      </li>
-    </ol>
-    <Box position="relative">
-      <Button type="filled" onClick={onClick} isLoadingProp={!error && loading}>
-        <Text i18nKey="update:steps.continueAfterReboot" />
-      </Button>
-      <Box position="absolute" style={{ bottom: -25, right: 0 }}>
-        {error && error.message && (
-          <Text color={colors.grenade}>{error.message}</Text>
-        )}
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Box width={340} flow={20}>
+      <Text fontWeight="bold" i18nKey="update:steps.deviceRebooting" />
+      <ol>
+        <li>
+          <Trans i18nKey="update:steps.waitReboot1" components={<strong />} />
+        </li>
+        <li>{t("update:steps.waitReboot2")}</li>
+        <li>{t("update:steps.waitReboot3")}</li>
+      </ol>
+      <Box position="relative">
+        <Button
+          type="filled"
+          onClick={onClick}
+          isLoadingProp={!error && loading}
+        >
+          <Text i18nKey="update:steps.continueAfterReboot" />
+        </Button>
+        <Box position="absolute" style={{ bottom: -25, right: 0 }}>
+          {error && error.message && (
+            <Text color={colors.grenade}>{error.message}</Text>
+          )}
+        </Box>
       </Box>
     </Box>
-  </Box>
-);
+  );
+};

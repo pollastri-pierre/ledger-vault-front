@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import LineRow from "components/LineRow";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Copy from "components/base/Copy";
@@ -19,53 +19,53 @@ const AccountOverview = ({
 }: {
   account: Account,
   hasPendingTransactions: boolean,
-}) => (
-  <Box flow={20}>
-    {hasPendingTransactions && (
-      <InfoBox type="info">
-        <Trans i18nKey="accountDetails:warnPendingTxs" />
-      </InfoBox>
-    )}
-    <Rows account={account} />
-  </Box>
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Box flow={20}>
+      {hasPendingTransactions && (
+        <InfoBox type="info">{t("accountDetails:warnPendingTxs")}</InfoBox>
+      )}
+      <Rows account={account} />
+    </Box>
+  );
+};
 
 const Rows = ({ account }: { account: Account }) => {
   const currencyOrToken = getAccountCurrencyOrToken(account);
+  const { t } = useTranslation();
   return (
     <div>
-      <LineRow label={<Trans i18nKey="accountDetails:name" />}>
+      <LineRow label={t("accountDetails:name")}>
         <AccountName account={account} />
       </LineRow>
       {isBalanceAvailable(account) && (
-        <LineRow label={<Trans i18nKey="accountDetails:balance" />}>
+        <LineRow label={t("accountDetails:balance")}>
           <CurrencyAccountValue account={account} value={account.balance} />
         </LineRow>
       )}
       {account.account_type === "Erc20" && account.parent && (
         <>
-          <LineRow
-            label={<Trans i18nKey="accountView:summary.token_address" />}
-          >
+          <LineRow label={t("accountView:summary.token_address")}>
             <Copy text={account.contract_address} />
           </LineRow>
-          <LineRow
-            label={<Trans i18nKey="accountView:summary.parent_account" />}
-          >
+          <LineRow label={t("accountView:summary.parent_account")}>
             <ParentAccount id={account.parent} />
           </LineRow>
         </>
       )}
       {account.governance_rules && account.governance_rules.length && (
         <LineRow
-          label={<Trans i18nKey="entityModal:tabs.transactionRules" />}
+          label={t("entityModal:tabs.transactionRules")}
           collapsibleState="collapsed"
           collapsibleChildren={
-            <MultiRules
-              readOnly
-              rulesSets={account.governance_rules}
-              currencyOrToken={currencyOrToken}
-            />
+            account.governance_rules && (
+              <MultiRules
+                readOnly
+                rulesSets={account.governance_rules}
+                currencyOrToken={currencyOrToken}
+              />
+            )
           }
         >
           <Text

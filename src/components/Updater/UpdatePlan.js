@@ -2,7 +2,7 @@
 
 import React, { useEffect, useReducer, useMemo, memo } from "react";
 import invariant from "invariant";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import type Transport from "@ledgerhq/hw-transport";
 import { Subject, empty, from, of, concat, Observable, throwError } from "rxjs";
 import { DisconnectedDevice } from "@ledgerhq/errors";
@@ -297,6 +297,7 @@ const StartStep = ({
     await new Promise(r => setTimeout(r, 300));
     onStart();
   };
+  const { t } = useTranslation();
   return (
     <TimelineStop
       bulletVariant="plain"
@@ -329,7 +330,7 @@ const StartStep = ({
           </Box>
           <Box mt={20}>
             <Text>
-              <Trans i18nKey="update:steps.estimatedTime" />:{" "}
+              {t("update:steps.estimatedTime")}:{" "}
               <strong>{getNbMinutes(plan)} minutes</strong>.
             </Text>
           </Box>

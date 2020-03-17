@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { withRouter } from "react-router";
 import type { Location } from "react-router-dom";
@@ -25,6 +25,7 @@ type Props = {
 
 function LastTransactionsWidget(props: Props) {
   const { data, accounts, history, location } = props;
+  const { t } = useTranslation();
   const onTransactionClick = (transaction: Transaction) => {
     history.push(
       `${location.pathname}/transactions/details/${transaction.id}/overview`,
@@ -43,7 +44,7 @@ function LastTransactionsWidget(props: Props) {
     <Widget title="Last transactions" desc={desc}>
       <Card style={{ padding: 0 }}>
         <TransactionsList
-          emptyState={<Trans i18nKey="operatorDashboard:transactionsEmpty" />}
+          emptyState={t("operatorDashboard:transactionsEmpty")}
           dataTest="operator-dashboard-transactions"
           transactions={transactions}
           accounts={allAccounts}

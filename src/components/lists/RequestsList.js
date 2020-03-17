@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import moment from "moment";
 import styled from "styled-components";
 import { FaHourglassHalf } from "react-icons/fa";
@@ -96,14 +96,13 @@ export function TransactionCreationRequestTitle({
   request: GenericRequest,
 }) {
   const { transaction } = request;
+  const { t } = useTranslation();
   if (!transaction) return null;
   return (
     <Box horizontal align="center" flow={5}>
       <MdCreateNewFolder size={16} color={colors.lightGrey} />
       <Box horizontal align="center" flow={5} flexWrap="wrap">
-        <span>
-          <Trans i18nKey="request:richType.CREATE_TRANSACTION" />
-        </span>
+        <span>{t("request:richType.CREATE_TRANSACTION")}</span>
         <LazyLoadAccountName accountID={transaction.account_id} />
       </Box>
     </Box>
@@ -111,20 +110,22 @@ export function TransactionCreationRequestTitle({
 }
 
 const LazyLoadAccountName = connectData(
-  ({ account }: { account: Account }) => (
-    <Box horizontal align="center" flow={5}>
-      <Trans
-        i18nKey="request:extra.CREATE_TRANSACTION_ON"
-        components={[
-          <span />,
-          <strong>
-            <AccountName space={5} account={account} />
-          </strong>,
-          <span />,
-        ]}
-      />
-    </Box>
-  ),
+  ({ account }: { account: Account }) => {
+    return (
+      <Box horizontal align="center" flow={5}>
+        <Trans
+          i18nKey="request:extra.CREATE_TRANSACTION_ON"
+          components={[
+            <span />,
+            <strong>
+              <AccountName space={5} account={account} />
+            </strong>,
+            <span />,
+          ]}
+        />
+      </Box>
+    );
+  },
   {
     queries: {
       account: AccountQuery,

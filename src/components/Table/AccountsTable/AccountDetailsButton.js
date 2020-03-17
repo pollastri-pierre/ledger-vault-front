@@ -2,7 +2,7 @@
 
 import React from "react";
 import { withRouter } from "react-router";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { FaEllipsisV } from "react-icons/fa";
 import type { MemoryHistory } from "history";
 
@@ -31,6 +31,7 @@ function preventRowClick(e) {
 
 function AccountTableSubmenu(props: Props) {
   const { account, history } = props;
+  const { t } = useTranslation();
 
   function handleOverview() {
     history.push(`accounts/details/${account.id}/overview`);
@@ -56,11 +57,11 @@ function AccountTableSubmenu(props: Props) {
         </MenuButtonStyleIcon>
         <MenuListStyle>
           <MenuItemStyle onSelect={handleOverview}>
-            <Trans i18nKey="accountDetails:tableSubmenu.overview" />
+            {t("accountDetails:tableSubmenu.overview")}
           </MenuItemStyle>
           {isAbleToEdit && (
             <MenuItemStyle onSelect={handleEdit}>
-              <Trans i18nKey="accountDetails:tableSubmenu.edit" />
+              {t("accountDetails:tableSubmenu.edit")}
             </MenuItemStyle>
           )}
         </MenuListStyle>

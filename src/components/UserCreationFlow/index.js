@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { FaUser } from "react-icons/fa";
 import connectData from "restlay/connectData";
@@ -62,10 +62,11 @@ const steps = [
       return !!payload.username && isUserIDValid(payload.userID);
     },
     Cta: ({ onSuccess }: { onSuccess?: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onSuccess}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );
@@ -76,10 +77,11 @@ const steps = [
     name: <Trans i18nKey="inviteUser:steps.finish" />,
     hideBack: true,
     Step: ({ payload }: { payload: UserCreationPayload }) => {
+      const { t } = useTranslation();
       return (
         <MultiStepsSuccess
-          title={<Trans i18nKey="inviteUser:steps.finishTitle" />}
-          desc={<Trans i18nKey="inviteUser:steps.finishDesc" />}
+          title={t("inviteUser:steps.finishTitle")}
+          desc={t("inviteUser:steps.finishDesc")}
         >
           {payload && payload.url && (
             <Box style={{ maxWidth: 600 }}>
@@ -90,10 +92,11 @@ const steps = [
       );
     },
     Cta: ({ onClose }: { onClose?: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );

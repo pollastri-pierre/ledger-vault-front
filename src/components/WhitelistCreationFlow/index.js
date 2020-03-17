@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import omit from "lodash/omit";
 import type { Match } from "react-router-dom";
@@ -91,6 +91,7 @@ const steps = [
       onSuccess: () => void,
       onClose: () => void,
     }) => {
+      const { t } = useTranslation();
       // if only description changed
       if (onlyDescriptionChangedWhitelist(payload, payloadToCompareTo)) {
         return <UpdateDescriptionButton payload={payload} onClose={onClose} />;
@@ -112,11 +113,9 @@ const steps = [
             data: serializePayload(payload, initialPayload),
             description: payload.description,
           }}
-          buttonLabel={
-            <Trans
-              i18nKey={`whitelists:${isEditMode ? "update" : "create"}.submit`}
-            />
-          }
+          buttonLabel={t(
+            `whitelists:${isEditMode ? "update" : "create"}.submit`,
+          )}
         />
       );
     },
@@ -126,30 +125,28 @@ const steps = [
     name: "finish",
     hideBack: true,
     Step: ({ isEditMode }: { isEditMode?: boolean }) => {
+      const { t } = useTranslation();
       return (
         <MultiStepsSuccess
-          title={
-            isEditMode ? (
-              <Trans i18nKey="whitelists:update.finishTitle" />
-            ) : (
-              <Trans i18nKey="whitelists:create.finishTitle" />
-            )
-          }
-          desc={
-            isEditMode ? (
-              <Trans i18nKey="whitelists:update.finishDesc" />
-            ) : (
-              <Trans i18nKey="whitelists:create.finishDesc" />
-            )
-          }
+          title={t(
+            isEditMode
+              ? "whitelists:update.finishTitle"
+              : "whitelists:create.finishTitle",
+          )}
+          desc={t(
+            isEditMode
+              ? "whitelists:update.finishDesc"
+              : "whitelists:create.finishDesc",
+          )}
         />
       );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );
@@ -158,47 +155,52 @@ const steps = [
 ];
 
 const WhitelistCreation = connectData(
-  props => (
-    <GrowingCard>
-      <MultiStepsFlow
-        Icon={FaAddressBook}
-        title={<Trans i18nKey="whitelists:create.title" />}
-        steps={steps}
-        additionalProps={props}
-        onClose={props.close}
-        payloadToCompareTo={initialPayload}
-        initialPayload={
-          props.requestToReplay
-            ? purgePayloadCreation(props.requestToReplay.entity)
-            : initialPayload
-        }
-      />
-    </GrowingCard>
-  ),
+  props => {
+    const { t } = useTranslation();
+    return (
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaAddressBook}
+          title={t("whitelists:create.title")}
+          steps={steps}
+          additionalProps={props}
+          onClose={props.close}
+          payloadToCompareTo={initialPayload}
+          initialPayload={
+            props.requestToReplay
+              ? purgePayloadCreation(props.requestToReplay.entity)
+              : initialPayload
+          }
+        />
+      </GrowingCard>
+    );
+  },
   {
     RenderLoading: GrowingSpinner,
   },
 );
 const WhitelistEdit = connectData(
-  props => (
-    <GrowingCard>
-      <MultiStepsFlow
-        Icon={FaAddressBook}
-        title={
-          <Text>
-            <Trans i18nKey="whitelists:create.editTitle" />:{" "}
-            {props.whitelist.name}
-          </Text>
-        }
-        isEditMode
-        steps={steps}
-        additionalProps={props}
-        onClose={props.close}
-        initialPayload={mergeEditData(props.whitelist, props.requestToReplay)}
-        payloadToCompareTo={props.whitelist}
-      />
-    </GrowingCard>
-  ),
+  props => {
+    const { t } = useTranslation();
+    return (
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaAddressBook}
+          title={
+            <Text>
+              {t("whitelists:create.editTitle")}: {props.whitelist.name}
+            </Text>
+          }
+          isEditMode
+          steps={steps}
+          additionalProps={props}
+          onClose={props.close}
+          initialPayload={mergeEditData(props.whitelist, props.requestToReplay)}
+          payloadToCompareTo={props.whitelist}
+        />
+      </GrowingCard>
+    );
+  },
   {
     RenderLoading: GrowingSpinner,
     queries: {

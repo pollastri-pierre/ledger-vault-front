@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import connectData from "restlay/connectData";
 import { connect } from "react-redux";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -72,6 +72,7 @@ const steps = [
       restlay: RestlayEnvironment,
       onSuccess: () => void,
     }) => {
+      const { t } = useTranslation();
       // if only description changed
       if (
         onlyDescriptionChangedGeneric(payload, payloadToCompareTo, "members")
@@ -99,11 +100,9 @@ const steps = [
             data,
             description: payload.description,
           }}
-          buttonLabel={
-            <Trans
-              i18nKey={`group:create.${isEditMode ? "submit_edit" : "submit"}`}
-            />
-          }
+          buttonLabel={t(
+            `group:create.${isEditMode ? "submit_edit" : "submit"}`,
+          )}
         />
       );
     },
@@ -113,30 +112,26 @@ const steps = [
     name: <Trans i18nKey="group:create.finish" />,
     hideBack: true,
     Step: ({ isEditMode }: { isEditMode?: boolean }) => {
+      const { t } = useTranslation();
       return (
         <MultiStepsSuccess
-          title={
-            isEditMode ? (
-              <Trans i18nKey="group:update.finishTitle" />
-            ) : (
-              <Trans i18nKey="group:create.finishTitle" />
-            )
-          }
-          desc={
-            isEditMode ? (
-              <Trans i18nKey="group:update.finishDesc" />
-            ) : (
-              <Trans i18nKey="group:create.finishDesc" />
-            )
-          }
+          title={t(
+            isEditMode
+              ? "group:update.finishTitle"
+              : "group:create.finishTitle",
+          )}
+          desc={t(
+            isEditMode ? "group:update.finishDesc" : "group:create.finishDesc",
+          )}
         />
       );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );
@@ -188,28 +183,31 @@ const Wrapper = connect(
 );
 
 const GroupEdit = connectData(
-  props => (
-    <GrowingCard>
-      <MultiStepsFlow
-        Icon={FaUsers}
-        title={
-          <Text>
-            <Trans i18nKey="group:create.editTitle" />: {props.group.name}
-          </Text>
-        }
-        initialPayload={mergeEditData(
-          props.group,
-          props.requestToReplay,
-          props.operators.edges.map(e => e.node),
-        )}
-        payloadToCompareTo={props.group}
-        steps={steps}
-        additionalProps={{ ...props }}
-        onClose={props.close}
-        isEditMode
-      />
-    </GrowingCard>
-  ),
+  props => {
+    const { t } = useTranslation();
+    return (
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaUsers}
+          title={
+            <Text>
+              {t("group:create.editTitle")}: {props.group.name}
+            </Text>
+          }
+          initialPayload={mergeEditData(
+            props.group,
+            props.requestToReplay,
+            props.operators.edges.map(e => e.node),
+          )}
+          payloadToCompareTo={props.group}
+          steps={steps}
+          additionalProps={{ ...props }}
+          onClose={props.close}
+          isEditMode
+        />
+      </GrowingCard>
+    );
+  },
   {
     RenderLoading: GrowingSpinner,
     queries: {
@@ -224,23 +222,26 @@ const GroupEdit = connectData(
   },
 );
 const GroupCreation = connectData(
-  props => (
-    <GrowingCard>
-      <MultiStepsFlow
-        Icon={FaUsers}
-        title={<Trans i18nKey="group:create.title" />}
-        initialPayload={
-          (props.requestToReplay &&
-            purgeCreatePayload(props.requestToReplay.entity)) ||
-          _initialPayload
-        }
-        payloadToCompareTo={_initialPayload}
-        steps={steps}
-        additionalProps={props}
-        onClose={props.close}
-      />
-    </GrowingCard>
-  ),
+  props => {
+    const { t } = useTranslation();
+    return (
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaUsers}
+          title={t("group:create.title")}
+          initialPayload={
+            (props.requestToReplay &&
+              purgeCreatePayload(props.requestToReplay.entity)) ||
+            _initialPayload
+          }
+          payloadToCompareTo={_initialPayload}
+          steps={steps}
+          additionalProps={props}
+          onClose={props.close}
+        />
+      </GrowingCard>
+    );
+  },
   {
     RenderLoading: GrowingSpinner,
     queries: {

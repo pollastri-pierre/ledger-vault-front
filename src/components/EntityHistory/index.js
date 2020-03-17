@@ -3,7 +3,7 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { useState } from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import qs from "query-string";
 import styled from "styled-components";
 import moment from "moment";
@@ -165,7 +165,7 @@ const HistoryItem = ({
   const onToggle = () => setCollapsed(!isCollapsed);
   const STATUS_REPLAY_ALLOWED = ["BLOCKED", "ABORTED", "EXPIRED", "FAILED"];
   const me = useMe();
-
+  const { t } = useTranslation();
   const isAdmin = me.role === "ADMIN";
   const isTransaction = entity && entity.entityType === "TRANSACTION";
 
@@ -189,9 +189,7 @@ const HistoryItem = ({
       >
         <Box horizontal align="center" flow={10}>
           {itemIconsByType[item.type](entityType)}
-          <span>
-            <Trans i18nKey={`history:title.${item.type}.${entityType}`} />
-          </span>
+          <span>{t(`history:title.${item.type}.${entityType}`)}</span>
         </Box>
       </HistoryItemHeader>
       {!isCollapsed && (
@@ -261,34 +259,35 @@ const HistoryStep = ({
 }: {
   step: VaultHistoryStep,
   isLast: boolean,
-}) => (
-  <HistoryStepContainer isLast={isLast}>
-    <Ball>{stepIconsByType[step.type]}</Ball>
-    <span>
-      <Trans i18nKey={`history:stepType.${step.type}`} />
-      {" on "}
-      {moment(step.createdOn).format("LLL")}
-      {step.createdBy && step.createdBy.role !== "ADMIN_SYSTEM" && (
-        <>
-          {" by "}
-          <b>{step.createdBy.username}</b>
-        </>
+}) => {
+  const { t } = useTranslation();
+  return (
+    <HistoryStepContainer isLast={isLast}>
+      <Ball>{stepIconsByType[step.type]}</Ball>
+      <span>
+        {t(`history:stepType.${step.type}`)}
+        {" on "}
+        {moment(step.createdOn).format("LLL")}
+        {step.createdBy && step.createdBy.role !== "ADMIN_SYSTEM" && (
+          <>
+            {" by "}
+            <b>{step.createdBy.username}</b>
+          </>
+        )}
+        {step.blockerRequest && (
+          <>
+            {" by a "}
+            <b>{t(`request:type.${step.blockerRequest.type}`)}</b>
+            {" request"}
+          </>
+        )}
+      </span>
+      {step.approvalsSteps && !!step.approvalsSteps.length && (
+        <ApprovalsSteps approvalsSteps={step.approvalsSteps} />
       )}
-      {step.blockerRequest && (
-        <>
-          {" by a "}
-          <b>
-            <Trans i18nKey={`request:type.${step.blockerRequest.type}`} />
-          </b>
-          {" request"}
-        </>
-      )}
-    </span>
-    {step.approvalsSteps && !!step.approvalsSteps.length && (
-      <ApprovalsSteps approvalsSteps={step.approvalsSteps} />
-    )}
-  </HistoryStepContainer>
-);
+    </HistoryStepContainer>
+  );
+};
 
 const ApprovalsSteps = ({
   approvalsSteps,

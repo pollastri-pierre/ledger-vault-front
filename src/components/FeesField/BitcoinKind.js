@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { BigNumber } from "bignumber.js";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import type { Account } from "data/types";
 import connectData from "restlay/connectData";
@@ -48,6 +48,7 @@ function FeesBitcoinKind(props: Props) {
   const prevRecipient = usePrevious(transaction.recipient);
   const prevAmount = usePrevious(transaction.amount);
   const prevFeeLevel = usePrevious(transaction.feeLevel);
+  const { t } = useTranslation();
 
   const feeLevel =
     bridge.getTransactionFeeLevel &&
@@ -162,9 +163,7 @@ function FeesBitcoinKind(props: Props) {
     <Box horizontal flow={20}>
       <Box noShrink grow>
         <Box horizontal align="flex-start" flow={10}>
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.account.fees.title" />
-          </Label>
+          <Label>{t("transactionCreation:steps.account.fees.title")}</Label>
           {(transaction.estimatedFees || feesStatus === "error") && (
             <RecalculateButton onClick={reComputeFees} />
           )}
@@ -212,7 +211,7 @@ function FeesBitcoinKind(props: Props) {
             )}
           </Box>
           <InfoBox type="info">
-            <Trans i18nKey="transactionCreation:steps.account.feesInfos" />
+            {t("transactionCreation:steps.account.feesInfos")}
           </InfoBox>
         </Box>
       </Box>

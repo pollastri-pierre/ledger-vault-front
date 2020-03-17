@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import ChildAccountsQuery from "api/queries/ChildAccountsQuery";
 import { SoftCard } from "components/base/Card";
@@ -18,6 +18,7 @@ type Props = {
 
 function SubAccountsWidget(props: Props) {
   const { accountsConnection, account } = props;
+  const { t } = useTranslation();
   const accounts = accountsConnection.edges.map(a => a.node);
 
   const desc = (
@@ -25,7 +26,7 @@ function SubAccountsWidget(props: Props) {
       {`View all (${accountsConnection.pageInfo.count})`}
     </VaultLink>
   );
-  const title = <Trans i18nKey="accountView:erc20_children" />;
+  const title = t("accountView:erc20_children");
   return (
     <Widget title={title} desc={desc}>
       {accounts.length ? (
