@@ -113,7 +113,14 @@ const steps = [
       }
       return null;
     },
-    requirements: (payload: AccountCreationPayload) => {
+    requirements: (payload: AccountCreationPayload, additionalProps) => {
+      if (
+        additionalProps &&
+        additionalProps.allAccounts.edges
+          .map(e => e.node.name)
+          .indexOf(payload.name) > -1
+      )
+        return false;
       if (payload.name === "") return false;
       if (payload.erc20token) {
         const { parentAccount } = payload;
