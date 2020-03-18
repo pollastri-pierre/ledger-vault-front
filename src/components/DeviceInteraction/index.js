@@ -147,7 +147,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
           err instanceof OutOfDateApp ||
           err instanceof TransportInterfaceNotAvailable
         ) {
-          history.push(`/update-app?redirectTo=${location.pathname}`);
+          history.push("/update-app");
         } else if (err instanceof TransportWebUSBGestureRequired) {
           this.setState({ requireClick: true });
         } else {

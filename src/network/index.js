@@ -30,8 +30,8 @@ export default function<T>(
   // -----------------------
   /* eslint-disable no-console */
   if (uri.endsWith("/challenge")) {
-    console.warn("[DEBUG LV-2129] Getting challenge");
-    console.warn(`url: ${uri}`);
+    console.log("[DEBUG LV-2129] Getting challenge");
+    console.log(`url: ${uri}`);
   }
   /* eslint-enable no-console */
 

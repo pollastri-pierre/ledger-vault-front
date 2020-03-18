@@ -103,6 +103,10 @@
     "title": "UserRefusedAllowManager",
     "description": "You must authorize the update. Try again."
   },
+  "NoWorkspaceForDevice": {
+    "title": "No workspace for this device",
+    "description": "This device has not been registered in any workspace"
+  },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"

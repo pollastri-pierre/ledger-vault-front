@@ -61,7 +61,7 @@ const styles = {
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  autoLogout: {
+  autoLogin: {
     alignSelf: "center",
     marginLeft: 20,
   },
@@ -106,15 +106,15 @@ const deviceIds = {
 class MockDevices extends PureComponent {
   state = {
     deviceId: null,
-    autoLogout: false,
+    autoLogin: false,
     collapseMock: true,
     rejectNextAction: false,
     showOnboarding: false,
     forceHardware: false,
   };
 
-  changeAutoLogout = () => {
-    this.setState(state => ({ autoLogout: !state.autoLogout }));
+  changeAutoLogin = () => {
+    this.setState(state => ({ autoLogin: !state.autoLogin }));
   };
 
   async componentDidMount() {
@@ -157,8 +157,8 @@ class MockDevices extends PureComponent {
         body: JSON.stringify({ device_number: id }),
       });
       this.setState({ deviceId: id });
-      if (this.state.autoLogout) {
-        await this.props.logout();
+      if (this.state.autoLogin) {
+        await this.props.logout({ autoLogin: true });
       }
     } catch (e) {
       console.warn(e);
@@ -198,7 +198,7 @@ class MockDevices extends PureComponent {
   render() {
     const {
       deviceId,
-      autoLogout,
+      autoLogin,
       collapseMock,
       showOnboarding,
       rejectNextAction,
@@ -210,15 +210,15 @@ class MockDevices extends PureComponent {
           {!collapseMock && (
             <>
               <div style={styles.rowContainer}>
-                <Text size="small" uppercase style={styles.autoLogout}>
-                  Auto logout ?
+                <Text size="small" uppercase style={styles.autoLogin}>
+                  Auto login?
                 </Text>
                 <div style={styles.switchContainer}>
-                  <Switch onChange={this.changeAutoLogout} value={autoLogout} />
+                  <Switch onChange={this.changeAutoLogin} value={autoLogin} />
                 </div>
               </div>
               <div style={styles.rowContainer}>
-                <Text size="small" uppercase style={styles.autoLogout}>
+                <Text size="small" uppercase style={styles.autoLogin}>
                   Show wrapping / shared ?
                 </Text>
                 <div style={styles.switchContainer}>
@@ -229,7 +229,7 @@ class MockDevices extends PureComponent {
                 </div>
               </div>
               <div style={styles.rowContainer}>
-                <Text size="small" uppercase style={styles.autoLogout}>
+                <Text size="small" uppercase style={styles.autoLogin}>
                   Reject next action
                 </Text>
                 <div style={styles.switchContainer}>
@@ -240,7 +240,7 @@ class MockDevices extends PureComponent {
                 </div>
               </div>
               <div style={styles.rowContainer}>
-                <Text size="small" uppercase style={styles.autoLogout}>
+                <Text size="small" uppercase style={styles.autoLogin}>
                   force hardware
                 </Text>
                 <div style={styles.switchContainer}>

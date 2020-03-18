@@ -22,6 +22,7 @@ function Content({ match, me }: { match: Match, me: User }) {
   const u = match.url;
   const defaultUrl =
     me.role === "OPERATOR" ? `${u}/operator/dashboard` : `${u}/admin/dashboard`;
+
   return (
     <Switch>
       <Route path={`${u}/admin/dashboard`} component={AdminDashboard} />
@@ -39,6 +40,8 @@ function Content({ match, me }: { match: Match, me: User }) {
       <Route path={`${u}/operator/accounts`} component={Accounts} />
 
       <Route exact path={`${u}`} render={() => <Redirect to={defaultUrl} />} />
+
+      <Redirect to={defaultUrl} />
     </Switch>
   );
 }

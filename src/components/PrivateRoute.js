@@ -19,18 +19,19 @@ const PrivateRoute = ({
 }) => (
   <Route
     {...rest}
-    render={(props: *) =>
-      isAuthenticated ? (
+    render={(props: *) => {
+      const redirect = `${match.url}/login`;
+      if (!isAuthenticated && process.env.NODE_ENV === "production") {
+        window.location.href = redirect;
+        return null;
+      }
+      return isAuthenticated ? (
         <Component {...props} match={match} />
       ) : (
-        <Redirect
-          to={`${match.url}/login?redirectTo=${encodeURIComponent(
-            props.location.pathname,
-          )}`}
-        />
-      )
-    }
+        <Redirect to={redirect} />
+      );
+    }}
   />
 );
 
-export default connect(mapStateToProps, () => ({}))(PrivateRoute);
+export default connect(mapStateToProps)(PrivateRoute);

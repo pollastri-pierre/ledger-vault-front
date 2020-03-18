@@ -98,6 +98,8 @@ const Provisioning = ({
             .fill()
             .map((v, i) => (
               <Fragment
+                // eslint-disable-next-line react/no-array-index-key
+                key={i}
                 disabled={i !== onboarding.provisionning.blobs.length}
                 loading={isLoading === i}
                 additionalFields={{

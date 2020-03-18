@@ -6,6 +6,8 @@
 
 import { PureComponent } from "react";
 import { withTranslation } from "react-i18next";
+
+import { extractErrorTitle, extractErrorContent } from "utils/errors";
 import type { Translate } from "data/types";
 
 type Props = {
@@ -38,6 +40,13 @@ class TranslatedError extends PureComponent<Props> {
         return translation;
       }
     }
+
+    // $FlowFixMe
+    if (error.json) {
+      if (field === "title") return extractErrorTitle(error);
+      if (field === "description") return extractErrorContent(error);
+    }
+
     return error.message || t(`errors:generic.${field}`, arg);
   }
 }
