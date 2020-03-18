@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import TransactionStatus from "components/TransactionStatus";
 import Copy from "components/base/Copy";
@@ -22,7 +22,7 @@ export default function TabOverview(props: Props) {
   const { transaction, account } = props;
   const note = transaction.notes.length ? transaction.notes[0] : null;
   const isRipple = account.account_type === "Ripple";
-
+  const { t } = useTranslation();
   const totalSpent =
     account.account_type === "Erc20"
       ? transaction.amount
@@ -37,21 +37,17 @@ export default function TabOverview(props: Props) {
         created_on={transaction.created_on}
       />
       <Box>
-        <LineRow
-          label={<Trans i18nKey="transactionDetails:overview.identifier" />}
-        >
+        <LineRow label={t("transactionDetails:overview.identifier")}>
           {transaction.tx_hash ? (
             <Copy text={transaction.tx_hash} />
           ) : (
             <NotApplicableText inline />
           )}
         </LineRow>
-        <LineRow
-          label={<Trans i18nKey="transactionDetails:overview.recipient" />}
-        >
+        <LineRow label={t("transactionDetails:overview.recipient")}>
           <Copy text={transaction.recipient} />
         </LineRow>
-        <LineRow label={<Trans i18nKey="transactionDetails:overview.status" />}>
+        <LineRow label={t("transactionDetails:overview.status")}>
           <Box flow={10} horizontal align="center">
             <TransactionStatus transaction={transaction} />
             {transaction.status === "APPROVED" && transaction.last_request && (
@@ -60,9 +56,7 @@ export default function TabOverview(props: Props) {
           </Box>
         </LineRow>
 
-        <LineRow
-          label={<Trans i18nKey="transactionDetails:overview.account" />}
-        >
+        <LineRow label={t("transactionDetails:overview.account")}>
           <Box align="flex-end">
             <AccountName account={account} />
           </Box>
@@ -70,36 +64,28 @@ export default function TabOverview(props: Props) {
 
         {isRipple && (
           <LineRow
-            label={
-              <Trans i18nKey="transactionCreation:steps.account.destinationTag" />
-            }
+            label={t("transactionCreation:steps.account.destinationTag")}
           >
             {transaction.destination_tag}
           </LineRow>
         )}
         {note && note.title && (
-          <LineRow
-            label={<Trans i18nKey="transactionCreation:steps.note.noteTitle" />}
-          >
+          <LineRow label={t("transactionCreation:steps.note.noteTitle")}>
             {note.title}
           </LineRow>
         )}
         {note && note.content && (
-          <LineRow
-            label={
-              <Trans i18nKey="transactionCreation:steps.note.noteContent" />
-            }
-          >
+          <LineRow label={t("transactionCreation:steps.note.noteContent")}>
             {note.content}
           </LineRow>
         )}
-        <LineRow label={<Trans i18nKey="transactionDetails:overview.fees" />}>
+        <LineRow label={t("transactionDetails:overview.fees")}>
           <Amount disableERC20 account={account} value={transaction.fees} />
         </LineRow>
-        <LineRow label={<Trans i18nKey="transactionDetails:overview.amount" />}>
+        <LineRow label={t("transactionDetails:overview.amount")}>
           <Amount account={account} value={transaction.amount} />
         </LineRow>
-        <LineRow label={<Trans i18nKey="transactionDetails:overview.total" />}>
+        <LineRow label={t("transactionDetails:overview.total")}>
           <Amount account={account} value={totalSpent} strong />
         </LineRow>
       </Box>

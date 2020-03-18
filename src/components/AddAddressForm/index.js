@@ -120,26 +120,23 @@ const AddAddressForm = (props: Props) => {
   );
 };
 
-const ColumnsHeader = () => (
-  <Box px={10} flow={10} horizontal>
-    <Box {...LAYOUT.currency}>
-      <Label>
-        <Trans i18nKey="whitelists:create.field_currency" />
-      </Label>
+const ColumnsHeader = () => {
+  const { t } = useTranslation();
+  return (
+    <Box px={10} flow={10} horizontal>
+      <Box {...LAYOUT.currency}>
+        <Label>{t("whitelists:create.field_currency")}</Label>
+      </Box>
+      <Box {...LAYOUT.name}>
+        <Label>{t("whitelists:create.field_name")}</Label>
+      </Box>
+      <Box {...LAYOUT.address}>
+        <Label>{t("whitelists:create.field_address")}</Label>
+      </Box>
+      <Box {...LAYOUT.actions} />
     </Box>
-    <Box {...LAYOUT.name}>
-      <Label>
-        <Trans i18nKey="whitelists:create.field_name" />
-      </Label>
-    </Box>
-    <Box {...LAYOUT.address}>
-      <Label>
-        <Trans i18nKey="whitelists:create.field_address" />
-      </Label>
-    </Box>
-    <Box {...LAYOUT.actions} />
-  </Box>
-);
+  );
+};
 
 const AddressRow = React.memo(
   ({

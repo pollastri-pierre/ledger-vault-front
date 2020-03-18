@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
 import { connect } from "react-redux";
 
@@ -195,6 +195,7 @@ const steps = [
       payload: AccountCreationPayload,
       isEditMode: boolean,
     }) => {
+      const { t } = useTranslation();
       return (
         <MultiStepsSuccess
           title={
@@ -213,21 +214,20 @@ const steps = [
               )}
             </Box>
           }
-          desc={
-            isEditMode ? (
-              <Trans i18nKey="accountCreation:finishEditDesc" />
-            ) : (
-              <Trans i18nKey="accountCreation:finishDesc" />
-            )
-          }
+          desc={t(
+            isEditMode
+              ? "accountCreation:finishEditDesc"
+              : "accountCreation:finishDesc",
+          )}
         />
       );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );
@@ -265,30 +265,33 @@ function getGateAccountType(payload: AccountCreationPayload) {
 
 // TODO see if we can get rid of some api call like potentialAccounts
 const AccountEdit = connectData(
-  props => (
-    <GrowingCard>
-      <MultiStepsFlow
-        Icon={FaMoneyCheck}
-        title={
-          <Text>
-            <Trans i18nKey="accountCreation:edit_title" />: {props.account.name}
-          </Text>
-        }
-        steps={steps}
-        additionalProps={props}
-        onClose={props.close}
-        isEditMode
-        initialPayload={mergeEditData(
-          props.account,
-          props.requestToReplay,
-          props.users.edges.map(e => e.node),
-          props.groups.edges.map(e => e.node),
-        )}
-        payloadToCompareTo={props.account}
-        initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
-      />
-    </GrowingCard>
-  ),
+  props => {
+    const { t } = useTranslation();
+    return (
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaMoneyCheck}
+          title={
+            <Text>
+              {t("accountCreation:edit_title")}: {props.account.name}
+            </Text>
+          }
+          steps={steps}
+          additionalProps={props}
+          onClose={props.close}
+          isEditMode
+          initialPayload={mergeEditData(
+            props.account,
+            props.requestToReplay,
+            props.users.edges.map(e => e.node),
+            props.groups.edges.map(e => e.node),
+          )}
+          payloadToCompareTo={props.account}
+          initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
+        />
+      </GrowingCard>
+    );
+  },
   {
     RenderLoading: GrowingSpinner,
     RenderError: TryAgain,

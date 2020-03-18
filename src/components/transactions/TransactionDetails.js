@@ -1,6 +1,6 @@
 // @flow
 import React, { useMemo } from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
   getDefaultExplorerView,
   getTransactionExplorer,
@@ -33,6 +33,7 @@ type Props = {
 
 function TransactionDetailsComponent(props: Props) {
   const { close, transaction, account } = props;
+  const { t } = useTranslation();
 
   const note = transaction.notes[0];
   const currency = getCryptoCurrencyById(account.currency);
@@ -48,9 +49,7 @@ function TransactionDetailsComponent(props: Props) {
       <a target="_blank" rel="noopener noreferrer" href={url}>
         <Button type="outline" variant="info">
           <Box horizontal align="center" flow={5}>
-            <Text>
-              <Trans i18nKey="transactionDetails:explore" />
-            </Text>
+            <Text>{t("transactionDetails:explore")}</Text>
             <FaExternalLinkAlt />
           </Box>
         </Button>

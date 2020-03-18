@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import invariant from "invariant";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { FaMoneyCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
@@ -110,6 +110,7 @@ const steps = [
     }) => {
       const { payload, onClose, restlay, onSuccess } = props;
       const data = serializePayload(payload);
+      const { t } = useTranslation();
       return (
         <ApproveRequestButton
           interactions={createAndApprove("TRANSACTION")}
@@ -133,7 +134,7 @@ const steps = [
             targetType: "CREATE_TRANSACTION",
             data,
           }}
-          buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
+          buttonLabel={t("transactionCreation:cta")}
         />
       );
     },
@@ -143,18 +144,20 @@ const steps = [
     name: <Trans i18nKey="transactionCreation:finish" />,
     hideBack: true,
     Step: () => {
+      const { t } = useTranslation();
       return (
         <MultiStepsSuccess
-          title={<Trans i18nKey="transactionCreation:finishTitle" />}
-          desc={<Trans i18nKey="transactionCreation:finishDesc" />}
+          title={t("transactionCreation:finishTitle")}
+          desc={t("transactionCreation:finishDesc")}
         />
       );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );

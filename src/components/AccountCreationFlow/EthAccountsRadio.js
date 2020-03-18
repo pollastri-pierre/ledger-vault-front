@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import { Radio } from "components/base/form";
 import SelectAccount from "components/SelectAccount";
@@ -24,7 +24,7 @@ export default function EthAccountsRadio({
       onChange(accounts[0]);
     }
   };
-
+  const { t } = useTranslation();
   return (
     <Box flow={20}>
       <Box
@@ -36,7 +36,7 @@ export default function EthAccountsRadio({
       >
         <Radio checked={account !== null} />
         <Box style={{ paddingTop: 2 }}>
-          <Trans i18nKey="newAccount:erc20.selectExisting" />
+          {t("newAccount:erc20.selectExisting")}
           <Box mt={10} width={380}>
             <SelectAccount
               accounts={accounts}

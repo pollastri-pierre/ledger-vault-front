@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import InfoBox from "components/base/InfoBox";
 import LineRow from "components/LineRow";
 import Box from "components/base/Box";
@@ -17,17 +17,19 @@ type Props = WhitelistCreationStepProps;
 
 const WhitelistCreationConfirmation = (props: Props) => {
   const { payload, payloadToCompareTo } = props;
+  const { t } = useTranslation();
+
   return (
     <Box flow={20}>
       <WhitelistDetails whitelist={payload} />
       {!hasEditOccuredWhitelist(payload, payloadToCompareTo) ? (
         <InfoBox type="info" withIcon>
-          <Trans i18nKey="whitelists:create.no_edit" />
+          {t("whitelists:create.no_edit")}
         </InfoBox>
       ) : (
         onlyDescriptionChangedWhitelist(payload, payloadToCompareTo) && (
           <InfoBox type="info" withIcon>
-            <Trans i18nKey="whitelists:create.no_hsm_validation" />
+            {t("whitelists:create.no_hsm_validation")}
           </InfoBox>
         )
       )}

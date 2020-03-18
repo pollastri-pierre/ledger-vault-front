@@ -4,7 +4,7 @@ import { FaCheckCircle, FaCheck, FaHourglassHalf } from "react-icons/fa";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { MdTimer, MdKeyboardBackspace } from "react-icons/md";
 import styled from "styled-components";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import { RichModalFooter, ConfirmModal } from "components/base/Modal";
 import { useOrganization } from "components/OrganizationContext";
@@ -93,6 +93,7 @@ function EntityFooter(props: Props) {
   } = props;
 
   const { refresh: refreshOrganization } = useOrganization();
+  const { t } = useTranslation();
 
   // prevent to be affected by entity/req update, which is happening once the
   // mutation has been triggered and so the entity is refreshing under
@@ -235,11 +236,9 @@ function EntityFooter(props: Props) {
           variant="danger"
           onClick={() => setRevokeModalOpened(true)}
         >
-          {revokeParams && revokeParams.buttonLabel ? (
-            revokeParams.buttonLabel
-          ) : (
-            <Trans i18nKey={`request:type.REVOKE_${entity.entityType}`} />
-          )}
+          {revokeParams && revokeParams.buttonLabel
+            ? revokeParams.buttonLabel
+            : t(`request:type.REVOKE_${entity.entityType}`)}
         </Button>
 
         {!!revokeParams && (
@@ -353,7 +352,7 @@ function EntityFooter(props: Props) {
                 data-test="done_button"
                 onClick={handleFinish}
               >
-                <Trans i18nKey="common:done" />
+                {t("common:done")}
               </Button>
             </Box>
           ) : null}
@@ -371,6 +370,7 @@ type PendingRequestProps = {
 
 function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
   const me = useMe();
+  const { t } = useTranslation();
   const userApprovedRequest = hasUserApprovedRequest(request, me);
   const userInCurrentStep = isUserInCurrentStep(request, me);
   const [isRejectModalOpened, setRejectModalOpened] = useState(false);
@@ -421,7 +421,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             data-test="reject-button"
             onClick={() => setRejectModalOpened(true)}
           >
-            <Trans i18nKey="common:abort" />
+            {t("common:abort")}
           </Button>
         </Emphasis>
       ) : userInCurrentStep ? (
@@ -432,7 +432,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             data-test="reject-button"
             onClick={() => setRejectModalOpened(true)}
           >
-            <Trans i18nKey="common:abort" />
+            {t("common:abort")}
           </Button>
           <Button
             type="filled"
@@ -440,7 +440,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             onClick={onApprove}
             data-test="approve_button"
           >
-            <Trans i18nKey={`request:approve.${request.type}`} />
+            {t(`request:approve.${request.type}`)}
           </Button>
         </Box>
       ) : isUserCreationRequest ? (
@@ -454,7 +454,7 @@ function PendingRequest({ request, onAbort, onApprove }: PendingRequestProps) {
             data-test="reject-button"
             onClick={() => setRejectModalOpened(true)}
           >
-            <Trans i18nKey="common:reject" />
+            {t("common:reject")}
           </Button>
         </Emphasis>
       ) : null}

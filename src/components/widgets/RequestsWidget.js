@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import type { MemoryHistory } from "history";
 
 import { withMe } from "components/UserContextProvider";
@@ -27,7 +27,7 @@ type Props = {
 
 function RequestsWidget(props: Props) {
   const { data, me } = props;
-
+  const { t } = useTranslation();
   const isAdmin = me.role === "ADMIN";
 
   const requests = data.edges
@@ -52,10 +52,10 @@ function RequestsWidget(props: Props) {
     navigateToRequest(request, props.history);
 
   const prefix = isAdmin ? "adminDashboard" : "operatorDashboard";
-  const myRequestsTitle = <Trans i18nKey={`${prefix}:myRequestsTitle`} />;
-  const otherRequestsTitle = <Trans i18nKey={`${prefix}:otherRequestsTitle`} />;
-  const myEmpty = <Trans i18nKey={`${prefix}:myRequestsEmpty`} />;
-  const otherEmpty = <Trans i18nKey={`${prefix}:otherRequestsEmpty`} />;
+  const myRequestsTitle = t(`${prefix}:myRequestsTitle`);
+  const otherRequestsTitle = t(`${prefix}:otherRequestsTitle`);
+  const myEmpty = t(`${prefix}:myRequestsEmpty`);
+  const otherEmpty = t(`${prefix}:otherRequestsEmpty`);
 
   return (
     <Box flow={20}>

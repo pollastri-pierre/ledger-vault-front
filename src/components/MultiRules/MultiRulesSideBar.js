@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import { FaGripVertical } from "react-icons/fa";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { FiPlus } from "react-icons/fi";
 import { MdClear } from "react-icons/md";
 import styled from "styled-components";
@@ -52,6 +52,7 @@ const MultiRulesSideBar = (props: Props) => {
     onMove,
     readOnly,
   } = props;
+  const { t } = useTranslation();
   const [removingIndex, setRemovingIndex] = useState<number | null>(null);
 
   const handleRemove = i => () => setRemovingIndex(i);
@@ -120,9 +121,9 @@ const MultiRulesSideBar = (props: Props) => {
         isOpened={removingIndex !== null}
         onReject={handleRejectRemoval}
         onConfirm={handleConfirmRemoval}
-        confirmLabel={<Trans i18nKey="approvalsRules:removeRulesSetYes" />}
+        confirmLabel={t("approvalsRules:removeRulesSetYes")}
       >
-        <Trans i18nKey="approvalsRules:removeRulesSetConfirm" />
+        {t("approvalsRules:removeRulesSetConfirm")}
       </ConfirmModal>
     </>
   );

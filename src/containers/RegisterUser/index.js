@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import invariant from "invariant";
 
 import connectData from "restlay/connectData";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import type { Match } from "react-router-dom";
 
@@ -47,7 +47,7 @@ function RegisterUser(props: Props) {
   const [isRegistering, setRegistering] = useState(false);
 
   const { userInvite, organization, restlay, match } = props;
-
+  const { t } = useTranslation();
   invariant(userInvite, "No user invitation found.");
 
   function renderUserIcon() {
@@ -104,19 +104,13 @@ function RegisterUser(props: Props) {
             </Absolute>
 
             <Box mt={15}>
-              <LineRow
-                label={<Trans i18nKey="inviteUser:registration.username" />}
-              >
+              <LineRow label={t("inviteUser:registration.username")}>
                 {userInvite.user.username}
               </LineRow>
-              <LineRow
-                label={<Trans i18nKey="inviteUser:registration.userID" />}
-              >
+              <LineRow label={t("inviteUser:registration.userID")}>
                 {userInvite.user.user_id.toUpperCase()}
               </LineRow>
-              <LineRow
-                label={<Trans i18nKey="inviteUser:registration.workspace" />}
-              >
+              <LineRow label={t("inviteUser:registration.workspace")}>
                 {workspace}
               </LineRow>
             </Box>
@@ -146,7 +140,7 @@ function RegisterUser(props: Props) {
                     onClick={() => setRegistering(true)}
                     data-test="button_registration"
                   >
-                    <Trans i18nKey="inviteUser:registration.button" />
+                    {t("inviteUser:registration.button")}
                   </Button>
                 </Box>
               )}

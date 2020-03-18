@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState } from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { connect } from "react-redux";
 import { FaRegCopy, FaExchangeAlt } from "react-icons/fa";
@@ -48,6 +48,7 @@ function AccountSettings(props: Props) {
   const [isXpubModalOpen, setXpubModalOpen] = useState(false);
   const curr = getCryptoCurrencyById(account.currency);
   const units = curr.units;
+  const { t } = useTranslation();
 
   const options = units.map(u => ({
     label: u.code,
@@ -73,10 +74,7 @@ function AccountSettings(props: Props) {
   );
   return (
     <Box flow={0}>
-      <LineRow
-        label={<Trans i18nKey="accountSettings:general.units" />}
-        noOverflowHidden
-      >
+      <LineRow label={t("accountSettings:general.units")} noOverflowHidden>
         <Box width={100}>
           <Select
             value={current_unit}
@@ -86,7 +84,7 @@ function AccountSettings(props: Props) {
           />
         </Box>
       </LineRow>
-      <LineRow label={<Trans i18nKey="accountSettings:general.exchange" />}>
+      <LineRow label={t("accountSettings:general.exchange")}>
         <Box horizontal align="center" flow={5}>
           <FaExchangeAlt size={13} color={colors.lightGrey} />
           <Text fontWeight="bold">{exchange || <NotApplicableText />}</Text>
@@ -96,14 +94,10 @@ function AccountSettings(props: Props) {
         account.account_type === "Bitcoin" &&
         account.xpub && (
           <>
-            <LineRow
-              label={
-                <Trans i18nKey="accountSettings:advanced.derivation_path" />
-              }
-            >
+            <LineRow label={t("accountSettings:advanced.derivation_path")}>
               <Text size="small">{account.derivation_path}</Text>
             </LineRow>
-            <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
+            <LineRow label={t("accountSettings:advanced.xpub")}>
               <Button
                 type="filled"
                 variant="primary"

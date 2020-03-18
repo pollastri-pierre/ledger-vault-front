@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { FaUser, FaHistory, FaMobileAlt, FaCheck } from "react-icons/fa";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import connectData from "restlay/connectData";
 
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -37,15 +37,14 @@ const IconBlue = () => <FaMobileAlt size={14} />;
 function ReceiveFlow(props: Props) {
   const { selectedAccount, accounts, onClose } = props;
   const [account, setAccount] = useState<?Account>(selectedAccount);
+  const { t } = useTranslation();
 
   return (
     <Box width={600} style={{ minHeight: 400 }}>
       <RichModalHeader Icon={FaUser} title="Receive" onClose={onClose} />
       <Box p={40} flow={20}>
         <Box>
-          <Label>
-            <Trans i18nKey="receive:selectAccountLabel" />
-          </Label>
+          <Label>{t("receive:selectAccountLabel")}</Label>
           <SelectAccount
             autoFocus={account === null}
             openMenuOnFocus
@@ -55,9 +54,7 @@ function ReceiveFlow(props: Props) {
           />
         </Box>
         {account === null && (
-          <InfoBox type="info">
-            <Trans i18nKey="receive:selectAccount" />
-          </InfoBox>
+          <InfoBox type="info">{t("receive:selectAccount")}</InfoBox>
         )}
         {!!account && <VerifyFreshAddress key={account.id} account={account} />}
       </Box>
@@ -79,7 +76,7 @@ const VerifyFreshAddress = connectData(
       null,
     );
     const [isVerifying, setVerifying] = useState(false);
-
+    const { t } = useTranslation();
     const onVerifySuccess = () => {
       setVerifying(false);
       setHasBeenVerified(true);
@@ -133,7 +130,7 @@ const VerifyFreshAddress = connectData(
         ) : hasBeenVerified === false ? (
           <InfoBox type="error" alignCenter>
             <div>
-              <Trans i18nKey="receive:addressRejected_line1" />
+              {t("receive:addressRejected_line1")}
               <br />
               <Trans
                 i18nKey="receive:addressRejected_line2"
@@ -151,13 +148,13 @@ const VerifyFreshAddress = connectData(
                   components={<strong>0</strong>}
                 />
               </Box>
-              <Trans i18nKey="receive:addressVerified_line2" />
+              {t("receive:addressVerified_line2")}
             </div>
           </InfoBox>
         ) : (
           <InfoBox type="warning" alignCenter>
             <div>
-              <Trans i18nKey="receive:addressNotVerified_line1" />
+              {t("receive:addressNotVerified_line1")}
               <br />
               <Trans
                 i18nKey="receive:addressNotVerified_line2"

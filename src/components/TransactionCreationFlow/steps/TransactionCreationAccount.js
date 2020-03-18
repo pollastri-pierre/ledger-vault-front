@@ -3,7 +3,7 @@
 import React, { useCallback, useMemo } from "react";
 import invariant from "invariant";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import { getBridgeForCurrency } from "bridge";
 import Box from "components/base/Box";
@@ -30,7 +30,7 @@ const TransactionCreationAccount = (
   props: $Shape<TransactionCreationStepProps<any>>,
 ) => {
   const { payload, updatePayload, accounts } = props;
-
+  const { t } = useTranslation();
   const handleChange = useCallback(
     acc => {
       if (acc) {
@@ -56,9 +56,7 @@ const TransactionCreationAccount = (
 
   return (
     <Box>
-      <Label>
-        <Trans i18nKey="transactionCreation:steps.account.title" />
-      </Label>
+      <Label>{t("transactionCreation:steps.account.title")}</Label>
       <SelectAccount
         value={payload.account}
         accounts={filteredAccounts}

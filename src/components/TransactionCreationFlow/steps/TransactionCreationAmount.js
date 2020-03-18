@@ -3,7 +3,7 @@
 import React, { memo } from "react";
 import invariant from "invariant";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import DoubleTilde from "components/icons/DoubleTilde";
 import FakeInputContainer from "components/base/FakeInputContainer";
 
@@ -37,7 +37,7 @@ const TransactionCreationAmount = (
 ) => {
   const { payload, updatePayload, onEnter } = props;
   const { account, transaction, bridge } = payload;
-
+  const { t } = useTranslation();
   invariant(account, "transaction has not been chosen yet");
   invariant(transaction, "transaction has not been created yet");
   invariant(bridge, "bridge has not been created yet");
@@ -139,9 +139,7 @@ const TransactionCreationAmount = (
       )}
       <Box flow={20}>
         <Box>
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.account.amount" />
-          </Label>
+          <Label>{t("transactionCreation:steps.account.amount")}</Label>
           <Box horizontal justify="space-between">
             <Box width={280}>
               {isERC20 ? (
