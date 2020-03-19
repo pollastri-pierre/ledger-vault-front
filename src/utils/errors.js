@@ -100,7 +100,7 @@ function jsonIncludesRegex(err: Error, regex: RegExp) {
 }
 
 // code is intentionally defensive
-export function extractErrorTitle(error: *): string {
+export function extractErrorTitle(error: any): string {
   const title =
     error.json && (error.json.code || error.json.message)
       ? error.json.code && typeof error.json.code === "number"
@@ -113,7 +113,7 @@ export function extractErrorTitle(error: *): string {
 }
 
 export function extractErrorContent(
-  error: *,
+  error: any,
   defaultValue: ?string = "Unexpected error",
 ): string {
   return error.json ? error.json.message : error.message || defaultValue;
