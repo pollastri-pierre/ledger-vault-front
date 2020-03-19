@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { FaUser, FaHistory, FaMobileAlt, FaCheck } from "react-icons/fa";
 import { Trans, useTranslation } from "react-i18next";
 import connectData from "restlay/connectData";
+import noop from "lodash/noop";
 
 import type { RestlayEnvironment } from "restlay/connectData";
 import { DEVICE_REJECT_ERROR_CODE } from "device";
@@ -15,7 +16,7 @@ import { RichModalHeader } from "components/base/Modal";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
 import Copy from "components/base/Copy";
-import { Label } from "components/base/form";
+import { InputText, Label } from "components/base/form";
 import SelectAccount from "components/SelectAccount";
 import InfoBox from "components/base/InfoBox";
 import { RestlayTryAgain } from "components/TryAgain";
@@ -92,7 +93,18 @@ const VerifyFreshAddress = connectData(
     return (
       <Box flow={20}>
         <Box horizontal flow={10} align="center">
-          <Copy text={freshAddress.address} />
+          <Box width={300}>
+            {isVerifying || hasBeenVerified ? (
+              <Copy text={freshAddress.address} />
+            ) : (
+              <InputText
+                grow
+                value={"*".repeat(freshAddress.address.length)}
+                disabled
+                onChange={noop}
+              />
+            )}
+          </Box>
           <Box grow noShrink>
             <Button
               onClick={() => setVerifying(true)}
