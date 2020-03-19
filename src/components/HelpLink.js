@@ -12,18 +12,14 @@ type Props = {
   role: UserRole,
 };
 
-const urlHelp = "http://help.vault.ledger.com";
+export const urlHelp = "http://help.vault.ledger.com";
 const urlSupport = "https://support.vault.ledger.com";
 
-export const urlByRole: { [_: UserRole]: string } = {
-  OPERATOR: `${urlHelp}/operator`,
-  ADMIN: `${urlHelp}/administrator`,
-};
 class HelpLink extends PureComponent<Props> {
   render() {
     // define support center link
     const { subLink, className, support, me, role, ...props } = this.props;
-    let href = role ? urlByRole[role] : me ? urlByRole[me.role] : urlHelp;
+    let href = urlHelp;
 
     if (subLink) {
       href += subLink;

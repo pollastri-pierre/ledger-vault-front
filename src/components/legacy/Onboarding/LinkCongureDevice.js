@@ -3,7 +3,7 @@ import React from "react";
 
 const LinkCongureDevice = ({ children }: { children: * }) => (
   <a
-    href="http://help.vault.ledger.com/administrator/Content/devices/ledgerblueenterprise.htm"
+    href="https://help.vault.ledger.com/Content/devices/dev_psd.html"
     target="_blank"
     rel="noopener noreferrer"
   >
