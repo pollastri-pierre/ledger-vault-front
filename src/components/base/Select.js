@@ -18,7 +18,7 @@ import colors, { opacity } from "shared/colors";
 export type Option = {
   value: string,
   data: *,
-  label: string,
+  label: React$Node,
 };
 
 export type GroupedOption = {

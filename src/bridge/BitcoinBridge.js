@@ -6,6 +6,8 @@ import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import type { Account, TransactionCreationNote } from "data/types";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
 import { InvalidAddress, AddressShouldNotBeSegwit } from "utils/errors";
+import ExtraFieldBitcoinKind from "components/ExtraFields/BitcoinKind";
+import type { UtxoPickingStrategy } from "utils/utxo";
 import type { WalletBridge } from "./types";
 
 export type Transaction = {
@@ -15,6 +17,7 @@ export type Transaction = {
   estimatedMaxAmount: ?BigNumber,
   feeLevel: Speed,
   label: string,
+  utxoPickingStrategy?: ?UtxoPickingStrategy,
   error: ?Error,
   note: TransactionCreationNote,
 };
@@ -53,6 +56,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     estimatedMaxAmount: null,
     feeLevel: "normal",
     label: "",
+    utxoPickingStrategy: null,
     error: null,
     note: {
       title: "",
@@ -113,6 +117,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     note,
   }),
   EditFees: FeesBitcoinKind,
+  ExtraFields: ExtraFieldBitcoinKind,
   checkValidTransactionSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
     if (!t.estimatedFees) return false;
