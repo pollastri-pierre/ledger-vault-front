@@ -8,7 +8,7 @@ import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import { InputText, Label } from "components/base/form";
-import { maxLengthNonAsciiHints } from "components/base/hints";
+import { maxLengthNonAsciiHints, uniqName } from "components/base/hints";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
@@ -113,7 +113,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
   };
 
   render() {
-    const { t, payload } = this.props;
+    const { t, payload, allAccounts } = this.props;
     const { erc20token } = payload;
     const { matchingNamesWarning } = this.state;
     if (!erc20token) return null;
@@ -132,7 +132,13 @@ class ERC20RenderName extends PureComponent<Props, State> {
           value={payload.name}
           data-test="account_childname"
           autoFocus
-          hints={maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)}
+          hints={[
+            ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
+            ...uniqName(
+              payload.name,
+              allAccounts.edges.map(e => e.node.name),
+            ),
+          ]}
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
           IconLeft={() => <ERC20TokenIcon token={erc20token} size={16} />}
@@ -149,7 +155,13 @@ class ERC20RenderName extends PureComponent<Props, State> {
             <InputText
               value={parentAccountName}
               data-test="account_parentname"
-              hints={maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)}
+              hints={[
+                ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
+                ...uniqName(
+                  payload.name,
+                  allAccounts.edges.map(e => e.node.name),
+                ),
+              ]}
               onChange={this.handleChangeParentAccountName}
               placeholder={t("newAccount:options.acc_name_placeholder")}
               IconLeft={parentCurIcon}

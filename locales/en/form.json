@@ -1,6 +1,7 @@
 {
   "hints": {
     "maxLength": "{{maxLength}} characters max ({{nbLeft}} left)",
-    "onlyAscii": "No special characters"
+    "onlyAscii": "No special characters",
+    "uniqName": "Name must be unique"
   }
 }

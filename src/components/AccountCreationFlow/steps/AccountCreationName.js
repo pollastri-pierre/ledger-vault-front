@@ -7,7 +7,7 @@ import Disabled from "components/Disabled";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import { maxLengthNonAsciiHints } from "components/base/hints";
+import { maxLengthNonAsciiHints, uniqName } from "components/base/hints";
 import { InputText, Label, Form } from "components/base/form";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
@@ -76,7 +76,13 @@ export default function AccountCreationOptions(
             disabled={isDisabled}
             autoFocus
             onChange={handleChangeName}
-            hints={maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)}
+            hints={[
+              ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
+              ...uniqName(
+                payload.name,
+                allAccounts.edges.map(e => e.node.name),
+              ),
+            ]}
             placeholder={t("newAccount:options.acc_name_placeholder")}
             {...inputProps}
             IconLeft={IconLeft}

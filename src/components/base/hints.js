@@ -22,3 +22,13 @@ export const maxLengthNonAsciiHints = (maxLength: number) => {
     },
   ];
 };
+
+export const uniqName = (name: string, usedNames: string[]) => {
+  return [
+    {
+      key: "uniqName",
+      label: () => <Trans i18nKey="form:hints.uniqName" />,
+      check: (v: string) => usedNames.indexOf(v) === -1,
+    },
+  ];
+};
