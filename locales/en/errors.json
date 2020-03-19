@@ -107,6 +107,10 @@
     "title": "No workspace for this device",
     "description": "This device has not been registered in any workspace"
   },
+  "AccountNameAlreadyExists": {
+    "title": "Name already used",
+    "description": "An account already uses this name. Please enter a different one"
+  },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"

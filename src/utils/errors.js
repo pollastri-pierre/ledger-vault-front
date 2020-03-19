@@ -58,6 +58,9 @@ export const InvalidOrMissingAttestation = createCustomErrorClass(
 export const NoWorkspaceForDevice = createCustomErrorClass(
   "NoWorkspaceForDevice",
 );
+export const AccountNameAlreadyExists = createCustomErrorClass(
+  "AccountNameAlreadyExists",
+);
 
 export function remapError(err: Error) {
   // $FlowFixMe
@@ -79,6 +82,9 @@ export function remapError(err: Error) {
 
   if (jsonIncludesRegex(err, /Model '[^']+' of type 'User' already exists/)) {
     return new UserIdAlreadyUsed();
+  }
+  if (jsonIncludes(err, "Account name already exists in this currency")) {
+    return new AccountNameAlreadyExists();
   }
   return err;
 }
