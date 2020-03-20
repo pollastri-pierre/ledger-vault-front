@@ -105,7 +105,7 @@ function main () {
 
   if [[ "$ONLY_SCENARIO" == "0" ]]; then
     up_containers
-    wait_up_gate
+    wait_up_containers
   fi
 
   if [[ "$SHOULD_RUN" == "1" ]]; then
@@ -170,20 +170,28 @@ function sync_containers() {
   fi
 }
 
-function wait_up_gate() {
-  printf "\033[34m- waiting for gate... \033[0m"
+function wait_up_containers() {
+  printf "\033[34m- waiting for containers to be healthy... \033[0m"
   while true; do
-    if curl --connect-timeout 1 http://localhost:5000/ledger1/_health &>/dev/null ; then
-      break
+    unhealthy="$(docker ps --filter 'health=unhealthy' --filter 'health=starting' --format '{{.Names}}')"
+    healthy="$(docker ps --filter 'health=healthy' --format '{{.Names}}')"
+
+    # At least one docker container should be up and healthy,
+    # + we wait until no container is unhealthy at which point the whole vault should be properly running
+    if [ "${healthy}" = "" ]; then
+      echo "No service started yet..."
+    elif [ "${unhealthy}" = "" ]; then
+      # We check on last time that the gate is up and ready
+      if curl --connect-timeout 1 http://localhost:5000/ledger1/_health &>/dev/null ; then
+        break
+      else
+        printf "\031All services healthy, but the gate is not responding properly!! \031[0m"
+        exit 1
+      fi
     fi
     printf "."
-    sleep 0.2
+    sleep 2
   done
-
-  # TODO we should not be forced to do that
-  printf "\n\033[34m- additional waiting time for gate to wake up... \033[0m"
-  sleep 10
-
   echo "[OK]"
 }
 

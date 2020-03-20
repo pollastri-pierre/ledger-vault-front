@@ -34,7 +34,17 @@ yarn
 yarn vault -i
 ```
 
-for more details about how to use `yarn vault` (ability to automatically onboard, to add real-world users, groups, accounts...), you can check `yarn vault -h`
+for more details about how to use `yarn vault` (ability to automatically onboard, to add real-world users, groups, accounts...), you can check `yarn vault -h`.
+
+You can override any env variable exposed in [vault-integration's docker-compose](https://github.com/LedgerHQ/vault-integration/docker-compose.yml).
+
+For example you can use a local bitcoin blockchain by spawning [regtest](https://github.com/LedgerHQ/ledger-regtest-docker) and overriding the following env vars:
+
+```
+# Point at your docker host to find the explorer
+export WALLET_BTC_TESTNET_EXPLORER_ENDPOINT=http://172.17.0.1
+export WALLET_BTC_TESTNET_EXPLORER_PORT=20000
+```
 
 3. Run the front
 
