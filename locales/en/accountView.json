@@ -8,6 +8,8 @@
   "erc20NoCountervalue": "Countervalue not available for this token",
   "erc20DisabledCountervalue": "Countervalue disabled for this token",
   "erc20_children": "Children ERC20 token accounts",
+  "overview": "Overview",
+  "UTXOs": "UTXOs",
   "last_op": {
     "address": "address",
     "amount": "amount",
@@ -47,5 +49,9 @@
   "synced": "Synchronized",
   "sendButton": "Send",
   "receiveButton": "Receive",
-  "navigateParent": "Go to parent account"
+  "navigateParent": "Go to parent account",
+  "utxos": {
+    "utxo_distro_title": "Utxo distribution",
+    "utxo_search_title": "UTXOs"
+  }
 }

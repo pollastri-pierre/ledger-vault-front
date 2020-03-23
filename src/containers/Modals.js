@@ -14,6 +14,7 @@ import TransactionDetails from "components/transactions/TransactionDetails";
 import EditAdminRules from "containers/Admin/Dashboard/EditAdminRules";
 import ReceiveFlow from "components/ReceiveFlow";
 import UserCreationFlow from "components/UserCreationFlow";
+import ConsolidateUTXOFlow from "components/ConsolidateUTXOFlow";
 
 export default () => (
   <>
@@ -87,6 +88,12 @@ export default () => (
     />
 
     {/* TRANSACTION */}
+    <ModalRoute
+      transparent
+      path="*/consolidate/:accountId"
+      component={ConsolidateUTXOFlow}
+      disableBackdropClick
+    />
     <ModalRoute
       transparent
       path="*/send/:id?"

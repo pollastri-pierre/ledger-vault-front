@@ -16,10 +16,11 @@ type Props = {
   compact?: boolean,
   customBg?: string,
   children?: React$Node,
+  grow?: boolean,
 };
 
 export default function Copy(props: Props) {
-  const { text, compact, customBg, children } = props;
+  const { text, compact, customBg, children, grow } = props;
   const [copied, setCopied] = useState(false);
   const isUnmounted = useRef();
 
@@ -42,6 +43,7 @@ export default function Copy(props: Props) {
       <Text
         data-test="Copy_value"
         style={compact ? { ...textStyles, ...compactStyle } : textStyles}
+        grow={grow}
       >
         {children || text}
       </Text>

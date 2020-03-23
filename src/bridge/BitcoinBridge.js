@@ -17,6 +17,7 @@ export type Transaction = {
   label: string,
   error: ?Error,
   note: TransactionCreationNote,
+  expectedNbUTXOs: number,
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -54,6 +55,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     feeLevel: "normal",
     label: "",
     error: null,
+    expectedNbUTXOs: 0,
     note: {
       title: "",
       content: "",

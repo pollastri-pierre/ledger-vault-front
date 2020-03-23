@@ -1,6 +1,7 @@
 // @flow
 
 import React, { memo } from "react";
+import { BigNumber } from "bignumber.js";
 import invariant from "invariant";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { useTranslation } from "react-i18next";
@@ -17,13 +18,8 @@ import {
   InputAmountNoUnits,
   Form,
 } from "components/base/form";
-import {
-  AmountTooHigh,
-  AmountExceedMax,
-  RippleAmountExceedMinBalance,
-} from "utils/errors";
+import { AmountTooHigh, RippleAmountExceedMinBalance } from "utils/errors";
 import { getMatchingRulesSet } from "utils/multiRules";
-import { currencyUnitValueFormat } from "components/CurrencyUnitValue";
 import { MIN_RIPPLE_BALANCE } from "bridge/RippleBridge";
 import colors from "shared/colors";
 
@@ -87,11 +83,9 @@ const TransactionCreationAmount = (
   }
 
   if (gateMaxAmount && transaction.amount.isGreaterThan(gateMaxAmount)) {
-    amountErrors.push(
-      new AmountExceedMax(null, {
-        max: currencyUnitValueFormat(currency.units[0], gateMaxAmount),
-      }),
-    );
+    // reset tx amount
+    onChangeAmount(BigNumber(0));
+    props.setUtxoError(transaction.amount);
   }
 
   const matchingRulesSet = getMatchingRulesSet({

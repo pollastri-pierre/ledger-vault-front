@@ -18,6 +18,7 @@ export const mapRestlayKeyToType = {
   accounts: "ACCOUNT",
   transactions: "TRANSACTION",
   whitelists: "WHITELIST",
+  utxos: "UTXO",
 };
 
 export type Translate = (?string, ?Object) => any;
@@ -637,12 +638,19 @@ type RequestApproval = {
   step: number,
 };
 
-export type FreshAddress = {
+export type AddressDaemon = {
   address: string,
   derivation_path: string,
 };
 
+export type UTXORange = {
+  range: string,
+  amount: BigNumber,
+  number: number,
+};
+
 export type UTXO = {
+  id: number, // added by the front in the transformer
   address: string,
   height: number,
   confirmations: number,

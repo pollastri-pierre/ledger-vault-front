@@ -267,7 +267,7 @@ function genUtxo() {
   const amount = BigNumber(
     faker.random.number({
       min: 1,
-      max: 599999999,
+      max: 59999,
     }),
   );
   const height = faker.random.number({ min: 55559, max: 69897 });

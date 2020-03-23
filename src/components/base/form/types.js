@@ -14,3 +14,10 @@ export type InputProps<T> = {
   warnings?: Error[],
   hints?: Hint[],
 };
+
+export type Icon = {
+  size?: number,
+  color?: string,
+};
+
+export type Alignment = "left" | "right" | "center";

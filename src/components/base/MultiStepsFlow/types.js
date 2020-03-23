@@ -27,4 +27,5 @@ export type StepProps<T> = {
   onClose?: () => void,
   onSuccess?: () => void,
   onEnter: () => void,
+  goNext: () => void,
 };

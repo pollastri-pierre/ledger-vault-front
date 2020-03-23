@@ -20,6 +20,8 @@ const Account = create("accounts", {
 const Whitelist = create("whitelists");
 
 const Request = create("requests");
+const UtxoRange = create("utxoRange", {}, "range");
+const Addresses = create("addresses", {}, "address");
 
 const Activity = create(
   "activities",
@@ -57,4 +59,6 @@ export default {
   Balance,
   Activity,
   Utxo,
+  UtxoRange,
+  Addresses,
 };
