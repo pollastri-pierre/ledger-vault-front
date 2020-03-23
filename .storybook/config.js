@@ -22,6 +22,10 @@ import { styledTheme } from "styles/theme";
 import GlobalStyle from "components/GlobalStyle";
 import i18n from "./i18n";
 
+import erc20list from "data/erc20-list.dev.json";
+
+window.erc20 = erc20list;
+
 const createStore = () => {
   return reduxCreateStore(
     combineReducers({
