@@ -335,6 +335,11 @@ export function serializePayload(payload: serializePayloadProps) {
       fees_level: transaction.feeLevel,
     });
   }
+  if (transaction.utxoPickingStrategy) {
+    Object.assign(tx, {
+      utxo_picking_strategy: transaction.utxoPickingStrategy,
+    });
+  }
 
   if (account.account_type === "Ethereum" || account.account_type === "Erc20") {
     // $FlowFixMe

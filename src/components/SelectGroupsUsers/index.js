@@ -32,7 +32,7 @@ export type Item = MemberItem | GroupItem;
 type Option = {
   value: string,
   data: Item,
-  label: string,
+  label: React$Node,
 };
 
 type Props = {

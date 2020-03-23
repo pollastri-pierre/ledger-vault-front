@@ -12,6 +12,7 @@
         "recompute": "Recalculate the fees"
       },
       "select": "Select address",
+      "utxo_picking_strategy": "UTXO picking strategy",
       "recipient": "Recipient address",
       "feesInfos": "To have your transaction confirmed faster, select a higher fee.",
       "estimatedFees": "Estimated fees",
@@ -35,11 +36,17 @@
       "amount": "Amount",
       "account": "Account to Debit",
       "desc": "A transaction request will be sent to the members of the account. It won't be broadcasted to the blockchain until it's approved.",
+      "strategy": "UTXO picking strategy",
       "fees": "Confirmation fees",
       "identifier": "Recipient address",
       "total": "Total amount",
       "totalERC20Info": "Excluding confirmation fees"
     }
+  },
+  "strategy": {
+    "MERGE_OUTPUTS": "MERGE_OUTPUTS",
+    "OPTIMIZE_SIZE": "OPTIMIZE_SIZE",
+    "DEEP_OUTPUTS_FIRST": "DEEP_OUTPUTS_FIRST"
   },
   "cta": "Create transaction",
   "finish": "Finish",

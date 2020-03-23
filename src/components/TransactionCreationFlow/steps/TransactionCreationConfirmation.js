@@ -47,6 +47,11 @@ export default (props: TransactionCreationStepProps<any>) => {
         label={t("transactionCreation:steps.note.noteContent")}
         content={transaction.note.content || ""}
       />
+      {transaction.utxoPickingStrategy && (
+        <LineRow label={t("transactionCreation:steps.confirmation.strategy")}>
+          {transaction.utxoPickingStrategy}
+        </LineRow>
+      )}
       <LineRow label={t("transactionCreation:steps.confirmation.fees")}>
         <Amount account={account} value={fees} disableERC20 />
       </LineRow>
