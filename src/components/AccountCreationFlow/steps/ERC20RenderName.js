@@ -18,6 +18,7 @@ import type { AccountCreationStepProps, ParentAccount } from "../types";
 
 type Props = AccountCreationStepProps & {
   t: Translate,
+  isEditMode?: boolean,
 };
 
 type State = {
@@ -113,7 +114,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
   };
 
   render() {
-    const { t, payload, allAccounts } = this.props;
+    const { t, payload, allAccounts, isEditMode } = this.props;
     const { erc20token } = payload;
     const { matchingNamesWarning } = this.state;
     if (!erc20token) return null;
@@ -125,6 +126,16 @@ class ERC20RenderName extends PureComponent<Props, State> {
 
     const parentAccountName = getParentAccountName(parentAccount);
 
+    const hints = isEditMode
+      ? [...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)]
+      : [
+          ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
+          ...uniqName(
+            payload.name,
+            allAccounts.edges.map(e => e.node.name),
+          ),
+        ];
+
     return (
       <>
         <Label>{t("newAccount:options.name")}</Label>
@@ -132,13 +143,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
           value={payload.name}
           data-test="account_childname"
           autoFocus
-          hints={[
-            ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
-            ...uniqName(
-              payload.name,
-              allAccounts.edges.map(e => e.node.name),
-            ),
-          ]}
+          hints={hints}
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
           IconLeft={() => <ERC20TokenIcon token={erc20token} size={16} />}

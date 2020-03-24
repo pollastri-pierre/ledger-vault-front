@@ -48,9 +48,20 @@ export default function AccountCreationOptions(
     account.status !== "VIEW_ONLY" &&
     account.status !== "MIGRATED";
 
+  const hints = isEditMode
+    ? [...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)]
+    : [
+        ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
+        ...uniqName(
+          payload.name,
+          allAccounts.edges.map(e => e.node.name),
+        ),
+      ];
+
   if (payload.erc20token) {
     inner = (
       <ERC20RenderName
+        isEditMode={isEditMode}
         payload={payload}
         allAccounts={allAccounts}
         updatePayload={updatePayload}
@@ -76,13 +87,7 @@ export default function AccountCreationOptions(
             disabled={isDisabled}
             autoFocus
             onChange={handleChangeName}
-            hints={[
-              ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
-              ...uniqName(
-                payload.name,
-                allAccounts.edges.map(e => e.node.name),
-              ),
-            ]}
+            hints={hints}
             placeholder={t("newAccount:options.acc_name_placeholder")}
             {...inputProps}
             IconLeft={IconLeft}

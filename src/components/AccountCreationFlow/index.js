@@ -116,6 +116,7 @@ const steps = [
     requirements: (payload: AccountCreationPayload, additionalProps) => {
       if (
         additionalProps &&
+        !additionalProps.isEditMode &&
         additionalProps.allAccounts.edges
           .map(e => e.node.name)
           .indexOf(payload.name) > -1
@@ -284,7 +285,7 @@ const AccountEdit = connectData(
             </Text>
           }
           steps={steps}
-          additionalProps={props}
+          additionalProps={{ ...props, isEditMode: true }}
           onClose={props.close}
           isEditMode
           initialPayload={mergeEditData(
