@@ -39,7 +39,7 @@ const TextBase = styled.div`
   ${space};
   ${color};
   display: ${p => (p.inline ? "inline-block" : "block")};
-  font-family: "Inter", "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: ${p => getFontSize(p)}px;
   font-weight: ${p => getFontWeight(p)} !important;
   font-style: ${p => (p.italic ? "italic" : "inherit")};

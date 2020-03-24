@@ -5,6 +5,7 @@ import { registerTransportModule } from "@ledgerhq/live-common/lib/hw";
 import type Transport from "@ledgerhq/hw-transport";
 
 import { softwareMode } from "device/interface";
+import { createEmulatorTransport } from "components/Emulator";
 
 export const CURRENT_APP_NAME = "Vault";
 export const U2F_PATH = [0x80564c54, 0x80553246];
@@ -79,6 +80,15 @@ registerTransportModule({
     if (id !== "webusb") return;
     if (softwareMode()) return mockTransport;
     return TransportUSB.create();
+  },
+  disconnect: () => null,
+});
+
+registerTransportModule({
+  id: "weblue",
+  open: (id: string) => {
+    if (id !== "weblue") return;
+    return createEmulatorTransport();
   },
   disconnect: () => null,
 });

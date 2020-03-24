@@ -197,53 +197,51 @@ const LeftIcon = ({
 const RightIcon = ({ type }: { type: CurrentActionType }) =>
   type === "device" ? computerIcon : serverIcon;
 
-class DeviceInteractionAnimation extends PureComponent<Props> {
-  render() {
-    const {
-      numberSteps,
-      interaction,
-      currentStep,
-      error,
-      light,
-      shouldReconnectWebUSB,
-      onWebUSBReconnect,
-    } = this.props;
+const DeviceInteractionAnimation = (props: Props) => {
+  const {
+    numberSteps,
+    interaction,
+    currentStep,
+    error,
+    light,
+    shouldReconnectWebUSB,
+    onWebUSBReconnect,
+  } = props;
 
-    const { needsUserInput, tooltip } = interaction;
-    const currentActionType = interaction.device ? "device" : "server";
+  const { needsUserInput, tooltip } = interaction;
+  const currentActionType = interaction.device ? "device" : "server";
 
-    if (shouldReconnectWebUSB) {
-      return (
-        <FallbackContainer>
-          <WebUSBClickFallback onClick={onWebUSBReconnect} />
-          <FadeIn>
-            <Tooltip right>
-              <Text i18nKey="deviceInteractions:webusb_reconnect" />
-            </Tooltip>
-          </FadeIn>
-        </FallbackContainer>
-      );
-    }
-
+  if (shouldReconnectWebUSB) {
     return (
-      <Container error={error} light={light}>
-        <LeftIcon type={currentActionType} needsUserInput={needsUserInput} />
-        <DashContainer
-          number={numberSteps}
-          currentStep={currentStep}
-          error={error}
-        />
-        <RightIcon type={currentActionType} />
-        {(needsUserInput || currentStep === 0) && (
-          <FadeIn>
-            <Tooltip right>
-              {tooltip || <Text i18nKey="common:approve_device" />}
-            </Tooltip>
-          </FadeIn>
-        )}
-      </Container>
+      <FallbackContainer>
+        <WebUSBClickFallback onClick={onWebUSBReconnect} />
+        <FadeIn>
+          <Tooltip right>
+            <Text>Please click again to pair the device</Text>
+          </Tooltip>
+        </FadeIn>
+      </FallbackContainer>
     );
   }
-}
+
+  return (
+    <Container error={error} light={light}>
+      <LeftIcon type={currentActionType} needsUserInput={needsUserInput} />
+      <DashContainer
+        number={numberSteps}
+        currentStep={currentStep}
+        error={error}
+      />
+      <RightIcon type={currentActionType} />
+      {(needsUserInput || currentStep === 0) && (
+        <FadeIn>
+          <Tooltip right>
+            {tooltip || <Text i18nKey="common:approve_device" />}
+          </Tooltip>
+        </FadeIn>
+      )}
+    </Container>
+  );
+};
 
 export default DeviceInteractionAnimation;

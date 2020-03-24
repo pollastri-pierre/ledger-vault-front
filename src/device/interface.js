@@ -25,6 +25,7 @@ import {
 } from "device/VaultDeviceApp";
 
 export const softwareMode = () => {
+  if (localStorage.getItem("TRANSPORT") === "weblue") return false;
   if (window.FORCE_HARDWARE || localStorage.getItem("FORCE_HARDWARE") === "1")
     return false;
   if (localStorage.getItem("SOFTWARE_DEVICE") === "1") return true;
