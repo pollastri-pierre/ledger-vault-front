@@ -27,6 +27,7 @@ import AccountIcon from "components/legacy/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Tooltip from "components/base/Tooltip";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import { isMemberOfFirstApprovalStep } from "utils/users";
 import { isAccountSpendable } from "utils/transactions";
 import Widget from "./Widget";
 
@@ -48,7 +49,7 @@ export const AccountQuickInfoHeaderUtxo = ({ account }: Props) => {
     <PageHeaderActions title={account.name}>
       <Box horizontal flow={10}>
         <SyncButton account={account} />
-        {me.role === "OPERATOR" && (
+        {me.role === "OPERATOR" && isMemberOfFirstApprovalStep(account) && (
           <Button size="small" type="filled">
             <Link to={`${account.id}/consolidate/${account.id}`}>
               Consolidate
