@@ -37,7 +37,7 @@
   },
   "TooManyUTXOs": {
     "title": "Too much UTXOs selected",
-    "description": "Please choose a smaller number"
+    "description": "Please enter a smaller number"
   },
   "ERC20FeesExceedParentAccountBalance": {
     "title": "Not enough funds",
