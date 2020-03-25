@@ -154,7 +154,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
           flow={10}
         >
           <FaRegCommentAlt />
-          <Text fontWeight="bold">Add comments to transaction</Text>
+          <Text fontWeight="bold">Add comments</Text>
         </Box>
       )}
     </Box>
