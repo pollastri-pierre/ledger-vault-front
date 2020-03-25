@@ -17,6 +17,7 @@ import { AccountQuickInfoHeaderUtxo } from "components/widgets/AccountQuickInfoW
 import { isBalanceAvailable } from "utils/accounts";
 import { UtxosFilters } from "components/filters";
 import Box from "components/base/Box";
+import Card from "components/base/Card";
 import {
   AccountQuickInfoWidget,
   AccountLastTransactionsWidget,
@@ -47,13 +48,16 @@ function AccountView(props: Props) {
           <Box flow={50}>
             <UtxoDistributionWidget account={account} />
             <Widget title={t("accountView:utxos.utxo_search_title")}>
-              <DataSearch
-                Query={AccountUTXOQuery}
-                extraProps={{ accountId: account.id, account }}
-                queryExtraProps={{ accountId: account.id }}
-                TableComponent={UtxosTable}
-                FilterComponent={UtxosFilters}
-              />
+              <Card style={{ padding: 0 }}>
+                <DataSearch
+                  noFilter
+                  Query={AccountUTXOQuery}
+                  extraProps={{ accountId: account.id, account }}
+                  queryExtraProps={{ accountId: account.id }}
+                  TableComponent={UtxosTable}
+                  FilterComponent={UtxosFilters}
+                />
+              </Card>
             </Widget>
           </Box>
         </Box>

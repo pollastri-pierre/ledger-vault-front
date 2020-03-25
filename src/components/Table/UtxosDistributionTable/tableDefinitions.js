@@ -3,7 +3,7 @@
 export const UtxosDistributionTableDefault = [
   {
     header: {
-      label: "Utxo range",
+      label: "UTXO range",
       align: "left",
     },
     body: {
@@ -23,7 +23,7 @@ export const UtxosDistributionTableDefault = [
   },
   {
     header: {
-      label: "countervalue",
+      label: "Countervalue",
       align: "left",
     },
     body: {

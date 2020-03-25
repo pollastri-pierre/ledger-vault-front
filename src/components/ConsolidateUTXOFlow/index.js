@@ -2,10 +2,12 @@
 
 import React from "react";
 import { FaMoneyCheck } from "react-icons/fa";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import connectData from "restlay/connectData";
+import Box from "components/base/Box";
+import Button from "components/base/Button";
 import AddressFromDerivationPathQuery from "api/queries/AddressFromDerivationPathQuery";
 import { getBridgeForCurrency } from "bridge";
 import { CardError } from "components/base/Card";
@@ -39,9 +41,20 @@ const steps = [
   {
     id: "finish",
     name: <Trans i18nKey="transactionCreation:finish" />,
+    hideBack: true,
     Step: () => (
       <MultiStepsSuccess title={"Account successfully consolidated"} />
     ),
+    Cta: ({ onClose }: { onClose?: () => void }) => {
+      const { t } = useTranslation();
+      return (
+        <Box my={10}>
+          <Button type="filled" onClick={onClose}>
+            {t("common:done")}
+          </Button>
+        </Box>
+      );
+    },
   },
 ];
 
@@ -61,7 +74,7 @@ export default connectData(
       expectedNbUTXOs,
       amount: totalAmount,
       recipient: freshAddress[0].address,
-      note: { title: "", content: "" },
+      note: { title: `Consolidation - ${account.name}`, content: "" },
     };
     const payload = {
       transaction,
