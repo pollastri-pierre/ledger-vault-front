@@ -19,18 +19,20 @@ const edges = mockEntities.utxosArray.map(key => ({
 
 const mock = [
   {
-    url: /accounts\/[0-9]+\/fresh_addresses\/[0-9]+/,
-    res: () => ({
-      address: "mmcXDpCHz5GVjPotUTDSbTpnHQcZLbzKbn", // Bitcoin testNet
-      derivation_path: "0/0",
-    }),
+    url: /accounts\/[0-9]+\/addresses\?from=[0-9]+&to=[0-9]+/,
+    res: () => [
+      {
+        address: "mmcXDpCHz5GVjPotUTDSbTpnHQcZLbzKbn", // Bitcoin testNet
+        derivation_path: "0/0",
+      },
+    ],
   },
   {
     url: /^\/accounts\/[0-9]+$/,
     res: () => accounts[0],
   },
   {
-    url: /\/utxos-mocks\?pageSize=-1/,
+    url: /\/utxos\?page=1&pageSize=-1/,
     res: () => ({ edges, pageInfo: { hasNextPage: false } }),
   },
 ];
