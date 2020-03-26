@@ -1,7 +1,6 @@
 // Default way to login. It clears the cache
 
 export function login(id) {
-  const orga_name = Cypress.env("workspace");
   cy.visit(Cypress.env("api_server"));
   cy.clearCookies();
   switch_device(id);
