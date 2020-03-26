@@ -3,7 +3,27 @@
 export const UtxosTableDefault = [
   {
     header: {
-      label: "Utxo",
+      label: "Transaction hash",
+      align: "left",
+    },
+    body: {
+      prop: "txhash",
+      align: "left",
+    },
+  },
+  {
+    header: {
+      label: "Index",
+      align: "left",
+    },
+    body: {
+      prop: "index",
+      align: "left",
+    },
+  },
+  {
+    header: {
+      label: "Output address",
       align: "left",
     },
     body: {
@@ -33,7 +53,7 @@ export const UtxosTableDefault = [
   },
   {
     header: {
-      label: "countervalue",
+      label: "Countervalue",
       align: "left",
     },
     body: {

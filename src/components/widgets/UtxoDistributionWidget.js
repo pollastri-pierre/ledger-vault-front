@@ -17,7 +17,7 @@ function UtxoDistributionWidget(props: Props) {
   const { t } = useTranslation();
   return (
     <Widget title={t("accountView:utxos.utxo_distro_title")}>
-      <Card style={{ padding: 5 }}>
+      <Card style={{ padding: 0, border: "1px solid rgb(233, 233, 233)" }}>
         <Box>
           <UtxosDistributionTable
             account={props.account}

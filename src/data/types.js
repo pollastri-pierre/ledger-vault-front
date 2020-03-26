@@ -655,4 +655,6 @@ export type UTXO = {
   height: number,
   confirmations: number,
   amount: BigNumber,
+  output_index: number,
+  tx_hash: string,
 };
