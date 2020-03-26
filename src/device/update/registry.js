@@ -200,11 +200,11 @@ const findTransitions = (
   const shortestPath = minBy(validPaths, p => p.length);
   return shortestPath.reduce((acc, cur, i) => {
     const next = shortestPath[i + 1];
+    if (isOSU && from.version === cur) {
+      acc.push(parseRawTransition(`${cur} => ${cur}`));
+    }
     if (next) {
       acc.push(parseRawTransition(`${cur} => ${next}`));
-    }
-    if (isOSU) {
-      acc.push(parseRawTransition(`${cur} => ${cur}`));
     }
     return acc;
   }, []);

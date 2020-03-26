@@ -205,16 +205,28 @@ describe("Update registry", () => {
     it("should handle device already in OSU", () => {
       const params = {
         expectedApp: "3.0.9-dev",
-        currentFirmware: "2.2.7-eeld",
+        currentFirmware: "2.2.6-ee",
       };
 
-      const transitions = ["2.2.7-eel => 2.2.7-eeld"];
+      const transitions = [
+        "2.2.6-ee   => 2.2.7-ee",
+        "2.2.6-eed  => 2.2.7-eed",
+        "2.2.7-ee   => 2.2.7-eed",
+        "2.2.7-eel  => 2.2.7-eeld",
+      ];
 
-      const apps = ["2.2.7-eeld app_3.0.9-dev"];
+      const apps = [
+        "2.2.7-ee   app_2.0.9",
+        "2.2.7-ee   app_3.0.9",
+        "2.2.7-eed  app_3.0.9-dev",
+        "2.2.7-eeld app_3.0.9-dev",
+      ];
 
       const expected = [
-        "firm: 2.2.7-eeld => 2.2.7-eeld",
-        "app:  2.2.7-eeld app_3.0.9-dev",
+        "firm: 2.2.6-ee => 2.2.6-ee",
+        "firm: 2.2.6-ee => 2.2.7-ee",
+        "firm: 2.2.7-ee => 2.2.7-eed",
+        "app:  2.2.7-eed app_3.0.9-dev",
       ];
 
       const plan = getUpdatePlan({
