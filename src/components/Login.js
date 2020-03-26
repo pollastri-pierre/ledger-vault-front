@@ -349,6 +349,7 @@ const Welcome: React$ComponentType<WelcomeProps> = connect(mapAutoLogin)(
                 style={{ width: 150 }}
                 type="filled"
                 onClick={handleClick}
+                data-test="loginbutton"
                 // $FlowFixMe no idea why this ref is considered invalid
                 ref={btnRef}
               >
