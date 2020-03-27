@@ -11,7 +11,7 @@ import Text from "components/base/Text";
 import UserAvatar from "components/base/UserAvatar";
 import { useOrganization } from "components/OrganizationContext";
 import { vaultLayoutConfig } from "styles/theme";
-import { urlByRole } from "components/HelpLink";
+import { urlHelp } from "components/HelpLink";
 
 type Props = {
   user: User,
@@ -46,7 +46,7 @@ export default ({ user, onLogout, TopBarContent, isMenuOpened }: Props) => {
       {TopBarContent && <TopBarContent />}
       <VaultLayoutTopBarRight>
         <UserIdentifier username={user.username} />
-        <TopBarAction link={urlByRole[user.role]} Icon={FaQuestionCircle} />
+        <TopBarAction link={urlHelp} Icon={FaQuestionCircle} />
         <TopBarAction data-test="logout" Icon={FaPowerOff} onClick={onLogout} />
       </VaultLayoutTopBarRight>
     </VaultLayoutTopBar>

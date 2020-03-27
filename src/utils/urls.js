@@ -2,7 +2,7 @@
 
 export const urls = {
   customer_support: "https://support.vault.ledger.com",
-  help_updater: "https://help.vault.ledger.com/operator",
+  help_updater: "https://help.vault.ledger.com",
   ledger_updater_mac:
     "https://github.com/LedgerHQ/ledger-updater/releases/download/v1.0.0/ledger-updater-1.0.0.dmg",
   ledger_updater_windows:
