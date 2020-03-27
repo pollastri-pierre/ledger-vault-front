@@ -39,6 +39,9 @@ const onProcessUserInfo = (
   restlay: RestlayEnvironment,
 ) => processUserInfo(payload, updatePayload, restlay.restlay);
 
+const isValidPayload = (payload: UserCreationPayload) =>
+  !!payload.username && isUserIDValid(payload.userID);
+
 const steps = [
   {
     id: "role",
@@ -52,14 +55,18 @@ const steps = [
     requirements: (payload: UserCreationPayload) => {
       return !!payload.role;
     },
-    onNext: onProcessUserInfo,
+    onNext: (payload, updatePayload, additionalProps) => {
+      if (isValidPayload(payload)) {
+        onProcessUserInfo(payload, updatePayload, additionalProps);
+      }
+    },
   },
   {
     id: "recap",
     name: <Trans i18nKey="inviteUser:steps.recap.title" />,
     Step: UserCreationConfirmation,
     requirements: (payload: UserCreationPayload) => {
-      return !!payload.username && isUserIDValid(payload.userID);
+      return isValidPayload(payload);
     },
     Cta: ({ onSuccess }: { onSuccess?: () => void }) => {
       const { t } = useTranslation();
