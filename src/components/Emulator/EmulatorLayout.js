@@ -4,7 +4,13 @@ import React, { useState } from "react";
 import { Menu, MenuList, MenuButton, MenuItem } from "@reach/menu-button";
 import styled from "styled-components";
 import { animated } from "react-spring";
-import { FaMinus, FaExpand, FaChevronDown, FaPlus } from "react-icons/fa";
+import {
+  FaTrash,
+  FaMinus,
+  FaExpand,
+  FaChevronDown,
+  FaPlus,
+} from "react-icons/fa";
 
 import colors from "shared/colors";
 import TranslatedError from "components/TranslatedError";
@@ -15,6 +21,7 @@ import blueLayer from "./blue-layer.svg";
 import blueLayerMinimized from "./blue-layer-minimized.svg";
 import { useEmulatorState, useEmulatorDispatch } from "./EmulatorContext";
 import SeedsManager from "./SeedsManager";
+import SeedsGenerator from "./SeedsGenerator";
 import type { Seed } from "./EmulatorContext";
 
 type Props = {
@@ -269,6 +276,9 @@ const DeviceSwitcher = (props: $Shape<Props>) => {
   const setDevice = d => dispatch({ type: "SET_DEVICE", payload: d });
 
   const handleOpenSeedsManager = () => dispatch({ type: "OPEN_SEEDS_MANAGER" });
+  const handleClearSeeds = () => dispatch({ type: "CLEAR_SEEDS" });
+  const handleOpenSeedsGenerator = () =>
+    dispatch({ type: "OPEN_SEEDS_GENERATOR" });
 
   const handleSpawn = async d => {
     setSpawning(true);
@@ -294,10 +304,26 @@ const DeviceSwitcher = (props: $Shape<Props>) => {
             <MenuToggle isOpen={isOpen}>Spawn device</MenuToggle>
           )}
           <ActionMenuList>
+            {seeds.length > 0 && (
+              <ActionMenuItem onSelect={handleClearSeeds}>
+                <Box flow={8} align="center" horizontal>
+                  <FaTrash />
+                  <span style={{ fontWeight: "bold" }}>Clear seeds</span>
+                </Box>
+              </ActionMenuItem>
+            )}
             <ActionMenuItem onSelect={handleOpenSeedsManager}>
               <Box flow={8} align="center" horizontal>
                 <FaPlus />
                 <span style={{ fontWeight: "bold" }}>Add custom seed</span>
+              </Box>
+            </ActionMenuItem>
+            <ActionMenuItem onSelect={handleOpenSeedsGenerator}>
+              <Box flow={8} align="center" horizontal>
+                <FaPlus />
+                <span style={{ fontWeight: "bold" }}>
+                  Generate Workspace seeds
+                </span>
               </Box>
             </ActionMenuItem>
             {seeds.map(s => {
@@ -323,6 +349,7 @@ const DeviceSwitcher = (props: $Shape<Props>) => {
   return (
     <>
       <SeedsManager onCreate={handleSpawn} />
+      <SeedsGenerator />
       {inner}
     </>
   );

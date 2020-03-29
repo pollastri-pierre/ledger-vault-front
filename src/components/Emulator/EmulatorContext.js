@@ -27,6 +27,7 @@ export type Seed = {
 type State = {
   isOpened: boolean,
   isSeedsManagerOpened: boolean,
+  isSeedsGeneratorOpened: boolean,
   isMinimized: boolean,
   isFetching: boolean,
   devices: EmulatorDevice[],
@@ -38,6 +39,7 @@ type State = {
 const initialState = {
   isOpened: localStorage.getItem("TRANSPORT") === "weblue",
   isSeedsManagerOpened: false,
+  isSeedsGeneratorOpened: false,
   isMinimized: false,
   isFetching: true,
   devices: [],
@@ -49,14 +51,18 @@ const initialState = {
 type Action =
   | { type: "OPEN" }
   | { type: "OPEN_SEEDS_MANAGER" }
+  | { type: "OPEN_SEEDS_GENERATOR" }
   | { type: "CLOSE_SEEDS_MANAGER" }
+  | { type: "CLOSE_SEEDS_GENERATOR" }
   | { type: "CLOSE" }
   | { type: "TOGGLE_MINIMIZE" }
   | { type: "REGISTER_SEED", payload: Seed }
+  | { type: "GENERATE_SEEDS", payload: Seed[] }
   | { type: "SET_ERROR", payload: Error | null }
   | { type: "SET_FETCHING", payload: boolean }
   | { type: "SET_DEVICES", payload: EmulatorDevice[] }
-  | { type: "SET_DEVICE", payload: EmulatorDevice | null };
+  | { type: "SET_DEVICE", payload: EmulatorDevice | null }
+  | { type: "CLEAR_SEEDS" };
 
 type Dispatch = Action => void;
 
@@ -65,16 +71,24 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "OPEN":
       return { ...state, isOpened: true };
+    case "OPEN_SEEDS_GENERATOR":
+      return { ...state, isSeedsGeneratorOpened: true };
     case "OPEN_SEEDS_MANAGER":
       return { ...state, isSeedsManagerOpened: true };
     case "CLOSE":
       return { ...state, isOpened: false, isFetching: true };
+    case "CLOSE_SEEDS_GENERATOR":
+      return { ...state, isSeedsGeneratorOpened: false };
     case "CLOSE_SEEDS_MANAGER":
       return { ...state, isSeedsManagerOpened: false };
     case "TOGGLE_MINIMIZE":
       return { ...state, isMinimized: !state.isMinimized };
     case "REGISTER_SEED":
       seeds = [...state.seeds, action.payload];
+      localStorage.setItem("WEBLUE_SEEDS", JSON.stringify(seeds));
+      return { ...state, seeds };
+    case "GENERATE_SEEDS":
+      seeds = action.payload;
       localStorage.setItem("WEBLUE_SEEDS", JSON.stringify(seeds));
       return { ...state, seeds };
     case "SET_ERROR":
@@ -85,6 +99,10 @@ const reducer = (state, action) => {
       return { ...state, devices: action.payload };
     case "SET_DEVICE":
       return { ...state, device: action.payload };
+    case "CLEAR_SEEDS":
+      seeds = [];
+      localStorage.setItem("WEBLUE_SEEDS", JSON.stringify(seeds));
+      return { ...state, seeds };
     default:
       return state;
   }
