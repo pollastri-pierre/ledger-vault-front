@@ -74,7 +74,7 @@ const ExtraFieldsBitcoin = (props: EditProps<BitcoinTransaction>) => {
             {...props}
             isClearable
             openMenuOnFocus
-            placeholder={"utxo picking strategy"}
+            placeholder={"Choose a UTXO selection strategy"}
             value={value}
             options={options}
             onChange={handleChange}
