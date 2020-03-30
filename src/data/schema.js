@@ -12,7 +12,7 @@ const Currency = create("currencies", {}, "name");
 const Fiat = create("fiats");
 
 const Address = create("Address");
-const Utxo = create("Utxo", {}, "address");
+const Utxo = create("Utxo", {}, "id");
 const Account = create("accounts", {
   fresh_addresses: Address,
 });
