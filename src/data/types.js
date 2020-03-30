@@ -6,6 +6,7 @@ import type {
   RuleWhitelist,
   RuleThreshold,
 } from "components/MultiRules/types";
+import type { UtxoPickingStrategy } from "utils/utxo";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 // This contains all the flow types for the Data Model (coming from the API)
@@ -187,6 +188,7 @@ export type TransactionGetFees = {
   gas_limit?: ?BigNumber,
   gas_price?: ?BigNumber,
   max_amount?: ?BigNumber,
+  utxo_picking_strategy?: UtxoPickingStrategy,
   memo?: [],
 };
 

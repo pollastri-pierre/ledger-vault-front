@@ -72,6 +72,7 @@ export default connectData(
     const transaction = {
       ...tx,
       expectedNbUTXOs,
+      utxoPickingStrategy: "MERGE_OUTPUTS",
       amount: totalAmount,
       recipient: freshAddress[0].address,
       note: { title: `Consolidation - ${account.name}`, content: "" },

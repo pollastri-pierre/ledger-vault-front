@@ -47,13 +47,7 @@ const ValidateUTXOConsolidation = (props: ConsolidateUTXOStepProps) => {
         additionalFields={{
           type: "CREATE_TRANSACTION",
           targetType: "CREATE_TRANSACTION",
-          data: {
-            ...transactionPayload,
-            transaction: {
-              ...transactionPayload.transaction,
-              utxo_picking_strategy: "MERGE_OUTPUTS",
-            },
-          },
+          data: transactionPayload,
         }}
         buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
       />

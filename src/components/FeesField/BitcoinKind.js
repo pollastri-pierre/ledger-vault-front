@@ -47,6 +47,7 @@ function FeesBitcoinKind(props: Props) {
   const currency = getCryptoCurrencyById(account.currency);
   const prevRecipient = usePrevious(transaction.recipient);
   const prevAmount = usePrevious(transaction.amount);
+  const prevStrategy = usePrevious(transaction.utxoPickingStrategy);
   const prevFeeLevel = usePrevious(transaction.feeLevel);
   const { t } = useTranslation();
 
@@ -62,6 +63,7 @@ function FeesBitcoinKind(props: Props) {
     restlay,
     bridge,
     transaction.recipient,
+    transaction.utxoPickingStrategy,
     transaction.amount,
     transaction.feeLevel,
   ];
@@ -102,12 +104,18 @@ function FeesBitcoinKind(props: Props) {
 
       setFeesStatus("fetching");
 
-      const txGetFees = {
+      const txGetFees = {};
+      Object.assign(txGetFees, {
         fees_level: feeLevel || "normal",
         amount: transaction.amount,
         utxo: transaction.expectedNbUTXOs,
         recipient: transaction.recipient || "",
-      };
+      });
+      if (transaction.utxoPickingStrategy) {
+        Object.assign(txGetFees, {
+          utxo_picking_strategy: transaction.utxoPickingStrategy,
+        });
+      }
       const estimatedFees = await getFees(account, txGetFees, restlay);
       if (nonce !== instanceNonce.current || unsubscribed) return;
 
@@ -143,6 +151,7 @@ function FeesBitcoinKind(props: Props) {
     const feesInvalidated =
       transaction.recipient !== prevRecipient ||
       !transaction.amount.isEqualTo(prevAmount) ||
+      transaction.utxoPickingStrategy !== prevStrategy ||
       transaction.feeLevel !== prevFeeLevel;
 
     if (feesInvalidated) {
