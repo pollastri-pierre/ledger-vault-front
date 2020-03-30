@@ -13,7 +13,7 @@ const VerifyAddress = ({ account, freshAddress }: ConsolidateUTXOStepProps) => {
   return (
     <Box flow={30}>
       <Box>
-        <Label>Account to consolidate</Label>
+        <Label>Account</Label>
         <InputText onChange={noop} disabled value={account.name} />
       </Box>
       <Box>
