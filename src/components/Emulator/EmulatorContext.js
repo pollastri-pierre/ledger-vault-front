@@ -2,6 +2,8 @@
 
 import React, { useReducer, useContext, createContext } from "react";
 
+import EmulatorWrapper from "components/Emulator/EmulatorWrapper";
+
 let USER_SEEDS = localStorage.getItem("WEBLUE_SEEDS") || "[]";
 try {
   USER_SEEDS = JSON.parse(USER_SEEDS);
@@ -96,6 +98,7 @@ export const EmulatorProvider = ({ children }: { children: React$Node }) => {
   return (
     <EmulatorContext.Provider value={state}>
       <EmulatorContextDispatch.Provider value={dispatch}>
+        <EmulatorWrapper />
         {children}
       </EmulatorContextDispatch.Provider>
     </EmulatorContext.Provider>

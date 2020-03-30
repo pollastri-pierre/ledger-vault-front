@@ -22,7 +22,6 @@ import Logout from "components/Logout";
 import { LoginLoading } from "components/Login";
 import { checkLogin } from "redux/modules/auth";
 import { EmulatorProvider } from "components/Emulator/EmulatorContext";
-import EmulatorWrapper from "components/Emulator/EmulatorWrapper";
 
 import App from "./App/App";
 
@@ -92,7 +91,6 @@ const OrganizationAppRouter = ({
   return (
     <EmulatorProvider>
       <GlobalStyle />
-      <EmulatorWrapper />
       <BrowserRouter>
         <VersionsContextProvider value={versionContextValue}>
           <AlertsContainer />
