@@ -81,7 +81,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
   return (
     <Box flow={20}>
       <Box>
-        <Label>Account to consolidate</Label>
+        <Label>Account</Label>
         <FakeInputContainer leftAlign>
           <AccountName account={account} />
         </FakeInputContainer>
