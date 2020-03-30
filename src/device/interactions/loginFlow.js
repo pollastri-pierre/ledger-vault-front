@@ -36,12 +36,12 @@ export const u2fAuthenticate: Interaction = {
   responseKey: "u2f_authenticate",
   action: ({
     transport,
-    u2f_challenge: { token, key_handle, role, name },
+    u2f_challenge: { challenge, key_handle, role, name },
     organization,
   }) =>
     authenticate()(
       transport,
-      Buffer.from(token, "base64"),
+      Buffer.from(challenge, "base64"),
       APPID_VAULT_ADMINISTRATOR,
       Buffer.from(key_handle, "hex"),
       name,
@@ -71,7 +71,7 @@ export type LoginFlowResponse = {
     signature: string,
   },
   u2f_challenge: {
-    token: string,
+    challenge: string,
     key_handle: string,
   },
   u2f_authenticate: {
