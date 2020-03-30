@@ -1,9 +1,9 @@
 // @flow
 
 export const UTXO_PICKING_STRATEGY = {
-  MERGE_OUTPUTS: "MERGE_OUTPUTS",
-  DEEP_OUTPUTS_FIRST: "DEEP_OUTPUTS_FIRST",
-  OPTIMIZE_SIZE: "OPTIMIZE_SIZE",
+  MERGE_OUTPUTS: "Lowest UTXO amounts",
+  DEEP_OUTPUTS_FIRST: "Highest confirmations",
+  OPTIMIZE_SIZE: "Highest UTXO amounts",
 };
 
 export type UtxoPickingStrategy = $Keys<typeof UTXO_PICKING_STRATEGY>;
