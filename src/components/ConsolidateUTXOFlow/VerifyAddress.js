@@ -22,7 +22,9 @@ const VerifyAddress = ({ account, freshAddress }: ConsolidateUTXOStepProps) => {
       </Box>
       <Box>
         <InfoBox type="info" withIcon>
-          UTXOs are always consolidated on the index 0 address of the account. Save this address in a safe location. You'll be required to verify it when completing the consolidation process.
+          {
+            "UTXOs are always consolidated on the index 0 address of the account. Save this address in a safe location. You'll be required to verify it when completing the consolidation process."
+          }
         </InfoBox>
       </Box>
     </Box>
