@@ -163,6 +163,7 @@ workflows:
             branches:
               only:
                 - master
+                - develop
             tags:
               only: /.*/
   nightly_e2e:
