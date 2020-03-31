@@ -270,10 +270,15 @@ const UtxoErrorModal = ({
         <FaInfoCircle size={36} color="black" />
       </Box>
       <Box>
-        To send more than{" "}
-        <CurrencyAccountValue value={amount} account={account} /> , you must
-        consolidate the UTXOs in the {account.name} account before proceeding
-        with the transaction.
+        <p>
+          To send more than{" "}
+          <strong>
+            <CurrencyAccountValue account={account} value={amount} />
+          </strong>
+          , you must consolidate the UTXOs in the{" "}
+          <strong>{account.name}</strong> account to proceed with the
+          transaction.
+        </p>
       </Box>
       <Box align="center" justify="center" horizontal flow={5}>
         <IoMdHelpBuoy size={20} />{" "}
