@@ -257,7 +257,7 @@ const WorkspaceChooser = ({ workspaces, onSelect }: WorkspaceChooserProps) => {
   return (
     <Box flow={20}>
       <Box style={{ fontSize: 18, lineHeight: "24px" }}>
-        Choose a workspace to connect to:
+        Select a workspace to connect to:
       </Box>
       <Box flow={10}>
         {workspaces.map(workspace => (
@@ -354,7 +354,7 @@ const Welcome: React$ComponentType<WelcomeProps> = connect(mapAutoLogin)(
                 ref={btnRef}
               >
                 <Box flow={10} horizontal align="center">
-                  <span>Login</span>
+                  <span>Sign in</span>
                   <FaArrowRight />
                 </Box>
               </Button>
