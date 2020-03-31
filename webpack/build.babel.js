@@ -63,6 +63,7 @@ export default merge(webpackConfig, {
 
   plugins: [
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
     new HtmlWebpackPlugin({
       commitHash: commitHash(),
       filename: "index-login.html",
