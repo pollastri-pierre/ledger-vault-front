@@ -283,7 +283,9 @@ const UtxoErrorModal = ({
       <Box align="center" justify="center" horizontal flow={5}>
         <IoMdHelpBuoy size={20} />{" "}
         <Text fontWeight="semiBold">
-          <HelpLink>Consolidate UTXOs</HelpLink>
+          <HelpLink subLink="/Content/transactions/tx_consolidate.html">
+            Consolidate UTXOs
+          </HelpLink>
         </Text>
       </Box>
       <Box horizontal flow={20} pt={20}>
