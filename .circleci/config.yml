@@ -166,15 +166,3 @@ workflows:
                 - develop
             tags:
               only: /.*/
-  nightly_e2e:
-    triggers:
-      - schedule:
-          cron: "0 1 * * 1-5"
-          filters:
-            branches:
-              only:
-                - develop
-
-    jobs:
-      - e2e_tests:
-          context: dockerhub
