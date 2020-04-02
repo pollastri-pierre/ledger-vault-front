@@ -37,7 +37,6 @@ type Props<T> = {
   onRowClick?: T => void,
   listenMutations?: Mutation<any, any>[],
   history?: MemoryHistory,
-  noFilter?: boolean,
 };
 
 type Status = "initial" | "idle" | "loading" | "error";
@@ -189,7 +188,6 @@ class DataSearch extends PureComponent<Props<*>, State> {
       customTableDef,
       onRowClick,
       extraProps,
-      noFilter,
     } = this.props;
 
     const { status, response, error, queryParams } = this.state;
@@ -262,7 +260,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
     return (
       <Box>
-        {!noFilter && filters}
+        {filters}
         {results}
       </Box>
     );

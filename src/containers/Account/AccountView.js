@@ -50,7 +50,6 @@ function AccountView(props: Props) {
             <Widget title={t("accountView:utxos.utxo_search_title")}>
               <Card style={{ padding: 0 }}>
                 <DataSearch
-                  noFilter
                   Query={AccountUTXOQuery}
                   extraProps={{ accountId: account.id, account }}
                   queryExtraProps={{ accountId: account.id }}
