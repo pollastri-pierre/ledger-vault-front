@@ -85,7 +85,7 @@ export default connectData(
       <GrowingCard>
         <MultiStepsFlow
           Icon={FaMoneyCheck}
-          title="UTXO Consolidation"
+          title="Consolidate UTXOs"
           payloadToCompareTo={payload}
           initialPayload={payload}
           additionalProps={{
