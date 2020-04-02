@@ -44,9 +44,9 @@
     }
   },
   "strategy": {
-    "MERGE_OUTPUTS": "MERGE_OUTPUTS",
-    "OPTIMIZE_SIZE": "OPTIMIZE_SIZE",
-    "DEEP_OUTPUTS_FIRST": "DEEP_OUTPUTS_FIRST"
+    "MERGE_OUTPUTS": "Merge outputs",
+    "OPTIMIZE_SIZE": "Optimize size",
+    "DEEP_OUTPUTS_FIRST": "Deepest first"
   },
   "cta": "Create transaction",
   "finish": "Finish",
