@@ -88,7 +88,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
       </Box>
       <Box horizontal align="center" flow={20}>
         <Box flex="1">
-          <Label>UTXO</Label>
+          <Label>Consolidated UTXOs</Label>
           <InputNumber
             max={Math.min(accountUTXOs.edges.length, MAX_UTXOS_TO_CONSOLIDATE)}
             onChange={onUTXOChange}
