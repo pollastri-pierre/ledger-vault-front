@@ -12,22 +12,29 @@ import {
   MenuItemStyle,
 } from "components/base/Menu";
 import { getPreferredTransport, setPreferredTransport } from "device";
-import { useEmulatorDispatch } from "components/Emulator";
+import { useSoftDevicesDispatch } from "components/SoftDevices";
 
 const ENABLE_WEBLUE =
   window.config.ENABLE_WEBLUE || localStorage.getItem("ENABLE_WEBLUE") === "1";
 
+const ENABLE_SOFTWARE =
+  window.config.ENABLE_SOFTWARE ||
+  localStorage.getItem("ENABLE_SOFTWARE") === "1" ||
+  process.env.NODE_ENV !== "production";
+
 export default function TransportChooser() {
   const [transport, setTransport] = useState(getPreferredTransport());
-  const dispatch = useEmulatorDispatch();
+  const dispatch = useSoftDevicesDispatch();
 
   const choose = transportType => () => {
     setPreferredTransport(transportType);
     setTransport(transportType);
     if (transportType === "weblue") {
-      dispatch({ type: "OPEN" });
+      dispatch({ type: "OPEN_WEBLUE" });
+    } else if (transportType === "software") {
+      dispatch({ type: "OPEN_SOFTWARE" });
     } else {
-      dispatch({ type: "CLOSE" });
+      dispatch({ type: "SET_HARDWARE_MODE" });
     }
   };
 
@@ -46,6 +53,8 @@ export default function TransportChooser() {
                     ? "WeBlue"
                     : transport === "u2f"
                     ? "U2F"
+                    : transport === "software"
+                    ? "Software"
                     : ""}
                 </span>
                 {isOpen ? <FaCaretUp /> : <FaCaretDown />}
@@ -57,6 +66,11 @@ export default function TransportChooser() {
             <MenuItemStyle onSelect={choose("webusb")}>WebUSB</MenuItemStyle>
             {ENABLE_WEBLUE && (
               <MenuItemStyle onSelect={choose("weblue")}>WeBlue</MenuItemStyle>
+            )}
+            {(process.env.NODE_ENV === "e2e" || ENABLE_SOFTWARE) && (
+              <MenuItemStyle onSelect={choose("software")}>
+                Software
+              </MenuItemStyle>
             )}
           </MenuListStyle>
         </>

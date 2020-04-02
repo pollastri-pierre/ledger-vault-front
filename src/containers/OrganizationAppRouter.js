@@ -13,7 +13,6 @@ import AlertsContainer from "components/legacy/AlertsContainer";
 import VersionsQuery from "api/queries/VersionsQuery";
 import UpdateDevice from "components/UpdateDevice";
 import type { RestlayEnvironment } from "restlay/connectData";
-import MockDevices from "components/MockDevices";
 import { VersionsContextProvider } from "components/VersionsContext";
 import GlobalStyle from "components/GlobalStyle";
 import Onboarding from "components/Onboarding";
@@ -21,7 +20,7 @@ import PrivateRoute from "components/PrivateRoute";
 import Logout from "components/Logout";
 import { LoginLoading } from "components/Login";
 import { checkLogin } from "redux/modules/auth";
-import { EmulatorProvider } from "components/Emulator/EmulatorContext";
+import { SoftDevicesProvider } from "components/SoftDevices/SoftDevicesContext";
 
 import App from "./App/App";
 
@@ -89,7 +88,7 @@ const OrganizationAppRouter = ({
     [versions, update],
   );
   return (
-    <EmulatorProvider>
+    <SoftDevicesProvider>
       <GlobalStyle />
       <BrowserRouter>
         <VersionsContextProvider value={versionContextValue}>
@@ -108,8 +107,7 @@ const OrganizationAppRouter = ({
           </Switch>
         </VersionsContextProvider>
       </BrowserRouter>
-      {process.env.NODE_ENV === "e2e" && <MockDevices />}
-    </EmulatorProvider>
+    </SoftDevicesProvider>
   );
 };
 

@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import { styledTheme } from "styles/theme";
 import GlobalStyle from "components/GlobalStyle";
 import RestlayProvider from "restlay/RestlayProvider";
-import { EmulatorProvider } from "components/Emulator/EmulatorContext";
+import { SoftDevicesProvider } from "components/SoftDevices/SoftDevicesContext";
 import network from "network";
 import i18n from "./i18n";
 import "./insertFontsTags";
@@ -20,10 +20,10 @@ const Root = ({ children, store }: { children: React$Node, store: string }) => (
       <Provider store={store}>
         <RestlayProvider network={network}>
           <ThemeProvider theme={styledTheme}>
-            <EmulatorProvider>
+            <SoftDevicesProvider>
               <GlobalStyle />
               {children}
-            </EmulatorProvider>
+            </SoftDevicesProvider>
           </ThemeProvider>
         </RestlayProvider>
       </Provider>

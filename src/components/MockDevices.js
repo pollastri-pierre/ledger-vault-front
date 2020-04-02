@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 
 import colors from "shared/colors";
 import Text from "components/base/Text";
-import { Switch } from "components/base/form";
+import Switch from "components/base/form/Switch";
 
 const DEVICE_API_URL = "http://localhost:5001";
 
@@ -128,7 +128,6 @@ class MockDevices extends PureComponent {
     collapseMock: true,
     rejectNextAction: false,
     showOnboarding: false,
-    forceHardware: false,
   };
 
   changeAutoLogin = () => {
@@ -208,11 +207,6 @@ class MockDevices extends PureComponent {
     this.setState(state => ({ showOnboarding: !state.showOnboarding }));
   };
 
-  forceHardwareToggle = () => {
-    window.FORCE_HARDWARE = !window.FORCE_HARDWARE;
-    this.setState(() => ({ forceHardware: window.FORCE_HARDWARE }));
-  };
-
   render() {
     const {
       deviceId,
@@ -220,7 +214,6 @@ class MockDevices extends PureComponent {
       collapseMock,
       showOnboarding,
       rejectNextAction,
-      forceHardware,
     } = this.state;
     const devtools = (
       <div style={styles.root}>
@@ -258,17 +251,6 @@ class MockDevices extends PureComponent {
                     <Switch
                       onChange={this.rejectNextActionToggle}
                       value={rejectNextAction}
-                    />
-                  </div>
-                </div>
-                <div style={styles.rowContainer}>
-                  <Text size="small" uppercase style={styles.autoLogin}>
-                    force hardware
-                  </Text>
-                  <div style={styles.switchContainer}>
-                    <Switch
-                      onChange={this.forceHardwareToggle}
-                      value={forceHardware}
                     />
                   </div>
                 </div>

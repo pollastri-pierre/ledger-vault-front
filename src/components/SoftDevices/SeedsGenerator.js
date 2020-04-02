@@ -11,11 +11,14 @@ import InputText from "components/base/form/inputs/InputText";
 import Label from "components/base/form/Label";
 import { generateWorkspaceSeeds } from "device/generator";
 import Switch from "components/base/form/Switch";
-import { useEmulatorState, useEmulatorDispatch } from "./EmulatorContext";
+import {
+  useSoftDevicesState,
+  useSoftDevicesDispatch,
+} from "./SoftDevicesContext";
 
 const SeedsGenerator = () => {
-  const { isSeedsGeneratorOpened } = useEmulatorState();
-  const dispatch = useEmulatorDispatch();
+  const { isSeedsGeneratorOpened } = useSoftDevicesState();
+  const dispatch = useSoftDevicesDispatch();
   const [salt, setSalt] = useState("");
   const [onboardingSeeds, setOnboardingSeeds] = useState(false);
   const handleClose = () => dispatch({ type: "CLOSE_SEEDS_GENERATOR" });

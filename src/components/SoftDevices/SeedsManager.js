@@ -12,15 +12,18 @@ import Form from "components/base/form/Form";
 import InputText from "components/base/form/inputs/InputText";
 import Label from "components/base/form/Label";
 
-import { useEmulatorState, useEmulatorDispatch } from "./EmulatorContext";
+import {
+  useSoftDevicesState,
+  useSoftDevicesDispatch,
+} from "./SoftDevicesContext";
 
 type Props = {
   onCreate: ({ seed: string, name: string }) => any,
 };
 
 const SeedsManager = (props: Props) => {
-  const { isSeedsManagerOpened } = useEmulatorState();
-  const dispatch = useEmulatorDispatch();
+  const { isSeedsManagerOpened } = useSoftDevicesState();
+  const dispatch = useSoftDevicesDispatch();
   const handleClose = () => dispatch({ type: "CLOSE_SEEDS_MANAGER" });
   return (
     <Modal isOpened={isSeedsManagerOpened} onClose={handleClose} zIndex={301}>
@@ -32,7 +35,7 @@ const SeedsManager = (props: Props) => {
 const SeedsManagerInner = (props: Props) => {
   const { onCreate } = props;
   const [seed, setSeed] = useState({ name: "", seed: "" });
-  const dispatch = useEmulatorDispatch();
+  const dispatch = useSoftDevicesDispatch();
   const handleClose = () => dispatch({ type: "CLOSE_SEEDS_MANAGER" });
   const handleChange = (key: string) => val => setSeed({ ...seed, [key]: val });
   const handleSubmit = () => {
