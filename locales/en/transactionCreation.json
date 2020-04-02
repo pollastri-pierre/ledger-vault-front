@@ -46,7 +46,7 @@
   "strategy": {
     "MERGE_OUTPUTS": "Merge outputs",
     "OPTIMIZE_SIZE": "Optimize size",
-    "DEEP_OUTPUTS_FIRST": "Deepest first"
+    "DEEP_OUTPUTS_FIRST": "Deep outputs first"
   },
   "cta": "Create transaction",
   "finish": "Finish",
