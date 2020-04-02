@@ -1,8 +1,8 @@
 // @flow
 
 export const UTXO_PICKING_STRATEGY = {
-  MERGE_OUTPUTS: "Merge output",
-  DEEP_OUTPUTS_FIRST: "Deepest first",
+  MERGE_OUTPUTS: "Merge outputs",
+  DEEP_OUTPUTS_FIRST: "Deep outputs first",
   OPTIMIZE_SIZE: "Optimize size",
 };
 
