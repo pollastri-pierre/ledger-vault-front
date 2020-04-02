@@ -271,7 +271,7 @@ const UtxoErrorModal = ({
       </Box>
       <Box>
         <p>
-          To send more than{" "}
+          In order to send more than{" "}
           <strong>
             <CurrencyAccountValue account={account} value={amount} />
           </strong>

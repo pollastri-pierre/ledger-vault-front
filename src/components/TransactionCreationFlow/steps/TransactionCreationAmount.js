@@ -85,7 +85,7 @@ const TransactionCreationAmount = (
   if (gateMaxAmount && transaction.amount.isGreaterThan(gateMaxAmount)) {
     // reset tx amount
     onChangeAmount(BigNumber(0));
-    props.setUtxoError({ amount: transaction.amount });
+    props.setUtxoError({ amount: gateMaxAmount });
   }
 
   const matchingRulesSet = getMatchingRulesSet({
