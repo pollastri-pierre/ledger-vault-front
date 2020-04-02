@@ -51,7 +51,7 @@
   "receiveButton": "Receive",
   "navigateParent": "Go to parent account",
   "utxos": {
-    "utxo_distro_title": "Utxo distribution",
+    "utxo_distro_title": "UTXOs distribution",
     "utxo_search_title": "UTXOs"
   }
 }
