@@ -3,6 +3,8 @@
 import memoize from "lodash/memoize";
 import keyBy from "lodash/keyBy";
 import { listCryptoCurrencies as listCC } from "@ledgerhq/live-common/lib/currencies";
+import { getDerivationModesForCurrency } from "@ledgerhq/live-common/lib/derivation";
+import type { DerivationMode } from "@ledgerhq/live-common/lib/derivation";
 import type {
   CryptoCurrencyIds,
   CryptoCurrency,
@@ -96,3 +98,22 @@ const erc20TokensByContractAddress = () =>
 export const getERC20TokenByContractAddress = (
   contractAddress: string,
 ): ?ERC20Token => erc20TokensByContractAddress()[contractAddress] || null;
+
+const allowedDerivationModes: DerivationMode[] = ["", "native_segwit"];
+const isSupportedDerivationMode = (m: DerivationMode) =>
+  allowedDerivationModes.includes(m);
+
+export const getDerivationModes = (currencyOrToken: ?CurrencyOrToken) => {
+  if (!currencyOrToken) return [];
+  if (isERC20Token(currencyOrToken)) return [];
+  const allDerivationModes = getDerivationModesForCurrency(currencyOrToken);
+  const filteredDerivationModes = allDerivationModes.filter(
+    isSupportedDerivationMode,
+  );
+  // put the legacy derivation at the end
+  filteredDerivationModes.sort((a, b) => {
+    if (a === "" && b !== "") return 1;
+    return -1;
+  });
+  return filteredDerivationModes;
+};

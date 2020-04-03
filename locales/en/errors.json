@@ -27,10 +27,6 @@
     "title": "Invalid address",
     "description": "This {{ticker}} address is invalid."
   },
-  "AddressShouldNotBeSegwit": {
-    "title": "Address is SegWit",
-    "description": "Segwit addresses aren’t supported."
-  },
   "AmountTooHigh": {
     "title": "Not enough funds",
     "description": "You don't have enough funds to create this transaction."
