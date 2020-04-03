@@ -330,8 +330,9 @@ const stopPropagate = e => {
   e.preventDefault();
 };
 
-const mapDispatchToProps = {
-  logout,
-  login,
-};
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout()),
+  login: () => dispatch(login()),
+});
+
 export default connect(null, mapDispatchToProps)(MockDevices);
