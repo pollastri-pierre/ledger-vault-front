@@ -13,7 +13,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { useMe } from "components/UserContextProvider";
 import type { Connection } from "restlay/ConnectionQuery";
 import colors from "shared/colors";
-import AccountUtxoQuery from "api/queries/AccountUtxoQuery";
+import AccountUTXOQuery from "api/queries/AccountUTXOQuery";
 import Button from "components/base/Button";
 import Box from "components/base/Box";
 import BarCharts from "components/BarCharts";
@@ -125,7 +125,7 @@ const ZoomContainer = styled(Box).attrs({
 export default connectWidget(UtxoGraph, {
   height: 426,
   queries: {
-    utxo: AccountUtxoQuery,
+    utxo: AccountUTXOQuery,
   },
   propsToQueryParams: ({ account }: { account: Account }) => {
     return {

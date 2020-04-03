@@ -80,6 +80,10 @@ const EthereumBridge: WalletBridge<Transaction> = {
   ) => ({
     ...t,
     amount,
+    estimatedFees: null,
+    gasPrice: null,
+    gasLimit: null,
+    error: null,
   }),
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,

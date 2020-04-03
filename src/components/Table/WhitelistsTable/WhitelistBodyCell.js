@@ -2,8 +2,7 @@
 
 import React from "react";
 
-import MUITableCell from "@material-ui/core/TableCell";
-
+import { TableCell } from "components/Table/TableBase";
 import EntityStatus from "components/EntityStatus";
 
 import type { Whitelist } from "data/types";
@@ -34,9 +33,7 @@ function WhitelistBodyCell(props: CellProps) {
     }
   };
 
-  return (
-    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
-  );
+  return <TableCell align={item.body.align}>{renderCellMapper()}</TableCell>;
 }
 
 export default WhitelistBodyCell;

@@ -1,7 +1,7 @@
 // @flow
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "components/base/Tooltip";
 import styled from "styled-components";
 import { Trans, useTranslation } from "react-i18next";
 import { FaPlus, FaCheck } from "react-icons/fa";
@@ -26,7 +26,7 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Button from "components/base/Button";
 import { maxLengthNonAsciiHints } from "components/base/hints";
-import { usePrevious } from "utils/customHooks";
+import usePrevious from "hooks/usePrevious";
 
 const NB_MAX_ADDRESSES = 100;
 
@@ -120,26 +120,23 @@ const AddAddressForm = (props: Props) => {
   );
 };
 
-const ColumnsHeader = () => (
-  <Box px={10} flow={10} horizontal>
-    <Box {...LAYOUT.currency}>
-      <Label>
-        <Trans i18nKey="whitelists:create.field_currency" />
-      </Label>
+const ColumnsHeader = () => {
+  const { t } = useTranslation();
+  return (
+    <Box px={10} flow={10} horizontal>
+      <Box {...LAYOUT.currency}>
+        <Label>{t("whitelists:create.field_currency")}</Label>
+      </Box>
+      <Box {...LAYOUT.name}>
+        <Label>{t("whitelists:create.field_name")}</Label>
+      </Box>
+      <Box {...LAYOUT.address}>
+        <Label>{t("whitelists:create.field_address")}</Label>
+      </Box>
+      <Box {...LAYOUT.actions} />
     </Box>
-    <Box {...LAYOUT.name}>
-      <Label>
-        <Trans i18nKey="whitelists:create.field_name" />
-      </Label>
-    </Box>
-    <Box {...LAYOUT.address}>
-      <Label>
-        <Trans i18nKey="whitelists:create.field_address" />
-      </Label>
-    </Box>
-    <Box {...LAYOUT.actions} />
-  </Box>
-);
+  );
+};
 
 const AddressRow = React.memo(
   ({
@@ -172,7 +169,7 @@ const AddressRow = React.memo(
           <Box ellipsis>{addr.address}</Box>
         </Box>
         <Box {...LAYOUT.actions}>
-          <Tooltip title={t("whitelists:create.remove_addr")} placement="top">
+          <Tooltip content={t("whitelists:create.remove_addr")}>
             <Button
               type="link"
               size="small"
@@ -364,19 +361,18 @@ const AddressForm = connectData(
             </Box>
             <Box {...LAYOUT.actions}>
               {onCancel && (
-                <Tooltip title={t("common:cancel")} placement="top">
+                <Tooltip content={t("common:cancel")}>
                   <Button onClick={onCancel} data-test="cancel_button">
                     <TiArrowBack size={16} />
                   </Button>
                 </Tooltip>
               )}
               <Tooltip
-                title={
+                content={
                   isEdit
                     ? t("whitelists:create.edit_addr")
                     : t("whitelists:create.add_addr")
                 }
-                placement="top"
               >
                 <Button
                   onClick={handleSubmit}

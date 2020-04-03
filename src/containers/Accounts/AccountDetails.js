@@ -64,6 +64,7 @@ function AccountDetails(props: Props) {
           key="history"
           url={`/accounts/${account.id}/history`}
           entityType="account"
+          entity={account}
         />
       )}
       {account.status === "ACTIVE" && account.account_type !== "Erc20" && (
@@ -81,6 +82,6 @@ export default connectData(withMe(AccountDetails), {
     pendingTransactions: PendingTransactionsForAccountQuery,
   },
   propsToQueryParams: props => ({
-    accountId: props.match.params.accountId || "",
+    accountId: props.match.params.accountId,
   }),
 });

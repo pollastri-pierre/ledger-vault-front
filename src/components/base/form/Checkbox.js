@@ -13,9 +13,9 @@ export default ({ checked }: CheckboxProps) => {
   return (
     <CheckBoxContainer>
       {checked ? (
-        <MdCheckBoxOutlineBlank size={ICON_SIZE} />
-      ) : (
         <MdCheckBox size={ICON_SIZE} />
+      ) : (
+        <MdCheckBoxOutlineBlank size={ICON_SIZE} />
       )}
     </CheckBoxContainer>
   );

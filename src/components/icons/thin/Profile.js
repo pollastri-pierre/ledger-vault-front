@@ -1,17 +1,8 @@
 // @flow
 import React, { PureComponent } from "react";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-
-const styles = {
-  base: {
-    width: "15px",
-  },
-};
 
 type Props = {
   color?: string,
-  classes: Object,
   className?: string,
 };
 
@@ -21,7 +12,7 @@ class Profile extends PureComponent<Props> {
   };
 
   render() {
-    const { color, classes, className, ...props } = this.props;
+    const { color, className } = this.props;
     const style = {
       fill: "none",
       stroke: color,
@@ -30,11 +21,7 @@ class Profile extends PureComponent<Props> {
     };
 
     return (
-      <svg
-        viewBox="0 0 27.8 32"
-        {...props}
-        className={classnames(classes.base, className)}
-      >
+      <svg viewBox="0 0 27.8 32" style={{ width: 15 }} className={className}>
         <path
           d="M13.9,18.1A12.9,12.9,0,0,0,1,31H26.8A12.9,12.9,0,0,0,13.9,18.1Z"
           style={style}
@@ -44,4 +31,4 @@ class Profile extends PureComponent<Props> {
     );
   }
 }
-export default withStyles(styles)(Profile);
+export default Profile;

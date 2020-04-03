@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "components/base/Tooltip";
 import styled from "styled-components";
 import Status from "components/Status";
 import RequestExpirationDate from "components/RequestExpirationDate";
@@ -81,13 +81,12 @@ class EntityStatus extends PureComponent<Props> {
     if (shouldDisplayDot) {
       return (
         <Tooltip
-          title={
+          content={
             <Trans
               i18nKey={`request:statusDot.${request.type}`}
               components={<b>0</b>}
             />
           }
-          placement="top-start"
         >
           {inner}
         </Tooltip>

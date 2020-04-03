@@ -1,7 +1,8 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
 import omit from "lodash/omit";
 import type { Match } from "react-router-dom";
 import { FaAddressBook } from "react-icons/fa";
@@ -11,6 +12,7 @@ import { createAndApprove } from "device/interactions/hsmFlows";
 import connectData from "restlay/connectData";
 import WhitelistQuery from "api/queries/WhitelistQuery";
 import EditWhitelistDescriptionMutation from "api/mutations/EditWhitelistDescriptionMutation";
+import { resetRequest } from "redux/modules/requestReplayStore";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
 import Button from "components/base/Button";
@@ -18,12 +20,16 @@ import Box from "components/base/Box";
 import MultiStepsSuccess from "components/base/MultiStepsFlow/MultiStepsSuccess";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
-import type { Address } from "data/types";
+import type { Address, Whitelist } from "data/types";
 import { handleCancelOnDevice } from "utils/request";
 import {
   onlyDescriptionChangedWhitelist,
   hasEditOccuredWhitelist,
 } from "utils/creationFlows";
+import type {
+  EditWhitelistReplay,
+  CreateWhitelistReplay,
+} from "redux/modules/requestReplayStore";
 import type { WhitelistCreationPayload } from "./types";
 
 import WhitelistCreationInfos from "./WhitelistCreationInfos";
@@ -75,16 +81,19 @@ const steps = [
       isEditMode,
       restlay,
       onSuccess,
+      payloadToCompareTo,
     }: {
       payload: WhitelistCreationPayload,
+      payloadToCompareTo: WhitelistCreationPayload,
       initialPayload: WhitelistCreationPayload,
       isEditMode?: boolean,
       restlay: RestlayEnvironment,
       onSuccess: () => void,
       onClose: () => void,
     }) => {
+      const { t } = useTranslation();
       // if only description changed
-      if (onlyDescriptionChangedWhitelist(payload, initialPayload)) {
+      if (onlyDescriptionChangedWhitelist(payload, payloadToCompareTo)) {
         return <UpdateDescriptionButton payload={payload} onClose={onClose} />;
       }
       return (
@@ -98,17 +107,15 @@ const steps = [
           onSuccess={() => {
             onSuccess();
           }}
-          disabled={!hasEditOccuredWhitelist(payload, initialPayload)}
+          disabled={!hasEditOccuredWhitelist(payload, payloadToCompareTo)}
           additionalFields={{
             type: isEditMode ? "EDIT_WHITELIST" : "CREATE_WHITELIST",
             data: serializePayload(payload, initialPayload),
             description: payload.description,
           }}
-          buttonLabel={
-            <Trans
-              i18nKey={`whitelists:${isEditMode ? "update" : "create"}.submit`}
-            />
-          }
+          buttonLabel={t(
+            `whitelists:${isEditMode ? "update" : "create"}.submit`,
+          )}
         />
       );
     },
@@ -118,30 +125,28 @@ const steps = [
     name: "finish",
     hideBack: true,
     Step: ({ isEditMode }: { isEditMode?: boolean }) => {
+      const { t } = useTranslation();
       return (
         <MultiStepsSuccess
-          title={
-            isEditMode ? (
-              <Trans i18nKey="whitelists:update.finishTitle" />
-            ) : (
-              <Trans i18nKey="whitelists:create.finishTitle" />
-            )
-          }
-          desc={
-            isEditMode ? (
-              <Trans i18nKey="whitelists:update.finishDesc" />
-            ) : (
-              <Trans i18nKey="whitelists:create.finishDesc" />
-            )
-          }
+          title={t(
+            isEditMode
+              ? "whitelists:update.finishTitle"
+              : "whitelists:create.finishTitle",
+          )}
+          desc={t(
+            isEditMode
+              ? "whitelists:update.finishDesc"
+              : "whitelists:create.finishDesc",
+          )}
         />
       );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );
@@ -150,62 +155,102 @@ const steps = [
 ];
 
 const WhitelistCreation = connectData(
-  props => (
-    <GrowingCard>
-      <MultiStepsFlow
-        Icon={FaAddressBook}
-        title={<Trans i18nKey="whitelists:create.title" />}
-        steps={steps}
-        additionalProps={props}
-        onClose={props.close}
-        initialPayload={initialPayload}
-      />
-    </GrowingCard>
-  ),
+  props => {
+    const { t } = useTranslation();
+    return (
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaAddressBook}
+          title={t("whitelists:create.title")}
+          steps={steps}
+          additionalProps={props}
+          onClose={props.close}
+          payloadToCompareTo={initialPayload}
+          initialPayload={
+            props.requestToReplay
+              ? purgePayloadCreation(props.requestToReplay.entity)
+              : initialPayload
+          }
+        />
+      </GrowingCard>
+    );
+  },
   {
     RenderLoading: GrowingSpinner,
   },
 );
 const WhitelistEdit = connectData(
-  props => (
-    <GrowingCard>
-      <MultiStepsFlow
-        Icon={FaAddressBook}
-        title={
-          <Text>
-            <Trans i18nKey="whitelists:create.editTitle" />:{" "}
-            {props.whitelist.name}
-          </Text>
-        }
-        isEditMode
-        steps={steps}
-        additionalProps={props}
-        onClose={props.close}
-        initialPayload={props.whitelist}
-      />
-    </GrowingCard>
-  ),
+  props => {
+    const { t } = useTranslation();
+    return (
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaAddressBook}
+          title={
+            <Text>
+              {t("whitelists:create.editTitle")}: {props.whitelist.name}
+            </Text>
+          }
+          isEditMode
+          steps={steps}
+          additionalProps={props}
+          onClose={props.close}
+          initialPayload={mergeEditData(props.whitelist, props.requestToReplay)}
+          payloadToCompareTo={props.whitelist}
+        />
+      </GrowingCard>
+    );
+  },
   {
     RenderLoading: GrowingSpinner,
     queries: {
       whitelist: WhitelistQuery,
     },
     propsToQueryParams: props => ({
-      whitelistId: props.whitelistId || "",
+      whitelistId: props.whitelistId,
     }),
   },
 );
 
-const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
+const Wrapper = ({
+  match,
+  close,
+  resetRequest,
+  requestToReplay,
+}: {
+  match: Match,
+  close: Function,
+  requestToReplay: EditWhitelistReplay | CreateWhitelistReplay,
+  resetRequest: void => void,
+}) => {
+  const closeAndEmptyStore = () => {
+    resetRequest();
+    close();
+  };
   if (match.params.whitelistId) {
     return (
-      <WhitelistEdit whitelistId={match.params.whitelistId} close={close} />
+      <WhitelistEdit
+        whitelistId={match.params.whitelistId}
+        close={closeAndEmptyStore}
+        requestToReplay={requestToReplay}
+      />
     );
   }
-  return <WhitelistCreation close={close} />;
+  return (
+    <WhitelistCreation
+      close={closeAndEmptyStore}
+      requestToReplay={requestToReplay}
+    />
+  );
 };
 
-export default Wrapper;
+const mapStateToProps = state => ({
+  requestToReplay: state.requestReplay,
+});
+const mapDispatch = {
+  resetRequest,
+};
+export default connect(mapStateToProps, mapDispatch)(Wrapper);
 
 const editDescriptionMutation = {
   responseKey: "edit_description",
@@ -243,6 +288,34 @@ const UpdateDescriptionButton = connectData(
     );
   },
 );
+
+function mergeEditData(
+  whitelist: Whitelist,
+  requestToReplay: EditWhitelistReplay | CreateWhitelistReplay,
+) {
+  if (!requestToReplay || !requestToReplay.edit_data)
+    return puregeEditPayload(whitelist);
+  const { edit_data } = requestToReplay;
+  return {
+    id: whitelist.id,
+    name: edit_data.name || whitelist.name,
+    description: whitelist.description,
+    addresses: edit_data.addresses || whitelist.addresses,
+  };
+}
+const puregeEditPayload = (data: Whitelist) => {
+  return {
+    id: data.id,
+    ...purgePayloadCreation(data),
+  };
+};
+const purgePayloadCreation = (data: Whitelist) => {
+  return {
+    name: data.name,
+    description: data.description,
+    addresses: data.addresses,
+  };
+};
 
 function serializePayload(
   payload: WhitelistCreationPayload,

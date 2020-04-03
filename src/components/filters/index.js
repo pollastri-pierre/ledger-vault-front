@@ -27,3 +27,4 @@ export { default as AccountsFilters } from "./AccountsFilters";
 export { default as UsersFilters } from "./UsersFilters";
 export { default as RequestsFilters } from "./RequestsFilters";
 export { default as WhitelistsFilters } from "./WhitelistsFilters";
+export { default as UtxosFilters } from "./UtxosFilters";

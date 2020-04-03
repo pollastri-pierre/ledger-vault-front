@@ -35,6 +35,10 @@
     "title": "Not enough funds",
     "description": "You don't have enough funds to create this transaction."
   },
+  "TooManyUTXOs": {
+    "title": "Too much UTXOs selected",
+    "description": "Please enter a smaller number"
+  },
   "ERC20FeesExceedParentAccountBalance": {
     "title": "Not enough funds",
     "description": "The parent Ethereum account must be credited to pay the confirmation fees of this transaction."
@@ -59,6 +63,10 @@
     "title": "Invitation link not available",
     "description": "The invitation link has already been used."
   },
+  "UserIdAlreadyUsed": {
+    "title": "User ID already used",
+    "description": "This user ID has already been registered and can't be used again. Please contact your Administrator"
+  },
   "GenericError": {
     "description": "An error occurred. Please try again or contact Support.",
     "title": "Error"
@@ -69,7 +77,7 @@
   },
   "DeviceNotOnDashboard": {
     "title": "Device not on dashboard",
-    "description": "The device is not on the Dashboard. Please close the Vault app."
+    "description": "You must be on the Dashboard. Please close the Vault app on your device."
   },
   "DeviceOnDashboardExpected": {
     "title": "User denied manager",
@@ -86,6 +94,29 @@
   "InvalidOrMissingAttestation": {
     "title": "InvalidOrMissingAttestation",
     "description": "It seems the device does not contain a proper attestation."
+  },
+  "ManagerDeviceLocked": {
+    "title": "ManagerDeviceLocked",
+    "description": "Unlock your device"
+  },
+  "UserRefusedFirmwareUpdate": {
+    "title": "UserRefusedFirmwareUpdate",
+    "description": "You must authorize the update. Try again."
+  },
+  "UserRefusedAllowManager": {
+    "title": "UserRefusedAllowManager",
+    "description": "You must authorize the update. Try again."
+  },
+  "NoWorkspaceForDevice": {
+    "title": "No workspace for this device",
+    "description": "This device has not been registered in any workspace"
+  },
+  "AccountNameAlreadyExists": {
+    "title": "Name already used",
+    "description": "An account already uses this name. Please enter a different one"
+  },
+  "CantOpenDevice": {
+    "title": "Can't communicate with device"
   },
   "generic": {
     "description": "An error occurred. Please try again or contact Support.",

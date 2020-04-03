@@ -2,10 +2,8 @@
 
 import React from "react";
 
-import MUITableRow from "@material-ui/core/TableRow";
-
 import type { Whitelist } from "data/types";
-
+import { TableRow } from "components/Table/TableBase";
 import type { TableDefinition } from "../types";
 import WhitelistBodyCell from "./WhitelistBodyCell";
 
@@ -15,8 +13,6 @@ type WhitelistRowProps = {
   tableDefinition: TableDefinition,
 };
 
-const whitelistRowHover = { cursor: "pointer" };
-
 function WhitelistRow(props: WhitelistRowProps) {
   const { whitelist, onClick, tableDefinition } = props;
 
@@ -25,12 +21,7 @@ function WhitelistRow(props: WhitelistRowProps) {
   };
 
   return (
-    <MUITableRow
-      key={whitelist.id}
-      hover={!!onClick}
-      style={onClick ? whitelistRowHover : undefined}
-      onClick={onClick ? handleClick : undefined}
-    >
+    <TableRow onClick={onClick ? handleClick : undefined}>
       {tableDefinition.map(item => (
         <WhitelistBodyCell
           whitelist={whitelist}
@@ -38,7 +29,7 @@ function WhitelistRow(props: WhitelistRowProps) {
           key={item.body.prop}
         />
       ))}
-    </MUITableRow>
+    </TableRow>
   );
 }
 

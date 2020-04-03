@@ -1,6 +1,15 @@
 // @flow
 
 import sortBy from "lodash/sortBy";
+import { BigNumber } from "bignumber.js";
+
+import type {
+  User,
+  Group,
+  GovernanceRulesInEditData,
+  AccountEditUsers,
+  AccountEditGroup,
+} from "data/types";
 
 import type {
   RulesSet,
@@ -9,6 +18,8 @@ import type {
   RuleThreshold,
   RuleMultiAuthStep,
   RuleWhitelist,
+  GovernanceRules,
+  RuleThresholdCondition,
   Rule,
 } from "./types";
 
@@ -160,7 +171,7 @@ export function getDuplicateRulesSet(
 }
 
 export function serializeRulesSetsForPOST(sets: RulesSet[]) {
-  return sets.map<any>(set => ({
+  return sets.filter(isValidRulesSet).map<any>(set => ({
     name: set.name,
     rules: set.rules.map(rule => {
       if (rule.type === "MULTI_AUTHORIZATIONS") {
@@ -200,4 +211,70 @@ export function serializeRulesSetsForPOST(sets: RulesSet[]) {
       return rule;
     }),
   }));
+}
+/*
+ * The API returns a weird format in edit_data.governances_rules,
+ * and more particularly for MULTI_AUTHORIZATIONS rules
+ * we need to convert { quorum: number, users: number } | { quorum: number, group_id: number}
+ * to { quorum: number, group: Group }
+ * see the tests in src/components/MultiRules/helpers.test.js for more details
+ */
+export function convertEditDataIntoRules(
+  data: GovernanceRulesInEditData,
+  users: User[],
+  groups: Group[],
+): GovernanceRules {
+  return data.map(ruleSet => {
+    return {
+      name: ruleSet.name,
+      rules: ruleSet.rules.map(rule => {
+        return {
+          type: rule.type,
+          data:
+            rule.type === "MULTI_AUTHORIZATIONS"
+              ? rule.data.map(d => {
+                  return {
+                    quorum: d.quorum,
+                    group: extractGroupFromRule(d, users, groups),
+                  };
+                })
+              : rule.type === "THRESHOLD"
+              ? ([
+                  {
+                    ...rule.data[0],
+                    min: BigNumber(rule.data[0].min),
+                    max: BigNumber(rule.data[0].max),
+                  },
+                ]: RuleThresholdCondition[])
+              : rule.type === "WHITELIST"
+              ? rule.data
+              : // $FlowFixMe
+                null,
+        };
+      }),
+    };
+  });
+}
+export function extractGroupFromRule(
+  data: AccountEditUsers | AccountEditGroup,
+  users: User[],
+  groups: Group[],
+): $Shape<Group> {
+  if (data.users && Array.isArray(data.users)) {
+    const members = data.users
+      .map(id => users.find(u => u.id === id))
+      .filter(Boolean);
+    return {
+      is_internal: true,
+      members,
+    };
+  }
+  if (!data.users && data.group_id && typeof data.group_id === "number") {
+    const group = groups.find(g => g.id === data.group_id);
+    if (!group) {
+      throw new Error(`cannot find group with id: ${data.group_id}`);
+    }
+    return group;
+  }
+  throw new Error("invalid rule");
 }

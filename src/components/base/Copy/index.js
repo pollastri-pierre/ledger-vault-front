@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useRef, useEffect } from "react";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "components/base/Tooltip";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
@@ -16,10 +16,11 @@ type Props = {
   compact?: boolean,
   customBg?: string,
   children?: React$Node,
+  grow?: boolean,
 };
 
 export default function Copy(props: Props) {
-  const { text, compact, customBg, children } = props;
+  const { text, compact, customBg, children, grow } = props;
   const [copied, setCopied] = useState(false);
   const isUnmounted = useRef();
 
@@ -42,10 +43,11 @@ export default function Copy(props: Props) {
       <Text
         data-test="Copy_value"
         style={compact ? { ...textStyles, ...compactStyle } : textStyles}
+        grow={grow}
       >
         {children || text}
       </Text>
-      <Tooltip title={copied ? "Copied!" : "Copy"} placement="right">
+      <Tooltip content={copied ? "Copied!" : "Copy"}>
         <CopyToClipboard data-test="Copy" text={text} onCopy={onCopy}>
           <IconContainer>
             <FaCopy size={compact ? 11 : 16} />
@@ -80,6 +82,7 @@ const Container = styled.div`
 `;
 
 const IconContainer = styled.div`
+  height: 100%;
   cursor: pointer;
   width: 30px;
   flex-shrink: 0;

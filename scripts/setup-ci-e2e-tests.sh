@@ -3,24 +3,18 @@
 
 set -e
 
-# exit properly if commit doesn't contain --e2e
-if ! (git log --oneline -n 1 --pretty=format:%B | grep -- '--e2e' &>/dev/null); then
-  echo "Commit message or description does not contain --e2e, skipping tests."
-  exit 0
-fi
-
 export ORGANIZATION_API_TOKEN=''
-export WALLET_DAEMON_VERSION=develop-drop2
-export VAULT_API_VERSION=develop-drop2
-export DEVICE_API_VERSION=develop-hsm2
-export HSM_DRIVER_VERSION=develop-hsm2
-export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20190620/process
-export COMPARTMENTS_ENDPOINT=https://hsmsaas.ledger.info/dev/20190620/compartments
+export WALLET_DAEMON_VERSION=develop
+export VAULT_API_VERSION=develop
+export DEVICE_API_VERSION=develop
+export HSM_DRIVER_VERSION=develop
+export VAULT_HSM_ENDPOINT=https://hsmsaas.ledger.info/dev/20200110/process
+export COMPARTMENTS_ENDPOINT=https://hsmsaas.ledger.info/dev/20200110/compartments
 export VAULT_WORKSPACE=ledger1
 
 cat > .env << EOF
 API_BASE_URL=http://localhost:5000
-APP_VERSION=2.0.0-dev
+APP_VERSION=3.0.10-dev
 NOTIFICATION_URL=http://localhost:3033
 EOF
 
@@ -28,6 +22,10 @@ function main {
   echo "-- installing deps"
   sudo apt-get update
   sudo apt-get install --fix-missing xvfb libgtk2.0-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 || true
+
+  export PATH=/opt/circleci/.nvm/versions/node/v10.8.0/bin:$PATH
+  node --version
+  npm --version
 
   echo "-- cloning / pulling vault-integration repository"
   cloneOrPull git@github.com:LedgerHQ/vault-integration.git
@@ -50,10 +48,12 @@ function main {
   VAULT_HSM_ENDPOINT=$VAULT_HSM_ENDPOINT docker-compose up -d
 
   echo "-- waiting for healthyness"
-  waitForHealthyContainers 9
+  waitForHealthyContainers 10
 
   echo "-- starting e2e server"
   cd ..
+  node --version
+  npm --version
   npm run starte2e &
 
   echo "-- waiting for e2e server to be up"
@@ -65,9 +65,9 @@ function main {
   export PATH=./node_modules/.bin:$PATH
 
   cypress install
-  cypress run --reporter junit --spec 'cypress/integration/Onboarding/*'
-  cypress run --reporter junit --spec 'cypress/integration/Drop2/01_Users/*'
-  cypress run --reporter junit --spec 'cypress/integration/Drop2/02_Groups/*'
+  cypress run --reporter junit --spec 'cypress/integration/Onboarding_Fast/01_onboarding.spec.js'
+  # cypress run --reporter junit --spec 'cypress/integration/Drop2/01_Users/*'
+  # cypress run --reporter junit --spec 'cypress/integration/Drop2/02_Groups/*'
 }
 
 function cloneOrPull {

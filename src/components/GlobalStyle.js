@@ -12,9 +12,13 @@ export default createGlobalStyle`
     font: inherit;
   }
 
+  [data-reach-popover] {
+    z-index: 1000;
+  }
+
   body {
     margin: 0;
-    font-family: "Inter", "Open Sans", sans-serif;
+    font-family: "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
     color: ${colors.text};
     font-size: 13px;

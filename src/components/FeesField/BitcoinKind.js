@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { BigNumber } from "bignumber.js";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import type { Account } from "data/types";
 import connectData from "restlay/connectData";
@@ -25,7 +25,7 @@ import { Label } from "components/base/form";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import { getFees } from "utils/transactions";
-import { usePrevious } from "utils/customHooks";
+import usePrevious from "hooks/usePrevious";
 import RecalculateButton from "./RecalculateButton";
 
 import FeeSelect from "./FeeSelect";
@@ -47,7 +47,9 @@ function FeesBitcoinKind(props: Props) {
   const currency = getCryptoCurrencyById(account.currency);
   const prevRecipient = usePrevious(transaction.recipient);
   const prevAmount = usePrevious(transaction.amount);
+  const prevStrategy = usePrevious(transaction.utxoPickingStrategy);
   const prevFeeLevel = usePrevious(transaction.feeLevel);
+  const { t } = useTranslation();
 
   const feeLevel =
     bridge.getTransactionFeeLevel &&
@@ -61,6 +63,7 @@ function FeesBitcoinKind(props: Props) {
     restlay,
     bridge,
     transaction.recipient,
+    transaction.utxoPickingStrategy,
     transaction.amount,
     transaction.feeLevel,
   ];
@@ -77,6 +80,15 @@ function FeesBitcoinKind(props: Props) {
 
   const effect = async unsubscribed => {
     const nonce = ++instanceNonce.current;
+
+    // VFE-98: even if we don't fetch fees if amount is equal to 0,
+    // we still want to invalidate any pending fees fetching, and
+    // reset the loading state
+    if (transaction.amount.isEqualTo(0)) {
+      setFeesStatus("idle");
+      return;
+    }
+
     try {
       const recipientError = await bridge.getRecipientError(
         restlay,
@@ -92,11 +104,18 @@ function FeesBitcoinKind(props: Props) {
 
       setFeesStatus("fetching");
 
-      const txGetFees = {
+      const txGetFees = {};
+      Object.assign(txGetFees, {
         fees_level: feeLevel || "normal",
         amount: transaction.amount,
+        utxo: transaction.expectedNbUTXOs,
         recipient: transaction.recipient || "",
-      };
+      });
+      if (transaction.utxoPickingStrategy) {
+        Object.assign(txGetFees, {
+          utxo_picking_strategy: transaction.utxoPickingStrategy,
+        });
+      }
       const estimatedFees = await getFees(account, txGetFees, restlay);
       if (nonce !== instanceNonce.current || unsubscribed) return;
 
@@ -108,6 +127,7 @@ function FeesBitcoinKind(props: Props) {
       });
       setFeesStatus("idle");
     } catch (err) {
+      if (nonce !== instanceNonce.current || unsubscribed) return;
       console.error(err); // eslint-disable-line no-console
 
       const error = remapError(err);
@@ -129,10 +149,10 @@ function FeesBitcoinKind(props: Props) {
     let unsubscribed = false;
 
     const feesInvalidated =
-      (transaction.recipient !== prevRecipient ||
-        !transaction.amount.isEqualTo(prevAmount) ||
-        transaction.feeLevel !== prevFeeLevel) &&
-      !transaction.amount.isEqualTo(0);
+      transaction.recipient !== prevRecipient ||
+      !transaction.amount.isEqualTo(prevAmount) ||
+      transaction.utxoPickingStrategy !== prevStrategy ||
+      transaction.feeLevel !== prevFeeLevel;
 
     if (feesInvalidated) {
       effect(unsubscribed);
@@ -153,9 +173,7 @@ function FeesBitcoinKind(props: Props) {
     <Box horizontal flow={20}>
       <Box noShrink grow>
         <Box horizontal align="flex-start" flow={10}>
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.account.fees.title" />
-          </Label>
+          <Label>{t("transactionCreation:steps.account.fees.title")}</Label>
           {(transaction.estimatedFees || feesStatus === "error") && (
             <RecalculateButton onClick={reComputeFees} />
           )}
@@ -203,7 +221,7 @@ function FeesBitcoinKind(props: Props) {
             )}
           </Box>
           <InfoBox type="info">
-            <Trans i18nKey="transactionCreation:steps.account.feesInfos" />
+            {t("transactionCreation:steps.account.feesInfos")}
           </InfoBox>
         </Box>
       </Box>

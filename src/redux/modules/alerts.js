@@ -1,6 +1,10 @@
 // @flow
 import { DATA_FETCHED, DATA_FETCHED_FAIL } from "restlay/dataStore";
-import { NetworkTimeoutError } from "utils/errors";
+import {
+  NetworkTimeoutError,
+  extractErrorTitle,
+  extractErrorContent,
+} from "utils/errors";
 
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 export const ADD_MESSAGE = "messages/ADD_MESSAGE";
@@ -102,24 +106,4 @@ export default function reducer(state: Store = initialState, action: Object) {
     default:
       return state;
   }
-}
-
-// code is intentionally defensive
-export function extractErrorTitle(error: *): string {
-  const title =
-    error.json && (error.json.code || error.json.message)
-      ? error.json.code && typeof error.json.code === "number"
-        ? `Error ${error.json.code}`
-        : error.json.message || "Unexpected error"
-      : error.message
-      ? error.message
-      : "Error";
-  return title || "Unexpected error";
-}
-
-export function extractErrorContent(
-  error: *,
-  defaultValue: ?string = "Unexpected error",
-): string {
-  return error.json ? error.json.message : error.message || defaultValue;
 }

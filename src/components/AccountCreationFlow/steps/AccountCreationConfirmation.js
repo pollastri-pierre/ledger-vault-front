@@ -5,7 +5,7 @@
 // ==================================================
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import InfoBox from "components/base/InfoBox";
 import MultiRules from "components/MultiRules";
@@ -17,6 +17,7 @@ import type { AccountCreationStepProps } from "../types";
 
 export default (props: AccountCreationStepProps) => {
   const { payload, whitelists } = props;
+  const { t } = useTranslation();
 
   const { currency, erc20token, accountStatus } = payload;
   const currencyOrToken = currency || erc20token;
@@ -25,15 +26,13 @@ export default (props: AccountCreationStepProps) => {
     <Box grow flow={20}>
       <Box grow>
         {currency && (
-          <LineRow label={<Trans i18nKey="newAccount:confirmation.account" />}>
+          <LineRow label={t("newAccount:confirmation.account")}>
             <AccountName currencyId={currency.id} name={payload.name} />
           </LineRow>
         )}
         {erc20token && (
           <>
-            <LineRow
-              label={<Trans i18nKey="newAccount:confirmation.account" />}
-            >
+            <LineRow label={t("newAccount:confirmation.account")}>
               <AccountName
                 account={{
                   account_type: "Erc20",
@@ -43,11 +42,7 @@ export default (props: AccountCreationStepProps) => {
               />
             </LineRow>
             {!!payload.parentAccount && !!payload.parentAccount.name && (
-              <LineRow
-                label={
-                  <Trans i18nKey="newAccount:confirmation.parentAccount" />
-                }
-              >
+              <LineRow label={t("newAccount:confirmation.parentAccount")}>
                 {/* $FlowFixMe */}
                 {payload.parentAccount.name}
               </LineRow>
@@ -55,13 +50,13 @@ export default (props: AccountCreationStepProps) => {
           </>
         )}
         {currency && (
-          <LineRow label={<Trans i18nKey="newAccount:confirmation.currency" />}>
+          <LineRow label={t("newAccount:confirmation.currency")}>
             <span className="info-value currency">{currency.name}</span>
           </LineRow>
         )}
         {currencyOrToken && (
           <LineRow
-            label={<Trans i18nKey="newAccount:confirmation.transactionRules" />}
+            label={t("newAccount:confirmation.transactionRules")}
             collapsibleState="open"
             collapsibleChildren={
               <MultiRules
@@ -81,11 +76,9 @@ export default (props: AccountCreationStepProps) => {
         )}
       </Box>
       <InfoBox type="info" withIcon>
-        {accountStatus === "MIGRATED" ? (
-          <Trans i18nKey="newAccount:confirmation.descMigrated" />
-        ) : (
-          <Trans i18nKey="newAccount:confirmation.desc" />
-        )}
+        {accountStatus === "MIGRATED"
+          ? t("newAccount:confirmation.descMigrated")
+          : t("newAccount:confirmation.desc")}
       </InfoBox>
     </Box>
   );

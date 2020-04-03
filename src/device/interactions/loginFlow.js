@@ -9,18 +9,22 @@ import Text from "components/base/Text";
 import { UnknownDevice } from "utils/errors";
 import type { Organization } from "data/types";
 import { getU2FPublicKey } from "device/interactions/common";
+import { logout } from "redux/modules/auth";
 
 type Flow = Interaction[];
 
 export const getU2FChallenge: Interaction = {
   needsUserInput: false,
   responseKey: "u2f_challenge",
-  action: async ({ u2f_key: { pubKey } }) => {
+  action: async ({ u2f_key: { pubKey }, dispatch }) => {
     const challenge = await network(
       `/u2f/authentications/${pubKey}/challenge`,
       "GET",
     );
-    if (!challenge.key_handle) throw new UnknownDevice();
+    if (!challenge.key_handle) {
+      dispatch(logout());
+      throw new UnknownDevice();
+    }
     return challenge;
   },
 };
@@ -32,12 +36,12 @@ export const u2fAuthenticate: Interaction = {
   responseKey: "u2f_authenticate",
   action: ({
     transport,
-    u2f_challenge: { token, key_handle, role, name },
+    u2f_challenge: { challenge, key_handle, role, name },
     organization,
   }) =>
     authenticate()(
       transport,
-      Buffer.from(token, "base64"),
+      Buffer.from(challenge, "base64"),
       APPID_VAULT_ADMINISTRATOR,
       Buffer.from(key_handle, "hex"),
       name,
@@ -67,7 +71,7 @@ export type LoginFlowResponse = {
     signature: string,
   },
   u2f_challenge: {
-    token: string,
+    challenge: string,
     key_handle: string,
   },
   u2f_authenticate: {

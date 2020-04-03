@@ -14,7 +14,7 @@ import type { FieldProps } from "components/filters";
 
 type Option = {
   value: string,
-  label: string,
+  label: React$Node,
   data: *,
 };
 

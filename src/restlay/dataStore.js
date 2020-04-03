@@ -400,7 +400,8 @@ function handleDeserialization(queryOrMutation, data) {
         : deserialize(_addType(type)(data[key]));
     });
   } else {
-    const deserializeAndAddType = data => deserialize(_addType(type)(data));
+    const deserializeAndAddType = (data, edge) =>
+      deserialize(_addType(type)(data), edge);
     data = Array.isArray(data)
       ? data.map(deserializeAndAddType)
       : queryOrMutation instanceof ConnectionQuery
@@ -408,7 +409,7 @@ function handleDeserialization(queryOrMutation, data) {
           ...data,
           edges: data.edges.map(el => ({
             ...el,
-            node: deserializeAndAddType(el.node),
+            node: deserializeAndAddType(el.node, el),
           })),
         }
       : deserializeAndAddType(data);

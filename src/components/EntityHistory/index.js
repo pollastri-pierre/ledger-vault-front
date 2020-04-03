@@ -3,7 +3,7 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { useState } from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import qs from "query-string";
 import styled from "styled-components";
 import moment from "moment";
@@ -23,6 +23,8 @@ import {
 } from "react-icons/fa";
 import { MdEdit, MdDelete, MdClear, MdCheck } from "react-icons/md";
 
+import { hasPendingRequest } from "utils/entities";
+import { useMe } from "components/UserContextProvider";
 import type {
   VaultHistoryApproval,
   VaultHistoryApprovalStep,
@@ -30,18 +32,22 @@ import type {
   VaultHistoryItem,
   VaultHistory,
 } from "utils/history";
+import type { Entity } from "data/types";
 import { deserializeHistory } from "utils/history";
 import colors from "shared/colors";
 import Status from "components/Status";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import Fetch from "components/Fetch";
+import ReplayRequestButton from "components/ReplayRequestButton";
 
 type EntityType = "user" | "group" | "account" | "transaction" | "whitelist";
 
 type Props = {
   history: VaultHistory,
   entityType: EntityType,
+  entity?: Entity,
+  preventReplay?: string[],
 };
 
 const createItemByEntity = {
@@ -83,7 +89,11 @@ const stepIconsByType = {
 };
 
 const CollapseIcon = ({ collapsed }: { collapsed: boolean }) =>
-  collapsed ? <FaAngleDown size={12} /> : <FaAngleUp size={12} />;
+  collapsed ? (
+    <FaAngleDown className="collapse" size={12} />
+  ) : (
+    <FaAngleUp className="collapse" size={12} />
+  );
 
 const ApprovalIcon = styled.div`
   width: 20px;
@@ -110,7 +120,7 @@ const approvalIcons = {
 };
 
 function EntityHistory(props: Props) {
-  const { history, entityType } = props;
+  const { history, entityType, entity, preventReplay } = props;
   const openedRequestID = resolveOpenedRequestID();
 
   if (!history || !history.length) {
@@ -121,9 +131,11 @@ function EntityHistory(props: Props) {
     <Box flow={10} style={{ maxWidth: 600 }}>
       {history.map((item, i) => (
         <HistoryItem
+          preventReplay={preventReplay}
           key={i}
           entityType={entityType}
           item={item}
+          entity={entity}
           isInitiallyOpened={
             openedRequestID === null || history.length === 1
               ? i === history.length - 1
@@ -139,14 +151,35 @@ const HistoryItem = ({
   item,
   entityType,
   isInitiallyOpened,
+  entity,
+  preventReplay,
 }: {
   item: VaultHistoryItem,
   entityType: EntityType,
   isInitiallyOpened: boolean,
+  entity?: Entity,
+  preventReplay?: string[],
 }) => {
   const status = getItemStatus(item);
   const [isCollapsed, setCollapsed] = useState(!isInitiallyOpened);
   const onToggle = () => setCollapsed(!isCollapsed);
+  const STATUS_REPLAY_ALLOWED = ["BLOCKED", "ABORTED", "EXPIRED", "FAILED"];
+  const me = useMe();
+  const { t } = useTranslation();
+  const isAdmin = me.role === "ADMIN";
+  const isTransaction = entity && entity.entityType === "TRANSACTION";
+
+  const isReplayHidden =
+    STATUS_REPLAY_ALLOWED.indexOf(status) === -1 || (isAdmin && isTransaction);
+
+  const disabledReason =
+    (entity && hasPendingRequest(entity) && "reasons:pending") ||
+    (preventReplay && preventReplay.length > 0 && preventReplay[0]);
+
+  // TODO to be removed when LV-2276 is done
+  const tmpDisableAccountCreationReplay =
+    entity && entity.entityType === "ACCOUNT" && item.type === "CREATE";
+
   return (
     <HistoryItemContainer>
       <HistoryItemHeader
@@ -156,9 +189,7 @@ const HistoryItem = ({
       >
         <Box horizontal align="center" flow={10}>
           {itemIconsByType[item.type](entityType)}
-          <span>
-            <Trans i18nKey={`history:title.${item.type}.${entityType}`} />
-          </span>
+          <span>{t(`history:title.${item.type}.${entityType}`)}</span>
         </Box>
       </HistoryItemHeader>
       {!isCollapsed && (
@@ -170,6 +201,16 @@ const HistoryItem = ({
               step={step}
             />
           ))}
+          {!isReplayHidden && !tmpDisableAccountCreationReplay && (
+            <ReplayRequestButton
+              request={{
+                entity,
+                type: item.type,
+                edit_data: item.steps[0].edit_data,
+              }}
+              disabledReason={disabledReason}
+            />
+          )}
         </HistoryItemBody>
       )}
     </HistoryItemContainer>
@@ -203,11 +244,11 @@ const HistoryItemHeaderContainer = styled.div`
   justify-content: space-between;
   cursor: pointer;
 
-  & svg {
+  & .collapse {
     color: ${colors.textLight};
   }
 
-  &:hover svg {
+  &:hover .collapse {
     color: ${colors.text};
   }
 `;
@@ -218,34 +259,35 @@ const HistoryStep = ({
 }: {
   step: VaultHistoryStep,
   isLast: boolean,
-}) => (
-  <HistoryStepContainer isLast={isLast}>
-    <Ball>{stepIconsByType[step.type]}</Ball>
-    <span>
-      <Trans i18nKey={`history:stepType.${step.type}`} />
-      {" on "}
-      {moment(step.createdOn).format("LLL")}
-      {step.createdBy && step.createdBy.role !== "ADMIN_SYSTEM" && (
-        <>
-          {" by "}
-          <b>{step.createdBy.username}</b>
-        </>
+}) => {
+  const { t } = useTranslation();
+  return (
+    <HistoryStepContainer isLast={isLast}>
+      <Ball>{stepIconsByType[step.type]}</Ball>
+      <span>
+        {t(`history:stepType.${step.type}`)}
+        {" on "}
+        {moment(step.createdOn).format("LLL")}
+        {step.createdBy && step.createdBy.role !== "ADMIN_SYSTEM" && (
+          <>
+            {" by "}
+            <b>{step.createdBy.username}</b>
+          </>
+        )}
+        {step.blockerRequest && (
+          <>
+            {" by a "}
+            <b>{t(`request:type.${step.blockerRequest.type}`)}</b>
+            {" request"}
+          </>
+        )}
+      </span>
+      {step.approvalsSteps && !!step.approvalsSteps.length && (
+        <ApprovalsSteps approvalsSteps={step.approvalsSteps} />
       )}
-      {step.blockerRequest && (
-        <>
-          {" by a "}
-          <b>
-            <Trans i18nKey={`request:type.${step.blockerRequest.type}`} />
-          </b>
-          {" request"}
-        </>
-      )}
-    </span>
-    {step.approvalsSteps && !!step.approvalsSteps.length && (
-      <ApprovalsSteps approvalsSteps={step.approvalsSteps} />
-    )}
-  </HistoryStepContainer>
-);
+    </HistoryStepContainer>
+  );
+};
 
 const ApprovalsSteps = ({
   approvalsSteps,
@@ -399,13 +441,24 @@ function getItemStatus(item: VaultHistoryItem) {
 export function FetchEntityHistory({
   url,
   entityType,
+  entity,
+  preventReplay,
 }: {
   url: string,
   entityType: "user" | "group" | "account" | "transaction" | "whitelist",
+  entity?: Entity,
+  preventReplay?: string[],
 }) {
   return (
     <Fetch url={url} deserialize={deserializeHistory}>
-      {history => <EntityHistory history={history} entityType={entityType} />}
+      {history => (
+        <EntityHistory
+          preventReplay={preventReplay}
+          history={history}
+          entityType={entityType}
+          entity={entity}
+        />
+      )}
     </Fetch>
   );
 }

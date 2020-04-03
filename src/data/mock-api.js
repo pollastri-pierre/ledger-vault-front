@@ -1,5 +1,6 @@
 // import URL from "url";
 import { denormalize } from "normalizr-gre";
+import { BigNumber } from "bignumber.js";
 
 import { delay } from "utils/promise";
 import mockEntities from "./mock-entities";
@@ -16,6 +17,16 @@ const mockSync = (uri, method) => {
           cursor: key.address,
         }));
         return { edges, pageInfo: { hasNextPage: false } };
+      }
+      case "/utxos-distribution-mocks": {
+        return [
+          { range: "<0.0001", number: 2500, amount: BigNumber(96) },
+          { range: "0.0001-0.001", number: 400, amount: BigNumber(6109) },
+          { range: "0.001-0.01", number: 32, amount: BigNumber(532) },
+          { range: "0.01-1", number: 6, amount: BigNumber(13300) },
+          { range: "1-100", number: 2, amount: BigNumber(513000) },
+          { range: "100+", number: 1, amount: BigNumber(9500000) },
+        ];
       }
       case "/accounts-mocks": {
         return denormalize(
@@ -77,6 +88,14 @@ const mockSync = (uri, method) => {
         cursor: key,
       }));
       return { edges, pageInfo: { hasNextPage: false } };
+    }
+
+    // Mock reply for AddressFromDerivationPathQuery
+    if (/accounts\/[0-9]+\/fresh_addresses\/[0-9]+/.test(uri)) {
+      return {
+        address: "mmcXDpCHz5GVjPotUTDSbTpnHQcZLbzKbn", // Bitcoin testNet
+        derivation_path: "0/0",
+      };
     }
 
     // GET /group-mock/:id

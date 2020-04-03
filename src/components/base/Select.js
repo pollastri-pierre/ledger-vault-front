@@ -18,7 +18,7 @@ import colors, { opacity } from "shared/colors";
 export type Option = {
   value: string,
   data: *,
-  label: string,
+  label: React$Node,
 };
 
 export type GroupedOption = {
@@ -109,9 +109,11 @@ const customStyles = {
       state.menuIsOpen || state.isFocused
         ? state.selectProps.hasError
           ? colors.form.error
-          : state.selectProps.hasError
+          : state.selectProps.hasWarning
           ? colors.form.warning
           : colors.form.focus
+        : state.selectProps.hasError
+        ? colors.form.error
         : colors.form.border;
     return {
       ...styles,
@@ -152,6 +154,7 @@ const customStyles = {
     marginBottom: 0,
     paddingTop: 0,
     paddingBottom: 0,
+    zIndex: 10,
   }),
   menuList: styles => ({
     ...styles,

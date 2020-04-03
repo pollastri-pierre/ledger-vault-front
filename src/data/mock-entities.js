@@ -128,7 +128,6 @@ function genAccount(
   const approvals = genApprovals(nbApprovalsToGenerate, {
     users: administrators,
   });
-  const whitelists = genWhitelists(3, { users });
   const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
   const status = approvals.find(a => a.type === "ABORT")
     ? "REVOKED"
@@ -168,12 +167,6 @@ function genAccount(
                   : genGroup({ users, status: "ACTIVE" }),
               },
             ],
-          },
-          {
-            type: "WHITELIST",
-            data: extra.whitelists
-              ? extra.whitelists.map(w => w.id)
-              : whitelists,
           },
         ],
       },
@@ -274,7 +267,7 @@ function genUtxo() {
   const amount = BigNumber(
     faker.random.number({
       min: 1,
-      max: 599999999,
+      max: 59999,
     }),
   );
   const height = faker.random.number({ min: 55559, max: 69897 });

@@ -32,13 +32,14 @@ export type TextProps = {|
   count?: number,
   className?: string,
   overflowWrap?: string,
+  grow?: boolean,
 |};
 
 const TextBase = styled.div`
   ${space};
   ${color};
   display: ${p => (p.inline ? "inline-block" : "block")};
-  font-family: "Inter", "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: ${p => getFontSize(p)}px;
   font-weight: ${p => getFontWeight(p)} !important;
   font-style: ${p => (p.italic ? "italic" : "inherit")};
@@ -48,6 +49,7 @@ const TextBase = styled.div`
   user-select: ${p => (p.noSelect ? "none" : "inherit")};
   text-align: ${p => (p.textAlign ? p.textAlign : "inherit")};
   overflow-wrap: ${p => (p.overflowWrap ? p.overflowWrap : "inherit")};
+  flex-grow: ${p => (p.grow ? 1 : 0)};
   ${p =>
     p.selectable
       ? `

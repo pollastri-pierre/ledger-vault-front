@@ -1,13 +1,10 @@
 // Default way to login. It clears the cache
 
 export function login(id) {
-  const orga_name = Cypress.env("workspace");
   cy.visit(Cypress.env("api_server"));
   cy.clearCookies();
   switch_device(id);
-  cy.get("input[type=text]").type(orga_name, { delay: 40 });
-  cy.get("[data-test=continue_button]").click();
-  cy.wait(2500);
+  cy.get("[data-test=loginbutton]").click();
   cy.url().should("include", "/dashboard");
 }
 

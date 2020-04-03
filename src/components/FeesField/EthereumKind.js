@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import last from "lodash/last";
 import { BigNumber } from "bignumber.js";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
 import type { Account } from "data/types";
@@ -26,7 +26,6 @@ import { Label, InputAmount } from "components/base/form";
 import DoubleTilde from "components/icons/DoubleTilde";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { getFees } from "utils/transactions";
-import { usePrevious } from "utils/customHooks";
 import RecalculateButton from "./RecalculateButton";
 
 type Props = {
@@ -40,11 +39,11 @@ type Props = {
 type FeesStatus = "idle" | "fetching" | "error";
 
 function FeesFieldEthereumKind(props: Props) {
+  const { t } = useTranslation();
   const instanceNonce = useRef(0);
 
   const { transaction, account, bridge, restlay, onChangeTransaction } = props;
   const currency = getCryptoCurrencyById(account.currency);
-  const prevRecipient = usePrevious(transaction.recipient);
 
   const gasPriceUnit = currency.units[1];
 
@@ -80,6 +79,14 @@ function FeesFieldEthereumKind(props: Props) {
   const effect = async unsubscribed => {
     const nonce = ++instanceNonce.current;
 
+    // VFE-98: even if we don't fetch fees if amount is equal to 0,
+    // we still want to invalidate any pending fees fetching, and
+    // reset the loading state
+    if (transaction.amount.isEqualTo(0)) {
+      setFeesStatus("idle");
+      return;
+    }
+
     try {
       const recipientError = await bridge.getRecipientError(
         restlay,
@@ -114,7 +121,7 @@ function FeesFieldEthereumKind(props: Props) {
 
       setFeesStatus("idle");
     } catch (err) {
-      console.error(err);
+      if (nonce !== instanceNonce.current || unsubscribed) return;
       onChangeTransaction({
         ...transaction,
         estimatedFees: BigNumber(0),
@@ -128,10 +135,7 @@ function FeesFieldEthereumKind(props: Props) {
   };
   useEffect(() => {
     let unsubscribed = false;
-
-    if (prevRecipient !== transaction.recipient) {
-      effect(unsubscribed);
-    }
+    effect(unsubscribed);
     return () => {
       unsubscribed = true;
     };
@@ -153,12 +157,12 @@ function FeesFieldEthereumKind(props: Props) {
     <Box flow={20}>
       <Box flow={10}>
         <Label noPadding>
-          <Trans i18nKey="transactionCreation:steps.account.transactionFees" />
+          {t("transactionCreation:steps.account.transactionFees")}
         </Label>
         <Box horizontal flow={20} justify="space-between">
           <Box noShrink width={280}>
             <Label>
-              <Trans i18nKey="transactionCreation:steps.account.gasPrice" />
+              {t("transactionCreation:steps.account.gasPrice")}
               {` (${gasPriceUnit.code})`}
             </Label>
             {feesStatus === "fetching" ? (
@@ -185,9 +189,7 @@ function FeesFieldEthereumKind(props: Props) {
             <FaTimes color={colors.textLight} />
           </Box>
           <Box noShrink width={280}>
-            <Label>
-              <Trans i18nKey="transactionCreation:steps.account.gasLimit" />
-            </Label>
+            <Label>{t("transactionCreation:steps.account.gasLimit")}</Label>
             {feesStatus === "fetching" ? (
               <FakeInputContainer width={280}>
                 <Spinner />
@@ -211,9 +213,7 @@ function FeesFieldEthereumKind(props: Props) {
       </Box>
       <Box grow>
         <Box horizontal align="flex-start" flow={5}>
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.account.fees.title" />
-          </Label>
+          <Label>{t("transactionCreation:steps.account.fees.title")}</Label>
           {(transaction.estimatedFees || feesStatus === "error") && (
             <RecalculateButton onClick={reComputeFees} />
           )}
@@ -258,11 +258,11 @@ function FeesFieldEthereumKind(props: Props) {
       </Box>
       {erc20FeesExceedParentBalance ? (
         <InfoBox type="error">
-          <Trans i18nKey="errors:ERC20FeesExceedParentAccountBalance.description" />
+          {t("errors:ERC20FeesExceedParentAccountBalance.description")}
         </InfoBox>
       ) : (
         <InfoBox type="info">
-          <Trans i18nKey="transactionCreation:steps.account.feesInfos" />
+          {t("transactionCreation:steps.account.feesInfos")}
         </InfoBox>
       )}
     </Box>

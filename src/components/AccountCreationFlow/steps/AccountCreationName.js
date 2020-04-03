@@ -7,7 +7,7 @@ import Disabled from "components/Disabled";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import { maxLengthNonAsciiHints } from "components/base/hints";
+import { maxLengthNonAsciiHints, uniqName } from "components/base/hints";
 import { InputText, Label, Form } from "components/base/form";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
@@ -48,9 +48,20 @@ export default function AccountCreationOptions(
     account.status !== "VIEW_ONLY" &&
     account.status !== "MIGRATED";
 
+  const hints = isEditMode
+    ? [...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)]
+    : [
+        ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
+        ...uniqName(
+          payload.name,
+          allAccounts.edges.map(e => e.node.name),
+        ),
+      ];
+
   if (payload.erc20token) {
     inner = (
       <ERC20RenderName
+        isEditMode={isEditMode}
         payload={payload}
         allAccounts={allAccounts}
         updatePayload={updatePayload}
@@ -76,7 +87,7 @@ export default function AccountCreationOptions(
             disabled={isDisabled}
             autoFocus
             onChange={handleChangeName}
-            hints={maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH)}
+            hints={hints}
             placeholder={t("newAccount:options.acc_name_placeholder")}
             {...inputProps}
             IconLeft={IconLeft}

@@ -2,14 +2,12 @@
 
 import React from "react";
 
-import MUITableCell from "@material-ui/core/TableCell";
-
-import { getExtraCellStyle } from "components/Table/TableBase";
 import CounterValue from "components/CounterValue";
 import AccountName from "components/AccountName";
 import EntityStatus from "components/EntityStatus";
 import ApproverRole from "components/ApproverRole";
 import DateFormat from "components/DateFormat";
+import { TableCell } from "components/Table/TableBase";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import NotApplicableText from "components/base/NotApplicableText";
 
@@ -60,13 +58,9 @@ function AccountBodyCell(props: CellProps) {
   };
 
   return (
-    <MUITableCell
-      align={item.body.align}
-      size={item.body.size}
-      style={getExtraCellStyle(item.body.prop)}
-    >
+    <TableCell align={item.body.align} size={item.body.size}>
       {renderCellMapper()}
-    </MUITableCell>
+    </TableCell>
   );
 }
 

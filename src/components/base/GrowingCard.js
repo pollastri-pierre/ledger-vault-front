@@ -7,7 +7,7 @@ import { boxShadow } from "components/base/Modal/components";
 import Measure from "components/base/Measure";
 import Spinner from "components/base/Spinner";
 
-import { usePrevious } from "utils/customHooks";
+import usePrevious from "hooks/usePrevious";
 
 const SIZE = 350;
 

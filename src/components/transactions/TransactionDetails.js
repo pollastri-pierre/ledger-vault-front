@@ -1,6 +1,6 @@
 // @flow
 import React, { useMemo } from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
   getDefaultExplorerView,
   getTransactionExplorer,
@@ -11,6 +11,7 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import connectData from "restlay/connectData";
 import TransactionQuery from "api/queries/TransactionQuery";
 import AccountQuery from "api/queries/AccountQuery";
+import { isAccountNotSpendableWithReason } from "utils/transactions";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import { CardError } from "components/base/Card";
 import Button from "components/base/Button";
@@ -32,6 +33,7 @@ type Props = {
 
 function TransactionDetailsComponent(props: Props) {
   const { close, transaction, account } = props;
+  const { t } = useTranslation();
 
   const note = transaction.notes[0];
   const currency = getCryptoCurrencyById(account.currency);
@@ -47,9 +49,7 @@ function TransactionDetailsComponent(props: Props) {
       <a target="_blank" rel="noopener noreferrer" href={url}>
         <Button type="outline" variant="info">
           <Box horizontal align="center" flow={5}>
-            <Text>
-              <Trans i18nKey="transactionDetails:explore" />
-            </Text>
+            <Text>{t("transactionDetails:explore")}</Text>
             <FaExternalLinkAlt />
           </Box>
         </Button>
@@ -72,15 +72,17 @@ function TransactionDetailsComponent(props: Props) {
       refreshDataQuery={refreshDataQuery}
     >
       <TabOverview key="overview" transaction={transaction} account={account} />
-      <FetchEntityHistory
-        key="history"
-        url={`/transactions/${transaction.id}/history`}
-        entityType="transaction"
-      />
       {transaction.status === "SUBMITTED" && (
         <TabDetails key="details" transaction={transaction} account={account} />
       )}
       <TabLabel key="note" note={note} />
+      <FetchEntityHistory
+        key="history"
+        url={`/transactions/${transaction.id}/history`}
+        entityType="transaction"
+        entity={transaction}
+        preventReplay={isAccountNotSpendableWithReason(account)}
+      />
     </EntityModal>
   );
 }
@@ -96,7 +98,7 @@ export default connectData(
       transaction: TransactionQuery,
     },
     propsToQueryParams: props => ({
-      transactionId: props.match.params.transactionId || "",
+      transactionId: props.match.params.transactionId,
     }),
   },
 );

@@ -2,8 +2,10 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Route } from "react-router-dom";
-import Modal from "components/base/Modal";
 import type { MemoryHistory } from "history";
+
+import Modal from "components/base/Modal";
+import { getModalClosePath } from "utils/modal";
 import { UserContext } from "components/UserContextProvider";
 
 const isEmptyChildren = children => React.Children.count(children) === 0;
@@ -50,6 +52,7 @@ class ModalRoute extends Component<{
 
   onClose = () => {
     if (this._unmounted) return;
+    // this.props.resetRequest();
     const { history } = this.props;
     history.push({
       pathname: resolveCloseURL(history, this.lastPath, this.context),
@@ -100,77 +103,11 @@ ModalRoute.propTypes = Route.propTypes;
 
 export default withRouter(ModalRoute);
 
-//
-//                          CLOSING THE MODAL. Vast subject.
-//   \
-//    '-.__.-'              After multiple iterations, it appears that a
-//    /oo |--.--,--,--.     little "customized" behaviour can work better
-//    \_.-'._i__i__i_.'     than an abstraction factory that discover more
-//          """""""""       and more bugging cases. Here it is:
-//
-const modalsRoutes = [
-  /(.*)\/send$/,
-  /(.*)\/receive$/,
-  /(.*)\/admin-rules$/,
-  /(.*)\/new$/,
-  /(.*)\/accounts\/edit\/[0-9]+/,
-  /(.*)\/edit\/[0-9]+/,
-  /(.*)\/details\/[0-9]+\/.+$/,
-];
-
-const deepModalRoutes = [
-  {
-    regex: /(.*)\/tasks\/(.*)\/details\/.+$/,
-    redirect: (id, me) =>
-      `/${
-        window.location.pathname.split("/")[1]
-      }/${me.role.toLowerCase()}/tasks`,
-    regexId: null,
-  },
-  {
-    regex: /(.*)\/accounts\/view\/[0-9]+\/.+$/,
-    redirect: (id, me) =>
-      id &&
-      `/${
-        window.location.pathname.split("/")[1]
-      }/${me.role.toLowerCase()}/accounts/view/${id}`,
-    regexId: /\/accounts\/view\/[0-9]+/,
-  },
-];
-
 const usePrevFirst = [
   /.*\/dashboard$/,
   /.*\/tasks$/,
   /.*\/accounts\/view\/[0-9]+$/,
 ];
-
-function getModalClosePath(p, me) {
-  let regularMatch;
-  let nestedMatch;
-
-  // using find allow to stop parcourir the array when first match
-  modalsRoutes.find(regex => {
-    regularMatch = p.match(regex);
-    return regularMatch;
-  });
-
-  deepModalRoutes.find(({ regex, redirect, regexId }) => {
-    const match = p.match(regex);
-    if (match) {
-      const subStringId = regexId && p.match(regexId);
-      const matchId = subStringId && subStringId[0].match(/\d+/g);
-      const id = matchId && matchId[0];
-      nestedMatch = redirect(id, me);
-      return true;
-    }
-    return false;
-  });
-
-  if (nestedMatch) {
-    return nestedMatch;
-  }
-  return regularMatch ? regularMatch[1] : null;
-}
 
 function resolveCloseURL(history, lastPath, me) {
   const { pathname: actualURL } = history.location;

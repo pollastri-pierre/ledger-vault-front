@@ -23,7 +23,7 @@ import {
   addAdminValidation,
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
-import { Title, Introduction } from "components/Onboarding";
+import { Title, Introduction } from "components/legacy/Onboarding";
 import colors from "shared/colors";
 import Footer from "./Footer";
 

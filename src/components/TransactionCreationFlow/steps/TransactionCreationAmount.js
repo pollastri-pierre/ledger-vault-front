@@ -1,9 +1,10 @@
 // @flow
 
 import React, { memo } from "react";
+import { BigNumber } from "bignumber.js";
 import invariant from "invariant";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import DoubleTilde from "components/icons/DoubleTilde";
 import FakeInputContainer from "components/base/FakeInputContainer";
 
@@ -17,13 +18,8 @@ import {
   InputAmountNoUnits,
   Form,
 } from "components/base/form";
-import {
-  AmountTooHigh,
-  AmountExceedMax,
-  RippleAmountExceedMinBalance,
-} from "utils/errors";
+import { AmountTooHigh, RippleAmountExceedMinBalance } from "utils/errors";
 import { getMatchingRulesSet } from "utils/multiRules";
-import { currencyUnitValueFormat } from "components/CurrencyUnitValue";
 import { MIN_RIPPLE_BALANCE } from "bridge/RippleBridge";
 import colors from "shared/colors";
 
@@ -37,7 +33,7 @@ const TransactionCreationAmount = (
 ) => {
   const { payload, updatePayload, onEnter } = props;
   const { account, transaction, bridge } = payload;
-
+  const { t } = useTranslation();
   invariant(account, "transaction has not been chosen yet");
   invariant(transaction, "transaction has not been created yet");
   invariant(bridge, "bridge has not been created yet");
@@ -87,11 +83,9 @@ const TransactionCreationAmount = (
   }
 
   if (gateMaxAmount && transaction.amount.isGreaterThan(gateMaxAmount)) {
-    amountErrors.push(
-      new AmountExceedMax(null, {
-        max: currencyUnitValueFormat(currency.units[0], gateMaxAmount),
-      }),
-    );
+    // reset tx amount
+    onChangeAmount(BigNumber(0));
+    props.setUtxoError({ amount: gateMaxAmount });
   }
 
   const matchingRulesSet = getMatchingRulesSet({
@@ -139,9 +133,7 @@ const TransactionCreationAmount = (
       )}
       <Box flow={20}>
         <Box>
-          <Label>
-            <Trans i18nKey="transactionCreation:steps.account.amount" />
-          </Label>
+          <Label>{t("transactionCreation:steps.account.amount")}</Label>
           <Box horizontal justify="space-between">
             <Box width={280}>
               {isERC20 ? (

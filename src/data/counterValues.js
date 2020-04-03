@@ -1,6 +1,5 @@
 // @flow
 
-import axios from "axios";
 import uniqBy from "lodash/uniqBy";
 import {
   implementCountervalues,
@@ -12,7 +11,6 @@ import {
   getCryptoCurrencyById,
   getFiatCurrencyByTicker,
 } from "@ledgerhq/live-common/lib/currencies";
-import { setNetwork } from "@ledgerhq/live-common/lib/network";
 
 import type { Account } from "data/types";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
@@ -67,8 +65,6 @@ const pairsSelector = createSelector(accountsSelector, (accounts: Account[]) =>
       ),
     ),
 );
-
-setNetwork(axios);
 
 // $FlowFixMe
 implementCountervalues({

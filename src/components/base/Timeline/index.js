@@ -44,7 +44,7 @@ export const Bar = styled.div`
   position: absolute;
   pointer-events: none;
   top: ${p => (p.pos === "bot" ? STOP_PADDING + PREPEND_SIZE / 2 : 0)}px;
-  bottom: ${p => (p.pos === "top" ? STOP_PADDING + PREPEND_SIZE / 2 : 0)}px;
+  bottom: ${p => (p.pos === "top" ? "calc(100% - 20px)" : 0)};
   left: ${p =>
     (p.indentation || 0) * INDENT_SIZE + STOP_PADDING + PREPEND_SIZE / 2}px;
   width: ${STROKE}px;
@@ -52,7 +52,7 @@ export const Bar = styled.div`
   z-index: 0;
 `;
 
-type BulletVariant = "interactive" | "solid" | "plain";
+type BulletVariant = "interactive" | "solid" | "plain" | "dashed";
 export type BulletSize = "small" | "normal";
 
 export type BarPos = "full" | "top" | "bot";
@@ -303,7 +303,8 @@ const Bullet = styled.div`
       : p.variant === "plain" || p.variant === "interactive"
       ? colors.bLive
       : STROKE_COLOR};
-  border-style: ${p => (p.variant === "interactive" ? "dashed" : "solid")};
+  border-style: ${p =>
+    p.variant === "interactive" || p.variant === "dashed" ? "dashed" : "solid"};
   position: relative;
   z-index: 2;
 `;

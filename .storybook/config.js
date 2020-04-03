@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { I18nextProvider } from "react-i18next";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { withStyles } from "@material-ui/core/styles";
 import { withKnobs } from "@storybook/addon-knobs";
 import { create as createTheme } from "@storybook/theming";
 import { configure, addDecorator, addParameters } from "@storybook/react";
@@ -14,20 +13,18 @@ import {
   combineReducers,
   applyMiddleware,
 } from "redux";
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  createGenerateClassName,
-} from "@material-ui/core/styles";
 
 import logo from "assets/img/logo-black@3x.png";
-import network from "network";
 import dataReducer from "redux/modules/data";
 import counterValues from "data/counterValues";
 import exchanges from "redux/modules/exchanges";
-import theme, { styledTheme } from "styles/theme";
+import { styledTheme } from "styles/theme";
 import GlobalStyle from "components/GlobalStyle";
 import i18n from "./i18n";
+
+import erc20list from "data/erc20-list.dev.json";
+
+window.erc20 = erc20list;
 
 const createStore = () => {
   return reduxCreateStore(
@@ -40,8 +37,6 @@ const createStore = () => {
     composeWithDevTools(applyMiddleware(thunk)),
   );
 };
-
-const muiTheme = createMuiTheme(theme);
 
 const req = require.context("../src", true, /.stories.js$/);
 const store = createStore();
@@ -59,11 +54,9 @@ function loadStories() {
 addDecorator(story => (
   <Provider store={store}>
     <I18nextProvider i18n={i18n}>
-      <MuiThemeProvider theme={muiTheme}>
-        <ThemeProvider theme={styledTheme}>
-          <BrowserRouter>{story()}</BrowserRouter>
-        </ThemeProvider>
-      </MuiThemeProvider>
+      <ThemeProvider theme={styledTheme}>
+        <BrowserRouter>{story()}</BrowserRouter>
+      </ThemeProvider>
     </I18nextProvider>
   </Provider>
 ));

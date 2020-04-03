@@ -6,24 +6,11 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import pkg from "../package.json";
 import paths from "./paths";
 import * as globals from "./globals";
+import commitHash from "./commit-hash";
 
-// get git info from command line
-let commitHash = require("child_process")
-  .execSync("git rev-parse --short HEAD")
-  .toString();
-
-commitHash = commitHash.substring(0, commitHash.length - 1);
 export default {
-  entry: "./src/index",
-
   resolve: {
     modules: [paths.src, paths.nodeModules],
-  },
-
-  output: {
-    path: paths.dist,
-    filename: "bundle.js",
-    publicPath: "/",
   },
 
   module: {
@@ -45,6 +32,7 @@ export default {
               hash: "sha512",
               digest: "hex",
               name: "[hash].[ext]",
+              outputPath: "assets",
             },
           },
         ],
@@ -58,6 +46,7 @@ export default {
               limit: 8192,
               minetype: "application/font-woff",
               name: "[hash].[ext]",
+              outputPath: "assets",
             },
           },
         ],
@@ -69,6 +58,7 @@ export default {
             loader: "file-loader",
             options: {
               name: "[hash].[ext]",
+              outputPath: "assets",
             },
           },
         ],
@@ -78,16 +68,8 @@ export default {
 
   plugins: [
     new CopyWebpackPlugin([
-      {
-        from: paths.config,
-        to: paths.dist,
-        force: true,
-      },
-      {
-        from: paths.favicon,
-        to: paths.dist,
-        force: true,
-      },
+      { from: paths.config, to: paths.dist, force: true },
+      { from: paths.favicon, to: paths.distAssets, force: true },
     ]),
     new webpack.DefinePlugin({
       ...Object.keys(globals).reduce((acc, key) => {
@@ -110,9 +92,9 @@ export default {
     new webpack.NamedModulesPlugin(),
     new webpack.NamedChunksPlugin(),
     new HtmlWebpackPlugin({
-      title: "Ledger Vault",
-      commitHash,
-      template: path.normalize(`${paths.src}/templates/layout.html`),
+      commitHash: commitHash(),
+      template: path.normalize(`${paths.src}/templates/default.html`),
+      excludeChunks: ["assets_login", "assets_onboarding", "assets_register"],
     }),
   ],
 };

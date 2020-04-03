@@ -1,10 +1,12 @@
 // @flow
 
 import React from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
+import { connect } from "react-redux";
 
 import connectData from "restlay/connectData";
+import { resetRequest } from "redux/modules/requestReplayStore";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import TryAgain from "components/TryAgain";
@@ -33,11 +35,17 @@ import {
   serializeRulesSetsForPOST,
   isValidRulesSet,
   isEmptyRulesSet,
+  convertEditDataIntoRules,
 } from "components/MultiRules/helpers";
 import type { RulesSet } from "components/MultiRules/types";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
+import type {
+  EditAccountReplay,
+  CreateAccountReplay,
+} from "redux/modules/requestReplayStore";
 
-import type { Account } from "data/types";
+import type { Account, Group, User } from "data/types";
+import type { PayloadUpdater } from "components/base/MultiStepsFlow/types";
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
 import AccountCreationName from "./steps/AccountCreationName";
 import AccountCreationRules from "./steps/AccountCreationRules";
@@ -64,6 +72,14 @@ export const initialPayload: AccountCreationPayload = {
   currency: null,
   erc20token: null,
   parentAccount: null,
+};
+
+const cleanRules = (
+  payload: AccountCreationPayload,
+  updatePayload: PayloadUpdater<AccountCreationPayload>,
+) => {
+  const rulesSets = payload.rulesSets.filter(isValidRulesSet);
+  updatePayload({ ...payload, rulesSets });
 };
 
 const steps = [
@@ -97,7 +113,15 @@ const steps = [
       }
       return null;
     },
-    requirements: (payload: AccountCreationPayload) => {
+    requirements: (payload: AccountCreationPayload, additionalProps) => {
+      if (
+        additionalProps &&
+        !additionalProps.isEditMode &&
+        additionalProps.allAccounts.edges
+          .map(e => e.node.name)
+          .indexOf(payload.name) > -1
+      )
+        return false;
       if (payload.name === "") return false;
       if (payload.erc20token) {
         const { parentAccount } = payload;
@@ -111,6 +135,7 @@ const steps = [
       }
       return true;
     },
+    onNext: cleanRules,
   },
   {
     id: "confirmation",
@@ -178,6 +203,7 @@ const steps = [
       payload: AccountCreationPayload,
       isEditMode: boolean,
     }) => {
+      const { t } = useTranslation();
       return (
         <MultiStepsSuccess
           title={
@@ -196,21 +222,20 @@ const steps = [
               )}
             </Box>
           }
-          desc={
-            isEditMode ? (
-              <Trans i18nKey="accountCreation:finishEditDesc" />
-            ) : (
-              <Trans i18nKey="accountCreation:finishDesc" />
-            )
-          }
+          desc={t(
+            isEditMode
+              ? "accountCreation:finishEditDesc"
+              : "accountCreation:finishDesc",
+          )}
         />
       );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );
@@ -248,24 +273,33 @@ function getGateAccountType(payload: AccountCreationPayload) {
 
 // TODO see if we can get rid of some api call like potentialAccounts
 const AccountEdit = connectData(
-  props => (
-    <GrowingCard>
-      <MultiStepsFlow
-        Icon={FaMoneyCheck}
-        title={
-          <Text>
-            <Trans i18nKey="accountCreation:edit_title" />: {props.account.name}
-          </Text>
-        }
-        steps={steps}
-        additionalProps={props}
-        onClose={props.close}
-        isEditMode
-        initialPayload={deserialize(props.account)}
-        initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
-      />
-    </GrowingCard>
-  ),
+  props => {
+    const { t } = useTranslation();
+    return (
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaMoneyCheck}
+          title={
+            <Text>
+              {t("accountCreation:edit_title")}: {props.account.name}
+            </Text>
+          }
+          steps={steps}
+          additionalProps={{ ...props, isEditMode: true }}
+          onClose={props.close}
+          isEditMode
+          initialPayload={mergeEditData(
+            props.account,
+            props.requestToReplay,
+            props.users.edges.map(e => e.node),
+            props.groups.edges.map(e => e.node),
+          )}
+          payloadToCompareTo={props.account}
+          initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
+        />
+      </GrowingCard>
+    );
+  },
   {
     RenderLoading: GrowingSpinner,
     RenderError: TryAgain,
@@ -277,7 +311,7 @@ const AccountEdit = connectData(
       groups: GroupsForAccountCreationQuery,
     },
     propsToQueryParams: props => ({
-      accountId: props.accountId || "",
+      accountId: props.accountId,
     }),
   },
 );
@@ -288,10 +322,16 @@ const AccountCreation = connectData(
       <MultiStepsFlow
         Icon={FaMoneyCheck}
         title={title}
-        initialPayload={initialPayload}
+        initialPayload={
+          (props.requestToReplay &&
+            deserialize(props.requestToReplay.entity)) ||
+          initialPayload
+        }
         steps={steps}
         additionalProps={props}
+        payloadToCompareTo={initialPayload}
         onClose={props.close}
+        initialCursor={props.request ? 3 : 0}
       />
     </GrowingCard>
   ),
@@ -307,14 +347,46 @@ const AccountCreation = connectData(
   },
 );
 
-const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
+const Wrapper = ({
+  match,
+  close,
+  requestToReplay,
+  resetRequest,
+}: {
+  match: Match,
+  close: Function,
+  requestToReplay: EditAccountReplay | CreateAccountReplay,
+  resetRequest: void => void,
+}) => {
+  const closeAndEmptyStore = () => {
+    resetRequest();
+    close();
+  };
   if (match.params.accountId) {
-    return <AccountEdit accountId={match.params.accountId} close={close} />;
+    return (
+      <AccountEdit
+        accountId={match.params.accountId}
+        close={closeAndEmptyStore}
+        requestToReplay={requestToReplay}
+      />
+    );
   }
-  return <AccountCreation close={close} />;
+  return (
+    <AccountCreation
+      close={closeAndEmptyStore}
+      requestToReplay={requestToReplay}
+    />
+  );
 };
 
-export default Wrapper;
+const mapStateToProps = state => ({
+  requestToReplay: state.requestReplay,
+});
+const mapDispatch = {
+  resetRequest,
+};
+
+export default connect(mapStateToProps, mapDispatch)(Wrapper);
 
 export const deserialize: Account => AccountCreationPayload = account => {
   return {
@@ -335,6 +407,36 @@ export const deserialize: Account => AccountCreationPayload = account => {
         : null,
   };
 };
+
+function mergeEditData(
+  account: Account,
+  requestToReplay: EditAccountReplay,
+  users: User[],
+  groups: Group[],
+) {
+  const acc = deserialize(account);
+  if (
+    requestToReplay &&
+    requestToReplay.edit_data &&
+    requestToReplay.edit_data.name
+  ) {
+    Object.assign(acc, { name: requestToReplay.edit_data.name });
+  }
+  if (
+    requestToReplay &&
+    requestToReplay.edit_data &&
+    requestToReplay.edit_data.governance_rules
+  ) {
+    Object.assign(acc, {
+      rulesSets: convertEditDataIntoRules(
+        requestToReplay.edit_data.governance_rules,
+        users,
+        groups,
+      ),
+    });
+  }
+  return acc;
+}
 
 export function serializePayload(
   payload: AccountCreationPayload,
@@ -386,11 +488,8 @@ export function serializePayload(
 }
 
 export function areRulesSetsValid(rulesSets: RulesSet[]) {
-  if (!rulesSets.length) return false;
-  if (rulesSets.length === 1 && isEmptyRulesSet(rulesSets[0])) return false;
-  return rulesSets
-    .map(r => isEmptyRulesSet(r) || isValidRulesSet(r))
-    .every(Boolean);
+  // we consider rules sets valids if at least one is valid
+  return rulesSets.find(isValidRulesSet) !== undefined;
 }
 
 export function hasEmptyRules(rulesSets: RulesSet[]) {

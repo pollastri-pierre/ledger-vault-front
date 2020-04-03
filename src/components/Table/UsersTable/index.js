@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 
-import MUITableBody from "@material-ui/core/TableBody";
-
 import type { ObjectParameters } from "query-string";
 
 import NoDataPlaceholder from "components/NoDataPlaceholder";
@@ -55,7 +53,7 @@ function UsersTable(props: Props) {
           onSortChange={onSortChange}
           queryParams={queryParams}
         />
-        <MUITableBody>{data.map(UserComponent)}</MUITableBody>
+        <tbody>{data.map(UserComponent)}</tbody>
       </Table>
     </TableScroll>
   );

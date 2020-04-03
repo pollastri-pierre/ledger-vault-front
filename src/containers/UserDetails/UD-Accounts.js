@@ -7,6 +7,7 @@ import SearchAccounts from "api/queries/SearchAccounts";
 import { WidgetLoading } from "components/widgets/Widget";
 import { RestlayTryAgain } from "components/TryAgain";
 import { AccountsList } from "components/lists";
+import type { AccountsListConfig } from "components/lists/AccountsList";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Account } from "data/types";
@@ -15,13 +16,24 @@ type Props = {
   accountsConnection: Connection<Account>,
 };
 
+const ACCOUNTS_LIST_CONFIG: AccountsListConfig = {
+  displayBalance: false,
+};
+
 const UserDetailsAccounts = (props: Props) => {
   const { accountsConnection } = props;
   const accounts = useMemo(
     () => accountsConnection.edges.map(edge => edge.node),
     [accountsConnection],
   );
-  return <AccountsList accounts={accounts} />;
+  return (
+    <AccountsList
+      display="grid"
+      tileWidth={250}
+      accounts={accounts}
+      config={ACCOUNTS_LIST_CONFIG}
+    />
+  );
 };
 
 export default connectData(UserDetailsAccounts, {

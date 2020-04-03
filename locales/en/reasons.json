@@ -1,3 +1,11 @@
 {
-  "PREVENT_BLOCKING_OBJECT_EXCEPTION": "This request can't be created yet..."
+  "PREVENT_BLOCKING_OBJECT_EXCEPTION": "This request can't be created yet...",
+  "pending": "A request is pending on this {{entityType}}",
+  "account": {
+    "balance0": "Insufficient funds to recreate this transaction",
+    "not_active": "Account transaction rules must be provided",
+    "outdated": "The account is not up to date",
+    "not_in_first_step": "You are not a transaction creator in this account",
+    "updating": "The account is being updated"
+  }
 }

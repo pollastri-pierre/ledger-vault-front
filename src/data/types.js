@@ -1,7 +1,12 @@
 // @flow
 
 import type { BigNumber } from "bignumber.js";
-import type { GovernanceRules } from "components/MultiRules/types";
+import type {
+  GovernanceRules,
+  RuleWhitelist,
+  RuleThreshold,
+} from "components/MultiRules/types";
+import type { UtxoPickingStrategy } from "utils/utxo";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 // This contains all the flow types for the Data Model (coming from the API)
@@ -14,6 +19,7 @@ export const mapRestlayKeyToType = {
   accounts: "ACCOUNT",
   transactions: "TRANSACTION",
   whitelists: "WHITELIST",
+  utxos: "UTXO",
 };
 
 export type Translate = (?string, ?Object) => any;
@@ -182,6 +188,7 @@ export type TransactionGetFees = {
   gas_limit?: ?BigNumber,
   gas_price?: ?BigNumber,
   max_amount?: ?BigNumber,
+  utxo_picking_strategy?: UtxoPickingStrategy,
   memo?: [],
 };
 
@@ -529,18 +536,30 @@ export type EditApprovalStep = {
   users?: number[],
 };
 
-type WhitelistEditData = {
+export type WhitelistEditData = {
   name?: string,
   addresses: Address[],
 };
 
-type GroupEditData = {
+export type GroupEditData = {
   name?: string,
   members: number[],
 };
-type AccountEditData = {
+
+export type AccountEditUsers = { quorum: number, users: number[] };
+export type AccountEditGroup = { quorum: number, group_id: number };
+export type AccountMultiAuthEditData = {
+  type: "MULTI_AUTHORIZATIONS",
+  data: Array<AccountEditUsers | AccountEditGroup>,
+};
+type RuleEditData = RuleWhitelist | RuleThreshold | AccountMultiAuthEditData;
+export type GovernanceRulesInEditData = Array<{
+  name: string,
+  rules: RuleEditData[],
+}>;
+export type AccountEditData = {
   name?: string,
-  governance_rules: GovernanceRules,
+  governance_rules: GovernanceRulesInEditData,
 };
 
 type MapRequestType = {
@@ -621,14 +640,23 @@ type RequestApproval = {
   step: number,
 };
 
-export type FreshAddress = {
+export type AddressDaemon = {
   address: string,
   derivation_path: string,
 };
 
+export type UTXORange = {
+  range: string,
+  amount: BigNumber,
+  number: number,
+};
+
 export type UTXO = {
+  id: number, // added by the front in the transformer
   address: string,
   height: number,
   confirmations: number,
   amount: BigNumber,
+  output_index: number,
+  tx_hash: string,
 };

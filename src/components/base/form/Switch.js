@@ -42,6 +42,7 @@ const Switch = ({ value, onChange, disabled }: SwitchProps) => {
 };
 
 const SwitchContainer = styled.div`
+  cursor: pointer;
   opacity: ${p => (p.disabled ? 0.5 : 1)};
   position: relative;
   display: inline-block;

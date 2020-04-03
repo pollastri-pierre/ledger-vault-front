@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useMemo } from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { FaUsers } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
@@ -25,10 +25,11 @@ type Props = {
 
 function GroupDetails(props: Props) {
   const { close, group, operators } = props;
+  const { t } = useTranslation();
 
   const revokeParams = {
-    buttonLabel: <Trans i18nKey="group:delete" />,
-    confirmLabel: <Trans i18nKey="group:delete" />,
+    buttonLabel: t("group:delete"),
+    confirmLabel: t("group:delete"),
     confirmContent: (
       <Text textAlign="center" i18nKey="group:revokeWarning.content" />
     ),
@@ -63,6 +64,7 @@ function GroupDetails(props: Props) {
       <FetchEntityHistory
         key="history"
         url={`/groups/${group.id}/history`}
+        entity={group}
         entityType="group"
       />
     </EntityModal>
@@ -77,7 +79,7 @@ export default connectData(GroupDetails, {
     operators: UsersQuery,
   },
   propsToQueryParams: props => ({
-    groupId: props.match.params.groupId || "",
+    groupId: props.match.params.groupId,
     role: "OPERATOR",
   }),
 });

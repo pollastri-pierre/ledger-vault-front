@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 
 import colors from "shared/colors";
-import { Title } from "components/Onboarding";
+import { Title } from "components/legacy/Onboarding";
 import type { Translate } from "data/types";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -17,11 +17,9 @@ import Footer from "./Footer";
 
 const ConfirmationGlobal = ({
   onboarding,
-  match,
   history,
   t,
 }: {
-  match: *,
   history: *,
   onboarding: *,
   t: Translate,
@@ -63,7 +61,12 @@ const ConfirmationGlobal = ({
           <DialogButton
             highlight
             onTouchTap={() => {
-              history.push(`/${match.params.orga_name}`);
+              const redirect = "/";
+              if (process.env.NODE_ENV === "production") {
+                window.location.href = redirect;
+              } else {
+                history.push(redirect);
+              }
             }}
           >
             {t("common:continue")}

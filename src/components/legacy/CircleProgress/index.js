@@ -1,40 +1,11 @@
 // @flow
 import * as d3 from "d3";
+import styled from "styled-components";
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-
-const styles = {
-  circle: {
-    width: 124,
-    height: 124,
-    borderRadius: "50%",
-    // border: "3px solid #e2e2e2",
-    fontSize: 11,
-    textAlign: "center",
-    paddingTop: 25,
-    position: "relative",
-    "& > span": {
-      display: "inline-block",
-      marginTop: 5,
-    },
-    "& strong": {
-      fontSize: 18,
-      display: "block",
-    },
-  },
-  svg: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: 120,
-    height: 120,
-  },
-};
 
 type Props = {
   nb: number,
   total: number,
-  classes: { [_: $Keys<typeof styles>]: string },
   label: string,
 };
 
@@ -87,23 +58,44 @@ class CircleProgress extends Component<Props> {
   }
 
   render() {
-    const { classes, nb, total, label } = this.props;
+    const { nb, total, label } = this.props;
     return (
-      <div className={classes.circle}>
-        <svg
-          ref={c => {
-            this.svg = c;
-          }}
-          className={classes.svg}
-        />
+      <Container>
+        <Svg ref={c => (this.svg = c)} />
         <strong>
           {" "}
           {nb}/{total}{" "}
         </strong>
         <span>{label}</span>
-      </div>
+      </Container>
     );
   }
 }
 
-export default withStyles(styles)(CircleProgress);
+const Container = styled.div`
+  width: 124px;
+  height: 124;
+  border-radius: 50%;
+  font-size: 11px;
+  text-align: center;
+  padding-top: 25px;
+  position: relative;
+  & > span {
+    display: inline-block;
+    margin-top: 5px;
+  }
+  & strong {
+    font-size: 18px;
+    display: block;
+  }
+`;
+
+const Svg = styled.svg`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+`;
+
+export default CircleProgress;

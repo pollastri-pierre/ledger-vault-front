@@ -18,7 +18,7 @@ type Props = GroupCreationStepProps & {};
 
 class GroupCreationConfirmation extends PureComponent<Props> {
   render() {
-    const { payload, initialPayload } = this.props;
+    const { payload, payloadToCompareTo } = this.props;
     return (
       <Box grow flow={20}>
         <Box grow>
@@ -41,12 +41,16 @@ class GroupCreationConfirmation extends PureComponent<Props> {
             </div>
           </LineRow>
         </Box>
-        {!hasEditOccuredGeneric(payload, initialPayload, "members") ? (
+        {!hasEditOccuredGeneric(payload, payloadToCompareTo, "members") ? (
           <InfoBox type="info" withIcon>
             <Trans i18nKey="group:create.no_edit" />
           </InfoBox>
         ) : (
-          onlyDescriptionChangedGeneric(payload, initialPayload, "members") && (
+          onlyDescriptionChangedGeneric(
+            payload,
+            payloadToCompareTo,
+            "members",
+          ) && (
             <InfoBox type="info" withIcon>
               <Trans i18nKey="group:create.no_hsm_validation" />
             </InfoBox>

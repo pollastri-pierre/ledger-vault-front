@@ -6,3 +6,5 @@ export { default as GroupsTable } from "./GroupsTable";
 export { default as UsersTable } from "./UsersTable";
 export { default as RequestsTable } from "./RequestsTable";
 export { default as WhitelistsTable } from "./WhitelistsTable";
+export { default as UtxosTable } from "./UtxosTable";
+export { default as UtxosDistributionTable } from "./UtxosDistributionTable";

@@ -1,6 +1,7 @@
 {
   "approveLabel": "<0>{{name}}</0> approved {{- quorum}} on {{date}}",
   "abortLabel": "<0>{{name}}</0> rejected {{- quorum}} on {{date}}",
+  "replay": "Recreate",
   "title": {
     "CREATE": {
       "user": "User creation request",

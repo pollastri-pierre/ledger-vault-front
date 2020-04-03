@@ -1,12 +1,22 @@
 // @flow
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import { BigNumber } from "bignumber.js";
 import invariant from "invariant";
-import { Trans } from "react-i18next";
-import { FaMoneyCheck } from "react-icons/fa";
+import { Trans, useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { FaMoneyCheck, FaInfoCircle } from "react-icons/fa";
+import { IoMdHelpBuoy } from "react-icons/io";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
-import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
+import HelpLink from "components/HelpLink";
+import VaultLink from "components/VaultLink";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import Modal from "components/base/Modal";
+import connectData from "restlay/connectData";
+import { getBridgeForCurrency } from "bridge";
+import { resetRequest } from "redux/modules/requestReplayStore";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import SearchTransactions from "api/queries/SearchTransactions";
 import SearchWhitelists from "api/queries/SearchWhitelists";
@@ -23,13 +33,17 @@ import { CardError } from "components/base/Card";
 import { createAndApprove } from "device/interactions/hsmFlows";
 import Amount from "components/Amount";
 import { isAccountSpendable } from "utils/transactions";
+import type { Account } from "data/types";
 
 import { getBridgeAndTransactionFromAccount } from "./steps/TransactionCreationAccount";
 import TransactionCreationAmount from "./steps/TransactionCreationAmount";
 import TransactionCreationNote from "./steps/TransactionCreationNote";
 import TransactionCreationConfirmation from "./steps/TransactionCreationConfirmation";
 
-import type { TransactionCreationPayload } from "./types";
+import type {
+  TransactionCreationPayload,
+  serializePayloadProps,
+} from "./types";
 
 const initialPayload: TransactionCreationPayload<any> = {
   transaction: null,
@@ -105,6 +119,7 @@ const steps = [
     }) => {
       const { payload, onClose, restlay, onSuccess } = props;
       const data = serializePayload(payload);
+      const { t } = useTranslation();
       return (
         <ApproveRequestButton
           interactions={createAndApprove("TRANSACTION")}
@@ -128,7 +143,7 @@ const steps = [
             targetType: "CREATE_TRANSACTION",
             data,
           }}
-          buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
+          buttonLabel={t("transactionCreation:cta")}
         />
       );
     },
@@ -138,18 +153,20 @@ const steps = [
     name: <Trans i18nKey="transactionCreation:finish" />,
     hideBack: true,
     Step: () => {
+      const { t } = useTranslation();
       return (
         <MultiStepsSuccess
-          title={<Trans i18nKey="transactionCreation:finishTitle" />}
-          desc={<Trans i18nKey="transactionCreation:finishDesc" />}
+          title={t("transactionCreation:finishTitle")}
+          desc={t("transactionCreation:finishDesc")}
         />
       );
     },
     Cta: ({ onClose }: { onClose: () => void }) => {
+      const { t } = useTranslation();
       return (
         <Box my={10}>
           <Button type="filled" onClick={onClose}>
-            <Trans i18nKey="common:done" />
+            {t("common:done")}
           </Button>
         </Box>
       );
@@ -158,53 +175,158 @@ const steps = [
 ];
 
 const title = <Trans i18nKey="transactionCreation:title" />;
+const mapStateToProps = state => ({
+  requestToReplay: state.requestReplay,
+});
+const mapDispatch = {
+  resetRequest,
+};
 
-export default connectData(
-  props => {
-    const { match, accounts } = props;
-    const cursor = 0;
-    let payload = initialPayload;
+type MaxUtxoErrorType = ?{ amount: BigNumber };
 
-    const filteredAccounts = useMemo(
-      () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
-      [accounts],
-    );
-    const acc =
-      match.params && match.params.id
-        ? filteredAccounts.find(a => a.id === parseInt(match.params.id, 10))
-        : filteredAccounts[0];
-    const { bridge, account, transaction } = getBridgeAndTransactionFromAccount(
-      acc,
-    );
-    payload = { ...initialPayload, account, transaction, bridge };
-    return (
-      <GrowingCard>
-        <MultiStepsFlow
-          Icon={FaMoneyCheck}
-          title={title}
-          initialPayload={payload}
-          steps={steps}
-          additionalProps={props}
-          initialCursor={cursor}
-          onClose={props.close}
-        />
-      </GrowingCard>
-    );
-  },
-  {
-    RenderLoading: GrowingSpinner,
-    RenderError: CardError,
-    queries: {
-      accounts: AccountsQuery,
-      whitelists: SearchWhitelists,
+export default connect(
+  mapStateToProps,
+  mapDispatch,
+)(
+  connectData(
+    props => {
+      const { match, accounts, close, resetRequest, requestToReplay } = props;
+      const [utxoError, setUtxoError] = useState<MaxUtxoErrorType>(null);
+      const cursor = 0;
+      let payload = initialPayload;
+
+      const filteredAccounts = useMemo(
+        () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
+        [accounts],
+      );
+      const acc =
+        match.params && match.params.id
+          ? filteredAccounts.find(a => a.id === parseInt(match.params.id, 10))
+          : filteredAccounts[0];
+      const {
+        bridge,
+        account,
+        transaction,
+      } = getBridgeAndTransactionFromAccount(acc);
+      payload = { ...initialPayload, account, transaction, bridge };
+      const closeAndEmptyStore = () => {
+        resetRequest();
+        close();
+      };
+      return (
+        <GrowingCard>
+          <Modal isOpened={!!utxoError}>
+            {!!utxoError && (
+              <UtxoErrorModal
+                setUtxoError={setUtxoError}
+                account={acc}
+                amount={utxoError.amount}
+              />
+            )}
+          </Modal>
+          <MultiStepsFlow
+            Icon={FaMoneyCheck}
+            title={title}
+            payloadToCompareTo={initialPayload}
+            initialPayload={
+              (requestToReplay &&
+                purgePayload(requestToReplay.entity, filteredAccounts)) ||
+              payload
+            }
+            steps={steps}
+            additionalProps={{ ...props, setUtxoError }}
+            initialCursor={cursor}
+            onClose={closeAndEmptyStore}
+          />
+        </GrowingCard>
+      );
     },
-    propsToQueryParams: () => ({
-      pageSize: -1,
-    }),
-  },
+    {
+      RenderLoading: GrowingSpinner,
+      RenderError: CardError,
+      queries: {
+        accounts: AccountsQuery,
+        whitelists: SearchWhitelists,
+      },
+      propsToQueryParams: () => ({
+        pageSize: -1,
+      }),
+    },
+  ),
 );
 
-function serializePayload(payload: TransactionCreationPayload<*>) {
+const UtxoErrorModal = ({
+  setUtxoError,
+  amount,
+  account,
+}: {
+  setUtxoError: MaxUtxoErrorType => void,
+  amount: BigNumber,
+  account: Account,
+}) => {
+  return (
+    <Box p={30} flow={20} align="center" justify="center" width={400}>
+      <Box>
+        <FaInfoCircle size={36} color="black" />
+      </Box>
+      <Box>
+        <p>
+          In order to send more than{" "}
+          <strong>
+            <CurrencyAccountValue account={account} value={amount} />
+          </strong>
+          , you must consolidate the UTXOs in the{" "}
+          <strong>{account.name}</strong> account to proceed with the
+          transaction.
+        </p>
+      </Box>
+      <Box align="center" justify="center" horizontal flow={5}>
+        <IoMdHelpBuoy size={20} />{" "}
+        <Text fontWeight="semiBold">
+          <HelpLink subLink="/Content/transactions/tx_consolidate.html">
+            Consolidate UTXOs
+          </HelpLink>
+        </Text>
+      </Box>
+      <Box horizontal flow={20} pt={20}>
+        <Button type="outline" onClick={() => setUtxoError(null)}>
+          Change amount
+        </Button>
+        <Button type="filled">
+          <VaultLink withRole to={`/dashboard/consolidate/${account.id}`}>
+            Consolidate
+          </VaultLink>
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
+const purgePayload = (
+  data: *,
+  accounts: Account[],
+): TransactionCreationPayload<any> => {
+  const account = accounts.find(a => a.id === data.account_id);
+  const currency = getCryptoCurrencyById(data.currency);
+  if (!account) throw new Error("Account not spendable");
+  if (!currency) throw new Error("no valid currency");
+  return {
+    transaction: {
+      fees_level: data.fees_level,
+      note: data.notes[0] || { title: null, note: null },
+      gas_price: null,
+      gas_limit: null,
+      fees: null,
+      recipient: data.recipient,
+      amount: data.amount,
+      whitelist_id: data.whitelist_id,
+    },
+    account,
+    bridge: getBridgeForCurrency(currency),
+  };
+};
+
+export function serializePayload(payload: serializePayloadProps) {
   const { transaction, account } = payload;
 
   invariant(transaction && account, "invalid payload");
@@ -216,19 +338,29 @@ function serializePayload(payload: TransactionCreationPayload<*>) {
   };
 
   if (account.account_type === "Bitcoin") {
+    invariant(transaction.feeLevel, "Invalid payload");
     Object.assign(tx, {
       fees_level: transaction.feeLevel,
     });
   }
+  if (transaction.utxoPickingStrategy) {
+    Object.assign(tx, {
+      utxo_picking_strategy: transaction.utxoPickingStrategy,
+    });
+  }
 
   if (account.account_type === "Ethereum" || account.account_type === "Erc20") {
+    // $FlowFixMe
+    const { gasPrice, gasLimit } = transaction;
+    invariant(gasPrice && gasLimit, "Invalid transaction");
     Object.assign(tx, {
-      gas_price: transaction.gasPrice.toFixed(),
-      gas_limit: transaction.gasLimit.toFixed(),
+      gas_price: gasPrice.toFixed(),
+      gas_limit: gasLimit.toFixed(),
     });
   }
 
   if (account.account_type === "Ripple") {
+    invariant(transaction.estimatedFees, "Invalid transaction");
     Object.assign(tx, {
       memos: [],
       destination_tag: transaction.destinationTag || null,

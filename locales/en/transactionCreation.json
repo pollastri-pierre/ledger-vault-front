@@ -9,11 +9,12 @@
       "total": "Total",
       "fees": {
         "title": "Transaction fees",
-        "recompute": "Recalculate the fees"
+        "recompute": "Recalculate fees"
       },
       "select": "Select address",
+      "utxo_picking_strategy": "UTXO selection strategy",
       "recipient": "Recipient address",
-      "feesInfos": "To have your transaction confirmed faster, select a higher fee.",
+      "feesInfos": "Select a higher fee to have your transaction confirmed faster.",
       "estimatedFees": "Estimated fees",
       "gasLimit": "Gas Limit",
       "gasPrice": "Gas Price",
@@ -21,7 +22,7 @@
       "destinationTagDesc": "e.g: 1234",
       "tooltip": {
         "whitelist": "Select from the whitelist",
-        "customAddress": "Type in the address"
+        "customAddress": "Enter the address"
       }
     },
     "note": {
@@ -35,11 +36,17 @@
       "amount": "Amount",
       "account": "Account to Debit",
       "desc": "A transaction request will be sent to the members of the account. It won't be broadcasted to the blockchain until it's approved.",
+      "strategy": "UTXO selection strategy",
       "fees": "Confirmation fees",
       "identifier": "Recipient address",
       "total": "Total amount",
       "totalERC20Info": "Excluding confirmation fees"
     }
+  },
+  "strategy": {
+    "MERGE_OUTPUTS": "Merge outputs",
+    "OPTIMIZE_SIZE": "Optimize size",
+    "DEEP_OUTPUTS_FIRST": "Deep outputs first"
   },
   "cta": "Create transaction",
   "finish": "Finish",

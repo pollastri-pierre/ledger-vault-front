@@ -91,6 +91,7 @@ export default function TextArea(props: TextAreaProps) {
 }
 
 const StyledTextarea = styled.textarea`
+  font: inherit;
   box-sizing: border-box;
   border-radius: 4px;
   overflow: auto;

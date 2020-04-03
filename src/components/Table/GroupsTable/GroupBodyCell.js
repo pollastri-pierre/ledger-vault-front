@@ -2,10 +2,8 @@
 
 import React from "react";
 
-import MUITableCell from "@material-ui/core/TableCell";
-
+import { TableCell } from "components/Table/TableBase";
 import EntityStatus from "components/EntityStatus";
-
 import type { Group } from "data/types";
 import GroupMembersCell from "./GroupMembersCell";
 import type { TableItem } from "../types";
@@ -32,9 +30,7 @@ function GroupBodyCell(props: CellProps) {
     }
   };
 
-  return (
-    <MUITableCell align={item.body.align}>{renderCellMapper()}</MUITableCell>
-  );
+  return <TableCell align={item.body.align}>{renderCellMapper()}</TableCell>;
 }
 
 export default GroupBodyCell;

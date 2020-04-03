@@ -8,8 +8,18 @@ import webpackConfig from "./base";
 threadLoader.warmup({}, ["babel-loader"]);
 
 export default merge(webpackConfig, {
+  entry: {
+    main: "./src/index",
+  },
+
   devtool: "cheap-module-source-map",
   mode: "development",
+
+  output: {
+    path: paths.dist,
+    filename: "bundle.js",
+    publicPath: "/",
+  },
 
   module: {
     rules: [

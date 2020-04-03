@@ -26,12 +26,15 @@ if (process.env.NODE_ENV === "test") {
     // /!\ TEMPORARY - LV-2129
     // -----------------------
     /* eslint-disable no-console */
-    if (uri.endsWith("/challenge")) {
-      console.warn(`params: ${JSON.stringify(params)}`);
-      console.warn(`location: ${JSON.stringify(location)}`);
-      console.warn(`prefix: ${prefix}`);
-      console.warn(`API_BASE_URL: ${window.config.API_BASE_URL}`);
-      console.warn(`final url: ${window.config.API_BASE_URL + prefix + uri}`);
+    if (
+      uri.endsWith("/challenge") &&
+      window.localStorage.getItem("DEBUG_LV2129") === "1"
+    ) {
+      console.log(`params: ${JSON.stringify(params)}`);
+      console.log(`location: ${JSON.stringify(location)}`);
+      console.log(`prefix: ${prefix}`);
+      console.log(`API_BASE_URL: ${window.config.API_BASE_URL}`);
+      console.log(`final url: ${window.config.API_BASE_URL + prefix + uri}`);
     }
     /* eslint-enable no-console */
 

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import React, { PureComponent } from "react";
+import { createPortal } from "react-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaCopy } from "react-icons/fa";
 import { logout, login } from "redux/modules/auth";
@@ -8,21 +9,34 @@ import { connect } from "react-redux";
 
 import colors from "shared/colors";
 import Text from "components/base/Text";
-import { Switch } from "components/base/form";
+import Switch from "components/base/form/Switch";
 
 const DEVICE_API_URL = "http://localhost:5001";
+
+const devtoolsContainer = document.createElement("div");
+devtoolsContainer.classList.add("devtools-container");
+const devtoolsRoot =
+  document.body && document.body.appendChild(devtoolsContainer);
 
 const styles = {
   root: {
     position: "fixed",
     bottom: 0,
-    right: 0,
+    right: 10,
+    display: "flex",
+    alignItems: "flex-end",
+    whiteSpace: "nowrap",
+    // intended eheh :)
+    zIndex: 99999999,
+  },
+  wrapper: {
+    marginRight: 5,
     display: "flex",
     flexDirection: "column",
     background: colors.night,
     color: colors.lead,
-    // intended eheh :)
-    zIndex: 99999999,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
   },
   group: {
     display: "flex",
@@ -61,14 +75,18 @@ const styles = {
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  autoLogout: {
+  autoLogin: {
     alignSelf: "center",
     marginLeft: 20,
   },
-  collapseIcon: {
+  triggerIcon: {
     cursor: "pointer",
-    alignSelf: "center",
     padding: 10,
+    display: "flex",
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
   },
   switchContainer: {
     margin: 8,
@@ -106,15 +124,14 @@ const deviceIds = {
 class MockDevices extends PureComponent {
   state = {
     deviceId: null,
-    autoLogout: false,
+    autoLogin: false,
     collapseMock: true,
     rejectNextAction: false,
     showOnboarding: false,
-    forceHardware: false,
   };
 
-  changeAutoLogout = () => {
-    this.setState(state => ({ autoLogout: !state.autoLogout }));
+  changeAutoLogin = () => {
+    this.setState(state => ({ autoLogin: !state.autoLogin }));
   };
 
   async componentDidMount() {
@@ -157,8 +174,8 @@ class MockDevices extends PureComponent {
         body: JSON.stringify({ device_number: id }),
       });
       this.setState({ deviceId: id });
-      if (this.state.autoLogout) {
-        await this.props.logout();
+      if (this.state.autoLogin) {
+        await this.props.logout({ autoLogin: true });
       }
     } catch (e) {
       console.warn(e);
@@ -190,96 +207,82 @@ class MockDevices extends PureComponent {
     this.setState(state => ({ showOnboarding: !state.showOnboarding }));
   };
 
-  forceHardwareToggle = () => {
-    window.FORCE_HARDWARE = !window.FORCE_HARDWARE;
-    this.setState(() => ({ forceHardware: window.FORCE_HARDWARE }));
-  };
-
   render() {
     const {
       deviceId,
-      autoLogout,
+      autoLogin,
       collapseMock,
       showOnboarding,
       rejectNextAction,
-      forceHardware,
     } = this.state;
-    return (
+    const devtools = (
       <div style={styles.root}>
-        <div style={styles.actionContainer}>
-          {!collapseMock && (
-            <>
-              <div style={styles.rowContainer}>
-                <Text size="small" uppercase style={styles.autoLogout}>
-                  Auto logout ?
-                </Text>
-                <div style={styles.switchContainer}>
-                  <Switch onChange={this.changeAutoLogout} value={autoLogout} />
+        <div style={styles.wrapper}>
+          <div style={styles.actionContainer}>
+            <div onClick={this.collapseToggle} style={styles.triggerIcon}>
+              {collapseMock ? <FaAngleDoubleUp /> : <FaAngleDoubleDown />}
+            </div>
+            {!collapseMock && (
+              <>
+                <div style={styles.rowContainer}>
+                  <Text size="small" uppercase style={styles.autoLogin}>
+                    Auto login?
+                  </Text>
+                  <div style={styles.switchContainer}>
+                    <Switch onChange={this.changeAutoLogin} value={autoLogin} />
+                  </div>
                 </div>
-              </div>
-              <div style={styles.rowContainer}>
-                <Text size="small" uppercase style={styles.autoLogout}>
-                  Show wrapping / shared ?
-                </Text>
-                <div style={styles.switchContainer}>
-                  <Switch
-                    onChange={this.onboardingToggle}
-                    value={showOnboarding}
-                  />
-                </div>
-              </div>
-              <div style={styles.rowContainer}>
-                <Text size="small" uppercase style={styles.autoLogout}>
-                  Reject next action
-                </Text>
-                <div style={styles.switchContainer}>
-                  <Switch
-                    onChange={this.rejectNextActionToggle}
-                    value={rejectNextAction}
-                  />
-                </div>
-              </div>
-              <div style={styles.rowContainer}>
-                <Text size="small" uppercase style={styles.autoLogout}>
-                  force hardware
-                </Text>
-                <div style={styles.switchContainer}>
-                  <Switch
-                    onChange={this.forceHardwareToggle}
-                    value={forceHardware}
-                  />
-                </div>
-              </div>
-            </>
-          )}
-          <div onClick={this.collapseToggle} style={styles.collapseIcon}>
-            {collapseMock ? <FaAngleDoubleUp /> : <FaAngleDoubleDown />}
-          </div>
-        </div>
-        {!collapseMock && (
-          <div style={styles.rowContainer}>
-            {devices
-              .filter(([g]) =>
-                showOnboarding ? true : !onboardingDevices.includes(g),
-              )
-              .map(([g, color, devices]) => (
-                <DeviceGroup name={g} key={g}>
-                  {devices.map(d => (
-                    <Device
-                      key={d}
-                      color={color}
-                      id={d}
-                      deviceId={deviceIds[d] || null}
-                      isActive={deviceId === d}
-                      onClick={this.switchDevice}
+                <div style={styles.rowContainer}>
+                  <Text size="small" uppercase style={styles.autoLogin}>
+                    Show wrapping / shared ?
+                  </Text>
+                  <div style={styles.switchContainer}>
+                    <Switch
+                      onChange={this.onboardingToggle}
+                      value={showOnboarding}
                     />
-                  ))}
-                </DeviceGroup>
-              ))}
+                  </div>
+                </div>
+                <div style={styles.rowContainer}>
+                  <Text size="small" uppercase style={styles.autoLogin}>
+                    Reject next action
+                  </Text>
+                  <div style={styles.switchContainer}>
+                    <Switch
+                      onChange={this.rejectNextActionToggle}
+                      value={rejectNextAction}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-        )}
+          {!collapseMock && (
+            <div style={styles.rowContainer}>
+              {devices
+                .filter(([g]) =>
+                  showOnboarding ? true : !onboardingDevices.includes(g),
+                )
+                .map(([g, color, devices]) => (
+                  <DeviceGroup name={g} key={g}>
+                    {devices.map(d => (
+                      <Device
+                        key={d}
+                        color={color}
+                        id={d}
+                        deviceId={deviceIds[d] || null}
+                        isActive={deviceId === d}
+                        onClick={this.switchDevice}
+                      />
+                    ))}
+                  </DeviceGroup>
+                ))}
+            </div>
+          )}
+        </div>
       </div>
     );
+    return createPortal(devtools, devtoolsRoot);
   }
 }
 

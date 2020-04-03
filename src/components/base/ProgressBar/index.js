@@ -4,7 +4,7 @@ import { FaSpinner } from "react-icons/fa";
 import styled, { keyframes } from "styled-components";
 
 import Box from "components/base/Box";
-import colors, { opacity } from "shared/colors";
+import colors from "shared/colors";
 
 const SPINNER_SIZE = 15;
 const HEIGHT = 40;
@@ -12,16 +12,18 @@ const HEIGHT = 40;
 export default ({
   progress,
   indeterminate,
+  height = HEIGHT,
 }: {
   progress?: number,
   indeterminate?: boolean,
+  height?: number,
 }) => (
   <Box
     justify="center"
     align="center"
     position="relative"
     style={{
-      height: HEIGHT,
+      height,
       border: `1px solid ${colors.form.border}`,
       borderRadius: 4,
       background: colors.form.bg,
@@ -43,7 +45,7 @@ export default ({
 
 const Percent = styled.div`
   font-weight: bold;
-  color: ${colors.lead};
+  color: black;
 `;
 
 const Bar = styled.div`
@@ -53,7 +55,7 @@ const Bar = styled.div`
   right: 2px;
   bottom: 2px;
   transform-origin: center left;
-  background: ${opacity(colors.ocean, 0.2)};
+  background: #afc1e680;
 `;
 
 const rotate = keyframes`

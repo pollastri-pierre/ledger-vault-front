@@ -2,18 +2,17 @@
 import React, { useEffect, useState } from "react";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import { generateWrappingKeyFlow } from "device/interactions/generateWrappingKeys";
-import { withTranslation, Trans } from "react-i18next";
-import type { Translate } from "data/types";
+import { Trans, useTranslation } from "react-i18next";
 import Box from "components/base/Box";
-import { Title, Introduction } from "components/Onboarding";
+import { Introduction, Title } from "components/legacy/Onboarding";
 import DialogButton from "components/legacy/DialogButton";
 import { connect } from "react-redux";
 import { SpinnerCentered } from "components/base/Spinner";
 import Fragment from "components/legacy/Onboarding/Fragments";
 import {
+  addWrappingKey,
   openWrappingChannel,
   toggleDeviceModal,
-  addWrappingKey,
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
@@ -22,7 +21,6 @@ type Props = {
   onboarding: *,
   onGetWrapsChannel: Function,
   onAddWrapShard: Function,
-  t: Translate,
 };
 
 const mapState = state => ({
@@ -38,13 +36,14 @@ const mapDispatch = (dispatch: *) => ({
 
 const WrappingKeys = ({
   onboarding,
-  t,
+
   onGetWrapsChannel,
   onAddWrapShard,
 }: Props) => {
   const [isLoading, setLoading] = useState(null);
   const [error, setError] = useState(null);
 
+  const { t } = useTranslation();
   useEffect(() => {
     onGetWrapsChannel();
   }, [onGetWrapsChannel]);
@@ -61,9 +60,7 @@ const WrappingKeys = ({
   return (
     <Box>
       {error && <TriggerErrorNotification error={error} />}
-      <Title>
-        <Trans i18nKey="onboarding:wrapping_key.title" />
-      </Title>
+      <Title>{t("onboarding:wrapping_key.title")}</Title>
       <Introduction>
         <Trans
           i18nKey="onboarding:wrapping_key.description"
@@ -123,4 +120,4 @@ const WrappingKeys = ({
 // useful for test
 export { WrappingKeys };
 
-export default connect(mapState, mapDispatch)(withTranslation()(WrappingKeys));
+export default connect(mapState, mapDispatch)(WrappingKeys);

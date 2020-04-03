@@ -10,16 +10,9 @@ import Box from "components/base/Box";
 
 import ErrorsWrapper from "components/base/form/ErrorsWrapper";
 import HintsWrapper, { evalHints } from "components/base/form/HintsWrapper";
-import type { InputProps } from "components/base/form/types";
+import type { InputProps, Icon, Alignment } from "components/base/form/types";
 
-type Icon = {
-  size?: number,
-  color?: string,
-};
-
-type Alignment = "left" | "right" | "center";
-
-type Props = InputProps<string> & {
+export type Props = InputProps<string> & {
   IconLeft?: React$ComponentType<Icon>,
   autoFocus?: boolean,
   maxLength?: number,
@@ -95,10 +88,11 @@ class InputText extends PureComponent<Props, State> {
         <StyledInput
           // prevent LastPass autocomplete see https://stackoverflow.com/a/44984917
           data-lpignore="true"
-          autoComplete="off"
+          autoComplete="new-password"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
+          type="text"
           {...props}
           value={value}
           onChange={this.handleChange}

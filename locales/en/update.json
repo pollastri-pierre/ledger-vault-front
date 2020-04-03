@@ -5,8 +5,48 @@
   "retry": "Retry",
   "success": "Install successful.",
   "goToLogin": "Login to Vault",
-  "goBack": "Go back",
   "infobox": "Your application is not up to date. Download our ledger-update software so you can update your app and your firmware. Contact support if needed.",
+  "steps": {
+    "title": "Device update required",
+    "estimatedTime": "Estimated duration",
+    "osu": {
+      "doing": "Installing OS Updater",
+      "done": "OS Updater installed",
+      "to-do": "Install OS Updater"
+    },
+    "reboot-osu": {
+      "done": "Device rebooted",
+      "doing": "Device is rebooting",
+      "to-do": "Device automatically reboots"
+    },
+    "final": {
+      "done": "Firmware installed",
+      "doing": "Installing firmware",
+      "to-do": "Install firmware"
+    },
+    "reboot-final": {
+      "doing": "Device is rebooting",
+      "to-do": "Device automatically reboots",
+      "done": "Device rebooted"
+    },
+    "app": {
+      "doing": "Installing app",
+      "to-do": "Install app",
+      "done": "App installed"
+    },
+    "deviceRebooting": "Device rebooting...",
+    "waitReboot1": "Click <0>Continue</0> once your device has rebooted",
+    "waitReboot2": "Pair your device if prompted by your browser",
+    "waitReboot3": "Enter your PIN code if prompted by your device",
+    "waitProcessing": "Please wait...",
+    "promptDenyTitle": "Authorization required",
+    "promptDeny": "Tap <0>Update</0> on your device to authorize the update",
+    "allowManagerTitle": "Authorization required",
+    "allowManagerContent": "Tap <0>Allow</0> on your device to authorize the update",
+    "continueAfterReboot": "Continue",
+    "ready": "Device updated",
+    "ready-to-login": "Your device is up to date and you can now sign in to your workspace"
+  },
   "userSteps": {
     "step1": "On your device, click the close icon in the top right corner to go back to the <0>Dashboard</0>.",
     "step2": "On the web app, click <0>Update firmware and app</0>."

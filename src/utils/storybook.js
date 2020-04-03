@@ -97,15 +97,12 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
   if (/^\/people\/([^/]+)$/.exec(url)) {
     return wrapWithRequest({ entity: users[0], request_type, approved });
   }
-  if (url.match(/\/transactions\/.*\/account$/)) {
-    return {
-      transaction: wrapWithRequest({
-        entity: transactions[0],
-        request_type,
-        approved,
-      }),
-      account: accounts[0],
-    };
+  if (url.match(/\/transactions\/.+$/)) {
+    return wrapWithRequest({
+      entity: transactions[0],
+      request_type,
+      approved,
+    });
   }
   if (url.startsWith("/transactions")) {
     return wrapConnection(transactions);

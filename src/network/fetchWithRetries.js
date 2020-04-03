@@ -35,6 +35,9 @@ function fetchWithRetries(
       requestsAttempted++;
       requestStartTime = Date.now();
       let isRequestAlive = true;
+      if (!fetchF) {
+        throw new Error("fetchF is not implemented");
+      }
       const request = fetchF(uri, init);
       const requestTimeout = setTimeout(() => {
         isRequestAlive = false;

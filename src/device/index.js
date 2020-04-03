@@ -1,9 +1,10 @@
 // @flow
 import TransportUSB from "@ledgerhq/hw-transport-webusb";
-import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
+import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import { registerTransportModule } from "@ledgerhq/live-common/lib/hw";
+import type Transport from "@ledgerhq/hw-transport";
 
-import { softwareMode } from "device/interface";
+import { createEmulatorTransport } from "components/SoftDevices";
 
 export const CURRENT_APP_NAME = "Vault";
 export const U2F_PATH = [0x80564c54, 0x80553246];
@@ -50,15 +51,17 @@ export const setPreferredTransport = (transportID: string) => {
   localStorage.setItem("TRANSPORT", PREFERRED_TRANSPORT);
 };
 
-const mockTransport = Promise.resolve({ close: () => Promise.resolve() });
+// $FlowFixMe
+const mockTransport: Promise<Transport<*>> = Promise.resolve({
+  close: () => Promise.resolve(),
+});
 
 registerTransportModule({
   id: "u2f",
   open: (id: string) => {
     if (id !== "u2f") return;
-    // $FlowFixMe
-    if (softwareMode()) return mockTransport;
-    return LedgerTransportU2F.create().then(t => {
+
+    return TransportU2F.create().then(t => {
       t.setScrambleKey("v1+");
       // $FlowFixMe
       t.setUnwrap(true);
@@ -70,12 +73,28 @@ registerTransportModule({
 });
 
 registerTransportModule({
+  id: "software",
+  open: (id: string) => {
+    if (id !== "software") return;
+    return mockTransport;
+  },
+  disconnect: () => null,
+});
+
+registerTransportModule({
   id: "webusb",
   open: (id: string) => {
     if (id !== "webusb") return;
-    // $FlowFixMe
-    if (softwareMode()) return mockTransport;
     return TransportUSB.create();
+  },
+  disconnect: () => null,
+});
+
+registerTransportModule({
+  id: "weblue",
+  open: (id: string) => {
+    if (id !== "weblue") return;
+    return createEmulatorTransport();
   },
   disconnect: () => null,
 });

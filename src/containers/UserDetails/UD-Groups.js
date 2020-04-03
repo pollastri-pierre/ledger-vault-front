@@ -20,7 +20,7 @@ const UserDetailsGroups = (props: Props) => {
   const groups = useMemo(() => groupsConnection.edges.map(edge => edge.node), [
     groupsConnection,
   ]);
-  return <GroupsList groups={groups} />;
+  return <GroupsList display="grid" tileWidth={250} groups={groups} />;
 };
 
 export default connectData(UserDetailsGroups, {

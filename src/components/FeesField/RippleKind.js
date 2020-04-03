@@ -55,6 +55,14 @@ function FeesFieldRippleKind(props: Props) {
   const effect = async unsubscribed => {
     const nonce = ++instanceNonce.current;
 
+    // VFE-98: even if we don't fetch fees if amount is equal to 0,
+    // we still want to invalidate any pending fees fetching, and
+    // reset the loading state
+    if (transaction.amount.isEqualTo(0)) {
+      setFeesStatus("idle");
+      return;
+    }
+
     try {
       // check recipient
       const recipientError = await bridge.getRecipientError(
@@ -91,6 +99,7 @@ function FeesFieldRippleKind(props: Props) {
 
       setFeesStatus("idle");
     } catch (err) {
+      if (nonce !== instanceNonce.current || unsubscribed) return;
       console.error(err);
       setFeesStatus("error");
       setFeesError(err);
@@ -134,7 +143,7 @@ function FeesFieldRippleKind(props: Props) {
               width="100%"
               unitLeft
               hideCV
-              unit={last(currency.units)}
+              initialUnit={last(currency.units)}
               currency={currency}
               placeholder={feesStatus === "fetching" ? "Loading..." : "0"}
               onChange={onFeesChange}

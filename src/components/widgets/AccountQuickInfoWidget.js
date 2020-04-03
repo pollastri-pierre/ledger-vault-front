@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaCoins, FaInfo, FaTicketAlt, FaLink, FaCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import Tooltip from "@material-ui/core/Tooltip";
 
 import EntityStatus, { APPROVED_LIKE_STATUS } from "components/EntityStatus";
 import CounterValue from "components/CounterValue";
@@ -26,7 +25,9 @@ import PageHeaderActions from "components/base/PageHeaderActions";
 import { SoftCard } from "components/base/Card";
 import AccountIcon from "components/legacy/AccountIcon";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import Tooltip from "components/base/Tooltip";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import { isMemberOfFirstApprovalStep } from "utils/users";
 import { isAccountSpendable } from "utils/transactions";
 import Widget from "./Widget";
 
@@ -42,7 +43,24 @@ const AccountQuickInfoWidget = (props: Props) => (
   </div>
 );
 
-const AccountQuickInfoHeader = ({ account }: Props) => {
+export const AccountQuickInfoHeaderUtxo = ({ account }: Props) => {
+  const me = useMe();
+  return (
+    <PageHeaderActions title={account.name}>
+      <Box horizontal flow={10}>
+        <SyncButton account={account} />
+        {me.role === "OPERATOR" && isMemberOfFirstApprovalStep(account) && (
+          <Button size="small" type="filled">
+            <Link to={`${account.id}/consolidate/${account.id}`}>
+              Consolidate
+            </Link>
+          </Button>
+        )}
+      </Box>
+    </PageHeaderActions>
+  );
+};
+export const AccountQuickInfoHeader = ({ account }: Props) => {
   const me = useMe();
   const isSendDisabled = !isAccountSpendable(account);
   const sendBtn = (
@@ -177,7 +195,7 @@ const WidgetContent = ({ account }: Props) => {
 
 const DetailsLink = ({ account }: Props) => (
   <Absolute top={60} right={10}>
-    <Tooltip title="Account details" placement="left">
+    <Tooltip content="Account details">
       <Link to={`${location.pathname}/accounts/details/${account.id}/overview`}>
         <Button data-test="account_details">
           <FaInfo />
