@@ -6,7 +6,10 @@ import shortid from "shortid";
 import { minWait } from "utils/promise";
 import EmulatorTransport from "./EmulatorTransport";
 import EmulatorLayout from "./EmulatorLayout";
-import { useEmulatorState, useEmulatorDispatch } from "./EmulatorContext";
+import {
+  useSoftDevicesState,
+  useSoftDevicesDispatch,
+} from "./SoftDevicesContext";
 
 // noVNC has issues through jsdom
 let RFB = null;
@@ -50,8 +53,8 @@ const EMULATOR_SESSION_ID =
 localStorage.setItem("EMULATOR_SESSION_ID", EMULATOR_SESSION_ID);
 
 const Emulator = () => {
-  const { devices, device } = useEmulatorState();
-  const dispatch = useEmulatorDispatch();
+  const { devices, device } = useSoftDevicesState();
+  const dispatch = useSoftDevicesDispatch();
 
   const setFetching = useCallback(
     (isFetching: boolean) =>
@@ -202,4 +205,4 @@ const fetchJSON = async url => {
 };
 
 export default Emulator;
-export { useEmulatorState, useEmulatorDispatch };
+export { useSoftDevicesState, useSoftDevicesDispatch };

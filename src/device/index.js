@@ -4,8 +4,7 @@ import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import { registerTransportModule } from "@ledgerhq/live-common/lib/hw";
 import type Transport from "@ledgerhq/hw-transport";
 
-import { softwareMode } from "device/interface";
-import { createEmulatorTransport } from "components/Emulator";
+import { createEmulatorTransport } from "components/SoftDevices";
 
 export const CURRENT_APP_NAME = "Vault";
 export const U2F_PATH = [0x80564c54, 0x80553246];
@@ -61,7 +60,6 @@ registerTransportModule({
   id: "u2f",
   open: (id: string) => {
     if (id !== "u2f") return;
-    if (softwareMode()) return mockTransport;
 
     return TransportU2F.create().then(t => {
       t.setScrambleKey("v1+");
@@ -75,10 +73,18 @@ registerTransportModule({
 });
 
 registerTransportModule({
+  id: "software",
+  open: (id: string) => {
+    if (id !== "software") return;
+    return mockTransport;
+  },
+  disconnect: () => null,
+});
+
+registerTransportModule({
   id: "webusb",
   open: (id: string) => {
     if (id !== "webusb") return;
-    if (softwareMode()) return mockTransport;
     return TransportUSB.create();
   },
   disconnect: () => null,

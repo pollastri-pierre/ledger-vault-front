@@ -1,6 +1,6 @@
 // @flow
 
-import type { Seed } from "components/Emulator/EmulatorContext";
+import type { Seed } from "components/SoftDevices/SoftDevicesContext";
 import sha256 from "crypto-js/sha256";
 import hex from "crypto-js/enc-hex";
 

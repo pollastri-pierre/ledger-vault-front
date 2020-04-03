@@ -25,11 +25,13 @@ import {
 } from "device/VaultDeviceApp";
 
 export const softwareMode = () => {
-  if (localStorage.getItem("TRANSPORT") === "weblue") return false;
-  if (window.FORCE_HARDWARE || localStorage.getItem("FORCE_HARDWARE") === "1")
-    return false;
-  if (localStorage.getItem("SOFTWARE_DEVICE") === "1") return true;
-  return window.config.SOFTWARE_DEVICE || process.env.NODE_ENV === "e2e";
+  return (
+    (process.env.NODE_ENV === "e2e" ||
+      localStorage.getItem("ENABLE_SOFTWARE")) &&
+    // this || condition is useful for e2e test where localstorage does not exist
+    (localStorage.getItem("TRANSPORT") === "software" ||
+      !localStorage.getItem("TRANSPORT"))
+  );
 };
 
 export const getPublicKey = () =>

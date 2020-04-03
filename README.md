@@ -61,12 +61,6 @@ yarn starte2e
 
 ## Global, config, localstorage variables used in the app
 
-### Globals
-
-| Key              | Default value | Description                              |
-| ---------------- | :-----------: | :--------------------------------------- |
-| `FORCE_HARDWARE` |       0       | If set to 1, force using hardware device |
-
 ### Localstorage
 
 | Key                | Default value | Description                                                                    |
@@ -74,6 +68,7 @@ yarn starte2e
 | `TRANSPORT`        |     "u2f"     | Contain the preferred transport
 | `NO_CHECK_VERSION` |     null      | Prevent the comparison between the device version and the expected app version |
 | `ENABLE_WEBLUE`    |     null      | If set to "1", will make the WeBlue transport appear in Transport chooser      |
+| `ENABLE_SOFTWARE`  |     null      | If set to "1", will make the software transport appear in Transport chooser    |
 | `locale`           |      en       | Forwarded to i18next                                                           |
 | `token`            |     null      | Will fill the X-Ledger-Auth header for Gate calls                              |
 

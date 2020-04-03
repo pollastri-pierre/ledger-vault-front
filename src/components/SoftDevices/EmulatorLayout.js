@@ -19,10 +19,13 @@ import Box from "components/base/Box";
 import useDrag from "hooks/useDrag";
 import blueLayer from "./blue-layer.svg";
 import blueLayerMinimized from "./blue-layer-minimized.svg";
-import { useEmulatorState, useEmulatorDispatch } from "./EmulatorContext";
+import {
+  useSoftDevicesState,
+  useSoftDevicesDispatch,
+} from "./SoftDevicesContext";
 import SeedsManager from "./SeedsManager";
 import SeedsGenerator from "./SeedsGenerator";
-import type { Seed } from "./EmulatorContext";
+import type { Seed } from "./SoftDevicesContext";
 
 type Props = {
   vncRef: any,
@@ -32,7 +35,7 @@ type Props = {
 
 const EmulatorLayout = (props: Props) => {
   const { vncRef, onClearSession, onSpawnDevice } = props;
-  const { isFetching, isMinimized, device, error } = useEmulatorState();
+  const { isFetching, isMinimized, device, error } = useSoftDevicesState();
 
   const [style, dragHandlerRef] = useDrag();
 
@@ -154,8 +157,8 @@ const DeviceDrawingMinimizedImg = styled(DeviceDrawing).attrs({
 `;
 
 const TopActions = ({ onSpawnDevice }: $Shape<Props>) => {
-  const { isMinimized } = useEmulatorState();
-  const dispatch = useEmulatorDispatch();
+  const { isMinimized } = useSoftDevicesState();
+  const dispatch = useSoftDevicesDispatch();
   const handleToggleMinimize = () => dispatch({ type: "TOGGLE_MINIMIZE" });
   return (
     <ActionsContainer>
@@ -171,7 +174,7 @@ const TopActions = ({ onSpawnDevice }: $Shape<Props>) => {
 
 const BottomActions = (props: $Shape<Props>) => {
   const { onClearSession } = props;
-  const { devices } = useEmulatorState();
+  const { devices } = useSoftDevicesState();
   return (
     <ActionsContainer>
       {!!devices.length && (
@@ -269,8 +272,8 @@ const Action = styled(({ isPadded, ...p }) => <div {...p} />)`
 
 const DeviceSwitcher = (props: $Shape<Props>) => {
   const { onSpawnDevice } = props;
-  const { device, devices, seeds } = useEmulatorState();
-  const dispatch = useEmulatorDispatch();
+  const { device, devices, seeds } = useSoftDevicesState();
+  const dispatch = useSoftDevicesDispatch();
   const [isSpawning, setSpawning] = useState(false);
 
   const setDevice = d => dispatch({ type: "SET_DEVICE", payload: d });

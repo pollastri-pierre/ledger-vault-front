@@ -2,7 +2,8 @@
 
 import React, { useReducer, useContext, createContext } from "react";
 
-import EmulatorWrapper from "components/Emulator/EmulatorWrapper";
+import SoftDevicesWrapper from "components/SoftDevices/SoftDevicesWrapper";
+import MockDevices from "components/MockDevices";
 
 let USER_SEEDS = localStorage.getItem("WEBLUE_SEEDS") || "[]";
 try {
@@ -25,7 +26,8 @@ export type Seed = {
 };
 
 type State = {
-  isOpened: boolean,
+  isWeblueOpened: boolean,
+  isSoftware: boolean,
   isSeedsManagerOpened: boolean,
   isSeedsGeneratorOpened: boolean,
   isMinimized: boolean,
@@ -37,7 +39,8 @@ type State = {
 };
 
 const initialState = {
-  isOpened: localStorage.getItem("TRANSPORT") === "weblue",
+  isWeblueOpened: localStorage.getItem("TRANSPORT") === "weblue",
+  isSoftware: localStorage.getItem("TRANSPORT") === "software",
   isSeedsManagerOpened: false,
   isSeedsGeneratorOpened: false,
   isMinimized: false,
@@ -49,12 +52,13 @@ const initialState = {
 };
 
 type Action =
-  | { type: "OPEN" }
+  | { type: "OPEN_WEBLUE" }
+  | { type: "OPEN_SOFTWARE" }
   | { type: "OPEN_SEEDS_MANAGER" }
   | { type: "OPEN_SEEDS_GENERATOR" }
   | { type: "CLOSE_SEEDS_MANAGER" }
   | { type: "CLOSE_SEEDS_GENERATOR" }
-  | { type: "CLOSE" }
+  | { type: "SET_HARDWARE_MODE" }
   | { type: "TOGGLE_MINIMIZE" }
   | { type: "REGISTER_SEED", payload: Seed }
   | { type: "GENERATE_SEEDS", payload: Seed[] }
@@ -69,14 +73,21 @@ type Dispatch = Action => void;
 const reducer = (state, action) => {
   let seeds;
   switch (action.type) {
-    case "OPEN":
-      return { ...state, isOpened: true };
+    case "OPEN_WEBLUE":
+      return { ...state, isWeblueOpened: true, isSoftware: false };
+    case "OPEN_SOFTWARE":
+      return { ...state, isSoftware: true, isWeblueOpened: false };
     case "OPEN_SEEDS_GENERATOR":
       return { ...state, isSeedsGeneratorOpened: true };
     case "OPEN_SEEDS_MANAGER":
       return { ...state, isSeedsManagerOpened: true };
-    case "CLOSE":
-      return { ...state, isOpened: false, isFetching: true };
+    case "SET_HARDWARE_MODE":
+      return {
+        ...state,
+        isWeblueOpened: false,
+        isFetching: true,
+        isSoftware: false,
+      };
     case "CLOSE_SEEDS_GENERATOR":
       return { ...state, isSeedsGeneratorOpened: false };
     case "CLOSE_SEEDS_MANAGER":
@@ -108,20 +119,22 @@ const reducer = (state, action) => {
   }
 };
 
-const EmulatorContext = createContext<State>(initialState);
-const EmulatorContextDispatch = createContext<Dispatch>(() => {});
+const SoftDevicesContext = createContext<State>(initialState);
+const SoftDevicesContextDispatch = createContext<Dispatch>(() => {});
 
-export const EmulatorProvider = ({ children }: { children: React$Node }) => {
+export const SoftDevicesProvider = ({ children }: { children: React$Node }) => {
   const [state, dispatch] = useReducer<State, Action>(reducer, initialState);
   return (
-    <EmulatorContext.Provider value={state}>
-      <EmulatorContextDispatch.Provider value={dispatch}>
-        <EmulatorWrapper />
+    <SoftDevicesContext.Provider value={state}>
+      <SoftDevicesContextDispatch.Provider value={dispatch}>
+        <SoftDevicesWrapper />
         {children}
-      </EmulatorContextDispatch.Provider>
-    </EmulatorContext.Provider>
+        {process.env.NODE_ENV === "e2e" && state.isSoftware && <MockDevices />}
+      </SoftDevicesContextDispatch.Provider>
+    </SoftDevicesContext.Provider>
   );
 };
 
-export const useEmulatorState = () => useContext(EmulatorContext);
-export const useEmulatorDispatch = () => useContext(EmulatorContextDispatch);
+export const useSoftDevicesState = () => useContext(SoftDevicesContext);
+export const useSoftDevicesDispatch = () =>
+  useContext(SoftDevicesContextDispatch);
