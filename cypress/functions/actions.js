@@ -1,6 +1,9 @@
 // Default way to login. It clears the cache
 
 export function login(id) {
+  cy.window().then(window =>
+    window.localStorage.setItem("TRANSPORT", "software"),
+  );
   cy.visit(Cypress.env("api_server"));
   cy.clearCookies();
   switch_device(id);
