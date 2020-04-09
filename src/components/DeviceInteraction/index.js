@@ -107,7 +107,9 @@ class DeviceInteraction extends PureComponent<Props, State> {
     // always checking app version first unless opt-out by the consumer component
     // always ask for u2f_pubkey to be sure user has opened vault app
     const interactionsWithCheckVersion =
-      noCheckVersion || localStorage.getItem("NO_CHECK_VERSION")
+      noCheckVersion ||
+      localStorage.getItem("NO_CHECK_VERSION") ||
+      localStorage.getItem("TRANSPORT") === "weblue"
         ? [getU2FPublicKey, ...interactions]
         : [getU2FPublicKey, checkVersion, ...interactions];
     const responses = { ...additionalFields, restlay, dispatch };
