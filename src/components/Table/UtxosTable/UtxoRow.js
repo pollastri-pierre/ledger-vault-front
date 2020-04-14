@@ -10,7 +10,7 @@ import UtxoBodyCell from "./UtxoBodyCell";
 type UtxoRowProps = {
   utxo: UTXO,
   account: Account,
-  onClick: UTXO => void,
+  onClick?: UTXO => void,
   tableDefinition: TableDefinition,
 };
 
@@ -18,6 +18,7 @@ function UtxoRow(props: UtxoRowProps) {
   const { utxo, onClick, account, tableDefinition } = props;
 
   const handleClick = () => {
+    if (!onClick) return;
     onClick(utxo);
   };
 

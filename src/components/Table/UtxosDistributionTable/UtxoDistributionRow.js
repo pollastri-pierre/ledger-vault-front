@@ -10,7 +10,7 @@ import UtxoDistributionBodyCell from "./UtxoDistributionBodyCell";
 type UtxoDistrubtionRowProps = {
   utxoRange: UTXORange,
   account: Account,
-  onClick: UTXORange => void,
+  onClick?: UTXORange => void,
   tableDefinition: TableDefinition,
 };
 
@@ -18,6 +18,7 @@ function UtxoDistributionRow(props: UtxoDistrubtionRowProps) {
   const { utxoRange, onClick, account, tableDefinition } = props;
 
   const handleClick = () => {
+    if (!onClick) return;
     onClick(utxoRange);
   };
 
