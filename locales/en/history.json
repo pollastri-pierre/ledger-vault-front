@@ -11,11 +11,11 @@
       "whitelist": "Whitelist creation request"
     },
     "EDIT": {
-      "user": "User edition request",
-      "group": "Group edition request",
-      "account": "Account edition request",
-      "transaction": "Transaction edition request",
-      "whitelist": "Whitelist edition request"
+      "user": "User edit request",
+      "group": "Group edit request",
+      "account": "Account edit request",
+      "transaction": "Transaction edit request",
+      "whitelist": "Whitelist edit request"
     },
     "DELETE": {
       "user": "User deletion request",
