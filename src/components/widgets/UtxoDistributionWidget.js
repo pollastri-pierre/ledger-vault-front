@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import noop from "lodash/noop";
 import { useTranslation } from "react-i18next";
 
 import AccountUtxoDistributionQuery from "api/queries/AccountUtxoDistributionQuery";
@@ -22,7 +21,6 @@ function UtxoDistributionWidget(props: Props) {
           <UtxosDistributionTable
             account={props.account}
             data={props.utxoDistribution}
-            onRowClick={noop}
           />
         </Box>
       </Card>
