@@ -61,7 +61,7 @@ const AppWrapper = ({ me, organization, restlay, ...props }: Props) => {
   );
 };
 
-const SubMenuItem = styled(NavLink)`
+const SubMenuItem = styled(({ borderColor, ...p }) => <NavLink {...p} />)`
   position: relative;
   display: flex;
   align-items: center;
