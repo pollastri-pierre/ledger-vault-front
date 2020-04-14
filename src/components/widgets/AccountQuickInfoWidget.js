@@ -50,11 +50,11 @@ export const AccountQuickInfoHeaderUtxo = ({ account }: Props) => {
       <Box horizontal flow={10}>
         <SyncButton account={account} />
         {me.role === "OPERATOR" && isMemberOfFirstApprovalStep(account) && (
-          <Button size="small" type="filled">
-            <Link to={`${account.id}/consolidate/${account.id}`}>
+          <Link to={`utxo/consolidate/${account.id}`}>
+            <Button size="small" type="filled">
               Consolidate
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         )}
       </Box>
     </PageHeaderActions>

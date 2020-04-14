@@ -83,6 +83,10 @@ const removeSuffix = pathname => {
   const arr = pathname.split("/");
   return arr.slice(0, arr.length - 1).join("/");
 };
+
+const HACKY_UTXO_MODAL_INDEX = 6;
+const HACKY_UTXO_MODAL_IDENTIFIER = "utxo";
+
 // we need the account to know
 // - the color
 // - the currency family
@@ -97,12 +101,12 @@ const TopBarAccountMenu = withRouter(
       const pathArray = location.pathname.split("/");
 
       const overviewLink =
-        pathArray[pathArray.length - 1] === "utxo"
+        pathArray[HACKY_UTXO_MODAL_INDEX] === HACKY_UTXO_MODAL_IDENTIFIER
           ? removeSuffix(location.pathname)
           : location.pathname;
 
       const utxoLink =
-        pathArray[pathArray.length - 1] === "utxo"
+        pathArray[HACKY_UTXO_MODAL_INDEX] === HACKY_UTXO_MODAL_IDENTIFIER
           ? location.pathname
           : `${location.pathname}/utxo`;
 
@@ -111,7 +115,7 @@ const TopBarAccountMenu = withRouter(
           <SubMenuItem borderColor={currency.color} exact to={overviewLink}>
             {t("accountView:overview")}
           </SubMenuItem>
-          <SubMenuItem exact borderColor={currency.color} to={utxoLink}>
+          <SubMenuItem borderColor={currency.color} to={utxoLink}>
             {t("accountView:UTXOs")}
           </SubMenuItem>
         </Box>
