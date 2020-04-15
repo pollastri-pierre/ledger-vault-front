@@ -108,7 +108,11 @@ const Emulator = () => {
         setError(null);
       } catch (err) {
         if (unsub) return;
-        setError(new Error("Seems that emulator api is not up"));
+        if (err.message === "Session does not exist") {
+          setError(null);
+        } else {
+          setError(new Error("Seems that emulator api is not up"));
+        }
         setFetching(false);
       }
       return res ? res.sessionDevices : null;
@@ -201,7 +205,11 @@ const createDevice = async seed => {
 
 const fetchJSON = async url => {
   const res = await fetch(url);
-  return res.json();
+  const json = await res.json();
+  if (!res.ok) {
+    throw new Error(json.error || res.statusText);
+  }
+  return json;
 };
 
 export default Emulator;
