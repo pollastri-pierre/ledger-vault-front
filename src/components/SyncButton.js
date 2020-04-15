@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Button from "components/base/Button";
 import SearchTransactions from "api/queries/SearchTransactions";
+import AccountQuery from "api/queries/AccountQuery";
 import SyncAccountMutation from "api/mutations/SyncAccountMutation";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -22,11 +23,13 @@ const SyncButton = (props: Props) => {
     await restlay.fetchQuery(
       new SyncAccountMutation({ accountID: `${account.id}` }),
     );
-    const promise = await restlay.fetchQuery(
-      new SearchTransactions({ account: [`${account.id}`] }),
-    );
+    await Promise.all([
+      restlay.fetchQuery(
+        new SearchTransactions({ account: [`${account.id}`] }),
+      ),
+      restlay.fetchQuery(new AccountQuery({ accountId: `${account.id}` })),
+    ]);
     setSynced(true);
-    return promise;
   };
 
   return (
