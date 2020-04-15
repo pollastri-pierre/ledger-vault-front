@@ -59,7 +59,7 @@ const steps = [
 export default connectData(
   ({ close, account, freshAddress, accountUTXOs, restlay }) => {
     const expectedNbUTXOs = Math.min(
-      accountUTXOs.edges.length,
+      accountUTXOs.edges.length - 1,
       MAX_UTXOS_TO_CONSOLIDATE,
     );
     const totalAmount = calculateTotalAmount(accountUTXOs, expectedNbUTXOs);

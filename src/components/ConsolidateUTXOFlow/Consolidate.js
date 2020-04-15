@@ -90,7 +90,10 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
         <Box flex="1">
           <Label>Consolidated UTXOs</Label>
           <InputNumber
-            max={Math.min(accountUTXOs.edges.length, MAX_UTXOS_TO_CONSOLIDATE)}
+            max={Math.min(
+              accountUTXOs.edges.length - 1,
+              MAX_UTXOS_TO_CONSOLIDATE,
+            )}
             onChange={onUTXOChange}
             value={transaction.expectedNbUTXOs}
             errors={collectAmountError(transaction)}

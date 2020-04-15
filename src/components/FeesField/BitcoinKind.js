@@ -119,8 +119,13 @@ function FeesBitcoinKind(props: Props) {
       const estimatedFees = await getFees(account, txGetFees, restlay);
       if (nonce !== instanceNonce.current || unsubscribed) return;
 
+      const IS_UTXO_CONSOLIDATION_MODE = !!transaction.expectedNbUTXOs;
+
       onChangeTransaction({
         ...transaction,
+        ...(IS_UTXO_CONSOLIDATION_MODE
+          ? { amount: estimatedFees.max_amount }
+          : {}),
         estimatedFees: estimatedFees.fees,
         estimatedMaxAmount: estimatedFees.max_amount,
         error: null,
