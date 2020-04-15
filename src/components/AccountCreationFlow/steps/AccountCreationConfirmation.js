@@ -53,7 +53,7 @@ export default (props: AccountCreationStepProps) => {
           <LineRow label={t("newAccount:confirmation.currency")}>
             <span className="info-value currency">
               {currency.name}
-              {!!payload.derivationMode && (
+              {payload.derivationMode !== null && (
                 <>{` (${t(
                   `derivationModes:${
                     payload.derivationMode === ""
