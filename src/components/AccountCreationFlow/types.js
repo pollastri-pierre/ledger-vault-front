@@ -1,7 +1,6 @@
 // @flow
 
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
-import type { DerivationMode } from "@ledgerhq/live-common/lib/derivation";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import type { ERC20Token, Account, User, Group, Whitelist } from "data/types";
@@ -18,7 +17,6 @@ export type AccountCreationPayload = {|
   currency: CryptoCurrency | null,
   erc20token: ERC20Token | null,
   parentAccount: ParentAccount | null,
-  derivationMode: DerivationMode | null,
 |};
 
 export type AccountCreationUpdatePayload = (

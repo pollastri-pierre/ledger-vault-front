@@ -51,18 +51,7 @@ export default (props: AccountCreationStepProps) => {
         )}
         {currency && (
           <LineRow label={t("newAccount:confirmation.currency")}>
-            <span className="info-value currency">
-              {currency.name}
-              {!!payload.derivationMode && (
-                <>{` (${t(
-                  `derivationModes:${
-                    payload.derivationMode === ""
-                      ? "standard"
-                      : payload.derivationMode
-                  }`,
-                )})`}</>
-              )}
-            </span>
+            <span className="info-value currency">{currency.name}</span>
           </LineRow>
         )}
         {currencyOrToken && (
