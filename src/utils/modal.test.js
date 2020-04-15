@@ -93,6 +93,14 @@ describe("/utils/modal", () => {
         "/ledger1/admin/tasks",
       );
     });
+
+    it("consolidation from account page", () => {
+      testModalClosePath(
+        { role: "operator" },
+        "/ledger1/operator/accounts/view/1/utxo/consolidate/1",
+        "/ledger1/operator/accounts/view/1/utxo",
+      );
+    });
   });
 });
 
