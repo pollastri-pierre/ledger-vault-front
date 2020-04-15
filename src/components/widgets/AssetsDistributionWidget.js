@@ -176,6 +176,7 @@ export default connectWidget(
     },
     propsToQueryParams: () => ({
       meta_status: "APPROVED",
+      pageSize: -1,
     }),
   },
 );
