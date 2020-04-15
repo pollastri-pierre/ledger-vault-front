@@ -72,7 +72,6 @@ export const initialPayload: AccountCreationPayload = {
   currency: null,
   erc20token: null,
   parentAccount: null,
-  derivationMode: null,
 };
 
 const cleanRules = (
@@ -406,7 +405,6 @@ export const deserialize: Account => AccountCreationPayload = account => {
       account.account_type === "Erc20"
         ? getERC20TokenByContractAddress(account.contract_address) || null
         : null,
-    derivationMode: account.derivation_mode,
   };
 };
 
@@ -451,11 +449,6 @@ export function serializePayload(
 
   if (payload.currency) {
     Object.assign(data, { currency: { name: payload.currency.id } });
-  }
-
-  // if "standard", it will be empty string, so we don't send it and gate will default
-  if (payload.derivationMode) {
-    Object.assign(data, { derivation_mode: payload.derivationMode });
   }
 
   if (payload.erc20token) {
