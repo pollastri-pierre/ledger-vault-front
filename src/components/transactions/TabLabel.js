@@ -11,12 +11,12 @@ const SYS_ADMIN_ID = 1;
 
 export default function TabLabel(props: { note: Note }) {
   const { note } = props;
-  if (note && note.title !== "" && note.content !== "") {
+  if (note && (note.title || note.content)) {
     return (
       <Box>
-        <Text fontWeight="semiBold">{note.title}</Text>
-        <LineSeparator />
-        <Text overflowWrap="break-word">{note.content}</Text>
+        {note.title && <Text fontWeight="semiBold">{note.title}</Text>}
+        {note.title && note.content && <LineSeparator />}
+        {note.content && <Text overflowWrap="break-word">{note.content}</Text>}
         {note.created_by.id !== SYS_ADMIN_ID && (
           <>
             <LineSeparator />
