@@ -35,15 +35,15 @@ const InputNumber = (props: Props) => {
     str => {
       const r = sanitizeValueString(ZERO_MAGNITUDE_UNIT, str);
       const bigNumberValue = BigNumber(r.value);
-      onChange(
-        bigNumberValue.gt(Number.MAX_SAFE_INTEGER)
-          ? Number.MAX_SAFE_INTEGER
-          : max
-          ? Math.min(Number(r.value), max)
-          : Number(r.value),
-      );
+      const newValue = bigNumberValue.gt(Number.MAX_SAFE_INTEGER)
+        ? Number.MAX_SAFE_INTEGER
+        : max
+        ? Math.min(Number(r.value), max)
+        : Number(r.value);
+      if (newValue === value) return;
+      onChange(newValue);
     },
-    [onChange, max],
+    [onChange, max, value],
   );
 
   return (
