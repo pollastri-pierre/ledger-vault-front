@@ -16,14 +16,17 @@ test("restlay.commitMutation returns a promise of the expected result", async ()
   const Whatever = connectData(({ restlay }) => ((rlay = restlay), null));
   const inst = renderer.create(render(<Whatever />));
   invariant(rlay, "restlay is defined");
-  const p = rlay.commitMutation(
-    new AddAnimalMutation({
-      animal: {
-        name: "foo",
-        age: 42,
-      },
-    }),
-  );
+  let p;
+  renderer.act(() => {
+    p = rlay.commitMutation(
+      new AddAnimalMutation({
+        animal: {
+          name: "foo",
+          age: 42,
+        },
+      }),
+    );
+  });
   expect(net.tick()).toBe(1);
   await renderer.act(flushPromises);
   expect(p).toBeInstanceOf(Promise);
