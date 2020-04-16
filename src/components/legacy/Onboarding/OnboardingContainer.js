@@ -106,6 +106,14 @@ class OnboardingContainer extends Component<Props, State> {
     if (!onboarding.state) {
       return <SpinnerCentered />;
     }
+    const nbMember =
+      onboarding.state === "COMPLETE"
+        ? "OK"
+        : onboarding.registering.admins.length;
+    const nbSharedOwner =
+      onboarding.state === "COMPLETE"
+        ? "OK"
+        : onboarding.registering_shared_owner.sharedOwners.length;
     return (
       <CenteredLayout>
         <Container fatalError={onboarding.fatal_error}>
@@ -120,10 +128,8 @@ class OnboardingContainer extends Component<Props, State> {
             </Box>
           </Absolute>
           <Menu
-            nbMember={onboarding.registering.admins.length}
-            nbSharedOwner={
-              onboarding.registering_shared_owner.sharedOwners.length
-            }
+            nbMember={nbMember}
+            nbSharedOwner={nbSharedOwner}
             onboarding={onboarding}
           />
           <Box position="relative" flex={1}>
