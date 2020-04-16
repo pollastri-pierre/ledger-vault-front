@@ -37,6 +37,15 @@ const deepModalRoutes = [
     regexId: null,
   },
   {
+    regex: /^.+\/accounts\/view\/[0-9]+\/utxo/,
+    redirect: (id: ?string, me: User) =>
+      id &&
+      `/${
+        window.location.pathname.split("/")[1]
+      }/${me.role.toLowerCase()}/accounts/view/${id}/utxo`,
+    regexId: /\/accounts\/view\/[0-9]+/,
+  },
+  {
     regex: /(.*)\/accounts\/view\/[0-9]+\/.+$/,
     redirect: (id: ?string, me: User) =>
       id &&

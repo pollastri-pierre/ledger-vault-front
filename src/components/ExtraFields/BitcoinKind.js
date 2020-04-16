@@ -45,6 +45,9 @@ const ExtraFieldsBitcoin = (props: EditProps<BitcoinTransaction>) => {
     onChangeTransaction({
       ...transaction,
       utxoPickingStrategy: option ? option.value : null,
+      estimatedFees: null,
+      estimatedMaxAmount: null,
+      error: null,
     });
   };
   const value = options.find(o => o.value === transaction.utxoPickingStrategy);

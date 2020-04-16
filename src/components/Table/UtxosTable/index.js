@@ -19,7 +19,7 @@ type Props = {
   customTableDef?: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  onRowClick: UTXO => void,
+  onRowClick?: UTXO => void,
 };
 
 function UtxosTable(props: Props) {

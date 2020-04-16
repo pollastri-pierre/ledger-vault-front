@@ -9,7 +9,9 @@ import type {
 } from "data/types";
 
 // TODO: LOL
-type GateHistory = *;
+type GateHistory = {
+  history: *,
+};
 
 export type VaultHistoryApproval = {
   type: "APPROVE" | "ABORT",
@@ -54,7 +56,9 @@ export type VaultHistoryItem = {
 export type VaultHistory = VaultHistoryItem[];
 
 export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
-  return gateHistory.map(gateStepsGroup => {
+  // Gate is either sending history wrapped in an object, either an array
+  const realHistory = gateHistory.history || gateHistory;
+  return realHistory.map(gateStepsGroup => {
     if (!gateStepsGroup.length) return null;
     return {
       type: resolveItemType(gateStepsGroup[0]),

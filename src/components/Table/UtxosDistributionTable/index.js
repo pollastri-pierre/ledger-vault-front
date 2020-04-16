@@ -19,7 +19,7 @@ type Props = {
   customTableDef?: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  onRowClick: UTXORange => void,
+  onRowClick?: UTXORange => void,
 };
 
 function UtxosDistributionTable(props: Props) {

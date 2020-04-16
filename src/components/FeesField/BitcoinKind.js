@@ -119,8 +119,23 @@ function FeesBitcoinKind(props: Props) {
       const estimatedFees = await getFees(account, txGetFees, restlay);
       if (nonce !== instanceNonce.current || unsubscribed) return;
 
+      // See VFE-161
+      //
+      // In *some cases* of UTXOs consolidation, the front calculate a certain
+      // amount based on UTXOs but the backend-sent max_amount is lower than
+      // this, because of fees (sometimes.. it's OK). So in this case, we reset
+      // the amount to max_amount, because the tx is created with UTXOs amount
+      // anyway, so we don't really care about the amount.
+      //
+      const isUTXOBasedFees = !!transaction.expectedNbUTXOs;
+      const isAmountTooHigh = transaction.amount.isGreaterThan(
+        estimatedFees.max_amount,
+      );
+      const shouldResetToMax = isUTXOBasedFees && isAmountTooHigh;
+
       onChangeTransaction({
         ...transaction,
+        ...(shouldResetToMax ? { amount: estimatedFees.max_amount } : {}),
         estimatedFees: estimatedFees.fees,
         estimatedMaxAmount: estimatedFees.max_amount,
         error: null,
