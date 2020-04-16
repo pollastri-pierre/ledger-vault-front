@@ -38,13 +38,13 @@ const Versions = ({ onClose }: { onClose: void => void }) => {
           <VersionLine>
             <Component>ledger-wallet-daemon</Component>
             <ComponentVersion>
-              {versions.dependencies.wallet_daemon.commit_hash}
+              {versions.dependencies.wallet_daemon.version}
             </ComponentVersion>
           </VersionLine>
           <VersionLine>
             <Component>libcore</Component>
             <ComponentVersion>
-              {versions.dependencies.wallet_daemon.libcore}
+              {versions.dependencies.wallet_daemon.libcore_version}
             </ComponentVersion>
           </VersionLine>
           <>
