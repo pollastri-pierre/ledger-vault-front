@@ -18,32 +18,41 @@ type Props = {
   pageSize: number,
 };
 
-function getSlice(nbPages, page) {
-  const full = [...Array(nbPages).keys()].map(i => i + 1);
-  const pageIndex = full.indexOf(page);
-
-  // slightly ashamed of this ugly conditionnal. could certainly be refactored
-  // in a more abstract and concise way. I mean. Maybe intern job.
-  //
-  // TL;DR: this is to handle the left & right edges.
-  const offset =
-    page === 1
-      ? 0
-      : page === 2
-      ? -1
-      : page === nbPages
-      ? -4
-      : page === nbPages - 1
-      ? -3
-      : -2;
-  return full.slice(pageIndex + offset, pageIndex + offset + 5);
+const MAX_DISPLAYED_PAGES = 5;
+/**
+ * This function eventually slices the total pages to ensure we don't display
+ * more pages items than we want. Also, it tries to "center" the active page
+ * if possible.
+ *
+ * examples with 5 max displayed pages:
+ *
+ *    < [1] 2  3  4  5  >
+ *    <  1 [2] 3  4  5  >
+ *    <  1  2 [3] 4  5  >
+ *    <  2  3 [4] 5  6  >
+ *    <  2  3  4 [5] 6  >
+ *    <  2  3  4  5 [6] >
+ */
+export function getPages(nbPages: number, page: number, maxDisplayed: number) {
+  if (maxDisplayed % 2 === 0) {
+    throw new Error("Max displayed pages should be even");
+  }
+  const full: number[] = [...Array(nbPages).keys()].map<number>(i => i + 1);
+  if (nbPages <= maxDisplayed) return full;
+  const index = page - 1;
+  const center = Math.floor(maxDisplayed / 2);
+  let offset = index - center;
+  if (index + center > maxDisplayed) offset = nbPages - maxDisplayed;
+  if (offset < 0) offset = 0;
+  const slice: number[] = full.slice(offset, offset + maxDisplayed);
+  return slice;
 }
 
 class Paginator extends PureComponent<Props> {
   render() {
     const { count, pageSize, page, onChange } = this.props;
     const nbPages = Math.ceil(count / pageSize);
-    const pages = getSlice(nbPages, page);
+    const pages = getPages(nbPages, page, MAX_DISPLAYED_PAGES);
     return (
       <Container>
         <ItemContainer disabled={page === 1} onClick={() => onChange(1)}>
