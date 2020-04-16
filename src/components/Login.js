@@ -24,6 +24,7 @@ import { loginFlow } from "device/interactions/loginFlow";
 import { getU2FPublicKey } from "device/interactions/common";
 import DeviceInteraction from "components/DeviceInteraction";
 import imgBlue from "assets/img/blue.svg";
+import productVersion from "../version";
 
 const getDeviceID = [getU2FPublicKey];
 
@@ -283,7 +284,7 @@ export const LoginContainer = ({ children }: { children: React$Node }) => (
       </Box>
     </Box>
     <Box mt={40}>
-      <Text size="small">Ledger Vault - v{VAULT_FRONT_VERSION}</Text>
+      <Text size="small">Ledger Vault - v{productVersion}</Text>
     </Box>
   </CenteredLayout>
 );
