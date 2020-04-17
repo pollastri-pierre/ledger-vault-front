@@ -77,21 +77,25 @@ test("restlay.fetchQuery from A (no dep) triggers a refresh of B (if depends on 
   expect(inst.toJSON()).toMatchObject({
     children: ["2"],
   });
-  restlay.commitMutation(
-    new AddAnimalMutation({
-      animal: {
-        name: "foo",
-        age: 42,
-      },
-    }),
-  );
+  renderer.act(() => {
+    restlay.commitMutation(
+      new AddAnimalMutation({
+        animal: {
+          name: "foo",
+          age: 42,
+        },
+      }),
+    );
+  });
   net.tick();
   await renderer.act(flushPromises);
   // the mutation don't automatically reload the list so UI is still showing 2
   expect(inst.toJSON()).toMatchObject({
     children: ["2"],
   });
-  restlay.fetchQuery(new AnimalsQuery());
+  renderer.act(() => {
+    restlay.fetchQuery(new AnimalsQuery());
+  });
   net.tick();
   await renderer.act(flushPromises);
   // after fetching from Foo sibling, Animals list is now 3
