@@ -42,7 +42,10 @@ const steps = [
     id: "finish",
     name: <Trans i18nKey="transactionCreation:finish" />,
     hideBack: true,
-    Step: () => <MultiStepsSuccess title={"UTXOs successfully consolidated"} />,
+    Step: () => {
+      const { t } = useTranslation();
+      return <MultiStepsSuccess title={t("consolidateUTXO:success")} />;
+    },
     Cta: ({ onClose }: { onClose?: () => void }) => {
       const { t } = useTranslation();
       return (

@@ -1,4 +1,5 @@
 {
   "consolidate": "Consolidate transaction",
-  "tryAgain": "Try Again"
+  "tryAgain": "Try Again",
+  "success": "UTXO consolidation request successfully created"
 }
