@@ -15,7 +15,8 @@
   "currency": {
     "label": "Crypto asset",
     "placeholder": "Search for a crypto asset or a token",
-    "tabTitle": "Crypto asset"
+    "tabTitle": "Crypto asset",
+    "derivationMode": "Derivation mode"
   },
   "erc20": {
     "createNew": "Create a new view-only Ethereum account",

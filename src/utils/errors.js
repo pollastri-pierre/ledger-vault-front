@@ -24,9 +24,6 @@ export type DeviceError = {
 
 // send errors
 export const InvalidAddress = createCustomErrorClass("InvalidAddress");
-export const AddressShouldNotBeSegwit = createCustomErrorClass(
-  "AddressShouldNotBeSegwit",
-);
 export const AmountTooHigh = createCustomErrorClass("AmountTooHigh");
 export const TooManyUTXOs = createCustomErrorClass("TooManyUTXOs");
 export const AmountExceedMax = createCustomErrorClass("AmountExceedMax");

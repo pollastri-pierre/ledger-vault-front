@@ -13,6 +13,8 @@ import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 // We have a little variation with the way client denormalize the data,
 // therefore we will have _T_Entity types to be the denormalized form of _T_
 
+export type GateDerivationMode = "standard" | "native_segwit";
+
 export const mapRestlayKeyToType = {
   users: "USER",
   groups: "GROUP",
@@ -170,6 +172,7 @@ type AccountCommon = {
   parent: ?number,
   derivation_path: string,
   extended_public_key: ExtendedPubKey,
+  derivation_mode: GateDerivationMode,
 };
 
 export type Account = AccountCommon & {

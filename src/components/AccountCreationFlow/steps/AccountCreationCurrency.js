@@ -1,7 +1,8 @@
 // @flow
 
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import type { DerivationMode } from "@ledgerhq/live-common/lib/derivation";
 
 import type { Account } from "data/types";
 import Disabled from "components/Disabled";
@@ -9,10 +10,16 @@ import SelectCurrency from "components/SelectCurrency";
 import InfoBox from "components/base/InfoBox";
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import { Label } from "components/base/form";
-import { isERC20Token, isNotSupportedCoin } from "utils/cryptoCurrencies";
+import {
+  isERC20Token,
+  isNotSupportedCoin,
+  getDerivationModes,
+} from "utils/cryptoCurrencies";
+import usePrevious from "hooks/usePrevious";
 import HelpLink from "components/HelpLink";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
+import SelectDerivationMode from "components/SelectDerivationMode";
 import ExternalLink from "components/icons/ExternalLink";
 import colors from "shared/colors";
 
@@ -50,6 +57,10 @@ const AccountCreationCurrency = (props: AccountCreationStepProps) => {
     allAccounts,
   );
 
+  const derivationModes = useMemo(() => getDerivationModes(currencyOrToken), [
+    currencyOrToken,
+  ]);
+
   const handleChange = useCallback(
     (item: ?SelectCurrencyItem) => {
       const patch = {};
@@ -61,13 +72,18 @@ const AccountCreationCurrency = (props: AccountCreationStepProps) => {
           parentAccount: null,
         });
       } else if (item.type === "currency") {
+        const derivationModes = getDerivationModes(item.value);
+        const shouldChooseDerivationMode = derivationModes.length > 1;
+
         Object.assign(patch, {
           currency: item.value,
           erc20token: null,
           parentAccount: null,
+          derivationMode:
+            derivationModes.length > 0 ? derivationModes[0] : null,
         });
 
-        if (!isNotSupportedCoin(item.value)) {
+        if (!isNotSupportedCoin(item.value) && !shouldChooseDerivationMode) {
           onPatched = () => transitionTo("name");
         }
       } else {
@@ -99,6 +115,14 @@ const AccountCreationCurrency = (props: AccountCreationStepProps) => {
     [updatePayload],
   );
 
+  const handleChangeDerivationMode = useCallback(
+    (derivationMode: DerivationMode) => updatePayload({ derivationMode }),
+    [updatePayload],
+  );
+
+  const derivationModeSelect = useRef();
+  useFocusWhenChange(derivationModeSelect, currencyOrToken);
+
   return (
     <Disabled disabled={isEditMode}>
       <Box horizontal flow={10}>
@@ -115,6 +139,18 @@ const AccountCreationCurrency = (props: AccountCreationStepProps) => {
             }
           />
         </Box>
+        {derivationModes.length > 1 && (
+          <Box noShrink width={200}>
+            <Label>{t("newAccount:currency.derivationMode")}</Label>
+            <SelectDerivationMode
+              derivationModes={derivationModes}
+              value={payload.derivationMode}
+              onChange={handleChangeDerivationMode}
+              selectRef={derivationModeSelect}
+              openMenuOnFocus
+            />
+          </Box>
+        )}
       </Box>
       {payload.currency && isNotSupportedCoin(payload.currency) && (
         <Box mt={20}>
@@ -145,6 +181,17 @@ const AccountCreationCurrency = (props: AccountCreationStepProps) => {
       )}
     </Disabled>
   );
+};
+
+const useFocusWhenChange = (ref, value) => {
+  const prev = usePrevious(value);
+  useEffect(() => {
+    if (typeof prev === "undefined") return;
+    if (prev === value) return;
+    const { current } = ref;
+    if (!current) return;
+    current.focus();
+  }, [prev, value, ref]);
 };
 
 export default AccountCreationCurrency;
