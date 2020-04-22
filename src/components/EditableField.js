@@ -1,5 +1,12 @@
 // @flow
 
+// ===========================================================================
+//
+//      FIXME: this component is a complex mess solving a simple problem
+//             let's rewrite it in redesign
+//
+// ===========================================================================
+
 import React, { useState, useEffect } from "react";
 import { FaPen, FaCheck } from "react-icons/fa";
 
@@ -64,7 +71,7 @@ export default function EditableField(props: Props) {
 
   const onClick = async () => {
     if (getSaveDisabled && getSaveDisabled(localValue)) return;
-    if (localValue === "" || localValue === value) {
+    if (localValue === "") {
       setLocalValue(value);
       toggleEditMode();
     } else {
@@ -76,7 +83,7 @@ export default function EditableField(props: Props) {
         setLocalValue(value);
         setRequestStatus("idle");
       } finally {
-        toggleEditMode();
+        setEditMode(false);
       }
     }
   };
