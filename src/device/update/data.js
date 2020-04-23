@@ -40,4 +40,6 @@ export const APPS_RAW = [
   "2.2.7-eel  app_3.0.9",
   "2.2.7-eed  app_3.0.9-dev",
   "2.2.7-eeld app_3.0.9-dev",
+  "2.2.7-eed  app_3.0.10-dev",
+  "2.2.7-eeld app_3.0.10-dev",
 ];
