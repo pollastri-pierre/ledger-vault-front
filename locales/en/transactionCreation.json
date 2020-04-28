@@ -2,7 +2,7 @@
   "title": "New transaction",
   "steps": {
     "account": {
-      "title": "Account",
+      "title": "Details",
       "accountToDebit": "Sending from",
       "balance": "Balance",
       "amount": "Amount",
