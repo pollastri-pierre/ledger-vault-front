@@ -74,11 +74,16 @@ class TabDetails extends PureComponent<{
     // $FlowFixMe
     const { transaction: rawTransaction } = transaction;
     const cryptoCurrency = getCryptoCurrencyById(account.currency);
-    if (!rawTransaction) {
+    if (!rawTransaction && !transaction.utxo_picking_strategy) {
       return "No data.";
     }
     return (
       <>
+        {transaction.utxo_picking_strategy && (
+          <LineRow label="UTXOs picking strategy">
+            {transaction.utxo_picking_strategy}
+          </LineRow>
+        )}
         {rawTransaction && cryptoCurrency.family === "bitcoin" && (
           <>
             <TransactionList
