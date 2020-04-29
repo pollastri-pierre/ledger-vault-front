@@ -351,6 +351,7 @@ type TransactionCommon = {
   notes: Note[],
   gas_limit?: BigNumber,
   destination_tag?: number,
+  utxo_picking_strategy: ?UtxoPickingStrategy,
 };
 
 export type Transaction = TransactionCommon & {
