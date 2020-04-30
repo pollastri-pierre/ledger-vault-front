@@ -39,8 +39,8 @@ export const generateWorkspaceSeeds = (
   ];
   const onboardingSeeds = [
     { name: "Wrapping Key 1", seed: seeds[11] },
-    { name: "Wrappking Key 2", seed: seeds[12] },
-    { name: "Wrappking Key 3", seed: seeds[13] },
+    { name: "Wrapping Key 2", seed: seeds[12] },
+    { name: "Wrapping Key 3", seed: seeds[13] },
     { name: "Shared Owner 1", seed: seeds[14] },
     { name: "Shared Owner 2", seed: seeds[15] },
     { name: "Shared Owner 3", seed: seeds[16] },
