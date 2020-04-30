@@ -59,6 +59,9 @@ export const NoWorkspaceForDevice = createCustomErrorClass(
 export const AccountNameAlreadyExists = createCustomErrorClass(
   "AccountNameAlreadyExists",
 );
+export const AddressPathNotInRange = createCustomErrorClass(
+  "AddressPathNotInRange",
+);
 
 export function remapError(err: Error) {
   // $FlowFixMe

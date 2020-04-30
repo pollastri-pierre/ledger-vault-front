@@ -17,6 +17,11 @@ export default styled(Box).attrs(p => ({
   height: 40px;
   width: ${p => (p.width ? p.width : "inherit")}
   background: ${colors.form.bg};
-  border: 1px solid ${colors.form.border};
+  border: ${p =>
+    p.isError
+      ? `1px solid ${colors.form.error}`
+      : p.isActive
+      ? `1px solid ${colors.form.focus}`
+      : `1px solid ${colors.form.border}`} ;
   min-width: ${p => (p.width ? p.width : "180px")};
 `;

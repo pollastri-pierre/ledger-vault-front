@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 
-import React from "react";
+import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
 
 import { delay } from "utils/promise";
 import RestlayProvider from "restlay/RestlayProvider";
 import Modal from "components/base/Modal";
 import ReceiveFlow from "components/ReceiveFlow";
+import DerivationInput from "components/ReceiveFlow/DerivationInput";
 
 import { genAccounts, genUsers } from "data/mock-entities";
 
@@ -30,6 +31,10 @@ const fresh_addresses = [
   },
 ];
 
+const WrapperInputDerivation = () => {
+  const [value, setValue] = useState("2");
+  return <DerivationInput value={value} onChange={setValue} prefix="44/4/3" />;
+};
 const fakeNetwork = async url => {
   await delay(200);
   if (url.startsWith("/accounts?status=")) {
@@ -44,13 +49,15 @@ const fakeNetwork = async url => {
   throw new Error(`invalid url ${url}`);
 };
 
-storiesOf("entities/Transaction", module).add("Receive", () => (
-  <RestlayProvider network={fakeNetwork}>
-    <Modal transparent isOpened>
-      <ReceiveFlow match={{ params: {} }} />
-    </Modal>
-  </RestlayProvider>
-));
+storiesOf("entities/Transaction", module)
+  .add("Receive", () => (
+    <RestlayProvider network={fakeNetwork}>
+      <Modal transparent isOpened>
+        <ReceiveFlow match={{ params: {} }} />
+      </Modal>
+    </RestlayProvider>
+  ))
+  .add("DerivationInput", () => <WrapperInputDerivation />);
 
 function wrapConnection(data) {
   return {

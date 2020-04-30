@@ -1,10 +1,9 @@
 // @flow
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { FaUser, FaHistory, FaMobileAlt, FaCheck } from "react-icons/fa";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Trans, useTranslation } from "react-i18next";
-import type { OptionProps } from "react-select/src/types";
-import { components } from "react-select";
 import connectData from "restlay/connectData";
 import noop from "lodash/noop";
 
@@ -26,10 +25,12 @@ import InfoBox from "components/base/InfoBox";
 import { RestlayTryAgain } from "components/TryAgain";
 import DeviceInteraction from "components/DeviceInteraction";
 import Box from "components/base/Box";
+import Disabled from "components/Disabled";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
-import Select from "components/base/Select";
+import DerivationInput from "components/ReceiveFlow/DerivationInput";
+import { AddressPathNotInRange } from "utils/errors";
 
 type Props = {
   selectedAccount: ?Account,
@@ -40,76 +41,56 @@ type Props = {
 const IconRetry = () => <FaHistory size={12} />;
 const IconBlue = () => <FaMobileAlt size={14} />;
 
-const customValueStyle = {
-  singleValue: styles => ({
-    ...styles,
-    color: "inherit",
-    width: "100%",
-    paddingRight: 10,
-  }),
-};
-const GenericOption = ({ address }: { address: AddressDaemon }) => {
-  return (
-    <Box horizontal justify="space-between" flow={20} width="100%">
-      <Text>{address.address}</Text>
-      <Text size="small" fontWeight="bold">
-        {address.derivation_path}
-      </Text>
-    </Box>
-  );
-};
-const OptionComponent = (props: OptionProps) => {
-  const {
-    data: { data: address },
-  } = props;
-  return (
-    <components.Option {...props}>
-      <GenericOption address={address} />
-    </components.Option>
-  );
-};
-
-const ValueComponent = (props: OptionProps) => {
-  return (
-    <components.SingleValue {...props}>
-      <GenericOption address={props.data} />
-    </components.SingleValue>
-  );
-};
-
-const customComponents = {
-  Option: OptionComponent,
-  SingleValue: ValueComponent,
-};
-
 type SelectIndexProps = {
-  onChange: AddressDaemon => void,
+  onChange: (?AddressDaemon) => void,
   addresses: AddressDaemon[],
   selectedAddress: ?AddressDaemon,
   currentIndex: string,
-  accountId: number,
+  account: Account,
 };
-
-const buildOption = (address: AddressDaemon) => ({
-  label: address.address,
-  value: `${address.address}`,
-  data: address,
-});
 
 const SelectIndex = connectData(
   (props: SelectIndexProps) => {
-    const { selectedAddress, onChange, addresses } = props;
+    const { account, selectedAddress, onChange, addresses } = props;
+    const [path, setPath] = useState(
+      selectedAddress ? selectedAddress.derivation_path.split("/")[1] : "",
+    );
+    const [error, setError] = useState([]);
+
+    // we remove the "change" addresses
+    const addressesWithoutChange = useMemo(() => {
+      return addresses.filter(a => {
+        const s = a.derivation_path.split("/");
+        return s.length > 1 && s[0] === "0";
+      });
+    }, [addresses]);
+
+    const _onChange = val => {
+      setPath(val);
+      // we have to find the address corresponding the derivation path
+      const derivationPath = `0/${val}`;
+      const address = addressesWithoutChange.find(
+        a => a.derivation_path === derivationPath,
+      );
+
+      if (address) {
+        setError([]);
+      } else {
+        setError([
+          new AddressPathNotInRange(null, {
+            max: addressesWithoutChange.length - 1,
+          }),
+        ]);
+      }
+      onChange(address);
+    };
 
     return (
-      <Select
-        options={addresses.map(buildOption)}
-        components={customComponents}
-        placeholder="Select an index"
-        styles={customValueStyle}
-        inputId="input_index"
-        {...props}
-        onChange={onChange}
-        value={selectedAddress}
+      <DerivationInput
+        prefix={account.derivation_path}
+        onChange={_onChange}
+        value={path}
+        errors={error}
       />
     );
   },
@@ -120,7 +101,7 @@ const SelectIndex = connectData(
       addresses: AddressFromDerivationPathQuery,
     },
     propsToQueryParams: props => ({
-      accountId: props.accountId,
+      accountId: props.account.id,
       from: 0,
       to: props.currentIndex,
     }),
@@ -130,6 +111,7 @@ const SelectIndex = connectData(
 function ReceiveFlow(props: Props) {
   const { selectedAccount, accounts, onClose } = props;
   const [account, setAccount] = useState<?Account>(selectedAccount);
+
   const { t } = useTranslation();
 
   return (
@@ -161,6 +143,48 @@ type VerifyFreshAddressProps = {
   restlay: RestlayEnvironment,
 };
 
+const AdvancedSection = ({
+  account,
+  selectedAddress,
+  onChange,
+  currentIndex,
+}: {
+  onChange: (?AddressDaemon) => void,
+  selectedAddress: ?AddressDaemon,
+  currentIndex: string,
+  account: Account,
+}) => {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <Box flow={10} pb={20}>
+      <Box
+        flow={5}
+        style={{ cursor: "pointer" }}
+        horizontal
+        align="center"
+        onClick={() => setVisible(!visible)}
+      >
+        {visible ? <IoIosArrowUp /> : <IoIosArrowDown />}
+        <Box>Advanced</Box>
+      </Box>
+      {visible && (
+        <Box horizontal align="center" flow={40}>
+          <Label>Derivation path</Label>
+          <Box grow>
+            <SelectIndex
+              selectedAddress={selectedAddress}
+              account={account}
+              currentIndex={currentIndex}
+              onChange={onChange}
+            />
+          </Box>
+        </Box>
+      )}
+    </Box>
+  );
+};
+
 const VerifyFreshAddress = connectData(
   (props: VerifyFreshAddressProps) => {
     const { freshAddresses, account, restlay } = props;
@@ -186,46 +210,48 @@ const VerifyFreshAddress = connectData(
     return (
       <Box flow={20}>
         {account.account_type === "Bitcoin" && (
-          <SelectIndex
-            selectedAddress={selectedAddress}
-            onChange={addr => setSelectedAddress(addr.data)}
+          <AdvancedSection
             currentIndex={freshAddress.derivation_path.split("/")[1]}
-            accountId={account.id}
+            account={account}
+            selectedAddress={selectedAddress}
+            onChange={setSelectedAddress}
           />
         )}
-        <Box horizontal flow={10} align="center">
-          <Box width={300}>
-            {isVerifying || hasBeenVerified ? (
-              <Copy text={selectedAddress.address} />
-            ) : (
-              <InputText
-                grow
-                value={"*".repeat(freshAddress.address.length)}
-                disabled
-                onChange={noop}
-              />
-            )}
+        <Disabled disabled={!selectedAddress}>
+          <Box horizontal flow={10} align="center">
+            <Box width={300}>
+              {(isVerifying || hasBeenVerified) && selectedAddress ? (
+                <Copy text={selectedAddress.address} />
+              ) : (
+                <InputText
+                  grow
+                  value={"*".repeat(freshAddress.address.length)}
+                  disabled
+                  onChange={noop}
+                />
+              )}
+            </Box>
+            <Box grow noShrink>
+              <Button
+                onClick={() => setVerifying(true)}
+                type="filled"
+                data-test="verifyaddress"
+                disabled={isVerifying}
+              >
+                <Box horizontal flow={10} align="center" justify="center">
+                  {hasBeenVerified === false ? <IconRetry /> : <IconBlue />}
+                  {hasBeenVerified === true ? (
+                    <Text i18nKey="receive:verifyAgain" noWrap />
+                  ) : hasBeenVerified === false ? (
+                    <Text i18nKey="receive:retry" noWrap />
+                  ) : (
+                    <Text i18nKey="receive:verify" noWrap />
+                  )}
+                </Box>
+              </Button>
+            </Box>
           </Box>
-          <Box grow noShrink>
-            <Button
-              onClick={() => setVerifying(true)}
-              type="filled"
-              data-test="verifyaddress"
-              disabled={isVerifying}
-            >
-              <Box horizontal flow={10} align="center" justify="center">
-                {hasBeenVerified === false ? <IconRetry /> : <IconBlue />}
-                {hasBeenVerified === true ? (
-                  <Text i18nKey="receive:verifyAgain" noWrap />
-                ) : hasBeenVerified === false ? (
-                  <Text i18nKey="receive:retry" noWrap />
-                ) : (
-                  <Text i18nKey="receive:verify" noWrap />
-                )}
-              </Box>
-            </Button>
-          </Box>
-        </Box>
+        </Disabled>
         {isVerifying ? (
           <Box align="center" grow>
             <DeviceInteraction

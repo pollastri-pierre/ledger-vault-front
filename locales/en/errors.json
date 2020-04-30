@@ -111,6 +111,10 @@
     "title": "Name already used",
     "description": "An account already uses this name. Please enter a different one"
   },
+  "AddressPathNotInRange": {
+    "title": "Index path is not in the correct range",
+    "description": "Enter a value between 0 and {{max}}"
+  },
   "CantOpenDevice": {
     "title": "Can't communicate with device"
   },
