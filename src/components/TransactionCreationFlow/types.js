@@ -1,6 +1,5 @@
 // @flow
 
-import { BigNumber } from "bignumber.js";
 import type { StepProps } from "components/base/MultiStepsFlow/types";
 import type { Account, Whitelist } from "data/types";
 import type { WalletBridge } from "bridge/types";
@@ -23,7 +22,6 @@ type GenericStepProps<T> = StepProps<TransactionCreationPayload<T>>;
 
 export type TransactionCreationStepProps<T> = GenericStepProps<T> & {
   accounts: Connection<Account>,
-  setUtxoError: (error: ?{ amount: BigNumber }) => void,
   whitelists: Connection<Whitelist>,
 };
 

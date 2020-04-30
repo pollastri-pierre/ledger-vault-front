@@ -1,19 +1,13 @@
 // @flow
 
-import React, { useMemo, useState } from "react";
-import { BigNumber } from "bignumber.js";
+import React, { useMemo } from "react";
 import invariant from "invariant";
 import { Trans, useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { FaMoneyCheck, FaInfoCircle } from "react-icons/fa";
-import { IoMdHelpBuoy } from "react-icons/io";
+import { FaMoneyCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import type { RestlayEnvironment } from "restlay/connectData";
-import HelpLink from "components/HelpLink";
-import VaultLink from "components/VaultLink";
-import CurrencyAccountValue from "components/CurrencyAccountValue";
-import Modal from "components/base/Modal";
 import connectData from "restlay/connectData";
 import { getBridgeForCurrency } from "bridge";
 import { resetRequest } from "redux/modules/requestReplayStore";
@@ -182,8 +176,6 @@ const mapDispatch = {
   resetRequest,
 };
 
-type MaxUtxoErrorType = ?{ amount: BigNumber };
-
 export default connect(
   mapStateToProps,
   mapDispatch,
@@ -191,7 +183,6 @@ export default connect(
   connectData(
     props => {
       const { match, accounts, close, resetRequest, requestToReplay } = props;
-      const [utxoError, setUtxoError] = useState<MaxUtxoErrorType>(null);
       const cursor = 0;
       let payload = initialPayload;
 
@@ -213,17 +204,9 @@ export default connect(
         resetRequest();
         close();
       };
+
       return (
         <GrowingCard>
-          <Modal isOpened={!!utxoError}>
-            {!!utxoError && (
-              <UtxoErrorModal
-                setUtxoError={setUtxoError}
-                account={acc}
-                amount={utxoError.amount}
-              />
-            )}
-          </Modal>
           <MultiStepsFlow
             Icon={FaMoneyCheck}
             title={title}
@@ -234,7 +217,7 @@ export default connect(
               payload
             }
             steps={steps}
-            additionalProps={{ ...props, setUtxoError }}
+            additionalProps={{ ...props }}
             initialCursor={cursor}
             onClose={closeAndEmptyStore}
           />
@@ -254,52 +237,6 @@ export default connect(
     },
   ),
 );
-
-const UtxoErrorModal = ({
-  setUtxoError,
-  amount,
-  account,
-}: {
-  setUtxoError: MaxUtxoErrorType => void,
-  amount: BigNumber,
-  account: Account,
-}) => {
-  return (
-    <Box p={30} flow={20} align="center" justify="center" width={400}>
-      <Box>
-        <FaInfoCircle size={36} color="black" />
-      </Box>
-      <Box>
-        <p>
-          To create a transaction over{" "}
-          <strong>
-            <CurrencyAccountValue account={account} value={amount} />
-          </strong>
-          , you must first consolidate the UTXOs in the{" "}
-          <strong>{account.name}</strong> account.
-        </p>
-      </Box>
-      <Box align="center" justify="center" horizontal flow={5}>
-        <IoMdHelpBuoy size={20} />{" "}
-        <Text fontWeight="semiBold">
-          <HelpLink subLink="/Content/transactions/tx_consolidate.html">
-            Learn more on UTXO consolidation
-          </HelpLink>
-        </Text>
-      </Box>
-      <Box horizontal flow={20} pt={20}>
-        <Button type="outline" onClick={() => setUtxoError(null)}>
-          Change amount
-        </Button>
-        <Button type="filled">
-          <VaultLink withRole to={`/dashboard/consolidate/${account.id}`}>
-            Consolidate
-          </VaultLink>
-        </Button>
-      </Box>
-    </Box>
-  );
-};
 
 const purgePayload = (
   data: *,
