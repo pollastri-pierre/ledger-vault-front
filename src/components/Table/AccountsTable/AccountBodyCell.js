@@ -10,6 +10,7 @@ import DateFormat from "components/DateFormat";
 import { TableCell } from "components/Table/TableBase";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import NotApplicableText from "components/base/NotApplicableText";
+import Box from "components/base/Box";
 
 import type { Account } from "data/types";
 import type { TableItem } from "../types";
@@ -34,17 +35,29 @@ function AccountBodyCell(props: CellProps) {
             request={account.last_request}
           />
         );
-      case "countervalue":
+      case "available_balance":
         return account.status === "PENDING" ? (
           <NotApplicableText />
         ) : (
-          <CounterValue fromAccount={account} value={account.balance} />
+          <Box>
+            <CurrencyAccountValue
+              account={account}
+              value={account.available_balance}
+            />
+            <CounterValue
+              fromAccount={account}
+              value={account.available_balance}
+            />
+          </Box>
         );
       case "balance":
         return account.status === "PENDING" ? (
           <NotApplicableText />
         ) : (
-          <CurrencyAccountValue account={account} value={account.balance} />
+          <Box>
+            <CurrencyAccountValue account={account} value={account.balance} />
+            <CounterValue fromAccount={account} value={account.balance} />
+          </Box>
         );
       case "approver_role":
         return <ApproverRole account={account} />;

@@ -24,7 +24,9 @@ export function deserializeTransaction(transaction: Transaction): Transaction {
     ...transaction,
     ...(rawTransaction ? { transaction: rawTransaction } : {}),
     amount,
-    fees: BigNumber(transaction.fees),
+    fees: transaction.fees !== null ? BigNumber(transaction.fees) : null,
+    max_fees:
+      transaction.max_fees !== null ? BigNumber(transaction.max_fees) : null,
     gas_limit: BigNumber(transaction.gas_limit),
     gas_price: BigNumber(transaction.gas_price),
   };

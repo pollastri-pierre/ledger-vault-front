@@ -15,10 +15,7 @@ import {
 } from "react-icons/fa";
 
 import { getVisibleAccountsInMenu } from "utils/accounts";
-import {
-  getPendingsTransactions,
-  isCreateTransactionEnabled,
-} from "utils/transactions";
+import { isCreateTransactionEnabled } from "utils/transactions";
 import PendingBadge from "containers/Admin/Dashboard/PendingBadge";
 import IconSend from "components/icons/Send";
 import IconReceive from "components/icons/Receive";
@@ -44,7 +41,7 @@ type Props = {
 };
 
 export default function getMenuItems(props: Props) {
-  const { match, role, accounts, allPendingTransactions, location } = props;
+  const { match, role, accounts, location } = props;
   if (role === "ADMIN") {
     return setActive(location, [
       {
@@ -107,9 +104,6 @@ export default function getMenuItems(props: Props) {
   }
   if (role === "OPERATOR") {
     const visibleAccounts = getVisibleAccountsInMenu(accounts);
-    const pendingApprovalTransactions = getPendingsTransactions(
-      allPendingTransactions,
-    );
     return setActive(location, [
       {
         key: "dashboard",
@@ -125,10 +119,7 @@ export default function getMenuItems(props: Props) {
         label: <Trans i18nKey="menu:operator.send" />,
         url: `${location.pathname}/send`,
         Icon: SendIcon,
-        isDisabled: !isCreateTransactionEnabled(
-          accounts,
-          pendingApprovalTransactions,
-        ),
+        isDisabled: !isCreateTransactionEnabled(accounts),
       },
       {
         key: "receive",

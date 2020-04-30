@@ -81,10 +81,14 @@ const TransactionCreationAmount = (
       amountErrors.push(new RippleAmountExceedMinBalance());
     }
   } else {
+    const account_balance =
+      account.account_type === "Bitcoin"
+        ? account.available_balance
+        : account.balance;
     const amountTooHigh =
       bridge
         .getTotalSpent(account, transaction)
-        .isGreaterThan(account.balance) ||
+        .isGreaterThan(account_balance) ||
       transactionError instanceof AmountTooHigh;
     if (amountTooHigh) {
       amountErrors.push(new AmountTooHigh());

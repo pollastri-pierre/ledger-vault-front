@@ -16,12 +16,11 @@ export const accountsTableDefault = [
   },
   {
     header: {
-      label: "Countervalue",
+      label: "Available balance",
       align: "right",
-      sortable: false,
     },
     body: {
-      prop: "countervalue",
+      prop: "available_balance",
       align: "right",
     },
   },
@@ -73,12 +72,11 @@ export const accountsIsOperatorTableDefault = [
   },
   {
     header: {
-      label: "Countervalue",
+      label: "Available balance",
       align: "right",
-      sortable: false,
     },
     body: {
-      prop: "countervalue",
+      prop: "available_balance",
       align: "right",
     },
   },

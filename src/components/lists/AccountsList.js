@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useMemo } from "react";
+import styled from "styled-components";
 
 import colors from "shared/colors";
 import AccountIcon from "components/AccountIcon";
@@ -67,13 +68,25 @@ export default function AccountsList(props: Props) {
               </Box>
             </Box>
             {config.displayBalance && (
-              <Box noShrink>
-                <Text fontWeight="semiBold">
-                  <CurrencyAccountValue
-                    account={account}
-                    value={account.balance}
-                  />
-                </Text>
+              <Box align="flex-end">
+                <Row size={13}>
+                  <div>Available Balance</div>
+                  <Text fontWeight="bold">
+                    <CurrencyAccountValue
+                      account={account}
+                      value={account.available_balance}
+                    />
+                  </Text>
+                </Row>
+                <Row>
+                  <div>Total</div>
+                  <Text fontWeight="semiBold">
+                    <CurrencyAccountValue
+                      account={account}
+                      value={account.balance}
+                    />
+                  </Text>
+                </Row>
               </Box>
             )}
           </Box>
@@ -82,3 +95,6 @@ export default function AccountsList(props: Props) {
     </List>
   );
 }
+const Row = styled(Box).attrs({ horizontal: true, align: "center", flow: 5 })`
+  font-size: ${p => p.size}px;
+`;

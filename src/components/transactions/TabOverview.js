@@ -3,10 +3,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import TransactionStatus from "components/TransactionStatus";
+import NextRequestButton from "components/NextRequestButton";
 import Copy from "components/base/Copy";
 import Box from "components/base/Box";
-import NotApplicableText from "components/base/NotApplicableText";
-import NextRequestButton from "components/NextRequestButton";
 import type { Transaction, Account } from "data/types";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
@@ -23,10 +22,11 @@ export default function TabOverview(props: Props) {
   const note = transaction.notes.length ? transaction.notes[0] : null;
   const isRipple = account.account_type === "Ripple";
   const { t } = useTranslation();
-  const totalSpent =
+
+  const totalAmount =
     account.account_type === "Erc20"
       ? transaction.amount
-      : transaction.amount.plus(transaction.fees);
+      : transaction.amount.plus(transaction.fees || transaction.max_fees);
 
   return (
     <Box>
@@ -37,13 +37,16 @@ export default function TabOverview(props: Props) {
         created_on={transaction.created_on}
       />
       <Box>
-        <LineRow label={t("transactionDetails:overview.identifier")}>
-          {transaction.tx_hash ? (
-            <Copy text={transaction.tx_hash} />
-          ) : (
-            <NotApplicableText inline />
-          )}
+        <LineRow label={t("transactionDetails:overview.account")}>
+          <Box align="flex-end">
+            <AccountName account={account} />
+          </Box>
         </LineRow>
+        {transaction.tx_hash && (
+          <LineRow label={t("transactionDetails:overview.identifier")}>
+            <Copy text={transaction.tx_hash} />
+          </LineRow>
+        )}
         <LineRow label={t("transactionDetails:overview.recipient")}>
           <Copy text={transaction.recipient} />
         </LineRow>
@@ -53,12 +56,6 @@ export default function TabOverview(props: Props) {
             {transaction.status === "APPROVED" && transaction.last_request && (
               <NextRequestButton request={transaction.last_request} />
             )}
-          </Box>
-        </LineRow>
-
-        <LineRow label={t("transactionDetails:overview.account")}>
-          <Box align="flex-end">
-            <AccountName account={account} />
           </Box>
         </LineRow>
 
@@ -79,14 +76,24 @@ export default function TabOverview(props: Props) {
             {note.content}
           </LineRow>
         )}
-        <LineRow label={t("transactionDetails:overview.fees")}>
-          <Amount disableERC20 account={account} value={transaction.fees} />
-        </LineRow>
+        {transaction.fees ? (
+          <LineRow label={t("transactionDetails:overview.fees")}>
+            <Amount disableERC20 account={account} value={transaction.fees} />
+          </LineRow>
+        ) : transaction.max_fees ? (
+          <LineRow label={t("transactionDetails:overview.maxFees")}>
+            <Amount
+              disableERC20
+              account={account}
+              value={transaction.max_fees}
+            />
+          </LineRow>
+        ) : null}
         <LineRow label={t("transactionDetails:overview.amount")}>
           <Amount account={account} value={transaction.amount} />
         </LineRow>
         <LineRow label={t("transactionDetails:overview.total")}>
-          <Amount account={account} value={totalSpent} strong />
+          <Amount account={account} value={totalAmount} strong />
         </LineRow>
       </Box>
     </Box>

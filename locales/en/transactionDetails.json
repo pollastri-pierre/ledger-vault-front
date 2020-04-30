@@ -6,6 +6,7 @@
     "copy": "Copy",
     "date": "Sent date",
     "fees": "Fees",
+    "maxFees": "Max Fees",
     "recipient": "Recipient address",
     "identifier": "Hash",
     "status": "Status",

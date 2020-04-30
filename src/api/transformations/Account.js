@@ -15,6 +15,14 @@ export function deserializeAccount(account: Account): Account {
     console.warn("account.balance is null. Default to 0.");
     account.balance = 0;
   }
+  if (!("available_balance" in account)) {
+    console.warn('No "available_balance" in account. Default to 0.');
+    account.available_balance = 0;
+  }
+  if (account.available_balance === null) {
+    console.warn("account.balance is null. Default to 0.");
+    account.available_balance = 0;
+  }
   if (account.governance_rules) {
     convertGovernanceRules(account.governance_rules);
   }
@@ -50,6 +58,7 @@ export function deserializeAccount(account: Account): Account {
   return {
     ...account,
     balance: BigNumber(account.balance),
+    available_balance: BigNumber(account.available_balance),
     parent_balance: account.parent_balance && BigNumber(account.parent_balance),
   };
 }

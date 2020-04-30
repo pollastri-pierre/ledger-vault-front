@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaCoins, FaInfo, FaTicketAlt, FaLink, FaCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+import { BigNumber } from "bignumber.js";
 
 import EntityStatus, { APPROVED_LIKE_STATUS } from "components/EntityStatus";
 import CounterValue from "components/CounterValue";
@@ -96,6 +97,31 @@ export const AccountQuickInfoHeader = ({ account }: Props) => {
   );
 };
 
+type BalanceInfoProps = {| account: Account, value: BigNumber, label: string |};
+
+const BalanceInfo = ({ account, value, label }: BalanceInfoProps) => (
+  <InfoSquare>
+    <Label align="center" horizontal flow={5}>
+      <FaCoins />
+      <span>{label}</span>
+    </Label>
+    <Text size="header" selectable noWrap>
+      <CurrencyAccountValue account={account} value={value} />
+      <Text size="small" color={colors.textLight}>
+        <CounterValue
+          value={value}
+          fromAccount={account}
+          renderNA={
+            account.account_type === "Erc20" ? (
+              <ERC20CountervalueUnavailable account={account} />
+            ) : null
+          }
+        />
+      </Text>
+    </Text>
+  </InfoSquare>
+);
+
 const WidgetContent = ({ account }: Props) => {
   const me = useMe();
   const icon = getIcon(account);
@@ -117,29 +143,18 @@ const WidgetContent = ({ account }: Props) => {
             </Text>
           </InfoSquare>
           {account.status !== "PENDING" && (
-            <InfoSquare>
-              <Label align="center" horizontal flow={5}>
-                <FaCoins />
-                <span>Balance</span>
-              </Label>
-              <Text size="header" selectable noWrap>
-                <CurrencyAccountValue
-                  account={account}
-                  value={account.balance}
-                />
-                <Text size="small" color={colors.textLight}>
-                  <CounterValue
-                    value={account.balance}
-                    fromAccount={account}
-                    renderNA={
-                      account.account_type === "Erc20" ? (
-                        <ERC20CountervalueUnavailable account={account} />
-                      ) : null
-                    }
-                  />
-                </Text>
-              </Text>
-            </InfoSquare>
+            <BalanceInfo
+              account={account}
+              value={account.balance}
+              label="Balance"
+            />
+          )}
+          {account.status !== "PENDING" && account.available_balance && (
+            <BalanceInfo
+              account={account}
+              value={account.available_balance}
+              label="Available Balance"
+            />
           )}
           <InfoSquare>
             <Label align="center" horizontal flow={5}>

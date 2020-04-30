@@ -121,7 +121,8 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     if (t.amount.isEqualTo(0)) return false;
     if (!t.estimatedFees) return false;
     if (!t.estimatedFees.isGreaterThan(0)) return false;
-    if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) return false;
+    if (t.amount.plus(t.estimatedFees).isGreaterThan(a.available_balance))
+      return false;
     if (!t.estimatedMaxAmount) return false;
     if (t.amount.isGreaterThan(t.estimatedMaxAmount)) return false;
     return true;

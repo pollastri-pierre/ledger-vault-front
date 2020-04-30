@@ -34,14 +34,8 @@ export const isAccountSpendable = (account: Account) => {
   return isAccountNotSpendableWithReason(account).length === 0;
 };
 
-export const isCreateTransactionEnabled = (
-  accounts: Account[],
-  pendingTransactions: Transaction[],
-) => {
-  const filter = accounts.filter(
-    account =>
-      isAccountSpendable(account) && !hasPending(account, pendingTransactions),
-  );
+export const isCreateTransactionEnabled = (accounts: Account[]) => {
+  const filter = accounts.filter(account => isAccountSpendable(account));
   return filter.length > 0;
 };
 

@@ -29,9 +29,21 @@ const SelectedRow = (props: OptionProps) => {
   return (
     <Box horizontal align="center" justify="space-between">
       <AccountName account={account} />
-      <Text fontWeight="bold">
-        <CurrencyAccountValue account={account} value={account.balance} />
-      </Text>
+      <Box align="flex-end">
+        {account.account_type === "Bitcoin" && (
+          <Box flow={10} horizontal align="center">
+            <Text fontWeight="semiBold" color={colors.mediumGrey}>
+              Available
+            </Text>
+            <Text fontWeight="semiBold" color={colors.black}>
+              <CurrencyAccountValue
+                account={account}
+                value={account.available_balance}
+              />
+            </Text>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };
@@ -46,9 +58,29 @@ const GenericRow = (props: GenericRowProps) => {
     <Box horizontal align="center" justify="space-between" py={5}>
       <AccountName account={account} />
       {withBalance && (
-        <Text size="small" color={colors.mediumGrey}>
-          <CurrencyAccountValue account={account} value={account.balance} />
-        </Text>
+        <Box align="flex-end">
+          {account.account_type === "Bitcoin" && (
+            <Box flow={10} horizontal align="center">
+              <Text fontWeight="semiBold" color={colors.mediumGrey}>
+                Available
+              </Text>
+              <Text fontWeight="semiBold" color={colors.black}>
+                <CurrencyAccountValue
+                  account={account}
+                  value={account.available_balance}
+                />
+              </Text>
+            </Box>
+          )}
+          <Box flow={10} horizontal align="center">
+            <Text fontWeight="semiBold" color={colors.mediumGrey}>
+              Total
+            </Text>
+            <Text fontWeight="semiBold" color={colors.mediumGrey}>
+              <CurrencyAccountValue account={account} value={account.balance} />
+            </Text>
+          </Box>
+        </Box>
       )}
     </Box>
   );
