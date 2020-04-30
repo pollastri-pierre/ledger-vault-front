@@ -65,7 +65,11 @@ type State = {
 };
 
 // always logs apdu for now
-listen(log => console.log(`${log.type}: ${log.message ? log.message : ""}`)); // eslint-disable-line no-console
+listen(log => {
+  if (log.type === "apdu") {
+    console.log(`${log.type}: ${log.message ? log.message : ""}`); // eslint-disable-line no-console
+  }
+});
 
 const DO_NOT_RETRY = [
   INVALID_DATA,
