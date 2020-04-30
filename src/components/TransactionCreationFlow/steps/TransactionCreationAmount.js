@@ -7,8 +7,16 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { useTranslation } from "react-i18next";
 import DoubleTilde from "components/icons/DoubleTilde";
 import FakeInputContainer from "components/base/FakeInputContainer";
+import { IoMdHelpBuoy } from "react-icons/io";
+import { FaInfoCircle } from "react-icons/fa";
 
+import Modal from "components/base/Modal";
+import Button from "components/base/Button";
+import VaultLink from "components/VaultLink";
+import HelpLink from "components/HelpLink";
+import Text from "components/base/Text";
 import Box from "components/base/Box";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
 import ConvertEIP55 from "components/ConvertEIP55";
 import InfoBox from "components/base/InfoBox";
 import CounterValue from "components/CounterValue";
@@ -23,6 +31,7 @@ import { getMatchingRulesSet } from "utils/multiRules";
 import { MIN_RIPPLE_BALANCE } from "bridge/RippleBridge";
 import colors from "shared/colors";
 
+import type { Account } from "data/types";
 import type { TransactionCreationStepProps } from "../types";
 
 import TransactionCreationAccount from "./TransactionCreationAccount";
@@ -82,11 +91,8 @@ const TransactionCreationAmount = (
     }
   }
 
-  if (gateMaxAmount && transaction.amount.isGreaterThan(gateMaxAmount)) {
-    // reset tx amount
-    onChangeAmount(BigNumber(0));
-    props.setUtxoError({ amount: gateMaxAmount });
-  }
+  const utxoMaxReached =
+    !!gateMaxAmount && transaction.amount.isGreaterThan(gateMaxAmount);
 
   const matchingRulesSet = getMatchingRulesSet({
     transaction: {
@@ -106,6 +112,15 @@ const TransactionCreationAmount = (
 
   const inner = (
     <Box flow={20}>
+      <Modal isOpened={utxoMaxReached}>
+        {!!payload.account && (
+          <UtxoErrorModal
+            reset={() => onChangeAmount(BigNumber(0))}
+            account={payload.account}
+            amount={gateMaxAmount}
+          />
+        )}
+      </Modal>
       <Box grow>
         <TransactionCreationAccount
           accounts={props.accounts}
@@ -206,3 +221,49 @@ const TransactionCreationAmount = (
 export default memo<TransactionCreationStepProps<any>>(
   TransactionCreationAmount,
 );
+
+const UtxoErrorModal = ({
+  reset,
+  amount,
+  account,
+}: {
+  reset: void => void,
+  amount: BigNumber,
+  account: Account,
+}) => {
+  return (
+    <Box p={30} flow={20} align="center" justify="center" width={400}>
+      <Box>
+        <FaInfoCircle size={36} color="black" />
+      </Box>
+      <Box>
+        <p>
+          To create a transaction over{" "}
+          <strong>
+            <CurrencyAccountValue account={account} value={amount} />
+          </strong>
+          , you must first consolidate the UTXOs in the{" "}
+          <strong>{account.name}</strong> account.
+        </p>
+      </Box>
+      <Box align="center" justify="center" horizontal flow={5}>
+        <IoMdHelpBuoy size={20} />{" "}
+        <Text fontWeight="semiBold">
+          <HelpLink subLink="/Content/transactions/tx_consolidate.html">
+            Learn more on UTXO consolidation
+          </HelpLink>
+        </Text>
+      </Box>
+      <Box horizontal flow={20} pt={20}>
+        <Button type="outline" onClick={reset}>
+          Change amount
+        </Button>
+        <Button type="filled">
+          <VaultLink withRole to={`/dashboard/consolidate/${account.id}`}>
+            Consolidate
+          </VaultLink>
+        </Button>
+      </Box>
+    </Box>
+  );
+};
