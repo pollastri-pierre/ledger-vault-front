@@ -52,11 +52,11 @@ export const postResult: Interaction = {
 export const getAddress: Interaction = {
   needsUserInput: false,
   responseKey: "address_channel",
-  action: ({ accountId, fresh_address, restlay, u2f_key }) =>
+  action: ({ accountId, address, restlay, u2f_key }) =>
     restlay.fetchQuery(
       new GetAddressQuery({
         accountId,
-        derivation_path: fresh_address.derivation_path,
+        derivation_path: address.derivation_path,
         pub_key: u2f_key.pubKey,
       }),
     ),

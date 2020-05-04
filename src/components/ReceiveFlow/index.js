@@ -259,7 +259,7 @@ const VerifyFreshAddress = connectData(
               noCheckVersion
               additionalFields={{
                 accountId: account.id,
-                fresh_address: freshAddress,
+                address: selectedAddress,
                 restlay,
               }}
               onSuccess={onVerifySuccess}
