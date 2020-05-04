@@ -8,7 +8,10 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import connectData from "restlay/connectData";
 import Box from "components/base/Box";
 import Button from "components/base/Button";
+
+// FIXME change the name of this query which is misleading
 import AddressFromDerivationPathQuery from "api/queries/AddressFromDerivationPathQuery";
+
 import { getBridgeForCurrency } from "bridge";
 import { CardError } from "components/base/Card";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
@@ -92,6 +95,7 @@ export default connectData(
           additionalProps={{
             account,
             bridge: bitcoinBridge,
+            // FIXME it's not a fresh address it's the address 0
             freshAddress: freshAddress[0],
             accountUTXOs,
             restlay,
@@ -105,6 +109,9 @@ export default connectData(
   {
     queries: {
       account: AccountQuery,
+      // FIXME
+      // - name of the prop makes no sense: it's not a fresh address, it's a list of addresses
+      // - name of the query makes no sense in a singular form
       freshAddress: AddressFromDerivationPathQuery,
       accountUTXOs: AccountUnspentOutputsQuery,
     },

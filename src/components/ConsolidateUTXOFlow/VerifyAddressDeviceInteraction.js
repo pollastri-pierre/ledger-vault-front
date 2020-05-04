@@ -50,7 +50,8 @@ const VerifyAddressDeviceInteraction = (props: ConsolidateUTXOStepProps) => {
           noCheckVersion
           additionalFields={{
             accountId: account.id,
-            fresh_address: freshAddress,
+            // FIXME misleading name, it's not a fresh address
+            address: freshAddress,
           }}
           onSuccess={onDeviceInteractionSuccess}
           onError={onDeviceInteractionError}
