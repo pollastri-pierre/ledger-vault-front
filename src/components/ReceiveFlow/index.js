@@ -87,7 +87,7 @@ const SelectIndex = connectData(
 
     return (
       <DerivationInput
-        prefix={account.derivation_path}
+        prefix={`${account.derivation_path}/0`}
         onChange={_onChange}
         value={path}
         errors={error}
