@@ -40,6 +40,21 @@ describe("Create whitelist", function() {
       "1Mj9jzHtAyVvM9Y274LCcfLBBBfwRiDK9V",
     );
     add_whitelist_address(
+      "Bitcoin",
+      "btc segwit 1",
+      "bc1q3xu8x4n866xpw83jsg20kawuh6nm70shamtpad",
+    );
+    add_whitelist_address(
+      "Bitcoin",
+      "btc segwit 2",
+      "bc1qcskd9vxagrhsrqueyf7rs4ppmkug6t2vz3xze7",
+    );
+    add_whitelist_address(
+      "Bitcoin",
+      "btc segwit 3",
+      "bc1qtpnqcnfmfy6pjsf6wknhvyaswppkax2thmfcnp",
+    );
+    add_whitelist_address(
       "Ethereum",
       "eth 2",
       "0x6b3493FE181EA283e0335e5D8D768e2122bC6c18",

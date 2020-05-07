@@ -222,6 +222,19 @@ export function success_tx() {
  * Account Transaction Rules creation
  */
 
+export function add_account_name_btc(currency, name, derivation_mode) {
+  cy.get("[data-test=add-button]").click();
+  cy.wait(4500);
+  cy.get("#input_crypto")
+    .type(currency, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=select-arrow]")
+    .eq(1)
+    .type(derivation_mode);
+  cy.contains("Next").click();
+  cy.get("[data-test=account_name]").type(name);
+  cy.contains("Next").click();
+}
 export function add_account_name(currency, name) {
   cy.get("[data-test=add-button]").click();
   cy.wait(4500);

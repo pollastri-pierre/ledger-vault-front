@@ -60,6 +60,16 @@ describe("Create whitelist", function() {
     );
     add_whitelist_address(
       "Bitcoin Testnet",
+      "btc segwit 1",
+      "tb1q445reupkrtamtwmmuyjfsfp7axtgh4axxssl9j",
+    );
+    add_whitelist_address(
+      "Bitcoin Testnet",
+      "btc segwit 2",
+      "tb1qk7rfladcdvn64ndqd4zg0j7kk99um6z7r0cgqt",
+    );
+    add_whitelist_address(
+      "Bitcoin Testnet",
       "btc testnet 4",
       "mjCGxN2ncFnUa9Pm3QSoR4B9LkMcPZgxnN",
     );
