@@ -44,7 +44,7 @@ export default function AccountCreationOptions(
   let inner = null;
 
   const isDisabled =
-    isEditMode &&
+    account.status !== "ACTIVE" &&
     account.status !== "VIEW_ONLY" &&
     account.status !== "MIGRATED";
 

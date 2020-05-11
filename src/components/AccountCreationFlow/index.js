@@ -296,7 +296,7 @@ const AccountEdit = connectData(
             props.groups.edges.map(e => e.node),
           )}
           payloadToCompareTo={props.account}
-          initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
+          initialCursor={1}
         />
       </GrowingCard>
     );
