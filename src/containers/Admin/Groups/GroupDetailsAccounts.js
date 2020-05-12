@@ -17,7 +17,7 @@ type Props = {
   accounts: Connection<Account>,
 };
 
-const ACCOUNTS_LIST_CONFIG: AccountsListConfig = {
+const ACCOUNTS_LIST_CONFIG: $Shape<AccountsListConfig> = {
   displayBalance: false,
 };
 

@@ -17,6 +17,7 @@ type Display = "list" | "grid";
 
 export type AccountsListConfig = {|
   displayBalance: boolean,
+  showAvailableBalance: boolean,
 |};
 
 type Props = {
@@ -29,6 +30,7 @@ type Props = {
 
 const DEFAULT_CONFIG: AccountsListConfig = {
   displayBalance: true,
+  showAvailableBalance: false,
 };
 
 export default function AccountsList(props: Props) {
@@ -69,15 +71,17 @@ export default function AccountsList(props: Props) {
             </Box>
             {config.displayBalance && (
               <Box align="flex-end">
-                <Row size={13}>
-                  <div>Available Balance</div>
-                  <Text fontWeight="bold">
-                    <CurrencyAccountValue
-                      account={account}
-                      value={account.available_balance}
-                    />
-                  </Text>
-                </Row>
+                {config.showAvailableBalance && (
+                  <Row size={13}>
+                    <div>Available Balance</div>
+                    <Text fontWeight="bold">
+                      <CurrencyAccountValue
+                        account={account}
+                        value={account.available_balance}
+                      />
+                    </Text>
+                  </Row>
+                )}
                 <Row>
                   <div>Total</div>
                   <Text fontWeight="semiBold">

@@ -13,6 +13,7 @@ import { AccountsList } from "components/lists";
 import SearchAccounts from "api/queries/SearchAccounts";
 import type { Account } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
+import type { AccountsListConfig } from "components/lists/AccountsList";
 import { useMe } from "components/UserContextProvider";
 import Widget, { connectWidget } from "./Widget";
 
@@ -20,6 +21,10 @@ type Props = {
   accountsConnection: Connection<Account>,
   history: MemoryHistory,
   location: Location,
+};
+
+const ACCOUNTS_LIST_CONFIG: $Shape<AccountsListConfig> = {
+  showAvailableBalance: true,
 };
 
 function AccountsWidget(props: Props) {
@@ -35,7 +40,7 @@ function AccountsWidget(props: Props) {
   return (
     <Widget title="Accounts" height={accounts.length ? undefined : 300}>
       {accounts.length ? (
-        <AccountsList accounts={accounts} />
+        <AccountsList accounts={accounts} config={ACCOUNTS_LIST_CONFIG} />
       ) : (
         <Card grow flow={20} style={{ padding: 10 }}>
           {me.role === "ADMIN" ? (
