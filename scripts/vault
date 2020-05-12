@@ -57,6 +57,7 @@ function usage() {
 
 function main () {
   copy_scenarios
+  vault_compose
 
   SHOULD_RESET=0
   SHOULD_RUN=0
@@ -222,6 +223,11 @@ function ensure_env_fetched() {
 function copy_scenarios() {
   mkdir -p "$VAULT_WORKSPACE_DIR/scenarios"
   cp scripts/scenarios/* "$VAULT_WORKSPACE_DIR/scenarios"
+}
+
+function vault_compose() {
+  cd "$VAULT_WORKSPACE_DIR/vault-integration"
+  ./vault_compose gen front
 }
 
 function list_scenarios() {

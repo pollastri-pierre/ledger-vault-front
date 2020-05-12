@@ -16,7 +16,7 @@ If you have Windows, sorry we don't support. So please setup a Linux VM lol.
 
 ### Packages & libs
 
-- [Node.js](https://nodejs.org/en/) (>= LTS)
+- [Node.js](https://nodejs.org/en/) (version 10)
 - [Yarn](https://yarnpkg.com/)
 
 For Mac users, the recommended way is to use [brew](https://brew.sh/) package manager.
@@ -26,7 +26,10 @@ For Mac users, the recommended way is to use [brew](https://brew.sh/) package ma
 brew install yarn
 ```
 
-- [Docker](https://www.docker.com/) and [docker-compose](https://docs.docker.com/compose/install/)
+For Ubuntu users, prefer the official packages than apt in order to choose the
+correct version: [Node.js](https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions), [Yarn](https://classic.yarnpkg.com/en/docs/install/#debian-stable)
+
+- [Docker](https://www.docker.com/) and [docker-compose](https://docs.docker.com/compose/install/) (>= 1.25)
 - [Python](https://www.python.org/) >= 3.7.6
 
 ### Certificate
