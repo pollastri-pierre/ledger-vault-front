@@ -6,11 +6,19 @@ import Text from "components/base/Text";
 type ConfirmationStatusProps = {
   nbConfirmations: number,
   threshold: number,
+  hideConfirmationNumber?: boolean,
 };
 export default function ConfirmationStatus(props: ConfirmationStatusProps) {
-  const { nbConfirmations, threshold } = props;
+  const { nbConfirmations, threshold, hideConfirmationNumber } = props;
 
   if (nbConfirmations > 0) {
+    if (hideConfirmationNumber) {
+      return (
+        <Status derivedStatus="DERIVED_TX_CONFIRMED">
+          <Text>Confirmed</Text>
+        </Status>
+      );
+    }
     return (
       <Status derivedStatus="DERIVED_TX_CONFIRMED">
         <Text
