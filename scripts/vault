@@ -229,15 +229,21 @@ function copy_scenarios() {
 function vault_compose() {
   cd "$VAULT_WORKSPACE_DIR/vault-integration"
   if ! [[ -d venv ]]; then
-    virtualenv venv
-    # shellcheck disable=SC1091
-    source venv/bin/activate
-    pip install -r requirements.txt
+    python3 -m venv venv
+    (
+      # shellcheck disable=SC1091
+      source venv/bin/activate
+      pip install -r requirements.txt
+    )
   else
     # shellcheck disable=SC1091
     source venv/bin/activate
   fi
-  ./vault_compose gen front
+  (
+    # shellcheck disable=SC1091
+    source venv/bin/activate
+    ./vault_compose gen front
+  )
 }
 
 function list_scenarios() {
