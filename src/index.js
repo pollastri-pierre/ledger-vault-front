@@ -16,7 +16,7 @@ import i18n from "./i18n";
 
 import "./insertFontsTags";
 
-const locale = window.localStorage.getItem("locale") || "en";
+const locale = "en";
 const store = create({ locale });
 const $root = document.getElementById("root");
 

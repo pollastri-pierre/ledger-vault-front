@@ -11,7 +11,7 @@ import {
   MenuListStyle,
   MenuItemStyle,
 } from "components/base/Menu";
-import { getPreferredTransport, setPreferredTransport } from "device";
+import { getPreferredTransport, setPreferredTransport } from "device/transport";
 import { useSoftDevicesDispatch } from "components/SoftDevices";
 
 const ENABLE_WEBLUE =
@@ -37,6 +37,11 @@ export default function TransportChooser() {
       dispatch({ type: "SET_HARDWARE_MODE" });
     }
   };
+
+  // cf https://ledgerhq.atlassian.net/browse/VFE-214
+  if (window.config.ONLY_WEBLUE) {
+    return null;
+  }
 
   return (
     <Menu>

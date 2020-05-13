@@ -61,31 +61,34 @@ yarn starte2e
 
 ## Global, config, localstorage variables used in the app
 
-### Localstorage
+### Localstorage (can be used to override some config)
 
-| Key                | Default value | Description                                                                    |
-| ------------------ | :-----------: | :----------------------------------------------------------------------------- |
-| `TRANSPORT`        |     "u2f"     | Contain the preferred transport
-| `NO_CHECK_VERSION` |     null      | Prevent the comparison between the device version and the expected app version |
-| `ENABLE_WEBLUE`    |     null      | If set to "1", will make the WeBlue transport appear in Transport chooser      |
-| `ENABLE_SOFTWARE`  |     null      | If set to "1", will make the software transport appear in Transport chooser    |
-| `locale`           |      en       | Forwarded to i18next                                                           |
-| `token`            |     null      | Will fill the X-Ledger-Auth header for Gate calls                              |
+| Key                | Default value | Description                                                                                   |
+| ------------------ | :-----------: | :-------------------------------------------------------------------------------------------- |
+| `TRANSPORT`        |   "webusb"    | Contain the preferred transport, defaults to `webusb` (except if `ONLY_WEBLUE` is set)        |
+| `NO_CHECK_VERSION` |     null      | If set to "1", prevent the comparison between the device version and the expected app version |
+| `ENABLE_WEBLUE`    |     null      | If set to "1", will make the WeBlue transport appear in Transport chooser                     |
+| `ENABLE_SOFTWARE`  |     null      | If set to "1", will make the software transport appear in Transport chooser                   |
 
 ### Window config
 
-| Key               |      Default value      | Description                                                                                                      |
-| ----------------- | :---------------------: | :--------------------------------------------------------------------------------------------------------------- |
-| `SOFTWARE_DEVICE` |            0            | If set to 1, software device is used                                                                             |
-| `APP_VERSION`     |        `1.0.17`         | Represent the expected Blue device app version. If the versions differs, user will be prompted to update his app |
-| `API_BASE_URL`    | `http://localhost:5000` | Gate endpoint                                                                                                    |
+| Key                        |                 Default value (dev)                  | Description                                                                                        |
+| -------------------------- | :--------------------------------------------------: | :------------------------------------------------------------------------------------------------- |
+| `APP_VERSION`              |                     `3.0.9-dev`                      | Expected Blue device app version. If the versions differs, user will be prompted to update his app |
+| `ERC20_LIST`               |                       `"dev"`                        | Which ERC20 list signatures we should use                                                          |
+| `API_BASE_URL`             |               `http://localhost:5000`                | Gate endpoint                                                                                      |
+| `DEVICE_REGISTRY_BASE_URL` |              `"http://localhost:5002"`               | Device registry endpoint                                                                           |
+| `WEBLUE_URL`               |    `"https://weblue.hsmsaas.ledger.info/weblue"`     | WeBlue server endpoint                                                                             |
+| `SPECULOS_WEBLUE_URL`      | `"wss://weblue.hsmsaas.ledger.info/speculos-weblue"` | WeBlue (speculos) server endpoint                                                                  |
+| `ENABLE_SOFTWARE`          |                        `true`                        | If software should be enabled in transports list                                                   |
+| `ENABLE_WEBLUE`            |                        `true`                        | If WeBlue should be enabled in transports list                                                     |
+| `ONLY_WEBLUE`              |                        `true`                        | If `true`, will not display transport list and will force WeBlue                                   |
 
 ### env
 
-| Key                   |       Default value       | Description                                                                               |
-| --------------------- | :-----------------------: | :---------------------------------------------------------------------------------------- |
-| `NODE_ENV`            |       `development`       | Can be `production`, `development`, `e2e`, `test`. It is set at the build time by webpack |
-| `NOTIFICATION_PATH`   | `/notification/socket.io` | Path for the notification server                                                          |
-| `NOTIFICATION_URL`    |            `/`            | Endpoint for the notification server                                                      |
-| `ORGANIZATION_NAME`   |           `''`            | Used to pre-fill the organization name in login page                                      |
-| `DEBUG_COUNTERVALUES` |           `''`            | If set, enable logging in countervalues service                                           |
+| Key                 |       Default value       | Description                                                                               |
+| ------------------- | :-----------------------: | :---------------------------------------------------------------------------------------- |
+| `NODE_ENV`          |       `development`       | Can be `production`, `development`, `e2e`, `test`. It is set at the build time by webpack |
+| `NOTIFICATION_PATH` | `/notification/socket.io` | Path for the notification server                                                          |
+| `NOTIFICATION_URL`  |            `/`            | Endpoint for the notification server                                                      |
+| `ORGANIZATION_NAME` |           `''`            | Used to pre-fill the organization name in login page                                      |

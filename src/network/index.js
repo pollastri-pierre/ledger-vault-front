@@ -26,18 +26,6 @@ export default function<T>(
     options.body = JSON.stringify(body);
   }
 
-  // /!\ TEMPORARY - LV-2129
-  // -----------------------
-  /* eslint-disable no-console */
-  if (
-    uri.endsWith("/challenge") &&
-    window.localStorage.getItem("DEBUG_LV2129") === "1"
-  ) {
-    console.log("[DEBUG LV-2129] Getting challenge");
-    console.log(`url: ${uri}`);
-  }
-  /* eslint-enable no-console */
-
   if (!fetchF) return Promise.reject(new Error("Uninitialized fetchF"));
   return fetchF(uri, options, fetchParams).then(response => {
     if (response.status < 200 || response.status >= 300) {

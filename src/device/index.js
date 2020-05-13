@@ -37,20 +37,6 @@ for (let i = 0x6100; i <= 0x61ff; i++) {
 }
 export const PAGINATED_STATUS = all61xxStatus;
 
-// handle legacy localstorage
-localStorage.removeItem("FORCE_WEB_USB");
-
-// PREFERRED_TRANSPORT = webusb if no TRANSPORT is found in localstorage
-let PREFERRED_TRANSPORT = localStorage.getItem("TRANSPORT") || "webusb";
-localStorage.setItem("TRANSPORT", PREFERRED_TRANSPORT);
-
-export const getPreferredTransport = () => PREFERRED_TRANSPORT;
-
-export const setPreferredTransport = (transportID: string) => {
-  PREFERRED_TRANSPORT = transportID;
-  localStorage.setItem("TRANSPORT", PREFERRED_TRANSPORT);
-};
-
 // $FlowFixMe
 const mockTransport: Promise<Transport<*>> = Promise.resolve({
   close: () => Promise.resolve(),

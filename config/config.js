@@ -1,9 +1,11 @@
 window.config = {
-  API_BASE_URL: "http://localhost:5000",
   APP_VERSION: "3.0.9-dev",
+  ERC20_LIST: "dev",
+  API_BASE_URL: "http://localhost:5000",
   DEVICE_REGISTRY_BASE_URL: "http://localhost:5002",
   WEBLUE_URL: "https://weblue.hsmsaas.ledger.info/weblue",
   SPECULOS_WEBLUE_URL: "wss://weblue.hsmsaas.ledger.info/speculos-weblue",
-  ERC20_LIST: "dev",
-  SOFTWARE_DEVICE: false,
+  ENABLE_WEBLUE: true,
+  ENABLE_SOFTWARE: true,
+  ONLY_WEBLUE: false,
 };

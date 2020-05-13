@@ -49,7 +49,9 @@ const EmulatorLayout = (props: Props) => {
         <Screen style={{ display: isMinimized ? "none" : undefined }}>
           <VNC ref={vncRef} />
           {error ? (
-            <TranslatedError error={error} />
+            <div style={{ userSelect: "text", color: "#ea2e49" }}>
+              <TranslatedError error={error} />
+            </div>
           ) : isFetching ? (
             <Spinner size="big" />
           ) : !device ? (

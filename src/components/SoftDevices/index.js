@@ -146,14 +146,20 @@ const Emulator = () => {
   useVNC(vncRef, deviceVNCURL);
 
   const handleSpawnDevice = async seed => {
-    // spawn device instance & collect urls for apdus & vnc sockets
-    const device = await createDevice(seed);
+    try {
+      setError(null);
 
-    // update device list
-    setDevices([...devices, device]);
+      // spawn device instance & collect urls for apdus & vnc sockets
+      const device = await createDevice(seed);
 
-    // focus the last added device
-    setCurrentDevice(device);
+      // update device list
+      setDevices([...devices, device]);
+
+      // focus the last added device
+      setCurrentDevice(device);
+    } catch (err) {
+      setError(err);
+    }
   };
 
   const handleClearSession = async () => {
@@ -186,8 +192,8 @@ const useVNC = (ref, url) => {
   }, [ref, url]);
 };
 
-const createDevice = async seed => {
-  const res = await fetch(`${getWeblueURL()}/devices`, {
+const createDevice = async seed =>
+  fetchJSON(`${getWeblueURL()}/devices`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -200,11 +206,9 @@ const createDevice = async seed => {
       appVersion: window.config.APP_VERSION,
     }),
   });
-  return res.json();
-};
 
-const fetchJSON = async url => {
-  const res = await fetch(url);
+const fetchJSON = async (url, ...args) => {
+  const res = await fetch(url, ...args);
   const json = await res.json();
   if (!res.ok) {
     throw new Error(json.error || res.statusText);

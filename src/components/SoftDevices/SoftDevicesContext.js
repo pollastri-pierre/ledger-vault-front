@@ -4,6 +4,7 @@ import React, { useReducer, useContext, createContext } from "react";
 
 import SoftDevicesWrapper from "components/SoftDevices/SoftDevicesWrapper";
 import MockDevices from "components/MockDevices";
+import { getPreferredTransport } from "device/transport";
 
 let USER_SEEDS = localStorage.getItem("WEBLUE_SEEDS") || "[]";
 try {
@@ -39,8 +40,8 @@ type State = {
 };
 
 const initialState = {
-  isWeblueOpened: localStorage.getItem("TRANSPORT") === "weblue",
-  isSoftware: localStorage.getItem("TRANSPORT") === "software",
+  isWeblueOpened: getPreferredTransport() === "weblue",
+  isSoftware: getPreferredTransport() === "software",
   isSeedsManagerOpened: false,
   isSeedsGeneratorOpened: false,
   isMinimized: false,

@@ -23,21 +23,6 @@ if (process.env.NODE_ENV === "test") {
     options.credentials = "include";
     prefix = `/${prefix}`;
 
-    // /!\ TEMPORARY - LV-2129
-    // -----------------------
-    /* eslint-disable no-console */
-    if (
-      uri.endsWith("/challenge") &&
-      window.localStorage.getItem("DEBUG_LV2129") === "1"
-    ) {
-      console.log(`params: ${JSON.stringify(params)}`);
-      console.log(`location: ${JSON.stringify(location)}`);
-      console.log(`prefix: ${prefix}`);
-      console.log(`API_BASE_URL: ${window.config.API_BASE_URL}`);
-      console.log(`final url: ${window.config.API_BASE_URL + prefix + uri}`);
-    }
-    /* eslint-enable no-console */
-
     if (process.env.NODE_ENV !== "production") {
       return (
         mockAPI(uri, options) ||

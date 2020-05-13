@@ -68,11 +68,7 @@ const pairsSelector = createSelector(accountsSelector, (accounts: Account[]) =>
 
 // $FlowFixMe
 implementCountervalues({
-  log: (...args) => {
-    if (process.env.DEBUG_COUNTERVALUES) {
-      console.log("CounterValues:", ...args); // eslint-disable-line no-console
-    }
-  },
+  log: () => {},
   getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",
   storeSelector: state => state.countervalues,
   pairsSelector,

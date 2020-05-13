@@ -27,8 +27,8 @@ import {
   INVALID_DATA,
   INVALID_OR_MISSING_ATTESTATION,
   DEVICE_REJECT_ERROR_CODE,
-  getPreferredTransport,
 } from "device";
+import { getPreferredTransport } from "device/transport";
 import { from } from "rxjs";
 import type { GateError } from "data/types";
 
