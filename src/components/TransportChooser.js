@@ -19,8 +19,7 @@ const ENABLE_WEBLUE =
 
 const ENABLE_SOFTWARE =
   window.config.ENABLE_SOFTWARE ||
-  localStorage.getItem("ENABLE_SOFTWARE") === "1" ||
-  process.env.NODE_ENV !== "production";
+  localStorage.getItem("ENABLE_SOFTWARE") === "1";
 
 export default function TransportChooser() {
   const [transport, setTransport] = useState(getPreferredTransport());
@@ -72,7 +71,7 @@ export default function TransportChooser() {
             {ENABLE_WEBLUE && (
               <MenuItemStyle onSelect={choose("weblue")}>WeBlue</MenuItemStyle>
             )}
-            {(process.env.NODE_ENV === "e2e" || ENABLE_SOFTWARE) && (
+            {ENABLE_SOFTWARE && (
               <MenuItemStyle onSelect={choose("software")}>
                 Software
               </MenuItemStyle>

@@ -129,8 +129,8 @@ export const SoftDevicesProvider = ({ children }: { children: React$Node }) => {
     <SoftDevicesContext.Provider value={state}>
       <SoftDevicesContextDispatch.Provider value={dispatch}>
         <SoftDevicesWrapper />
+        {state.isSoftware && <MockDevices />}
         {children}
-        {process.env.NODE_ENV === "e2e" && state.isSoftware && <MockDevices />}
       </SoftDevicesContextDispatch.Provider>
     </SoftDevicesContext.Provider>
   );

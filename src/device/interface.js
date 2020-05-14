@@ -26,9 +26,9 @@ import {
 
 export const softwareMode = () => {
   return (
-    (process.env.NODE_ENV === "e2e" ||
+    (process.env.NODE_ENV === "e2e" || // useful for e2e test where localstorage does not exist
+      window.config.ENABLE_SOFTWARE ||
       localStorage.getItem("ENABLE_SOFTWARE")) &&
-    // this || condition is useful for e2e test where localstorage does not exist
     (localStorage.getItem("TRANSPORT") === "software" ||
       !localStorage.getItem("TRANSPORT"))
   );
