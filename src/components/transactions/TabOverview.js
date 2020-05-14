@@ -3,7 +3,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import TransactionStatus from "components/TransactionStatus";
-import NextRequestButton from "components/NextRequestButton";
 import Copy from "components/base/Copy";
 import Box from "components/base/Box";
 import type { Transaction, Account } from "data/types";
@@ -53,12 +52,7 @@ export default function TabOverview(props: Props) {
         )}
 
         <LineRow label={t("transactionDetails:overview.status")}>
-          <Box flow={10} horizontal align="center">
-            <TransactionStatus transaction={transaction} />
-            {transaction.status === "APPROVED" && transaction.last_request && (
-              <NextRequestButton request={transaction.last_request} />
-            )}
-          </Box>
+          <TransactionStatus transaction={transaction} />
         </LineRow>
 
         {isRipple && (
