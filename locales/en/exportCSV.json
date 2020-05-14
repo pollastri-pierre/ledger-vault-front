@@ -1,10 +1,11 @@
 {
   "columns": {
     "transaction": {
-      "operationType": "Operation type (IN/OUT)",
+      "createdOn": "Creation date",
+      "broadcastOn": "Broadcasting date",
+      "operationType": "Operation type",
       "transactionNumber": "Vault transaction number",
       "status": "Status",
-      "family": "Currency family",
       "parentName": "Parent account name",
       "currency": "Currency",
       "accountName": "Account name",

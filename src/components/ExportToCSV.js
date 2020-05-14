@@ -17,10 +17,11 @@ const configByEntityType = {
   transaction: {
     endpoint: "/transactions",
     columns: [
+      "createdOn",
+      "broadcastOn",
       "operationType",
       "transactionNumber",
       "status",
-      "family",
       "parentName",
       "currency",
       "accountName",
