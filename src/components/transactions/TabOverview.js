@@ -19,7 +19,6 @@ type Props = {
 
 export default function TabOverview(props: Props) {
   const { transaction, account } = props;
-  const note = transaction.notes.length ? transaction.notes[0] : null;
   const isRipple = account.account_type === "Ripple";
   const { t } = useTranslation();
 
@@ -37,19 +36,22 @@ export default function TabOverview(props: Props) {
         created_on={transaction.created_on}
       />
       <Box>
-        <LineRow label={t("transactionDetails:overview.account")}>
+        <LineRow label="Account to debit">
           <Box align="flex-end">
             <AccountName account={account} />
           </Box>
         </LineRow>
+
+        <LineRow label={t("transactionDetails:overview.recipient")}>
+          <Copy text={transaction.recipient} />
+        </LineRow>
+
         {transaction.tx_hash && (
           <LineRow label={t("transactionDetails:overview.identifier")}>
             <Copy text={transaction.tx_hash} />
           </LineRow>
         )}
-        <LineRow label={t("transactionDetails:overview.recipient")}>
-          <Copy text={transaction.recipient} />
-        </LineRow>
+
         <LineRow label={t("transactionDetails:overview.status")}>
           <Box flow={10} horizontal align="center">
             <TransactionStatus transaction={transaction} />
@@ -66,16 +68,11 @@ export default function TabOverview(props: Props) {
             {transaction.destination_tag}
           </LineRow>
         )}
-        {note && note.title && (
-          <LineRow label={t("transactionCreation:steps.note.noteTitle")}>
-            {note.title}
-          </LineRow>
-        )}
-        {note && note.content && (
-          <LineRow label={t("transactionCreation:steps.note.noteContent")}>
-            {note.content}
-          </LineRow>
-        )}
+
+        <LineRow label={t("transactionDetails:overview.amount")}>
+          <Amount account={account} value={transaction.amount} />
+        </LineRow>
+
         {transaction.fees ? (
           <LineRow label={t("transactionDetails:overview.fees")}>
             <Amount disableERC20 account={account} value={transaction.fees} />
@@ -89,9 +86,7 @@ export default function TabOverview(props: Props) {
             />
           </LineRow>
         ) : null}
-        <LineRow label={t("transactionDetails:overview.amount")}>
-          <Amount account={account} value={transaction.amount} />
-        </LineRow>
+
         <LineRow label={t("transactionDetails:overview.total")}>
           <Amount account={account} value={totalAmount} strong />
         </LineRow>

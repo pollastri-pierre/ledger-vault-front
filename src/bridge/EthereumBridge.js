@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+
 import { BigNumber } from "bignumber.js";
 
 import type { Account, TransactionCreationNote } from "data/types";
@@ -7,21 +7,32 @@ import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
 import { InvalidAddress } from "utils/errors";
 import { isChecksumAddress } from "utils/eip55";
+
+import type { ETHFees, FeesLevel } from "bridge/fees.types";
 import type { WalletBridge } from "./types";
 
-export type Transaction = {
+export type Transaction = {|
+  error: ?Error,
+  note: TransactionCreationNote,
+
   recipient: string,
   amount: BigNumber,
-  gasPrice: ?BigNumber,
-  gasLimit: ?BigNumber,
-  note: TransactionCreationNote,
-  estimatedFees: ?BigNumber,
-  error: ?Error,
+
+  // edited fees
+  fees: ETHFees,
+
+  // estimated by backend
+  gasPrice: BigNumber | null,
+  gasLimit: BigNumber | null,
+|};
+
+const resetFees = {
+  error: null,
+  gasPrice: null,
+  gasLimit: null,
 };
 
-const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
-
-const getRecipientError = async (restlay, currency, recipient) => {
+const fetchRecipientError = async (restlay, currency, recipient) => {
   const isValid = await isRecipientValid(restlay, currency, recipient);
   return isValid ? null : new InvalidAddress(null, { ticker: currency.ticker });
 };
@@ -45,83 +56,92 @@ const isRecipientValid = async (restlay, currency, recipient) => {
   }
 };
 
-const getFees = (a, t) =>
-  t.gasPrice && t.gasLimit ? t.gasPrice.times(t.gasLimit) : BigNumber(0);
+const getEstimatedFees = t =>
+  t.gasPrice && t.gasLimit ? t.gasPrice.times(t.gasLimit) : null;
 
 const EthereumBridge: WalletBridge<Transaction> = {
+  FeesField: FeesFieldEthereumKind,
+
   createTransaction: () => ({
-    amount: BigNumber(0),
     recipient: "",
-    gasPrice: null,
-    gasLimit: null,
-    error: null,
-    label: "",
-    note: {
-      title: "",
-      content: "",
-    },
-    estimatedFees: null,
+    amount: BigNumber(0),
+    note: { title: "", content: "" },
+
+    ...resetFees,
+
+    fees: { fees_level: "normal" },
   }),
 
-  getTotalSpent: (a, t) => {
-    const fees = t.estimatedFees || BigNumber(0);
-    if (a.account_type === "Erc20") {
-      return t.amount;
+  editTransactionAmount: (t: Transaction, amount: BigNumber) => {
+    if (t.fees.fees_level === "custom") {
+      return { ...t, error: null, amount };
     }
-    return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(fees);
+    return {
+      ...t,
+      ...resetFees,
+      amount,
+    };
   },
 
-  getFees,
+  editTransactionFees: (a: Account, t: Transaction) => t,
 
-  editTransactionAmount: (
-    account: Account,
-    t: Transaction,
-    amount: BigNumber,
-  ) => ({
-    ...t,
-    amount,
-    estimatedFees: null,
-    gasPrice: null,
-    gasLimit: null,
-    error: null,
-  }),
+  editTransactionFeesLevel: (t: Transaction, fees_level: FeesLevel) => {
+    if (fees_level === "custom") {
+      return {
+        ...t,
+        error: null,
+        fees: {
+          fees_level,
+          gas_price: t.gasPrice,
+          gas_limit: t.gasLimit,
+        },
+      };
+    }
+    return { ...t, ...resetFees, fees: { fees_level } };
+  },
 
-  getTransactionAmount: (a: Account, t: Transaction) => t.amount,
-
-  getTransactionError: (a: Account, t: Transaction) => t.error,
-  editTransactionRecipient: (
-    account: Account,
-    t: Transaction,
-    recipient: string,
-  ) => ({
-    ...t,
-    recipient,
-    estimatedFees: null,
-  }),
-
-  getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
-
-  getTransactionNote: (t: Transaction) => t.note,
   editTransactionNote: (t: Transaction, note: TransactionCreationNote) => ({
     ...t,
     note,
   }),
-  EditFees: FeesFieldEthereumKind,
-  EditAdvancedOptions,
+
+  editTransactionRecipient: (t: Transaction, recipient: string) => ({
+    ...t,
+    recipient,
+  }),
+
+  getEstimatedFees,
+
+  getMaxAmount: _t => null,
+
+  getTotalSpent: (a, t) => {
+    if (a.account_type === "Erc20") {
+      return t.amount;
+    }
+    const estimatedFees = getEstimatedFees(t) || BigNumber(0);
+    return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(estimatedFees);
+  },
+
+  getTransactionError: (t: Transaction) => t.error,
+
+  getTransactionNote: (t: Transaction) => t.note,
+
   checkValidTransactionSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
-    const { estimatedFees } = t;
-    if (!estimatedFees) return false;
+    const { gasPrice, gasLimit } = t;
+    if (!gasPrice || !gasLimit) return false;
+    const estimatedFees = gasPrice.times(gasLimit);
     if (!estimatedFees.isGreaterThan(0)) return false;
     if (a.account_type === "Erc20") {
       if (!a.parent_balance) return false;
       if (estimatedFees.isGreaterThan(a.parent_balance)) return false;
-    } else if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) {
+    } else if (t.amount.plus(estimatedFees).isGreaterThan(a.balance)) {
       return false;
     }
     return true;
   },
-  getRecipientError,
+
+  fetchRecipientError,
 };
 
 export default EthereumBridge;

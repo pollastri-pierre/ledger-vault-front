@@ -40,6 +40,11 @@ export default function Amount(props: Props) {
   Object.assign(cvProps, { smallerInnerMargin });
   return (
     <Box horizontal align="center" justify="center" flow={5}>
+      {!hideCountervalue && (
+        <Text size="small" color={colors.steel} lineHeight={1}>
+          <CounterValue value={value} {...cvProps} />
+        </Text>
+      )}
       <Text
         color={colors.black}
         data-test={dataTest}
@@ -52,13 +57,6 @@ export default function Amount(props: Props) {
           disableERC20={disableERC20}
         />
       </Text>
-      {!hideCountervalue && (
-        <Text size="small" color={colors.steel} lineHeight={1}>
-          {"("}
-          <CounterValue value={value} {...cvProps} />
-          {")"}
-        </Text>
-      )}
     </Box>
   );
 }

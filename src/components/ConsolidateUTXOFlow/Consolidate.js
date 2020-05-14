@@ -20,7 +20,7 @@ import type { UTXO } from "data/types";
 import type { ConsolidateUTXOStepProps } from "./types";
 
 const bitcoinBridge = getBridgeForCurrency(getCryptoCurrencyById("bitcoin"));
-const { EditFees } = bitcoinBridge;
+const { FeesField } = bitcoinBridge;
 
 // FIXME we probably want to fetch this info
 const MAX_UTXOS_TO_CONSOLIDATE = 100;
@@ -44,7 +44,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
 
     const patch = {
       transaction: {
-        ...bridge.editTransactionAmount(account, transaction, totalAmount),
+        ...bridge.editTransactionAmount(transaction, totalAmount),
         expectedNbUTXOs: val,
       },
     };
@@ -95,7 +95,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
               MAX_UTXOS_TO_CONSOLIDATE,
             )}
             onChange={onUTXOChange}
-            value={transaction.expectedNbUTXOs}
+            value={transaction.expectedNbUTXOs || 0}
             errors={collectAmountError(transaction)}
           />
         </Box>
@@ -110,8 +110,8 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
           </FakeInputContainer>
         </Box>
       </Box>
-      {EditFees && (
-        <EditFees
+      {FeesField && (
+        <FeesField
           account={account}
           bridge={bridge}
           transaction={payload.transaction}

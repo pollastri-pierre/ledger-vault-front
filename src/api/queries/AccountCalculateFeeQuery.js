@@ -1,35 +1,25 @@
 // @flow
 import { BigNumber } from "bignumber.js";
 import Mutation from "restlay/Mutation";
-import type { TransactionGetFees } from "data/types";
 
-export const speeds = {
-  slow: "slow",
-  normal: "normal",
-  fast: "fast",
-};
-
-export type Speed = $Values<typeof speeds>;
-
-type Input = {
+type Input<P> = {|
   accountId: number,
-  txGetFees: TransactionGetFees,
-};
+  payload: P,
+|};
 
-type Response = {
-  value: {
-    fees: string,
-    gas_limit?: ?BigNumber,
-    gas_price?: ?BigNumber,
-    max_amount?: ?BigNumber,
-  },
+export type FeesQueryResponse = {
+  fees: ?BigNumber,
+  fees_per_byte: ?BigNumber,
+  gas_limit?: ?BigNumber,
+  gas_price?: ?BigNumber,
+  max_amount?: ?BigNumber,
 };
 
 // Calculate the fee for a given account (in the account currency)
 // (used when creating a new transaction)
-export default class AccountCalculateFeeQuery extends Mutation<
-  Input,
-  Response,
+export default class AccountCalculateFeeQuery<P> extends Mutation<
+  Input<P>,
+  FeesQueryResponse,
 > {
   method = "POST";
 
@@ -38,13 +28,15 @@ export default class AccountCalculateFeeQuery extends Mutation<
   showError = false;
 
   getBody() {
-    const { txGetFees } = this.props;
-    return {
-      ...txGetFees,
-      amount: txGetFees.amount ? txGetFees.amount.toFixed() : null,
-      gas_limit: txGetFees.gas_limit ? txGetFees.gas_limit.toFixed() : null,
-      gas_price: txGetFees.gas_price ? txGetFees.gas_price.toFixed() : null,
-    };
+    const body: Object = { ...this.props.payload };
+    if (body.fees_level === "custom") {
+      delete body.fees_level;
+    }
+    if (!body.fees_per_byte) {
+      body.fees_per_byte = "0";
+    }
+
+    return body;
   }
 
   deserialize = res => ({

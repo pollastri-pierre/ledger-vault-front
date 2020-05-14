@@ -1,272 +1,204 @@
 // @flow
 
-import React, { useState, useEffect, useRef } from "react";
-import last from "lodash/last";
+import React, { useMemo } from "react";
 import { BigNumber } from "bignumber.js";
-import { useTranslation } from "react-i18next";
-
-import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
-import type { Account } from "data/types";
-import type { WalletBridge } from "bridge/types";
-import type { RestlayEnvironment } from "restlay/connectData";
-import colors from "shared/colors";
-import { FaTimes } from "react-icons/fa";
-
-import Spinner from "components/base/Spinner";
-import TranslatedError from "components/TriggerErrorNotification";
-import CurrencyAccountValue from "components/CurrencyAccountValue";
-import CounterValue from "components/CounterValue";
-import connectData from "restlay/connectData";
-import Box from "components/base/Box";
-import Text from "components/base/Text";
-import NotApplicableText from "components/base/NotApplicableText";
-import InfoBox from "components/base/InfoBox";
-import FakeInputContainer from "components/base/FakeInputContainer";
-import { Label, InputAmount } from "components/base/form";
-import DoubleTilde from "components/icons/DoubleTilde";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import { getFees } from "utils/transactions";
-import RecalculateButton from "./RecalculateButton";
 
-type Props = {
-  transaction: EthereumTransaction,
-  account: Account,
-  onChangeTransaction: EthereumTransaction => void,
-  bridge: WalletBridge<EthereumTransaction>,
-  restlay: RestlayEnvironment,
-};
+import connectData from "restlay/connectData";
+import { Label, InputAmount, InputNumber } from "components/base/form";
+import Box from "components/base/Box";
+import FakeInputContainer from "components/base/FakeInputContainer";
+import CurrencyUnitValue from "components/CurrencyUnitValue";
 
-type FeesStatus = "idle" | "fetching" | "error";
+import type { RestlayEnvironment } from "restlay/connectData";
+import type { EditProps } from "bridge/types";
+import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
 
-function FeesFieldEthereumKind(props: Props) {
-  const { t } = useTranslation();
-  const instanceNonce = useRef(0);
+import type {
+  EstimateETHFeesCommonPayload,
+  EstimateETHFeesPayload,
+} from "bridge/fees.types";
 
-  const { transaction, account, bridge, restlay, onChangeTransaction } = props;
-  const currency = getCryptoCurrencyById(account.currency);
+import GenericFeesField from "./GenericFeesField";
 
-  const gasPriceUnit = currency.units[1];
+// let's hard extract the gwei unit because it's used to display gas price
+const ethereumCurrency = getCryptoCurrencyById("ethereum");
+const gweiUnit = ethereumCurrency.units.find(u => u.code === "Gwei");
 
-  const erc20FeesExceedParentBalance =
-    account.account_type === "Erc20" &&
-    transaction.estimatedFees &&
-    account.parent_balance &&
-    transaction.estimatedFees.isGreaterThan(account.parent_balance);
-
-  const [feesStatus, setFeesStatus] = useState<FeesStatus>("idle");
-  const [feesError, setFeesError] = useState(null);
-  const effectDeps = [
-    account,
-    currency,
-    restlay,
-    bridge,
-    transaction.recipient,
-    transaction.amount,
-  ];
-
-  const reComputeFees = () => {
-    onChangeTransaction({
-      ...transaction,
-      error: null,
-      estimatedFees: BigNumber(0),
-      gasPrice: null,
-      gasLimit: null,
-    });
-
-    effect();
-  };
-
-  const effect = async unsubscribed => {
-    const nonce = ++instanceNonce.current;
-
-    // VFE-98: even if we don't fetch fees if amount is equal to 0,
-    // we still want to invalidate any pending fees fetching, and
-    // reset the loading state
-    if (transaction.amount.isEqualTo(0)) {
-      setFeesStatus("idle");
-      return;
-    }
-
-    try {
-      const recipientError = await bridge.getRecipientError(
-        restlay,
-        currency,
-        transaction.recipient,
-      );
-
-      if (nonce !== instanceNonce.current || unsubscribed) return;
-      if (recipientError) {
-        setFeesStatus("idle");
-        return;
-      }
-
-      setFeesStatus("fetching");
-
-      const txGetFees = {
-        amount: transaction.amount,
-        recipient: transaction.recipient,
-        gas_price: null,
-        gas_limit: null,
-      };
-      const estimatedFees = await getFees(account, txGetFees, restlay);
-
-      if (nonce !== instanceNonce.current || unsubscribed) return;
-
-      onChangeTransaction({
-        ...transaction,
-        estimatedFees: estimatedFees.fees,
-        gasPrice: estimatedFees.gas_price,
-        gasLimit: estimatedFees.gas_limit,
-      });
-
-      setFeesStatus("idle");
-    } catch (err) {
-      if (nonce !== instanceNonce.current || unsubscribed) return;
-      onChangeTransaction({
-        ...transaction,
-        estimatedFees: BigNumber(0),
-        gasPrice: BigNumber(0),
-        gasLimit: BigNumber(0),
-      });
-      setFeesError(err);
-
-      setFeesStatus("error");
-    }
-  };
-  useEffect(() => {
-    let unsubscribed = false;
-    effect(unsubscribed);
-    return () => {
-      unsubscribed = true;
-    };
-  }, effectDeps); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const createMutation = (field: string) => (value: string) => {
-    const patch = { ...transaction, [field]: BigNumber(value) };
-    if (patch.gasPrice && patch.gasLimit) {
-      patch.estimatedFees = patch.gasPrice.times(patch.gasLimit);
-    }
-    onChangeTransaction(patch);
-  };
-
-  const onGasLimitChange = createMutation("gasLimit");
-
-  const onGasPriceChange = createMutation("gasPrice");
-
-  return (
-    <Box flow={20}>
-      <Box flow={10}>
-        <Label noPadding>
-          {t("transactionCreation:steps.account.transactionFees")}
-        </Label>
-        <Box horizontal flow={20} justify="space-between">
-          <Box noShrink width={280}>
-            <Label>
-              {t("transactionCreation:steps.account.gasPrice")}
-              {` (${gasPriceUnit.code})`}
-            </Label>
-            {feesStatus === "fetching" ? (
-              <FakeInputContainer width={280}>
-                <Box>
-                  <Spinner />
-                </Box>
-              </FakeInputContainer>
-            ) : (
-              <InputAmount
-                width="100%"
-                hideUnit
-                hideCV
-                unit={gasPriceUnit}
-                currency={currency}
-                placeholder={feesStatus === "fetching" ? "Loading..." : "0"}
-                onChange={onGasPriceChange}
-                value={transaction.gasPrice || BigNumber(0)}
-                disabled={status === "fetching"}
-              />
-            )}
-          </Box>
-          <Box justify="center" mt={30}>
-            <FaTimes color={colors.textLight} />
-          </Box>
-          <Box noShrink width={280}>
-            <Label>{t("transactionCreation:steps.account.gasLimit")}</Label>
-            {feesStatus === "fetching" ? (
-              <FakeInputContainer width={280}>
-                <Spinner />
-              </FakeInputContainer>
-            ) : (
-              <InputAmount
-                hideUnit
-                unitLeft
-                width="100%"
-                hideCV
-                unit={last(currency.units)}
-                currency={currency}
-                placeholder={status === "fetching" ? "Loading..." : "0"}
-                onChange={onGasLimitChange}
-                value={transaction.gasLimit || BigNumber(0)}
-                disabled={status === "fetching"}
-              />
-            )}
-          </Box>
-        </Box>
-      </Box>
-      <Box grow>
-        <Box horizontal align="flex-start" flow={5}>
-          <Label>{t("transactionCreation:steps.account.fees.title")}</Label>
-          {(transaction.estimatedFees || feesStatus === "error") && (
-            <RecalculateButton onClick={reComputeFees} />
-          )}
-        </Box>
-        {feesStatus === "error" ? (
-          <Text color={colors.grenade}>
-            <TranslatedError field="description" error={feesError} />
-          </Text>
-        ) : (
-          <Box horizontal flow={15} justify="space-between">
-            <FakeInputContainer width={280}>
-              {transaction.estimatedFees ? (
-                <CurrencyAccountValue
-                  account={account}
-                  value={transaction.estimatedFees}
-                  disableERC20
-                />
-              ) : feesStatus === "fetching" ? (
-                <Spinner />
-              ) : (
-                <NotApplicableText />
-              )}
-            </FakeInputContainer>
-            <Box justify="center">
-              <DoubleTilde size={14} color={colors.textLight} />
-            </Box>
-            <FakeInputContainer width={280}>
-              {transaction.estimatedFees ? (
-                <CounterValue
-                  smallerInnerMargin
-                  value={transaction.estimatedFees}
-                  from={account.currency}
-                />
-              ) : feesStatus === "fetching" ? (
-                <Spinner />
-              ) : (
-                <NotApplicableText />
-              )}
-            </FakeInputContainer>
-          </Box>
-        )}
-      </Box>
-      {erc20FeesExceedParentBalance ? (
-        <InfoBox type="error">
-          {t("errors:ERC20FeesExceedParentAccountBalance.description")}
-        </InfoBox>
-      ) : (
-        <InfoBox type="info">
-          {t("transactionCreation:steps.account.feesInfos")}
-        </InfoBox>
-      )}
-    </Box>
-  );
+// this will never happen, it's just to make Flow happy
+if (!gweiUnit) {
+  throw new Error(`Can't find gwei`);
 }
 
-export default connectData(FeesFieldEthereumKind);
+type Props = {|
+  ...EditProps<EthereumTransaction>,
+  restlay: RestlayEnvironment,
+|};
+
+const FeesEthereumKind = (props: Props) => (
+  <GenericFeesField
+    {...props}
+    estimateFeesPayload={useEthereumFeePayload(props.transaction)}
+    shouldFetchFees={shouldFetchFees}
+    patchFromSuccess={patchFromSuccess}
+    patchFromError={patchFromError}
+    DisplayFees={DisplayFees}
+    EditFees={EditFees}
+  />
+);
+
+const shouldFetchFees = (transaction: EthereumTransaction) => {
+  // allow fetching fees for custom IF gas_limit is not fetched yet
+  return (
+    transaction.fees.fees_level !== "custom" || !transaction.fees.gas_limit
+  );
+};
+
+const DisplayFees = ({ transaction }: { transaction: EthereumTransaction }) => (
+  <Box flow={8}>
+    <Box horizontal align="center" justify="space-between">
+      <Label noPadding>Gas price</Label>
+      <div>
+        {transaction.gasPrice ? (
+          <CurrencyUnitValue unit={gweiUnit} value={transaction.gasPrice} />
+        ) : (
+          "-"
+        )}
+      </div>
+    </Box>
+    <Box horizontal align="center" justify="space-between">
+      <Label noPadding>Gas limit</Label>
+      <div>{transaction.gasLimit ? transaction.gasLimit.toFixed() : "-"}</div>
+    </Box>
+  </Box>
+);
+
+const EditFees = ({
+  transaction,
+  onChangeTransaction,
+}: EditProps<EthereumTransaction>) => {
+  const { fees } = transaction;
+
+  const handleChangeGasPrice = gasPrice =>
+    onChangeTransaction({
+      ...transaction,
+      fees: { ...fees, gas_price: gasPrice },
+      gasPrice,
+    });
+
+  const handleChangeGasLimit = (gasLimit: number) =>
+    onChangeTransaction({
+      ...transaction,
+      fees: { ...fees, gas_limit: BigNumber(gasLimit) },
+      gasLimit: BigNumber(gasLimit),
+    });
+
+  if (fees.gas_price === undefined || fees.gas_limit === undefined) return null;
+
+  return (
+    <Box horizontal flow={8}>
+      <Box flex={1}>
+        <Box>
+          <Label>Gas price (GWEI)</Label>
+          {fees.gas_price ? (
+            <InputAmount
+              width="auto"
+              currency={ethereumCurrency}
+              unit={gweiUnit}
+              value={fees.gas_price}
+              onChange={handleChangeGasPrice}
+              hideCV
+              hideUnit
+              autoFocus
+            />
+          ) : (
+            <DisabledInput />
+          )}
+        </Box>
+      </Box>
+      <Box flex={1}>
+        <Label>Gas limit</Label>
+        {fees.gas_limit ? (
+          <InputNumber
+            value={fees.gas_limit.toNumber()}
+            onChange={handleChangeGasLimit}
+          />
+        ) : (
+          <DisabledInput />
+        )}
+      </Box>
+    </Box>
+  );
+};
+
+const DisabledInput = () => (
+  <FakeInputContainer style={{ background: "hsl(0, 0%, 95%)" }}>
+    {"-"}
+  </FakeInputContainer>
+);
+
+const useEthereumFeePayload = transaction =>
+  useMemo((): EstimateETHFeesPayload => {
+    const fees = transaction.fees;
+
+    const common: EstimateETHFeesCommonPayload = {
+      amount: transaction.amount,
+      recipient: transaction.recipient,
+    };
+
+    if (fees.fees_level === "custom") {
+      return {
+        ...common,
+        ...fees,
+        gas_limit: fees.gas_limit || BigNumber(1),
+      };
+    }
+
+    return { ...common, fees_level: fees.fees_level };
+  }, [transaction.amount, transaction.recipient, transaction.fees]);
+
+const patchFromSuccess = (estimatedFees, transaction) => {
+  const common = {
+    gasPrice: estimatedFees.gas_price,
+    gasLimit: estimatedFees.gas_limit,
+    error: null,
+  };
+
+  const fees = transaction.fees;
+
+  // handle the edge-case when the user selected custom *before* estimating
+  if (fees.fees_level === "custom") {
+    return {
+      ...common,
+      fees: {
+        ...fees,
+        gas_price: estimatedFees.gas_price,
+        gas_limit: estimatedFees.gas_limit,
+      },
+    };
+  }
+
+  return common;
+};
+
+const patchFromError = (error, transaction) => {
+  const { fees } = transaction;
+
+  // if we have an error on fetching the fees while being on custom, we
+  // put 0 on everything so user is not blocked, and we don't store error
+  if (fees.fees_level === "custom") {
+    return {
+      error: null,
+      gasPrice: BigNumber(0),
+      gasLimit: BigNumber(0),
+      fees: {
+        ...fees,
+        gas_price: BigNumber(0),
+        gas_limit: BigNumber(0),
+      },
+    };
+  }
+  return { error, gasPrice: null, gasLimit: null };
+};
+
+export default connectData(FeesEthereumKind);

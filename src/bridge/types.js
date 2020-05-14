@@ -1,71 +1,44 @@
 // @flow
 import { BigNumber } from "bignumber.js";
 import type { Account, TransactionCreationNote } from "data/types";
-import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
+import type { FeesLevel } from "bridge/fees.types";
 
-export type EditProps<Transaction> = {
+export type EditProps<Transaction> = {|
   account: Account,
   transaction: Transaction,
   onChangeTransaction: Transaction => void,
   bridge: WalletBridge<Transaction>,
-};
+|};
 
 export interface WalletBridge<Transaction> {
+  FeesField: React$ComponentType<EditProps<Transaction>>;
+  ExtraFields?: React$ComponentType<EditProps<Transaction>>;
+
   createTransaction(account: Account): Transaction;
 
-  editTransactionAmount(
-    account: Account,
-    transaction: Transaction,
-    amount: BigNumber,
-  ): Transaction;
+  editTransactionAmount(Transaction, BigNumber): Transaction;
+  editTransactionFees(Account, Transaction, fees: any): Transaction;
+  editTransactionFeesLevel(Transaction, feeLevel: FeesLevel): Transaction;
+  editTransactionNote(Transaction, TransactionCreationNote): Transaction;
+  editTransactionRecipient(Transaction, string): Transaction;
 
-  getTransactionAmount(account: Account, transaction: Transaction): BigNumber;
-
-  editTransactionRecipient(
-    account: Account,
-    transaction: Transaction,
-    recipient: string,
-  ): Transaction;
-
-  getTransactionRecipient(account: Account, transaction: Transaction): string;
-  getTransactionError(account: Account, transaction: Transaction): ?Error;
-  getFees(account: Account, transaction: Transaction): ?BigNumber;
-  getMaxAmount?: (account: Account, transaction: Transaction) => ?BigNumber;
-  getTotalSpent(account: Account, transaction: Transaction): BigNumber;
-
-  editTransactionNote(
-    transaction: Transaction,
-    note: TransactionCreationNote,
-  ): Transaction;
+  getEstimatedFees(Transaction): BigNumber;
+  getMaxAmount(Transaction): ?BigNumber;
+  getTotalSpent(Account, Transaction): BigNumber;
+  getTransactionError(Transaction): ?Error;
   getTransactionNote(transaction: Transaction): TransactionCreationNote;
-
-  getTransactionFeeLevel?: (
-    account: Account,
-    transaction: Transaction,
-  ) => Speed;
-  editTransactionFeeLevel?: (
-    account: Account,
-    transaction: Transaction,
-    feeLevel: Speed,
-  ) => Transaction;
-  getRecipientWarning?: (recipient: string) => Promise<?Error>;
-  getRecipientError: (
-    restlay: RestlayEnvironment,
-    currency: *,
-    recipient: string,
-    account?: Account,
-  ) => Promise<?Error>;
-
-  EditFees?: *; // React$ComponentType<EditProps<Transaction>>;
-
-  EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
-
-  ExtraFields?: React$ComponentType<EditProps<Transaction>>;
 
   checkValidTransactionSync(
     account: Account,
     transaction: Transaction,
     parentAccount: ?Account,
   ): boolean;
+
+  fetchRecipientError(
+    restlay: RestlayEnvironment,
+    currency: *,
+    recipient: string,
+    account?: Account,
+  ): Promise<?Error>;
 }

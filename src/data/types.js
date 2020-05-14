@@ -185,17 +185,6 @@ export type TransactionRecipientIsValid = {
   recipient: string,
 };
 
-export type TransactionGetFees = {
-  amount?: BigNumber,
-  recipient?: string,
-  fees_level?: string,
-  gas_limit?: ?BigNumber,
-  gas_price?: ?BigNumber,
-  max_amount?: ?BigNumber,
-  utxo_picking_strategy?: UtxoPickingStrategy,
-  memo?: [],
-};
-
 type GroupCommon = {
   id: number,
   name: string,

@@ -80,13 +80,19 @@ export function remapError(err: Error) {
   if (jsonIncludes(err, "Action not implemented in this state")) {
     return new RequestFinished();
   }
-
   if (jsonIncludesRegex(err, /Model '[^']+' of type 'User' already exists/)) {
     return new UserIdAlreadyUsed();
   }
   if (jsonIncludes(err, "Account name already exists in this currency")) {
     return new AccountNameAlreadyExists();
   }
+
+  // try to identify daemon exception
+  // $FlowFixMe
+  if (err.json && err.json.name === "DAEMON_EXCEPTION") {
+    return new Error(`DAEMON EXCEPTION: ${err.json.message}`);
+  }
+
   return err;
 }
 

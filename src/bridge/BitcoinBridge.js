@@ -2,26 +2,35 @@
 
 import { BigNumber } from "bignumber.js";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
-import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import type { Account, TransactionCreationNote } from "data/types";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
 import { InvalidAddress } from "utils/errors";
 import ExtraFieldBitcoinKind from "components/ExtraFields/BitcoinKind";
 import type { UtxoPickingStrategy } from "utils/utxo";
+import type { BTCFees, FeesLevel } from "bridge/fees.types";
 import type { WalletBridge } from "./types";
 
-export type Transaction = {
-  amount: BigNumber,
-  recipient: string,
-  estimatedFees: ?BigNumber,
-  estimatedMaxAmount: ?BigNumber,
-  feeLevel: Speed,
-  label: string,
-  utxoPickingStrategy?: ?UtxoPickingStrategy,
+export type Transaction = {|
   error: ?Error,
   note: TransactionCreationNote,
-  expectedNbUTXOs: number,
-};
+
+  recipient: string,
+  amount: BigNumber,
+
+  // optional strategy selection
+  utxoPickingStrategy?: ?UtxoPickingStrategy,
+
+  // used only on UTXOs consolidation
+  expectedNbUTXOs: number | null,
+
+  // edited fees
+  fees: BTCFees,
+
+  // estimated by backend
+  estimatedFees: BigNumber | null,
+  estimatedMaxAmount: BigNumber | null,
+  fees_per_byte: BigNumber | null,
+|};
 
 const isRecipientValid = async (restlay, currency, recipient) => {
   if (recipient) {
@@ -40,83 +49,80 @@ const isRecipientValid = async (restlay, currency, recipient) => {
   }
 };
 
-const getRecipientError = async (restlay, currency, recipient) => {
+const fetchRecipientError = async (restlay, currency, recipient) => {
   const isValid = await isRecipientValid(restlay, currency, recipient);
   if (!isValid) return new InvalidAddress(null, { ticker: currency.ticker });
   return null;
 };
 
+const resetFees = {
+  error: null,
+  estimatedFees: null,
+  estimatedMaxAmount: null,
+  fees_per_byte: null,
+};
+
 const BitcoinBridge: WalletBridge<Transaction> = {
+  FeesField: FeesBitcoinKind,
+  ExtraFields: ExtraFieldBitcoinKind,
+
   createTransaction: () => ({
     amount: BigNumber(0),
     recipient: "",
-    estimatedFees: null,
-    estimatedMaxAmount: null,
-    feeLevel: "normal",
-    label: "",
+    note: { title: "", content: "" },
     utxoPickingStrategy: null,
-    error: null,
-    expectedNbUTXOs: 0,
-    note: {
-      title: "",
-      content: "",
-    },
+    expectedNbUTXOs: null,
+
+    ...resetFees,
+
+    fees: { fees_level: "normal" },
   }),
 
-  getFees: (a, t) => t.estimatedFees,
-  getMaxAmount: (a, t) => t.estimatedMaxAmount,
+  editTransactionAmount: (t: Transaction, amount: BigNumber) => ({
+    ...t,
+    ...resetFees,
+    amount,
+  }),
 
-  getTotalSpent: (a, t) => {
-    const estimatedFees = t.estimatedFees || BigNumber(0);
-    return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(estimatedFees);
+  editTransactionFees: (account: Account, t: Transaction, fees: BTCFees) => ({
+    ...t,
+    ...resetFees,
+    fees,
+  }),
+
+  editTransactionFeesLevel: (t: Transaction, fees_level: FeesLevel) => {
+    // for now, custom fees for bitcoin is disabled
+    if (fees_level === "custom") {
+      return t;
+    }
+    return { ...t, ...resetFees, fees: { fees_level } };
   },
 
-  editTransactionAmount: (
-    account: Account,
-    t: Transaction,
-    amount: BigNumber,
-  ) => ({
+  editTransactionNote: (t: Transaction, note: TransactionCreationNote) => ({
     ...t,
-    amount,
-    estimatedFees: null,
-    estimatedMaxAmount: null,
-    error: null,
+    note,
   }),
 
-  getTransactionError: (a: Account, t: Transaction) => t.error,
-  getTransactionAmount: (a: Account, t: Transaction) => t.amount,
-
-  editTransactionRecipient: (
-    account: Account,
-    t: Transaction,
-    recipient: string,
-  ) => ({
+  editTransactionRecipient: (t: Transaction, recipient: string) => ({
     ...t,
     recipient,
     estimatedFees: null,
     estimatedMaxAmount: null,
   }),
 
-  getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
+  getEstimatedFees: t => t.estimatedFees,
 
-  getTransactionFeeLevel: (a: Account, t: Transaction) => t.feeLevel,
-  editTransactionFeeLevel: (
-    account: Account,
-    t: Transaction,
-    feeLevel: string,
-  ) => ({
-    ...t,
-    feeLevel,
-    estimatedFees: null,
-  }),
+  getMaxAmount: t => t.estimatedMaxAmount,
+
+  getTotalSpent: (a, t) => {
+    const estimatedFees = t.estimatedFees || BigNumber(0);
+    return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(estimatedFees);
+  },
+
+  getTransactionError: (t: Transaction) => t.error,
 
   getTransactionNote: (t: Transaction) => t.note,
-  editTransactionNote: (t: Transaction, note: TransactionCreationNote) => ({
-    ...t,
-    note,
-  }),
-  EditFees: FeesBitcoinKind,
-  ExtraFields: ExtraFieldBitcoinKind,
+
   checkValidTransactionSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
     if (!t.estimatedFees) return false;
@@ -127,7 +133,8 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     if (t.amount.isGreaterThan(t.estimatedMaxAmount)) return false;
     return true;
   },
-  getRecipientError,
+
+  fetchRecipientError,
 };
 
 export default BitcoinBridge;

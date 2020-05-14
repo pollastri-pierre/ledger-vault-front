@@ -50,11 +50,9 @@ const resetState = (props: Props<*>) => {
 
   const fakeUnit = getCurrencyLikeUnit(token ? token.decimals : 0);
 
-  const val = formatCurrencyUnit(
-    fakeUnit,
-    props.bridge.getTransactionAmount(props.account, props.transaction),
-    { disableRounding: true },
-  );
+  const val = formatCurrencyUnit(fakeUnit, props.transaction.amount, {
+    disableRounding: true,
+  });
   return {
     token,
     displayValue: parseFloat(val) > 0 ? val : "",
@@ -79,14 +77,14 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
   }
 
   onChange = (amount: string) => {
-    const { account, bridge, transaction } = this.props;
+    const { bridge, transaction } = this.props;
     const { token } = this.state;
 
     const fakeUnit = getCurrencyLikeUnit(token ? token.decimals : 0);
     const r = sanitizeValueString(fakeUnit, amount);
     const sanitizedValue = BigNumber(r.value);
     this.props.onChangeTransaction(
-      bridge.editTransactionAmount(account, transaction, sanitizedValue),
+      bridge.editTransactionAmount(transaction, sanitizedValue),
     );
     this.setState({ displayValue: r.display });
   };

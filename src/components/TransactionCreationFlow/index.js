@@ -28,6 +28,9 @@ import { createAndApprove } from "device/interactions/hsmFlows";
 import Amount from "components/Amount";
 import { isAccountSpendable } from "utils/transactions";
 import type { Account } from "data/types";
+import type { Transaction as BTCLikeTransaction } from "bridge/BitcoinBridge";
+import type { Transaction as ETHLikeTransaction } from "bridge/EthereumBridge";
+import type { Transaction as XRPLikeTransaction } from "bridge/RippleBridge";
 
 import { getBridgeAndTransactionFromAccount } from "./steps/TransactionCreationAccount";
 import TransactionCreationAmount from "./steps/TransactionCreationAmount";
@@ -274,33 +277,50 @@ export function serializePayload(payload: serializePayloadProps) {
   };
 
   if (account.account_type === "Bitcoin") {
-    invariant(transaction.feeLevel, "Invalid payload");
+    // $FlowFixMe we KNOW it's a BTCLikeTransaction
+    const bitcoinTx = (transaction: BTCLikeTransaction);
+
     Object.assign(tx, {
-      fees_level: transaction.feeLevel,
+      fees_level: bitcoinTx.fees.fees_level.toUpperCase(),
+      fees_per_byte: bitcoinTx.fees_per_byte,
+      max_fees: bitcoinTx.estimatedFees,
     });
-  }
-  if (transaction.utxoPickingStrategy) {
-    Object.assign(tx, {
-      utxo_picking_strategy: transaction.utxoPickingStrategy,
-    });
+
+    if (bitcoinTx.utxoPickingStrategy) {
+      Object.assign(tx, {
+        utxo_picking_strategy: bitcoinTx.utxoPickingStrategy,
+      });
+    }
+
+    if (bitcoinTx.fees.fees_level === "custom") {
+      throw new Error("Not implemented yet");
+    }
   }
 
   if (account.account_type === "Ethereum" || account.account_type === "Erc20") {
-    // $FlowFixMe
-    const { gasPrice, gasLimit } = transaction;
-    invariant(gasPrice && gasLimit, "Invalid transaction");
+    // $FlowFixMe we KNOW it's a XRPLikeTransaction
+    const ethTx = (transaction: ETHLikeTransaction);
+
+    const { gasPrice, gasLimit } = ethTx;
+    invariant(gasPrice, "Gas price is missing");
+    invariant(gasLimit, "Gas limit is missing");
     Object.assign(tx, {
-      gas_price: gasPrice.toFixed(),
-      gas_limit: gasLimit.toFixed(),
+      fees_level: ethTx.fees.fees_level.toUpperCase(),
+      max_fees: gasPrice.times(gasLimit),
+      gas_price: gasPrice,
+      gas_limit: gasLimit,
     });
   }
 
   if (account.account_type === "Ripple") {
-    invariant(transaction.estimatedFees, "Invalid transaction");
+    // $FlowFixMe we KNOW it's a XRPLikeTransaction
+    const xrpTx = (transaction: XRPLikeTransaction);
+
     Object.assign(tx, {
       memos: [],
-      destination_tag: transaction.destinationTag || null,
-      fees: transaction.estimatedFees.toFixed(),
+      destination_tag: xrpTx.destinationTag || null,
+      max_fees: xrpTx.estimatedFees,
+      fees_level: xrpTx.fees.fees_level.toUpperCase(),
     });
   }
 

@@ -26,6 +26,10 @@ const toolTipStyle = {
 
 const Container = styled.div`
   flex-shrink: 0;
+
+  // FIXME rewrite Tooltip in a way that does not destroy css layout
+  display: flex;
+  align-items: center;
 `;
 
 export default ({ children, content }: ToolTipProps) => {

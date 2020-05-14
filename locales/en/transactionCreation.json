@@ -9,7 +9,8 @@
       "total": "Total",
       "fees": {
         "title": "Transaction fees",
-        "recompute": "Recalculate fees"
+        "recompute": "Recalculate fees",
+        "custom": "Custom"
       },
       "select": "Select address",
       "utxo_picking_strategy": "UTXO selection strategy",

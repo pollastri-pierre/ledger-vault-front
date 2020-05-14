@@ -30,19 +30,17 @@ const SelectedRow = (props: OptionProps) => {
     <Box horizontal align="center" justify="space-between">
       <AccountName account={account} />
       <Box align="flex-end">
-        {account.account_type === "Bitcoin" && (
-          <Box flow={10} horizontal align="center">
-            <Text fontWeight="semiBold" color={colors.mediumGrey}>
-              Available
-            </Text>
-            <Text fontWeight="semiBold" color={colors.black}>
-              <CurrencyAccountValue
-                account={account}
-                value={account.available_balance}
-              />
-            </Text>
-          </Box>
-        )}
+        <Box flow={10} horizontal align="center">
+          <Text fontWeight="semiBold" color={colors.mediumGrey}>
+            Available
+          </Text>
+          <Text fontWeight="semiBold" color={colors.black}>
+            <CurrencyAccountValue
+              account={account}
+              value={account.available_balance}
+            />
+          </Text>
+        </Box>
       </Box>
     </Box>
   );

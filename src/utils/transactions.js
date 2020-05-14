@@ -1,9 +1,7 @@
 // @flow
-import type { Transaction, TransactionGetFees, Account } from "data/types";
+import type { Transaction, Account } from "data/types";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 import { isMemberOfFirstApprovalStep } from "utils/users";
-import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
-import type { RestlayEnvironment } from "restlay/connectData";
 
 export const hasPending = (account: Account, transactions: Transaction[]) =>
   transactions.filter(
@@ -43,15 +41,3 @@ export const getPendingsTransactions = (
   transactions: Transaction[],
 ): Transaction[] =>
   transactions.filter(transaction => transaction.status === "PENDING_APPROVAL");
-
-export const getFees = async (
-  account: Account,
-  txGetFees: TransactionGetFees,
-  restlay: RestlayEnvironment,
-) => {
-  const query = new AccountCalculateFeeQuery({
-    accountId: account.id,
-    txGetFees,
-  });
-  return restlay.fetchQuery(query);
-};

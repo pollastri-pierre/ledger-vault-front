@@ -10,16 +10,28 @@ import ExtraFieldRippleKind, {
 } from "components/ExtraFields/RippleKind";
 import { InvalidAddress } from "utils/errors";
 import { evalHints } from "components/base/form/HintsWrapper";
+import type { XRPFees, FeesLevel } from "bridge/fees.types";
 import type { WalletBridge } from "./types";
 
 export type Transaction = {|
+  error: ?Error,
+  note: TransactionCreationNote,
+
   recipient: string,
   amount: BigNumber,
-  note: TransactionCreationNote,
-  estimatedFees: ?BigNumber,
-  error: ?Error,
   destinationTag: string,
+
+  // edited fees
+  fees: XRPFees,
+
+  // estimated by backend
+  estimatedFees: ?BigNumber,
 |};
+
+const resetFees = {
+  error: null,
+  estimatedFees: null,
+};
 
 export const MIN_RIPPLE_BALANCE = 20 * 10 ** 6;
 
@@ -35,7 +47,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
   }
 };
 
-const getRecipientError = async (restlay, currency, recipient, account) => {
+const fetchRecipientError = async (restlay, currency, recipient, account) => {
   if (account && recipient === account.address) {
     return new InvalidAddressBecauseDestinationIsAlsoSource();
   }
@@ -43,54 +55,66 @@ const getRecipientError = async (restlay, currency, recipient, account) => {
   return isValid ? null : new InvalidAddress(null, { ticker: currency.ticker });
 };
 
-const getFees = (a, t) => t.estimatedFees || BigNumber(0);
-
 const RippleBridge: WalletBridge<Transaction> = {
+  FeesField: FeesFieldRippleKind,
+  ExtraFields: ExtraFieldRippleKind,
+
   createTransaction: () => ({
-    amount: BigNumber(0),
+    ...resetFees,
     recipient: "",
-    estimatedFees: null,
-    error: null,
+    amount: BigNumber(0),
     destinationTag: "",
-    note: {
-      title: "",
-      content: "",
-    },
+    note: { title: "", content: "" },
+    fees: { fees_level: "normal" },
   }),
+
+  editTransactionAmount: (t: Transaction, amount: BigNumber) => {
+    if (t.fees.fees_level === "custom") {
+      return { ...t, error: null, amount };
+    }
+    return { ...t, ...resetFees, amount };
+  },
+
+  editTransactionFees: (account: Account, t: Transaction, fees: XRPFees) => ({
+    ...t,
+    fees,
+    estimatedFees: null,
+  }),
+
+  editTransactionFeesLevel: (t: Transaction, fees_level: FeesLevel) => {
+    if (fees_level === "custom") {
+      return {
+        ...t,
+        error: null,
+        fees: { fees_level, fees: t.estimatedFees || BigNumber(0) },
+      };
+    }
+    return { ...t, ...resetFees, fees: { fees_level } };
+  },
+
+  editTransactionNote: (t: Transaction, note: TransactionCreationNote) => ({
+    ...t,
+    note,
+  }),
+
+  editTransactionRecipient: (t: Transaction, recipient: string) => ({
+    ...t,
+    recipient,
+    estimatedFees: null,
+  }),
+
+  getEstimatedFees: t => t.estimatedFees,
+
+  getMaxAmount: _t => null,
 
   getTotalSpent: (a, t) => {
     const fees = t.estimatedFees || BigNumber(0);
     return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(fees);
   },
 
-  getFees,
-
-  editTransactionAmount: (a: Account, t: Transaction, amount: BigNumber) => ({
-    ...t,
-    amount,
-    estimatedFees: null,
-    error: null,
-  }),
-
-  getTransactionError: (a: Account, t: Transaction) => t.error,
-  getTransactionAmount: (a: Account, t: Transaction) => t.amount,
-
-  editTransactionRecipient: (
-    a: Account,
-    t: Transaction,
-    recipient: string,
-  ) => ({ ...t, recipient, estimatedFees: null }),
-
-  getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
+  getTransactionError: (t: Transaction) => t.error,
 
   getTransactionNote: (t: Transaction) => t.note,
-  editTransactionNote: (t: Transaction, note: TransactionCreationNote) => ({
-    ...t,
-    note,
-  }),
-
-  EditFees: FeesFieldRippleKind,
-  ExtraFields: ExtraFieldRippleKind,
 
   checkValidTransactionSync: (a: Account, t: Transaction) => {
     if (t.amount.isEqualTo(0)) return false;
@@ -109,7 +133,7 @@ const RippleBridge: WalletBridge<Transaction> = {
     return true;
   },
 
-  getRecipientError,
+  fetchRecipientError,
 };
 
 export default RippleBridge;

@@ -4,9 +4,9 @@ import type { StepProps } from "components/base/MultiStepsFlow/types";
 import type { Account, Whitelist } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import type { Connection } from "restlay/ConnectionQuery";
-import type { Transaction as BitcoinLikeTransaction } from "bridge/BitcoinBridge";
-import type { Transaction as EthereumLikeTransaction } from "bridge/EthereumBridge";
-import type { Transaction as RippleLikeTransaction } from "bridge/RippleBridge";
+import type { Transaction as BTCLikeTransaction } from "bridge/BitcoinBridge";
+import type { Transaction as ETHLikeTransaction } from "bridge/EthereumBridge";
+import type { Transaction as XRPLikeTransaction } from "bridge/RippleBridge";
 
 export type TransactionCreationPayload<Transaction> = {|
   account: ?Account,
@@ -27,9 +27,6 @@ export type TransactionCreationStepProps<T> = GenericStepProps<T> & {
 
 /* eslint-disable flowtype/space-after-type-colon */
 export type serializePayloadProps = {
-  transaction:
-    | ?BitcoinLikeTransaction
-    | ?EthereumLikeTransaction
-    | ?RippleLikeTransaction,
+  transaction: ?BTCLikeTransaction | ?ETHLikeTransaction | ?XRPLikeTransaction,
   account: ?Account,
 };

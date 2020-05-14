@@ -5,10 +5,9 @@ import styled from "styled-components";
 import { useTranslation, Trans } from "react-i18next";
 import { components as reactSelectComponents } from "react-select";
 import { MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
-import { IoIosArrowDown, IoIosArrowUp, IoIosSettings } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import type { OptionProps } from "react-select/src/types";
 
-import colors from "shared/colors";
 import type { EditProps } from "bridge/types";
 import Select from "components/base/Select";
 import { UTXO_PICKING_STRATEGY } from "utils/utxo";
@@ -55,16 +54,15 @@ const ExtraFieldsBitcoin = (props: EditProps<BitcoinTransaction>) => {
   return (
     <Box flow={15}>
       <AdvancedContainer
+        alignSelf="flex-start"
         onClick={() => setVisible(!visible)}
         horizontal
         align="center"
         justify="space-between"
+        flow={8}
       >
         <Box horizontal align="center" flow={5}>
-          <div>
-            <IoIosSettings size={18} />
-          </div>
-          <Label>Advanced</Label>
+          Advanced
         </Box>
         <Box>{visible ? <IoIosArrowUp /> : <IoIosArrowDown />}</Box>
       </AdvancedContainer>
@@ -92,7 +90,7 @@ const ExtraFieldsBitcoin = (props: EditProps<BitcoinTransaction>) => {
 
 export default ExtraFieldsBitcoin;
 
-const AdvancedContainer = styled(Box).attrs({ p: 10 })`
+const AdvancedContainer = styled(Box)`
   cursor: pointer;
-  background: ${colors.form.bg};
+  color: black;
 `;

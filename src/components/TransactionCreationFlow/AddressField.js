@@ -24,7 +24,7 @@ type Props<T> = {
   restlay: RestlayEnvironment,
 };
 
-const INITIAL_RSTATUS = { error: null, warning: null };
+const INITIAL_RSTATUS = { error: null };
 
 function AddressField(props: Props<{ recipient: string }>) {
   const {
@@ -49,12 +49,12 @@ function AddressField(props: Props<{ recipient: string }>) {
 
   const handleSetRecipient = useCallback(
     (recipient: string) => {
-      const payload = [account, transaction, recipient];
+      const payload = [transaction, recipient];
       const tx = bridge.editTransactionRecipient(...payload);
       setRStatus(INITIAL_RSTATUS);
       onChangeTransaction(tx);
     },
-    [bridge, onChangeTransaction, account, transaction, setRStatus],
+    [bridge, onChangeTransaction, transaction, setRStatus],
   );
 
   // run validation each time recipient change
@@ -86,7 +86,6 @@ function AddressField(props: Props<{ recipient: string }>) {
   const hasAddressToSelect = wlOptions.some(o => o.options.length > 0);
 
   const errors = rStatus.error ? [rStatus.error] : undefined;
-  const warnings = rStatus.warning ? [rStatus.warning] : undefined;
 
   const field = hasAddressToSelect ? (
     <SelectAddress
@@ -98,16 +97,14 @@ function AddressField(props: Props<{ recipient: string }>) {
       value={wlValue}
       onChange={handleChangeWl}
       errors={errors}
-      warnings={warnings}
     />
   ) : (
     <InputText
       id="address"
       placeholder={t("transactionCreation:steps.account.recipient")}
       onChange={handleSetRecipient}
-      value={bridge.getTransactionRecipient(account, transaction)}
+      value={transaction.recipient}
       errors={errors}
-      warnings={warnings}
       {...p}
     />
   );
@@ -205,18 +202,14 @@ function useRecipientCheck({
     let invalidated = false;
     const currency = getCryptoCurrencyById(account.currency);
     const timeout = setTimeout(async () => {
-      const error = await bridge.getRecipientError(
+      const error = await bridge.fetchRecipientError(
         restlay,
         currency,
         recipient,
         account,
       );
       if (invalidated) return;
-      const warning = bridge.getRecipientWarning
-        ? await bridge.getRecipientWarning(recipient)
-        : null;
-      if (invalidated) return;
-      setRStatus({ error, warning });
+      setRStatus({ error });
     }, 200);
     return () => {
       invalidated = true;

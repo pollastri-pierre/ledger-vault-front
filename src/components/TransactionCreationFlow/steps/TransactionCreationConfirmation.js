@@ -20,8 +20,9 @@ export default (props: TransactionCreationStepProps<any>) => {
   invariant(transaction && account && bridge, "Invalid transaction");
   const isERC20 = account.account_type === "Erc20";
   const isRipple = account.account_type === "Ripple";
-  const fees = bridge.getFees(account, transaction);
+  const estimatedFees = bridge.getEstimatedFees(transaction);
   const totalSpent = bridge.getTotalSpent(account, transaction);
+  // TODO display speed, btc and etc is different, checkout type
   const { t } = useTranslation();
 
   return (
@@ -31,43 +32,24 @@ export default (props: TransactionCreationStepProps<any>) => {
         account={account}
         transactionType="SEND"
       />
-      <LineRow label={t("transactionCreation:steps.confirmation.identifier")}>
-        <Copy text={transaction.recipient} />
-      </LineRow>
       <LineRow label={t("transactionCreation:steps.confirmation.account")}>
         <AccountName account={account} />
       </LineRow>
+      <LineRow label={t("transactionCreation:steps.confirmation.identifier")}>
+        <Copy text={transaction.recipient} />
+      </LineRow>
       {transaction.note.title && (
-        <LineRow label={t("transactionCreation:steps.note.noteTitle")}>
+        <LineRow label="Title (optional)">
           <span data-test="note_title">{transaction.note.title}</span>
         </LineRow>
       )}
-      <CollapsibleText
-        data-test="note_comments"
-        label={t("transactionCreation:steps.note.noteContent")}
-        content={transaction.note.content || ""}
-      />
-      {transaction.utxoPickingStrategy && (
-        <LineRow label={t("transactionCreation:steps.confirmation.strategy")}>
-          {transaction.utxoPickingStrategy}
-        </LineRow>
+      {transaction.note.content && (
+        <CollapsibleText
+          data-test="note_comments"
+          label="Comments (optional)"
+          content={transaction.note.content || ""}
+        />
       )}
-      <LineRow label={t("transactionCreation:steps.confirmation.fees")}>
-        <Amount account={account} value={fees} disableERC20 />
-      </LineRow>
-      <LineRow label={t("transactionCreation:steps.confirmation.amount")}>
-        <Amount account={account} value={transaction.amount} />
-      </LineRow>
-      <LineRow
-        label={t("transactionCreation:steps.confirmation.total")}
-        tooltipInfoMessage={
-          isERC20 && t("transactionCreation:steps.confirmation.totalERC20Info")
-        }
-      >
-        {totalSpent !== null && (
-          <Amount account={account} value={totalSpent} strong />
-        )}
-      </LineRow>
       {isRipple && (
         <LineRow label={t("transactionCreation:steps.account.destinationTag")}>
           {transaction.destinationTag ? (
@@ -77,6 +59,27 @@ export default (props: TransactionCreationStepProps<any>) => {
           )}
         </LineRow>
       )}
+      {transaction.utxoPickingStrategy && (
+        <LineRow label={t("transactionCreation:steps.confirmation.strategy")}>
+          {transaction.utxoPickingStrategy}
+        </LineRow>
+      )}
+      <LineRow label={t("transactionCreation:steps.confirmation.amount")}>
+        <Amount account={account} value={transaction.amount} />
+      </LineRow>
+      <LineRow label="Max fees">
+        <Amount account={account} value={estimatedFees} disableERC20 />
+      </LineRow>
+      <LineRow
+        label="Max total amount"
+        tooltipInfoMessage={
+          isERC20 && t("transactionCreation:steps.confirmation.totalERC20Info")
+        }
+      >
+        {totalSpent !== null && (
+          <Amount account={account} value={totalSpent} strong />
+        )}
+      </LineRow>
     </Box>
   );
 };

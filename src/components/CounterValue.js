@@ -102,7 +102,7 @@ class CounterValue extends PureComponent<Props> {
       smallerInnerMargin,
     } = this.props;
     if (!countervalue) {
-      return renderNA || "N/A";
+      return renderNA || <span>N/A</span>;
     }
 
     // display specific string if value is lower than 0.01 USD

@@ -232,7 +232,6 @@ const AddressForm = connectData(
     const { t } = useTranslation();
     const [nameError, setNameError] = useState();
     const [addressError, setAddressError] = useState();
-    const [warning, setWarning] = useState(null);
     const [addr, setAddr] = useState(source || genEmptyAddress());
     const inputNameRef = useRef();
     const selectCurrencyRef = useRef();
@@ -266,7 +265,6 @@ const AddressForm = connectData(
       setAddr(source || genEmptyAddress());
       setNameError(undefined);
       setAddressError(undefined);
-      setWarning(null);
       onSubmit(addr);
     };
 
@@ -281,15 +279,11 @@ const AddressForm = connectData(
             if (!curr) return;
             const bridge = getBridgeForCurrency(curr);
             const errors =
-              (await bridge.getRecipientError(restlay, curr, addr.address)) ||
+              (await bridge.fetchRecipientError(restlay, curr, addr.address)) ||
               checkCurrencyAddressDuplicate(addr, addresses);
             if (unsub) return;
-            const recipientWarning = bridge.getRecipientWarning
-              ? await bridge.getRecipientWarning(addr.address)
-              : null;
             if (unsub) return;
             setAddressError(errors);
-            setWarning(recipientWarning);
           } catch (err) {
             if (unsub) return;
             setAddressError(err);
@@ -343,7 +337,6 @@ const AddressForm = connectData(
                 onChange={setName}
                 value={addr.name}
                 errors={nameError ? [nameError] : undefined}
-                warnings={warning ? [warning] : undefined}
                 onlyAscii
                 fullWidth
                 data-test="name_address"
