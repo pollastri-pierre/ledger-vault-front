@@ -14,6 +14,7 @@ import OrganizationAppRouter from "containers/OrganizationAppRouter";
 
 import i18n from "./i18n";
 
+import "./device/registerTransports";
 import "./insertFontsTags";
 
 const locale = "en";
