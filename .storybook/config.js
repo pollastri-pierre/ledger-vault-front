@@ -21,7 +21,7 @@ import exchanges from "redux/modules/exchanges";
 import { styledTheme } from "styles/theme";
 import GlobalStyle from "components/GlobalStyle";
 import i18n from "./i18n";
-import "../device/registerTransports";
+import "../src/device/registerTransports";
 
 import erc20list from "data/erc20-list.dev.json";
 
