@@ -9,9 +9,16 @@ type Props = {
   value: string,
   prefix: string,
   onChange: (string) => void,
+  maxLength: number,
   errors: Error[],
 };
-const DerivationInput = ({ value, prefix, onChange, errors }: Props) => {
+const DerivationInput = ({
+  value,
+  prefix,
+  onChange,
+  errors,
+  maxLength,
+}: Props) => {
   const [active, setActive] = useState(false);
   const inputRef = useRef();
   const onBlur = () => {
@@ -39,6 +46,7 @@ const DerivationInput = ({ value, prefix, onChange, errors }: Props) => {
             height: "80%",
             width: 200,
           }}
+          maxLength={maxLength}
           value={value}
           onChange={onChange}
           onBlur={onBlur}

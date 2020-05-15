@@ -51,7 +51,13 @@ type SelectIndexProps = {
 
 const SelectIndex = connectData(
   (props: SelectIndexProps) => {
-    const { account, selectedAddress, onChange, addresses } = props;
+    const {
+      account,
+      selectedAddress,
+      onChange,
+      addresses,
+      currentIndex,
+    } = props;
     const [path, setPath] = useState(
       selectedAddress ? selectedAddress.derivation_path.split("/")[1] : "",
     );
@@ -85,10 +91,14 @@ const SelectIndex = connectData(
       onChange(address);
     };
 
+    // if current index is 99, user should be able to enter only 2 digits
+    // if it is 100, maxLength is 3 char
+    const maxLength = `${currentIndex}`.length;
     return (
       <DerivationInput
         prefix={`${account.derivation_path}/0`}
         onChange={_onChange}
+        maxLength={maxLength}
         value={path}
         errors={error}
       />
@@ -207,16 +217,19 @@ const VerifyFreshAddress = connectData(
       setVerifying(false);
     };
 
+    const currentIndex = freshAddress.derivation_path.split("/")[1];
+
     return (
       <Box flow={20}>
-        {account.account_type === "Bitcoin" && (
-          <AdvancedSection
-            currentIndex={freshAddress.derivation_path.split("/")[1]}
-            account={account}
-            selectedAddress={selectedAddress}
-            onChange={setSelectedAddress}
-          />
-        )}
+        {account.account_type === "Bitcoin" &&
+          parseInt(currentIndex, 10) > 0 && (
+            <AdvancedSection
+              currentIndex={currentIndex}
+              account={account}
+              selectedAddress={selectedAddress}
+              onChange={setSelectedAddress}
+            />
+          )}
         <Disabled disabled={!selectedAddress}>
           <Box horizontal flow={10} align="center">
             <Box width={300}>
