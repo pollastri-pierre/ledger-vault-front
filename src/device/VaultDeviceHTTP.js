@@ -1,6 +1,6 @@
 // @flow
 import network from "network";
-import { fromStringRoleToBytes } from "device";
+import { fromStringRoleToBytes } from "device/utils";
 
 export const ENDPOINTS = {
   GET_PUBLIC_KEY: "/get-public-key",

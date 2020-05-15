@@ -2,7 +2,7 @@
 import React from "react";
 
 import network from "network";
-import { APPID_VAULT_ADMINISTRATOR } from "device";
+import { APPID_VAULT_ADMINISTRATOR } from "device/constants";
 import { authenticate } from "device/interface";
 import type { Interaction } from "components/DeviceInteraction";
 import Text from "components/base/Text";

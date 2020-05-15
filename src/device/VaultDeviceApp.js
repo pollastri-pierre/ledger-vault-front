@@ -1,11 +1,11 @@
 // @flow
 import type Transport from "@ledgerhq/hw-transport";
 import {
-  fromStringRoleToBytes,
   STREAMING_RESPONSE,
   STREAMING_NEXT_ACTION,
   PAGINATED_STATUS,
-} from "device";
+} from "device/constants";
+import { fromStringRoleToBytes } from "device/utils";
 import invariant from "invariant";
 
 const STATUS_LENGTH = 2;

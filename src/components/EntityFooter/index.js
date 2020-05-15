@@ -22,7 +22,7 @@ import Slider from "components/base/Slider";
 import Button from "components/base/Button";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import { DEVICE_REJECT_ERROR_CODE } from "device";
+import { DEVICE_REJECT_ERROR_CODE } from "device/constants";
 
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import RequestsQuery from "api/queries/RequestsQuery";

@@ -7,7 +7,7 @@ import {
   CONFIDENTIALITY_PATH,
   VALIDATION_PATH,
   KEY_MATERIAL_PATH,
-} from "device";
+} from "device/constants";
 import { OutOfDateApp } from "utils/errors";
 import {
   getPublicKey,

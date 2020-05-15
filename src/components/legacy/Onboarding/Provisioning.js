@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import Box from "components/base/Box";
-import { DEVICE_REJECT_ERROR_CODE } from "device";
+import { DEVICE_REJECT_ERROR_CODE } from "device/constants";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import ConfirmationCancel from "components/legacy/Onboarding/ConfirmationCancel";
 import { generateSeed } from "device/interactions/hsmFlows";

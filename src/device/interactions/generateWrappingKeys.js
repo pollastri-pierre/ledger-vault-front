@@ -7,7 +7,7 @@ import {
 } from "device/interactions/common";
 import type { Interaction } from "components/DeviceInteraction";
 import { openSession } from "device/interface";
-import { CONFIDENTIALITY_PATH, INIT_SESSION } from "device";
+import { CONFIDENTIALITY_PATH, INIT_SESSION } from "device/constants";
 
 const openSessionDevice: Interaction = {
   needsUserInput: false,

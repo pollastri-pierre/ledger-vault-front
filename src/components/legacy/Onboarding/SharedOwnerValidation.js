@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import ConfirmationCancel from "components/legacy/Onboarding/ConfirmationCancel";
-import { DEVICE_REJECT_ERROR_CODE } from "device";
+import { DEVICE_REJECT_ERROR_CODE } from "device/constants";
 import CircleProgress from "components/legacy/CircleProgress";
 import type { Translate } from "data/types";
 import { withTranslation } from "react-i18next";

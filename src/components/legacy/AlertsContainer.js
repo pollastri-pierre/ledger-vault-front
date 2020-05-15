@@ -9,7 +9,7 @@ import styled from "styled-components";
 import colors, { opacity } from "shared/colors";
 import Alert from "components/legacy/Alert";
 import { closeMessage } from "redux/modules/alerts";
-import { DEVICE_REJECT_ERROR_CODE, U2F_TIMEOUT } from "device";
+import { DEVICE_REJECT_ERROR_CODE, U2F_TIMEOUT } from "device/constants";
 import { OutOfDateApp } from "utils/errors";
 import Modal, { RichModalHeader } from "components/base/Modal";
 import Box from "components/base/Box";

@@ -1,4 +1,4 @@
-import { INVALID_OR_MISSING_ATTESTATION } from "device";
+import { INVALID_OR_MISSING_ATTESTATION } from "device/constants";
 
 import {
   remapError,

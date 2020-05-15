@@ -8,7 +8,7 @@ import connectData from "restlay/connectData";
 import noop from "lodash/noop";
 
 import type { RestlayEnvironment } from "restlay/connectData";
-import { DEVICE_REJECT_ERROR_CODE } from "device";
+import { DEVICE_REJECT_ERROR_CODE } from "device/constants";
 import FreshAddressesQuery from "api/queries/FreshAddressesQuery";
 import AddressFromDerivationPathQuery from "api/queries/AddressFromDerivationPathQuery";
 import { SpinnerCentered } from "components/base/Spinner";

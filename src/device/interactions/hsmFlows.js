@@ -11,7 +11,7 @@ import {
   CONFIDENTIALITY_PATH,
   VALIDATION_PATH,
   MATCHER_SESSION,
-} from "device";
+} from "device/constants";
 import {
   register,
   openSession,

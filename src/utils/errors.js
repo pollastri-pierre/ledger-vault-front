@@ -1,7 +1,7 @@
 // @flow
 import { createCustomErrorClass } from "@ledgerhq/errors/lib/helpers";
 import { StatusCodes } from "@ledgerhq/hw-transport";
-import { INVALID_OR_MISSING_ATTESTATION } from "device";
+import { INVALID_OR_MISSING_ATTESTATION } from "device/constants";
 
 export const GenericError = createCustomErrorClass("GenericError");
 export const UnknownDomain = createCustomErrorClass("UnknownDomain");

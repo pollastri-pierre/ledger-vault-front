@@ -4,7 +4,7 @@ import type { MemoryHistory } from "history";
 import type { RestlayEnvironment } from "restlay/connectData";
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import type { DeviceInteractionError } from "components/DeviceInteraction";
-import { DEVICE_REJECT_ERROR_CODE } from "device";
+import { DEVICE_REJECT_ERROR_CODE } from "device/constants";
 
 import type { GenericRequest, User, RequestActivityType } from "data/types";
 
