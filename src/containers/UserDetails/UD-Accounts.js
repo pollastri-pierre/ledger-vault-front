@@ -23,7 +23,7 @@ const ACCOUNTS_LIST_CONFIG: $Shape<AccountsListConfig> = {
 const UserDetailsAccounts = (props: Props) => {
   const { accountsConnection } = props;
   const accounts = useMemo(
-    () => accountsConnection.edges.map(edge => edge.node),
+    () => accountsConnection.edges.map((edge) => edge.node),
     [accountsConnection],
   );
   return (
@@ -42,7 +42,7 @@ export default connectData(UserDetailsAccounts, {
   queries: {
     accountsConnection: SearchAccounts,
   },
-  propsToQueryParams: props => ({
+  propsToQueryParams: (props) => ({
     user: props.userID,
     pageSize: -1,
   }),

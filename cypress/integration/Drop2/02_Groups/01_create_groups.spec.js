@@ -6,12 +6,12 @@ import {
   error_message,
 } from "../../../functions/actions";
 
-describe("Test Case for Create Groups", function() {
-  beforeEach(function() {
+describe("Test Case for Create Groups", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -55,9 +55,7 @@ describe("Test Case for Create Groups", function() {
     cy.get("#input_groups_users")
       .type("Aidan", { force: true })
       .type("{enter}");
-    cy.get("#input_groups_users")
-      .type("Anna", { force: true })
-      .type("{enter}");
+    cy.get("#input_groups_users").type("Anna", { force: true }).type("{enter}");
     cy.get("#input_groups_users")
       .type("James", { force: true })
       .type("{enter}");
@@ -67,11 +65,7 @@ describe("Test Case for Create Groups", function() {
     cy.wait(1500);
 
     error_message("Error 10202", "Group already exists");
-    cy.get("[data-test=close]")
-      .eq(1)
-      .click();
-    cy.get("[data-test=close]")
-      .eq(0)
-      .click();
+    cy.get("[data-test=close]").eq(1).click();
+    cy.get("[data-test=close]").eq(0).click();
   });
 });

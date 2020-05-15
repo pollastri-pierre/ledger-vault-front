@@ -7,7 +7,7 @@ context("Register the Administrators", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
+    cy.request(polyfillUrl).then((response) => {
       polyfill = response.body;
     });
   });
@@ -19,7 +19,7 @@ context("Register the Administrators", () => {
       device_number: 4,
     }).then(() => {
       cy.visit(Cypress.env("api_server"), {
-        onBeforeLoad: win => {
+        onBeforeLoad: (win) => {
           win.fetch = null;
           win.eval(polyfill);
           win.fetch = win.unfetch;
@@ -31,9 +31,7 @@ context("Register the Administrators", () => {
         // First Admin
         cy.contains("add administrator").click();
         cy.get("input[name=username]").type("user1");
-        cy.get("[data-test=dialog-button]")
-          .contains("Continue")
-          .click();
+        cy.get("[data-test=dialog-button]").contains("Continue").click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
         cy.wait("@challenge");
@@ -44,9 +42,7 @@ context("Register the Administrators", () => {
         // Try to register with the same device
         cy.contains("add administrator").click();
         cy.get("input[name=username]").type("user1");
-        cy.get("[data-test=dialog-button]")
-          .contains("Continue")
-          .click();
+        cy.get("[data-test=dialog-button]").contains("Continue").click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
         cy.wait("@challenge");
@@ -64,9 +60,7 @@ context("Register the Administrators", () => {
         }).then(() => {
           cy.get("input[name=username]").clear();
           cy.get("input[name=username]").type("user2");
-          cy.get("[data-test=dialog-button]")
-            .contains("Continue")
-            .click();
+          cy.get("[data-test=dialog-button]").contains("Continue").click();
           cy.wait("@get-public-key");
           cy.wait("@get-attestation");
           cy.wait("@challenge");
@@ -80,9 +74,7 @@ context("Register the Administrators", () => {
           }).then(() => {
             cy.contains("add administrator").click();
             cy.get("input[name=username]").type("user3");
-            cy.get("[data-test=dialog-button]")
-              .contains("Continue")
-              .click();
+            cy.get("[data-test=dialog-button]").contains("Continue").click();
             cy.wait("@get-public-key");
             cy.wait("@get-attestation");
             cy.wait("@challenge");

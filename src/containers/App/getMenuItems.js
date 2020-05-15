@@ -151,7 +151,7 @@ export default function getMenuItems(props: Props) {
 }
 
 function setActive(location: Location, items: MenuItem[]): MenuItem[] {
-  return items.map(item => ({
+  return items.map((item) => ({
     ...item,
     isActive: matchPath(location.pathname, item.url),
   }));

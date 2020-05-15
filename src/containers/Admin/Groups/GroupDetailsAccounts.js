@@ -24,7 +24,7 @@ const ACCOUNTS_LIST_CONFIG: $Shape<AccountsListConfig> = {
 class GroupDetailsAccounts extends PureComponent<Props> {
   render() {
     const { accounts } = this.props;
-    const allAccounts = accounts.edges.map(e => e.node);
+    const allAccounts = accounts.edges.map((e) => e.node);
     if (allAccounts.length === 0) {
       return (
         <NoDataPlaceholder title={<Trans i18nKey="group:no_accounts_yet" />} />
@@ -46,7 +46,7 @@ export default connectData(GroupDetailsAccounts, {
   queries: {
     accounts: AccountsInGroupQuery,
   },
-  propsToQueryParams: props => ({
+  propsToQueryParams: (props) => ({
     groupId: props.group.id,
   }),
 });

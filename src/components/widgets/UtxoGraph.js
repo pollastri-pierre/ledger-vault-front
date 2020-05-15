@@ -37,7 +37,7 @@ const UtxoGraph = (props: Props) => {
   const me = useMe();
 
   const data = useMemo(
-    () => utxo.edges.map(e => ({ ...e.node, value: e.node.amount })),
+    () => utxo.edges.map((e) => ({ ...e.node, value: e.node.amount })),
     [utxo],
   );
 
@@ -55,7 +55,7 @@ const UtxoGraph = (props: Props) => {
   }, [granularity, setGranularity]);
 
   const tooltipFormatter = useCallback(
-    value => {
+    (value) => {
       const split = value.split("-");
       const v = `${formatCurrencyUnit(
         bitcoin.units[0],

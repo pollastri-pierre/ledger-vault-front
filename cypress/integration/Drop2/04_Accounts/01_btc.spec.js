@@ -10,12 +10,12 @@ import {
   success_creation_account,
 } from "../../../functions/actions";
 
-describe("Test Case for Account", function() {
-  beforeEach(function() {
+describe("Test Case for Account", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

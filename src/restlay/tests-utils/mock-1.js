@@ -72,7 +72,7 @@ export default () => {
     },
   ];
   function incrementAge() {
-    animals.forEach(a => a.age++);
+    animals.forEach((a) => a.age++);
   }
 
   const world: Animal[] = [];
@@ -108,7 +108,7 @@ export default () => {
       const cursorPrefixToNodeId = "C_"; // the cursor can be arbitrary and not necessarily === node.id
       let start = 0;
       if (after !== null) {
-        const i = findIndex(world, a => `C_${a.id}` === after);
+        const i = findIndex(world, (a) => `C_${a.id}` === after);
         if (i === -1) {
           throw new Error(`after cursor not found '${after}'`);
         }
@@ -116,12 +116,12 @@ export default () => {
       }
       const edges = world
         .slice(start, start + first)
-        .map(node => ({ node, cursor: cursorPrefixToNodeId + node.id }));
+        .map((node) => ({ node, cursor: cursorPrefixToNodeId + node.id }));
       const hasNextPage = world.length > start + first;
       return { edges, pageInfo: { hasNextPage } };
     }
     if (method === "GET" && (m = uri.match(/^\/animals\/([^/]+)$/))) {
-      const animal = animals.find(a => m && a.id === m[1]);
+      const animal = animals.find((a) => m && a.id === m[1]);
       if (!animal) throw new Error("notfound");
       return animal;
     }

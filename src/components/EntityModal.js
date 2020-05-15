@@ -47,7 +47,7 @@ type Props<T> = {|
   additionalFields?: T,
   revokeParams?: RevokeParams,
   history: MemoryHistory,
-  refreshDataQuery: void => void,
+  refreshDataQuery: (void) => void,
 |};
 
 function EntityModal<T>(props: Props<T>) {
@@ -86,7 +86,7 @@ function EntityModal<T>(props: Props<T>) {
   const childs = Array.isArray(children) ? children : [children];
 
   const content =
-    [...childs, lastRequest].find(child => {
+    [...childs, lastRequest].find((child) => {
       if (!child || typeof child === "string") return false;
       const path = `*/${child.key || ""}`;
       return matchPath(location.pathname, { path, exact: true });
@@ -109,7 +109,7 @@ function EntityModal<T>(props: Props<T>) {
     <>
       <RichModalHeader title={title} Icon={Icon} onClose={onClose}>
         <RichModalTabsContainer>
-          {childs.map(child =>
+          {childs.map((child) =>
             child ? (
               <RichModalTab
                 key={child.key}

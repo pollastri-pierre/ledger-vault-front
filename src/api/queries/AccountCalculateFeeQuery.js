@@ -39,7 +39,7 @@ export default class AccountCalculateFeeQuery<P> extends Mutation<
     return body;
   }
 
-  deserialize = res => ({
+  deserialize = (res) => ({
     ...res,
     fees: BigNumber(res.fees),
     gas_price: res.gas_price ? BigNumber(res.gas_price) : null,

@@ -12,11 +12,11 @@ import Button from "components/base/Button";
 import Box from "components/base/Box";
 
 const ETH_ADDR_REGEX = /^(0x)?[0-9a-f]{40}$/i;
-const isETHAddress = v => ETH_ADDR_REGEX.test(v);
+const isETHAddress = (v) => ETH_ADDR_REGEX.test(v);
 
 type Props = {|
   value: string,
-  onChange: string => void,
+  onChange: (string) => void,
   EmptyState?: React$ComponentType<{}>,
 |};
 

@@ -19,8 +19,8 @@ const noOptionsMessage = () => "No groups";
 
 function FilterFieldGroup(props: Props) {
   const { groupsConnection, ...p } = props;
-  const groups = groupsConnection.edges.map(u => u.node);
-  const options = groups.map(u => ({ label: u.name, value: u.id }));
+  const groups = groupsConnection.edges.map((u) => u.node);
+  const options = groups.map((u) => ({ label: u.name, value: u.id }));
   return (
     <FieldSelect
       title="Group"

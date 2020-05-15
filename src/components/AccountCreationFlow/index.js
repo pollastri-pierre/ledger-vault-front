@@ -119,7 +119,7 @@ const steps = [
         additionalProps &&
         !additionalProps.isEditMode &&
         additionalProps.allAccounts.edges
-          .map(e => e.node.name)
+          .map((e) => e.node.name)
           .indexOf(payload.name) > -1
       )
         return false;
@@ -274,7 +274,7 @@ function getGateAccountType(payload: AccountCreationPayload) {
 
 // TODO see if we can get rid of some api call like potentialAccounts
 const AccountEdit = connectData(
-  props => {
+  (props) => {
     const { t } = useTranslation();
     return (
       <GrowingCard>
@@ -292,8 +292,8 @@ const AccountEdit = connectData(
           initialPayload={mergeEditData(
             props.account,
             props.requestToReplay,
-            props.users.edges.map(e => e.node),
-            props.groups.edges.map(e => e.node),
+            props.users.edges.map((e) => e.node),
+            props.groups.edges.map((e) => e.node),
           )}
           payloadToCompareTo={props.account}
           initialCursor={1}
@@ -311,14 +311,14 @@ const AccountEdit = connectData(
       whitelists: SearchWhitelistsForAccountQuery,
       groups: GroupsForAccountCreationQuery,
     },
-    propsToQueryParams: props => ({
+    propsToQueryParams: (props) => ({
       accountId: props.accountId,
     }),
   },
 );
 
 const AccountCreation = connectData(
-  props => (
+  (props) => (
     <GrowingCard>
       <MultiStepsFlow
         Icon={FaMoneyCheck}
@@ -357,7 +357,7 @@ const Wrapper = ({
   match: Match,
   close: Function,
   requestToReplay: EditAccountReplay | CreateAccountReplay,
-  resetRequest: void => void,
+  resetRequest: (void) => void,
 }) => {
   const closeAndEmptyStore = () => {
     resetRequest();
@@ -380,7 +380,7 @@ const Wrapper = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   requestToReplay: state.requestReplay,
 });
 const mapDispatch = {
@@ -389,7 +389,7 @@ const mapDispatch = {
 
 export default connect(mapStateToProps, mapDispatch)(Wrapper);
 
-export const deserialize: Account => AccountCreationPayload = account => {
+export const deserialize: (Account) => AccountCreationPayload = (account) => {
   return {
     id: account.id,
     accountStatus: account.status,
@@ -500,5 +500,5 @@ export function areRulesSetsValid(rulesSets: RulesSet[]) {
 }
 
 export function hasEmptyRules(rulesSets: RulesSet[]) {
-  return rulesSets.some(r => isEmptyRulesSet(r));
+  return rulesSets.some((r) => isEmptyRulesSet(r));
 }

@@ -43,7 +43,7 @@ class ListUsers extends PureComponent<Props> {
     const { usersWithHistory } = this.props;
     return (
       <div style={grid}>
-        {usersWithHistory.map(u => (
+        {usersWithHistory.map((u) => (
           <Item user={u} key={u.user.id} />
         ))}
       </div>

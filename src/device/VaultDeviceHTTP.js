@@ -17,7 +17,7 @@ export const ENDPOINTS = {
 const pathArrayToString = (path: number[]): string =>
   `${path[0] & 0xfffffff}'/${path[1] & 0xfffffff}'`; // eslint-disable-line no-bitwise
 
-const deviceNetwork = async function<T>(
+const deviceNetwork = async function <T>(
   uri: string,
   method: string,
   body: ?(Object | Array<Object>),
@@ -25,7 +25,7 @@ const deviceNetwork = async function<T>(
 ): Promise<T> {
   return network(uri, method, body, {
     noJson: noJson || false,
-  }).catch(err => {
+  }).catch((err) => {
     console.error(err);
     if (err.json && err.json.status_code) {
       // TODO do we really want to throw a literal here?
@@ -144,7 +144,7 @@ export const validateVaultOperation = async (
   const data = await deviceNetwork(ENDPOINTS.VALIDATE_VAULT_OPERATION, "POST", {
     path: pathArrayToString(path),
     operation: Buffer.from(channel.blob, "base64").toString("hex"),
-    actions: channel.w_actions.map(a =>
+    actions: channel.w_actions.map((a) =>
       Buffer.from(a, "base64").toString("hex"),
     ),
   });

@@ -1,11 +1,11 @@
 import { login, logout, route, approve_tx } from "../../../functions/actions";
 
-describe("Test create tx and approve it by Operator", function() {
-  beforeEach(function() {
+describe("Test create tx and approve it by Operator", function () {
+  beforeEach(function () {
     login(22);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

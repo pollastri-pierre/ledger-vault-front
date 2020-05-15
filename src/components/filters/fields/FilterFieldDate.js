@@ -92,7 +92,7 @@ class FilterFieldDate extends PureComponent<Props> {
   }
 }
 
-const StyledInputDate = styled(p => <input type="date" {...p} />)`
+const StyledInputDate = styled((p) => <input type="date" {...p} />)`
   height: 40px;
   border-radius: 4px;
   border: 1px solid ${colors.form.border};

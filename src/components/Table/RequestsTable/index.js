@@ -17,7 +17,7 @@ type Props = {
   customTableDef?: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  onRowClick: GenericRequest => void,
+  onRowClick: (GenericRequest) => void,
 };
 
 function RequestsTable(props: Props) {

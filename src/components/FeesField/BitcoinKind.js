@@ -59,13 +59,13 @@ const patchFromSuccess = (estimatedFees, transaction) => {
   return patch;
 };
 
-const patchFromError = error => ({
+const patchFromError = (error) => ({
   error,
   estimatedFees: null,
   estimatedMaxAmount: null,
 });
 
-const useBitcoinFeePayload = transaction =>
+const useBitcoinFeePayload = (transaction) =>
   useMemo((): EstimateBTCFeesPayload => {
     // cannot destructure because eslint react-hooks is lost
     const amount = transaction.amount;

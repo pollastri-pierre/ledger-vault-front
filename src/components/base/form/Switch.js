@@ -6,7 +6,7 @@ import colors from "shared/colors";
 
 type SwitchProps = {|
   value: boolean,
-  onChange?: boolean => any,
+  onChange?: (boolean) => any,
   disabled?: boolean,
 |};
 
@@ -18,7 +18,7 @@ const Switch = ({ value, onChange, disabled }: SwitchProps) => {
   );
 
   const onEnterKeyDown = useCallback(
-    event => {
+    (event) => {
       const { keyCode } = event;
 
       if (keyCode === ENTER_KEYCODE) {
@@ -43,14 +43,14 @@ const Switch = ({ value, onChange, disabled }: SwitchProps) => {
 
 const SwitchContainer = styled.div`
   cursor: pointer;
-  opacity: ${p => (p.disabled ? 0.5 : 1)};
+  opacity: ${(p) => (p.disabled ? 0.5 : 1)};
   position: relative;
   display: inline-block;
   width: 40px;
   height: 24px;
-  background: ${p => (p.value ? colors.white : colors.mouse)};
+  background: ${(p) => (p.value ? colors.white : colors.mouse)};
   border-radius: 30px;
-  border: 1px solid ${p => (p.value ? colors.bLive : "transparent")};
+  border: 1px solid ${(p) => (p.value ? colors.bLive : "transparent")};
   &:focus {
     border-color: ${colors.form.focus};
     outline: none;
@@ -60,11 +60,11 @@ const SwitchContainer = styled.div`
 
 const Round = styled.div`
   border-radius: 50%;
-  background: ${p => (p.value ? colors.bLive : colors.switchRoundUnCheck)};
+  background: ${(p) => (p.value ? colors.bLive : colors.switchRoundUnCheck)};
   position: absolute;
   height: 18px;
   width: 18px;
-  transform: translateX(${p => (p.value ? "16px" : "0")});
+  transform: translateX(${(p) => (p.value ? "16px" : "0")});
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
   transition: 150ms ease-in-out transform;
   bottom: 2px;

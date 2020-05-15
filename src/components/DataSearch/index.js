@@ -33,8 +33,8 @@ type Props<T> = {
   Query: (*) => ConnectionQuery<*, *>,
   extraProps: Object,
   queryExtraProps?: Object,
-  onQueryParamsChange?: ObjectParameters => void,
-  onRowClick?: T => void,
+  onQueryParamsChange?: (ObjectParameters) => void,
+  onRowClick?: (T) => void,
   listenMutations?: Mutation<any, any>[],
   history?: MemoryHistory,
 };
@@ -283,9 +283,9 @@ const LoadingCanvas = styled.div`
   left: 2px;
   right: 2px;
   bottom: 2px;
-  pointer-events: ${p => (p.show ? "auto" : "none")};
+  pointer-events: ${(p) => (p.show ? "auto" : "none")};
   background: rgba(255, 255, 255, 0.5);
-  opacity: ${p => (p.show ? 1 : 0)};
+  opacity: ${(p) => (p.show ? 1 : 0)};
   transition: 100ms linear opacity;
 `;
 
@@ -313,7 +313,7 @@ function resolveData(response) {
       console.warn("Response is not paginated");
       return response;
     }
-    return response.edges.map(el => el.node);
+    return response.edges.map((el) => el.node);
   } catch (err) {
     console.warn("Request cant be parsed", err);
     return [];

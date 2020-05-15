@@ -24,7 +24,7 @@ type Props<T, P> = {
   estimateFeesPayload: P,
   patchFromSuccess: (FeesQueryResponse, T) => $Shape<T>,
   patchFromError: (Error, T) => $Shape<T>,
-  shouldFetchFees?: T => boolean,
+  shouldFetchFees?: (T) => boolean,
   EditFees?: React$ComponentType<EditProps<T>>,
   DisplayFees?: React$ComponentType<{| transaction: T |}>,
 };
@@ -74,7 +74,7 @@ const TransactionFeesLevel = <
 
   const isCustom = transaction.fees.fees_level === "custom";
 
-  const handleToggleCustom = isCustom =>
+  const handleToggleCustom = (isCustom) =>
     onChangeTransaction(
       bridge.editTransactionFeesLevel(
         transaction,
@@ -82,7 +82,7 @@ const TransactionFeesLevel = <
       ),
     );
 
-  const handleChangeFeesLevel = level =>
+  const handleChangeFeesLevel = (level) =>
     onChangeTransaction(bridge.editTransactionFeesLevel(transaction, level));
 
   const feesHasBeenFetched = bridge.getEstimatedFees(transaction) !== null;

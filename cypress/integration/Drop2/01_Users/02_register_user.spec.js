@@ -1,11 +1,11 @@
 import { login, route, switch_device } from "../../../functions/actions";
 
-describe("Test the registration of a User", function() {
-  beforeEach(function() {
+describe("Test the registration of a User", function () {
+  beforeEach(function () {
     login(5);
   });
 
-  afterEach(function() {});
+  afterEach(function () {});
 
   it("Register as Anna Operator", () => {
     cy.server();
@@ -17,7 +17,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Anna").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(10);
         cy.get("[data-test=button_registration]").click();
@@ -38,7 +38,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Aidan").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(11);
         cy.get("[data-test=button_registration]").click();
@@ -59,7 +59,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Thomas").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(12);
         cy.get("[data-test=button_registration]").click();
@@ -80,7 +80,7 @@ describe("Test the registration of a User", function() {
     cy.contains("James").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(13);
         cy.get("[data-test=button_registration]").click();
@@ -101,7 +101,7 @@ describe("Test the registration of a User", function() {
     cy.contains("John").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(16);
         cy.get("[data-test=button_registration]").click();

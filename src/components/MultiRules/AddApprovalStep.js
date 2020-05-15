@@ -14,7 +14,7 @@ const emptyStep = {
 
 type Props = {
   rule: RuleMultiAuth,
-  onChange: RuleMultiAuth => void,
+  onChange: (RuleMultiAuth) => void,
   isDisabled: boolean,
   users: User[],
   groups: Group[],
@@ -23,7 +23,7 @@ type Props = {
 const AddApprovalStep = (props: Props) => {
   const { rule, onChange, isDisabled, users, groups } = props;
 
-  const handleAdd = step => {
+  const handleAdd = (step) => {
     // if no rule at all, we need to add a "creator" step
     if (rule.data.length === 0) {
       return onChange({ ...rule, data: [emptyStep, step] });
@@ -70,7 +70,7 @@ export const EditApprovalStep = ({
 }: {
   extraProps?: ExtraProps,
   value: RuleMultiAuthStep | null,
-  onChange: RuleMultiAuthStep => void,
+  onChange: (RuleMultiAuthStep) => void,
 }) => {
   if (!extraProps) return null;
   if (!value) return null;

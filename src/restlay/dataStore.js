@@ -203,7 +203,7 @@ export const executeQueryOrMutation =
 
     const promise = ctx
       .network(uri, method, body, queryOrMutation.fetchParams)
-      .then(data => {
+      .then((data) => {
         // FIXME FIXME FIXME prevent extremely weird and wicked behaviour
         // of the gate, which send onboarding data instead of any other
         // data if the onboarding is not finished.
@@ -232,7 +232,7 @@ export const executeQueryOrMutation =
             //
             // here we apply the filter in each node, which mean pageInfo
             // may be wrong..
-            data.edges = data.edges.filter(e => f(e.node));
+            data.edges = data.edges.filter((e) => f(e.node));
           }
         }
         if (queryOrMutation.getResponseSchema()) {
@@ -258,7 +258,7 @@ export const executeQueryOrMutation =
         });
         return data;
       })
-      .catch(error => {
+      .catch((error) => {
         if (
           queryOrMutation instanceof Query ||
           queryOrMutation instanceof ConnectionQuery
@@ -289,8 +289,8 @@ export const executeQueryOrMutation =
     return promise;
   };
 
-const clearAllCaches = store => {
-  Object.keys(store.results).forEach(k => {
+const clearAllCaches = (store) => {
+  Object.keys(store.results).forEach((k) => {
     store.results[k].time = 0;
   });
   return { ...store };
@@ -350,7 +350,7 @@ const reducers = {
 export const accountsSelector = (state: { data: Store }): Account[] => {
   if (state.data && state.data.entities && state.data.entities.accounts) {
     const accounts = state.data.entities.accounts;
-    return Object.keys(accounts).map(id => accounts[id]);
+    return Object.keys(accounts).map((id) => accounts[id]);
   }
   return [];
 };
@@ -358,7 +358,7 @@ export const accountsSelector = (state: { data: Store }): Account[] => {
 export const currenciesSelector = (state: { data: Store }): Currency[] => {
   if (state.data && state.data.entities && state.data.entities.currencies) {
     const currencies = state.data.entities.currencies;
-    return Object.keys(currencies).map(id => currencies[id]);
+    return Object.keys(currencies).map((id) => currencies[id]);
   }
   return [];
 };
@@ -373,11 +373,11 @@ export const reducer = (state: * = initialState, action: Object) => {
   return state;
 };
 
-const noop = data => data;
+const noop = (data) => data;
 
-const _addType = type => {
+const _addType = (type) => {
   if (!type) return noop;
-  return data => ({ ...data, entityType: mapRestlayKeyToType[type] });
+  return (data) => ({ ...data, entityType: mapRestlayKeyToType[type] });
 };
 
 function handleDeserialization(queryOrMutation, data) {
@@ -407,7 +407,7 @@ function handleDeserialization(queryOrMutation, data) {
       : queryOrMutation instanceof ConnectionQuery
       ? {
           ...data,
-          edges: data.edges.map(el => ({
+          edges: data.edges.map((el) => ({
             ...el,
             node: deserializeAndAddType(el.node, el),
           })),

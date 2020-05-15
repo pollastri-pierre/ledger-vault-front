@@ -25,7 +25,7 @@ export default function GroupsList(props: Props) {
 
   return (
     <List display={display} compact={compact}>
-      {groups.map(group => (
+      {groups.map((group) => (
         <ListItem
           display={display}
           tileWidth={tileWidth}

@@ -139,7 +139,7 @@ const steps = [
   },
 ];
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   requestToReplay: state.requestReplay,
 });
 const mapDispatch = {
@@ -158,7 +158,7 @@ const Wrapper = connect(
     match: Match,
     close: Function,
     requestToReplay: EditGroupReplay | CreateGroupReplay,
-    resetRequest: void => void,
+    resetRequest: (void) => void,
   }) => {
     const closeAndEmptyStore = () => {
       resetRequest();
@@ -183,7 +183,7 @@ const Wrapper = connect(
 );
 
 const GroupEdit = connectData(
-  props => {
+  (props) => {
     const { t } = useTranslation();
     return (
       <GrowingCard>
@@ -197,7 +197,7 @@ const GroupEdit = connectData(
           initialPayload={mergeEditData(
             props.group,
             props.requestToReplay,
-            props.operators.edges.map(e => e.node),
+            props.operators.edges.map((e) => e.node),
           )}
           payloadToCompareTo={props.group}
           steps={steps}
@@ -214,7 +214,7 @@ const GroupEdit = connectData(
       operators: UsersQuery,
       group: GroupQuery,
     },
-    propsToQueryParams: props => ({
+    propsToQueryParams: (props) => ({
       role: "OPERATOR",
       status: ["ACTIVE"],
       groupId: props.groupId,
@@ -222,7 +222,7 @@ const GroupEdit = connectData(
   },
 );
 const GroupCreation = connectData(
-  props => {
+  (props) => {
     const { t } = useTranslation();
     return (
       <GrowingCard>
@@ -272,7 +272,7 @@ function mergeEditData(
     description: group.description,
     members: edit_data.members
       ? edit_data.members
-          .map(id => operators.find(o => o.id === id))
+          .map((id) => operators.find((o) => o.id === id))
           .filter(Boolean)
       : group.members,
   };
@@ -295,14 +295,14 @@ function serializePayload(payload: GroupCreationPayload) {
   if (!payload.id)
     return {
       ...payload,
-      members: payload.members.map(m => m.id),
+      members: payload.members.map((m) => m.id),
       name: payload.name,
     };
 
   return {
     edit_data: {
       name: payload.name,
-      members: payload.members.map(m => m.id),
+      members: payload.members.map((m) => m.id),
     },
     group_id: payload.id,
   };

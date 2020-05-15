@@ -17,9 +17,9 @@ type UseFetchFeesProps<T, P> = {
   account: Account,
   transaction: T,
   bridge: WalletBridge<T>,
-  onChangeTransaction: T => void,
+  onChangeTransaction: (T) => void,
   estimateFeesPayload: P,
-  shouldFetchFees?: T => boolean,
+  shouldFetchFees?: (T) => boolean,
   // the response type should be $Shape<T> but Flow doesn't agree (?)
   patchFromSuccess: (FeesQueryResponse, T) => T,
   patchFromError: (Error, T) => T,

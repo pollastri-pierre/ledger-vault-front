@@ -28,14 +28,14 @@ export const handleCancelOnDevice = (
 export const hasUserApprovedRequest = (request: GenericRequest, me: User) =>
   request.approvals &&
   request.approvals.filter(
-    approval =>
+    (approval) =>
       approval.created_by.pub_key === me.pub_key && approval.type === "APPROVE",
   ).length > 0;
 
 export const hasUserApprovedCurrentStep = (request: GenericRequest, me: User) =>
   request.approvals &&
   request.approvals.filter(
-    approval =>
+    (approval) =>
       approval.created_by.pub_key === me.pub_key &&
       approval.type === "APPROVE" &&
       approval.step === request.current_step,
@@ -46,7 +46,7 @@ export const isUserInCurrentStep = (request: GenericRequest, me: User) => {
     if (!request || !request.approvals_steps) return false;
     const currentStep = request.approvals_steps[request.current_step];
     if (!currentStep) return false;
-    return currentStep.group.members.some(m => m.id === me.id);
+    return currentStep.group.members.some((m) => m.id === me.id);
   } catch (err) {
     console.warn("Cant check if user is in current step", err);
     return false;
@@ -152,7 +152,7 @@ export function getCurrentStepProgress(request: GenericRequest) {
   const step = request.approvals_steps[request.current_step];
   if (!step) return null;
   const nbApproved = (request.approvals || []).filter(
-    a => a.step === request.current_step,
+    (a) => a.step === request.current_step,
   ).length;
   return { nb: nbApproved, total: step.quorum };
 }

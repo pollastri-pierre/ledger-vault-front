@@ -10,7 +10,7 @@ import TransactionBodyCell from "./TransactionBodyCell";
 type TransactionRowProps = {
   transaction: Transaction,
   account: Account,
-  onClick: Transaction => void,
+  onClick: (Transaction) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -23,7 +23,7 @@ function TransactionRow(props: TransactionRowProps) {
 
   return (
     <TableRow onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <TransactionBodyCell
           account={account}
           transaction={transaction}

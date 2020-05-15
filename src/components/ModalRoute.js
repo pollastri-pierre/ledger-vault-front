@@ -8,7 +8,7 @@ import Modal from "components/base/Modal";
 import { getModalClosePath } from "utils/modal";
 import { UserContext } from "components/UserContextProvider";
 
-const isEmptyChildren = children => React.Children.count(children) === 0;
+const isEmptyChildren = (children) => React.Children.count(children) === 0;
 
 function renderInner(routeProps, { component, render, children }, extraProps) {
   const { match } = routeProps;
@@ -72,7 +72,7 @@ class ModalRoute extends Component<{
     } = this.props;
     return (
       <Route {...rest}>
-        {routeProps => {
+        {(routeProps) => {
           const inner = renderInner(routeProps, this.props, {
             close: this.onClose,
           });
@@ -112,7 +112,7 @@ const usePrevFirst = [
 function resolveCloseURL(history, lastPath, me) {
   const { pathname: actualURL } = history.location;
   if (!lastPath) return getModalClosePath(actualURL, me) || "/";
-  if (lastPath && usePrevFirst.find(r => lastPath.match(r))) {
+  if (lastPath && usePrevFirst.find((r) => lastPath.match(r))) {
     return lastPath;
   }
   const prevModalClosePath = getModalClosePath(actualURL, me);

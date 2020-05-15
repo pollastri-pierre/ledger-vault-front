@@ -22,7 +22,7 @@ export type StepProps<T> = {
   initialPayload: T,
   payloadToCompareTo: T,
   updatePayload: PayloadUpdater<T>,
-  transitionTo: string => void,
+  transitionTo: (string) => void,
   isEditMode?: boolean,
   onClose?: () => void,
   onSuccess?: () => void,

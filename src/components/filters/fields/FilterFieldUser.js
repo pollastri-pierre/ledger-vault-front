@@ -19,8 +19,8 @@ const noOptionsMessage = () => "No groups";
 
 function FilterFieldUser(props: Props) {
   const { usersConnection, ...p } = props;
-  const users = usersConnection.edges.map(u => u.node);
-  const options = users.map(u => ({ label: u.username, value: u.id }));
+  const users = usersConnection.edges.map((u) => u.node);
+  const options = users.map((u) => ({ label: u.username, value: u.id }));
   return (
     <FieldSelect
       title="Users"

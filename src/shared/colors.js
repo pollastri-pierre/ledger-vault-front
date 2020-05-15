@@ -138,28 +138,19 @@ const toast = {
 colors.toast = toast;
 
 function opacity(c, op) {
-  return color(c)
-    .alpha(op)
-    .string();
+  return color(c).alpha(op).string();
 }
 
 function darken(c, n) {
-  return color(c)
-    .darken(n)
-    .string();
+  return color(c).darken(n).string();
 }
 
 function lighten(c, n) {
-  return color(c)
-    .lighten(n)
-    .string();
+  return color(c).lighten(n).string();
 }
 
 function rgba(c, a) {
-  return color(c)
-    .alpha(a)
-    .rgb()
-    .toString();
+  return color(c).alpha(a).rgb().toString();
 }
 
 export { colors as default, opacity, darken, lighten, rgba };

@@ -26,7 +26,7 @@ type Props<T, P> = {
   onClose: () => void,
   initialCursor?: number,
   isEditMode?: boolean,
-  transitionTo?: string => void,
+  transitionTo?: (string) => void,
 };
 
 type State<T> = {
@@ -86,7 +86,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   canTransitionTo = (stepId: string) => {
     const { steps, additionalProps } = this.props;
     const { payload } = this.state;
-    const cursor = steps.findIndex(s => s.id === stepId);
+    const cursor = steps.findIndex((s) => s.id === stepId);
     if (cursor === -1) return false;
     for (let i = 0; i <= cursor; i++) {
       const step = steps[i];
@@ -99,7 +99,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   transitionTo = (stepId: string) => {
     if (!this.canTransitionTo(stepId)) return;
     const { steps } = this.props;
-    const cursor = steps.findIndex(s => s.id === stepId);
+    const cursor = steps.findIndex((s) => s.id === stepId);
     if (cursor === -1) return;
     this.setState(() => ({ cursor }));
   };
@@ -316,14 +316,14 @@ const StepName = styled(Box).attrs({
   align: "center",
   flow: 5,
 })`
-  font-weight: ${p => (p.isActive ? "bold" : "normal")};
-  color: ${p =>
+  font-weight: ${(p) => (p.isActive ? "bold" : "normal")};
+  color: ${(p) =>
     p.isActive
       ? colors.legacyDarkGrey3
       : p.isDisabled
       ? colors.lead
       : colors.legacyLightGrey3};
-  pointer-events: ${p => (p.isDisabled ? "none" : "auto")};
+  pointer-events: ${(p) => (p.isDisabled ? "none" : "auto")};
   &:hover {
     cursor: pointer;
     color: ${colors.legacyDarkGrey3};

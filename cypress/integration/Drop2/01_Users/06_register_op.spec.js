@@ -1,11 +1,11 @@
 import { login, route, switch_device } from "../../../functions/actions";
 
-describe("Test the registration of a User", function() {
-  beforeEach(function() {
+describe("Test the registration of a User", function () {
+  beforeEach(function () {
     login(5);
   });
 
-  afterEach(function() {});
+  afterEach(function () {});
 
   it("Register as Laura Operator", () => {
     cy.server();
@@ -17,7 +17,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Laura").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(17);
         cy.get("[data-test=button_registration]").click();
@@ -38,7 +38,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Sally").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(18);
         cy.get("[data-test=button_registration]").click();
@@ -59,7 +59,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Claudia").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(19);
         cy.get("[data-test=button_registration]").click();
@@ -80,7 +80,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Allison").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(20);
         cy.get("[data-test=button_registration]").click();
@@ -101,7 +101,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Tyler").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(21);
         cy.get("[data-test=button_registration]").click();
@@ -122,7 +122,7 @@ describe("Test the registration of a User", function() {
     cy.contains("Charles").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
-      .then(text => {
+      .then((text) => {
         cy.visit(text);
         switch_device(22);
         cy.get("[data-test=button_registration]").click();

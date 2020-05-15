@@ -17,9 +17,10 @@ type Props = {
 
 const UserDetailsGroups = (props: Props) => {
   const { groupsConnection } = props;
-  const groups = useMemo(() => groupsConnection.edges.map(edge => edge.node), [
-    groupsConnection,
-  ]);
+  const groups = useMemo(
+    () => groupsConnection.edges.map((edge) => edge.node),
+    [groupsConnection],
+  );
   return <GroupsList display="grid" tileWidth={250} groups={groups} />;
 };
 
@@ -29,7 +30,7 @@ export default connectData(UserDetailsGroups, {
   queries: {
     groupsConnection: SearchGroups,
   },
-  propsToQueryParams: props => ({
+  propsToQueryParams: (props) => ({
     members: props.userID,
     pageSize: -1,
   }),

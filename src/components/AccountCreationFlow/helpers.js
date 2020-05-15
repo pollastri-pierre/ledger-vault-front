@@ -10,7 +10,8 @@ export const findParentAccountInAccounts = (
   availableParentAccounts: Connection<Account>,
 ) => {
   const el = availableParentAccounts.edges.find(
-    el => parentAccount && parentAccount.id && el.node.id === parentAccount.id,
+    (el) =>
+      parentAccount && parentAccount.id && el.node.id === parentAccount.id,
   );
   return el ? el.node : null;
 };
@@ -22,15 +23,15 @@ export const getAvailableParentsAccounts = (
   if (!erc20token) return [];
   const parentsIdsOfSameTokenAccounts = allAccounts.edges
     .filter(
-      el =>
+      (el) =>
         el.node.account_type === "Erc20" &&
         // $FlowFixMe flow failed to see that we are sure that erc20token is not null nor undefined
         el.node.contract_address === erc20token.contract_address,
     )
-    .map(el => el.node.parent);
+    .map((el) => el.node.parent);
   return allAccounts.edges
     .filter(
-      el =>
+      (el) =>
         el.node.status !== "PENDING" &&
         el.node.account_type === "Ethereum" &&
         el.node.currency ===
@@ -38,5 +39,5 @@ export const getAvailableParentsAccounts = (
           getCurrencyIdFromBlockchainName(erc20token.blockchain_name) &&
         parentsIdsOfSameTokenAccounts.indexOf(el.node.id) === -1,
     )
-    .map(el => el.node);
+    .map((el) => el.node);
 };

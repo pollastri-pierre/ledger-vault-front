@@ -17,7 +17,7 @@ storiesOf("components", module).add("InfoBox", () => {
   const types = ["info", "warning", "error", "success"];
   return (
     <div>
-      {types.map(t => (
+      {types.map((t) => (
         <Wrapper
           key={t}
           type={t}

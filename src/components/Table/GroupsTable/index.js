@@ -15,7 +15,7 @@ import TableScroll from "../TableScroll";
 
 type Props = {
   data: Group[],
-  onRowClick: Group => void,
+  onRowClick: (Group) => void,
   customTableDef?: TableDefinition,
   queryParams?: ObjectParameters,
   onSortChange?: (string, ?string) => void,

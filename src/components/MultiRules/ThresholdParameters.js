@@ -14,7 +14,7 @@ import type { RuleThreshold } from "./types";
 type Props = {|
   rule: RuleThreshold,
   currencyOrToken: CurrencyOrToken,
-  onChange: RuleThreshold => void,
+  onChange: (RuleThreshold) => void,
 |};
 
 const ThresholdParameters = (props: Props) => {
@@ -32,18 +32,19 @@ const ThresholdParameters = (props: Props) => {
     throw new Error("No condition in threshold rule");
   }
 
-  const changeThreshold = threshold => onChange({ ...rule, data: [threshold] });
+  const changeThreshold = (threshold) =>
+    onChange({ ...rule, data: [threshold] });
 
-  const handleChange = (key: string) => v =>
+  const handleChange = (key: string) => (v) =>
     changeThreshold({ ...threshold, [key]: v });
 
-  const handleNoMaxChange = e => {
+  const handleNoMaxChange = (e) => {
     const isChecked = e.target.checked === true;
     changeThreshold({ ...threshold, max: isChecked ? null : BigNumber(0) });
   };
 
   const unitsOptions: Option[] = currency
-    ? currency.units.map(u => ({
+    ? currency.units.map((u) => ({
         label: u.code,
         value: u.code,
         data: u,
@@ -59,11 +60,11 @@ const ThresholdParameters = (props: Props) => {
             <Box width={90}>
               <Select
                 tabIndex={-1}
-                value={unitsOptions.find(opt =>
+                value={unitsOptions.find((opt) =>
                   unit ? opt.data.code === unit.code : null,
                 )}
                 options={unitsOptions}
-                onChange={data => setUnit(data.data)}
+                onChange={(data) => setUnit(data.data)}
               />
             </Box>
           </Box>

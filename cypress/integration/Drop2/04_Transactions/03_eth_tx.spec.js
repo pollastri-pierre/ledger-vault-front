@@ -1,11 +1,11 @@
 import { login, logout, route, approve_tx } from "../../../functions/actions";
 
-describe("Test create tx and approve it by Operators", function() {
-  beforeEach(function() {
+describe("Test create tx and approve it by Operators", function () {
+  beforeEach(function () {
     login(12);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -27,9 +27,7 @@ describe("Test create tx and approve it by Operators", function() {
       .eq(1)
       .type("2", { force: true })
       .type("{enter}");
-    cy.get("[data-test=input_amount]")
-      .eq(2)
-      .type("126000", { force: true });
+    cy.get("[data-test=input_amount]").eq(2).type("126000", { force: true });
     cy.wait(2500);
     cy.contains("Next").click();
     cy.get("[data-test=title_tx]").type("Cypress TX for eth rop", {

@@ -23,12 +23,12 @@ type Props = {
   onAddWrapShard: Function,
 };
 
-const mapState = state => ({
+const mapState = (state) => ({
   onboarding: state.onboarding,
 });
 const mapDispatch = (dispatch: *) => ({
   onGetWrapsChannel: () => dispatch(openWrappingChannel()),
-  onAddWrapShard: data => dispatch(addWrappingKey(data)),
+  onAddWrapShard: (data) => dispatch(addWrappingKey(data)),
   onToggleDeviceModal: () => dispatch(toggleDeviceModal()),
   onAddMessage: (title, content, success) =>
     dispatch(addMessage(title, content, success)),
@@ -48,12 +48,12 @@ const WrappingKeys = ({
     onGetWrapsChannel();
   }, [onGetWrapsChannel]);
 
-  const onSuccess = data => {
+  const onSuccess = (data) => {
     onAddWrapShard(data.fragment);
     setLoading(null);
   };
 
-  const onError = e => {
+  const onError = (e) => {
     setLoading(null);
     setError(e);
   };

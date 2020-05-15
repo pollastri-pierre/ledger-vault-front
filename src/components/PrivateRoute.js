@@ -3,7 +3,7 @@ import React from "react";
 import { Route, Redirect } from "react-router";
 import { connect } from "react-redux";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 

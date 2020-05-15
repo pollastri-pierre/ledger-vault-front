@@ -62,7 +62,7 @@ test("restlay.fetchQuery from A (no dep) triggers a refresh of B (if depends on 
     },
   });
   let restlay;
-  const Foo = connectData(props => ((restlay = props.restlay), null));
+  const Foo = connectData((props) => ((restlay = props.restlay), null));
   const inst = renderer.create(
     render(
       <div>

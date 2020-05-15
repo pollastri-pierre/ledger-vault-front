@@ -31,7 +31,7 @@ export default function TryAgain(props: Props) {
     setPending(true);
     Promise.resolve()
       .then(action)
-      .catch(e => e)
+      .catch((e) => e)
       .then(() => {
         if (isUnmounted.current) return;
         setPending(false);

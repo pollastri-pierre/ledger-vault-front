@@ -19,7 +19,7 @@ type Props = {
 function SubAccountsWidget(props: Props) {
   const { accountsConnection, account } = props;
   const { t } = useTranslation();
-  const accounts = accountsConnection.edges.map(a => a.node);
+  const accounts = accountsConnection.edges.map((a) => a.node);
 
   const desc = (
     <VaultLink withRole to={`/accounts?parent=${account.id}`}>

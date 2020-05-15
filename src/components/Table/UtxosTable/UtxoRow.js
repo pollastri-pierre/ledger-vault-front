@@ -10,7 +10,7 @@ import UtxoBodyCell from "./UtxoBodyCell";
 type UtxoRowProps = {
   utxo: UTXO,
   account: Account,
-  onClick?: UTXO => void,
+  onClick?: (UTXO) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -24,7 +24,7 @@ function UtxoRow(props: UtxoRowProps) {
 
   return (
     <TableRow key={utxo.id} onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <UtxoBodyCell
           account={account}
           utxo={utxo}

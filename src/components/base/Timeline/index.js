@@ -33,8 +33,8 @@ const Timeline = ({
 
 const TimelineContainer = styled.div`
   position: relative;
-  margin-bottom: ${p => (p.hasRope ? ROPE_SPACE : 0)}px;
-  margin-top: ${p => (p.startsWithLabel ? 32 : 0)}px;
+  margin-bottom: ${(p) => (p.hasRope ? ROPE_SPACE : 0)}px;
+  margin-top: ${(p) => (p.startsWithLabel ? 32 : 0)}px;
   svg {
     pointer-events: none;
   }
@@ -43,9 +43,9 @@ const TimelineContainer = styled.div`
 export const Bar = styled.div`
   position: absolute;
   pointer-events: none;
-  top: ${p => (p.pos === "bot" ? STOP_PADDING + PREPEND_SIZE / 2 : 0)}px;
-  bottom: ${p => (p.pos === "top" ? "calc(100% - 20px)" : 0)};
-  left: ${p =>
+  top: ${(p) => (p.pos === "bot" ? STOP_PADDING + PREPEND_SIZE / 2 : 0)}px;
+  bottom: ${(p) => (p.pos === "top" ? "calc(100% - 20px)" : 0)};
+  left: ${(p) =>
     (p.indentation || 0) * INDENT_SIZE + STOP_PADDING + PREPEND_SIZE / 2}px;
   width: ${STROKE}px;
   background: ${STROKE_COLOR};
@@ -135,15 +135,15 @@ const TimelineLabel = ({
 
 const TimelineStopWrapper = styled.div`
   position: relative;
-  margin-bottom: ${p => (p.withRope ? ROPE_SPACE : 0)}px;
-  padding-bottom: ${p => p.pb || 0}px;
-  padding-top: ${p => p.pt || 0}px;
+  margin-bottom: ${(p) => (p.withRope ? ROPE_SPACE : 0)}px;
+  padding-bottom: ${(p) => p.pb || 0}px;
+  padding-top: ${(p) => p.pt || 0}px;
 `;
 
 const LabelContainer = styled.div`
   pointer-events: none;
   position: absolute;
-  top: -${p => p.offset || 0}px;
+  top: -${(p) => p.offset || 0}px;
   left: 0;
   right: 0;
   padding: 5px 0;
@@ -225,18 +225,18 @@ const TimelineStopContainer = styled.div`
   position: relative;
   display: flex;
   align-items: flex-start;
-  margin-left: ${p => p.offsetX}px;
+  margin-left: ${(p) => p.offsetX}px;
   padding: 10px 8px;
   border-radius: 4px;
   border: 1px dashed transparent;
-  ${p =>
+  ${(p) =>
     p.isDisabled
       ? `
     pointer-events: none;
   `
       : ``}
 
-  ${p =>
+  ${(p) =>
     p.onClick
       ? `
     &:hover {
@@ -272,12 +272,12 @@ const TimelineStopContent = styled.div`
 
 const Bullet = styled.div`
   flex-shrink: 0;
-  width: ${p => (p.size === "small" ? 40 : 50)}px;
-  height: ${p => (p.size === "small" ? 40 : 50)}px;
+  width: ${(p) => (p.size === "small" ? 40 : 50)}px;
+  height: ${(p) => (p.size === "small" ? 40 : 50)}px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${p =>
+  background: ${(p) =>
     p.color
       ? lighten(p.color, 0.7)
       : p.variant === "plain"
@@ -286,8 +286,8 @@ const Bullet = styled.div`
   font-weight: bolder !important;
   font-size: 16px;
   border-radius: 50%;
-  border-width: ${p => (p.variant === "interactive" ? 1 : STROKE)}px;
-  border-color: ${p =>
+  border-width: ${(p) => (p.variant === "interactive" ? 1 : STROKE)}px;
+  border-color: ${(p) =>
     p.isDisabled
       ? colors.mediumGrey
       : p.color
@@ -295,7 +295,7 @@ const Bullet = styled.div`
       : p.variant === "plain" || p.variant === "interactive"
       ? colors.bLive
       : STROKE_COLOR};
-  color: ${p =>
+  color: ${(p) =>
     p.isDisabled
       ? colors.mediumGrey
       : p.color
@@ -303,7 +303,7 @@ const Bullet = styled.div`
       : p.variant === "plain" || p.variant === "interactive"
       ? colors.bLive
       : STROKE_COLOR};
-  border-style: ${p =>
+  border-style: ${(p) =>
     p.variant === "interactive" || p.variant === "dashed" ? "dashed" : "solid"};
   position: relative;
   z-index: 2;

@@ -7,7 +7,7 @@ function Slider({ children, slide }: { children: React$Node, slide: number }) {
   const childs = Children.toArray(children);
 
   const anim = useCallback(
-    i => ({
+    (i) => ({
       opacity: i === slide ? 1 : 0,
       transform: `translateY(${(i - slide) * 20}%)`,
       config: {

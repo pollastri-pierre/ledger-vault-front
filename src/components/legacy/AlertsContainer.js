@@ -20,7 +20,7 @@ import TranslatedError from "components/TranslatedError";
 import type { DeviceError } from "components/DeviceInteraction";
 import { useVersions } from "components/VersionsContext";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   alerts: state.alerts,
 });
 
@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch: *) => ({
 const genericError = new Error();
 const errorRed = opacity(colors.grenade, 0.7);
 
-const IconError = p => <FaExclamationCircle {...p} color={errorRed} />;
+const IconError = (p) => <FaExclamationCircle {...p} color={errorRed} />;
 
 const STATUS_NO_ERROR = [DEVICE_REJECT_ERROR_CODE, U2F_TIMEOUT];
 export function MessagesContainer(props: {

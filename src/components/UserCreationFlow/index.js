@@ -143,7 +143,7 @@ function purgePayload(entity: User) {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   requestToReplay: state.requestReplay,
 });
 const mapDispatch = {

@@ -45,7 +45,7 @@ function VaultLayoutMenu(props: Props) {
           </VaultLayoutMenuHeader>
         </VaultLink>
         <VaultLayoutToggle isOpened={isOpened} onToggle={onToggle} />
-        {items.map(item => (
+        {items.map((item) => (
           <VaultLayoutMenuItem
             key={item.key}
             item={item}
@@ -88,7 +88,7 @@ const VaultLayoutMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: ${p =>
+  width: ${(p) =>
     p.isOpened
       ? vaultLayoutConfig.MENU_WIDTH
       : vaultLayoutConfig.COLLAPSED_MENU_WIDTH}px;
@@ -106,7 +106,7 @@ const VaultLayoutMenuHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: ${p => (p.isOpened ? 1 : 0)};
+  opacity: ${(p) => (p.isOpened ? 1 : 0)};
   pointer-events: none;
   @media (min-width: ${vaultLayoutConfig.BREAKPOINT}px) {
     opacity: 1;

@@ -31,7 +31,7 @@ const groups = genGroups(3, { users, status: "ACTIVE" });
 const accounts = genAccounts(4);
 const whitelists = genWhitelists(10, { users, status: "ACTIVE" });
 
-const fakeNetwork = async url => {
+const fakeNetwork = async (url) => {
   await delay(100);
   if (url.match(/whitelists\/[^/]*/g)) {
     return whitelists[0];
@@ -55,7 +55,7 @@ const fakeNetwork = async url => {
   }
   if (url.startsWith("/groups")) {
     const group = denormalize(
-      groups.map(g => g.id),
+      groups.map((g) => g.id),
       [schema.Group],
       {
         users: keyBy(users, "id"),
@@ -64,7 +64,7 @@ const fakeNetwork = async url => {
     )[0];
     const g = {
       ...group,
-      last_request: requests.find(r => r.type === "CREATE_GROUP"),
+      last_request: requests.find((r) => r.type === "CREATE_GROUP"),
     };
     g.status = "ACTIVE";
     g.last_request.status = "PENDING";
@@ -116,7 +116,7 @@ storiesOf("entities/Whitelist", module)
 
 function wrapConnection(data) {
   return {
-    edges: data.map(d => ({ node: d, cursor: d.id })),
+    edges: data.map((d) => ({ node: d, cursor: d.id })),
     pageInfo: { hasNextPage: false },
   };
 }

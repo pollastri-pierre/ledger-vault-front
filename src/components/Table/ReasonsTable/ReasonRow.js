@@ -9,7 +9,7 @@ import ReasonBodyCell from "./ReasonBodyCell";
 
 type ReasonRowProps = {
   reason: BlockingReasonType,
-  onClick: BlockingReasonType => void,
+  onClick: (BlockingReasonType) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -20,7 +20,7 @@ function ReasonRow(props: ReasonRowProps) {
   };
   return (
     <TableRow onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <ReasonBodyCell reason={reason} item={item} key={item.body.prop} />
       ))}
     </TableRow>

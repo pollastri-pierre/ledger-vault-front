@@ -70,7 +70,7 @@ const SLIDES = {
 const checkedIcon = <FaCheckCircle color={colors.paleGreenAlt} size={20} />;
 
 type Action =
-  | { type: "callback", payload: RestlayEnvironment => Promise<any> }
+  | { type: "callback", payload: (RestlayEnvironment) => Promise<any> }
   | {
       type: "device",
       payload: Interaction[],
@@ -181,7 +181,7 @@ function EntityFooter(props: Props) {
     );
   }, [request, restlay, refreshDataQuery]);
 
-  const handleError = err => {
+  const handleError = (err) => {
     const isBlockingReasons =
       !!err && !!err.json && !!err.json.blocking_reasons;
 

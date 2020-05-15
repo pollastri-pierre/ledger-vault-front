@@ -25,7 +25,7 @@ const Wrapper = () => {
     setAddress(MOCK_ADDR_NO_CHECKSUM);
     focus();
   };
-  const handleChange = value => {
+  const handleChange = (value) => {
     setAddress(value);
     focus();
   };

@@ -6,7 +6,7 @@ import Box from "components/base/Box";
 
 import colors from "shared/colors";
 
-export default styled(Box).attrs(p => ({
+export default styled(Box).attrs((p) => ({
   align: "center",
   justify: p.leftAlign ? "flex-start" : "flex-end",
   horizontal: true,
@@ -15,13 +15,13 @@ export default styled(Box).attrs(p => ({
   grow: !!p.grow,
 }))`
   height: 40px;
-  width: ${p => (p.width ? p.width : "inherit")}
+  width: ${(p) => (p.width ? p.width : "inherit")}
   background: ${colors.form.bg};
-  border: ${p =>
+  border: ${(p) =>
     p.isError
       ? `1px solid ${colors.form.error}`
       : p.isActive
       ? `1px solid ${colors.form.focus}`
       : `1px solid ${colors.form.border}`} ;
-  min-width: ${p => (p.width ? p.width : "180px")};
+  min-width: ${(p) => (p.width ? p.width : "180px")};
 `;

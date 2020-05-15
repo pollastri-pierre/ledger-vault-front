@@ -5,12 +5,12 @@ import {
   successfull_message2,
 } from "../../../functions/actions";
 
-describe("Test Case for Create Groups with multiple member", function() {
-  beforeEach(function() {
+describe("Test Case for Create Groups with multiple member", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -22,9 +22,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("[data-test=add-button]").click();
     cy.wait(2000);
     cy.get("[data-test=group_description]").type("Key accounts Ops by cypress");
-    cy.get("#input_groups_users")
-      .type("Anna", { force: true })
-      .type("{enter}");
+    cy.get("#input_groups_users").type("Anna", { force: true }).type("{enter}");
     cy.get("#input_groups_users")
       .type("Aidan", { force: true })
       .type("{enter}");

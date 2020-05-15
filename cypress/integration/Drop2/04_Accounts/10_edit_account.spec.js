@@ -7,12 +7,12 @@ import {
   success_edit_account,
 } from "../../../functions/actions";
 
-describe("Test Case for Account", function() {
-  beforeEach(function() {
+describe("Test Case for Account", function () {
+  beforeEach(function () {
     login(6);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -22,14 +22,10 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     // EDIT ACCOUNT NAME: ATM Test
-    cy.get("[data-test=name]")
-      .eq(3)
-      .click();
+    cy.get("[data-test=name]").eq(3).click();
     cy.get("[data-test=account_details]").click();
     cy.get("[data-test=edit-button]").click();
-    cy.get("[data-type=close-bubbles]")
-      .eq(0)
-      .click();
+    cy.get("[data-type=close-bubbles]").eq(0).click();
     cy.get("#input_groups_users")
       .clear()
       .type("South Africa", { force: true })
@@ -48,9 +44,7 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     // EDIT ACCOUNT NAME: Syscoin2
-    cy.get("[data-test=name]")
-      .eq(10)
-      .click();
+    cy.get("[data-test=name]").eq(10).click();
     cy.get("[data-test=account_details]").click();
     cy.get("[data-test=edit-button]").click();
     add_amount_range("20", "140");

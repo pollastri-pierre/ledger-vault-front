@@ -100,7 +100,7 @@ test("forceFetch option always ignore the cache and trigger re-fetch", async () 
   const render = createRender(net.network);
   let restlay;
   const Animal = connectData(
-    props => (
+    (props) => (
       (restlay = props.restlay), `${props.animal.name}_${props.animal.age}`
     ),
     {

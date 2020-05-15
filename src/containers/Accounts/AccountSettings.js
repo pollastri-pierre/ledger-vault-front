@@ -50,14 +50,14 @@ function AccountSettings(props: Props) {
   const units = curr.units;
   const { t } = useTranslation();
 
-  const options = units.map(u => ({
+  const options = units.map((u) => ({
     label: u.code,
     value: u.code,
     data: u,
   }));
 
-  const onUnitChange = unit => {
-    setSettings(settings => ({ ...settings, currency_unit: unit.data }));
+  const onUnitChange = (unit) => {
+    setSettings((settings) => ({ ...settings, currency_unit: unit.data }));
     const m = new SaveAccountSettingsMutation({
       account,
       currency_unit: unit.data.name,
@@ -70,7 +70,7 @@ function AccountSettings(props: Props) {
   };
 
   const current_unit = options.find(
-    o => o.data.code === settings.currency_unit.code,
+    (o) => o.data.code === settings.currency_unit.code,
   );
   return (
     <Box flow={0}>

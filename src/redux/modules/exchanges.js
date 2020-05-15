@@ -9,7 +9,7 @@ export type SetExchangePairs = (
   }>,
 ) => *;
 
-export const setExchangePairsAction: SetExchangePairs = pairs => ({
+export const setExchangePairsAction: SetExchangePairs = (pairs) => ({
   type: "SETTINGS_SET_PAIRS",
   pairs,
 });
@@ -29,7 +29,7 @@ export default function reducer(
   switch (action.type) {
     case "SETTINGS_SET_PAIRS": {
       const data = {};
-      action.pairs.forEach(pair => {
+      action.pairs.forEach((pair) => {
         if (pair.to.ticker === "BTC") {
           data[pair.from.ticker] = pair.exchange;
         } else if (pair.from.ticker === "BTC" && pair.to.ticker === "USD") {
@@ -49,7 +49,7 @@ export const currencyExchangeSelector = (
 ): ?string => {
   // NOTE checking for null because there is a strange pair btc-to-btc generates which results in exchange - null
   const pair = state.exchanges.pairs.find(
-    p => p.from.id === currency.id && p.exchange != null,
+    (p) => p.from.id === currency.id && p.exchange != null,
   );
   return (pair && pair.exchange) || null;
 };

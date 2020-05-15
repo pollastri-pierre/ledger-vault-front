@@ -31,18 +31,18 @@ function RequestsWidget(props: Props) {
   const isAdmin = me.role === "ADMIN";
 
   const requests = data.edges
-    .map(el => el.node)
+    .map((el) => el.node)
     .filter(isAdmin ? isNotTransaction : Boolean);
 
   const myRequests = requests.filter(
-    request =>
+    (request) =>
       request.approvals &&
       !hasUserApprovedRequest(request, me) &&
       isUserInCurrentStep(request, me),
   );
 
   const otherRequests = requests.filter(
-    request =>
+    (request) =>
       hasUserApprovedRequest(request, me) ||
       !request.approvals ||
       !isUserInCurrentStep(request, me),

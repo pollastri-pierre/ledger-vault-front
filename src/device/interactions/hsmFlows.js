@@ -370,7 +370,7 @@ const postRequest: Interaction = {
   action: ({ data, type, restlay }) =>
     restlay
       .commitMutation(new NewRequestMutation({ type, ...data }))
-      .then(request => request.id),
+      .then((request) => request.id),
 };
 export const approveFlow = (
   entity: TargetType,

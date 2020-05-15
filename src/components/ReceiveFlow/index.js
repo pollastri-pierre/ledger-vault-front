@@ -59,18 +59,18 @@ const SelectIndex = connectData(
 
     // we remove the "change" addresses
     const addressesWithoutChange = useMemo(() => {
-      return addresses.filter(a => {
+      return addresses.filter((a) => {
         const s = a.derivation_path.split("/");
         return s.length > 1 && s[0] === "0";
       });
     }, [addresses]);
 
-    const _onChange = val => {
+    const _onChange = (val) => {
       setPath(val);
       // we have to find the address corresponding the derivation path
       const derivationPath = `0/${val}`;
       const address = addressesWithoutChange.find(
-        a => a.derivation_path === derivationPath,
+        (a) => a.derivation_path === derivationPath,
       );
 
       if (address) {
@@ -100,7 +100,7 @@ const SelectIndex = connectData(
     queries: {
       addresses: AddressFromDerivationPathQuery,
     },
-    propsToQueryParams: props => ({
+    propsToQueryParams: (props) => ({
       accountId: props.account.id,
       from: 0,
       to: props.currentIndex,
@@ -200,7 +200,7 @@ const VerifyFreshAddress = connectData(
       setHasBeenVerified(true);
     };
 
-    const onVerifyError = e => {
+    const onVerifyError = (e) => {
       if (e.statusCode && e.statusCode === DEVICE_REJECT_ERROR_CODE) {
         setHasBeenVerified(false);
       }
@@ -315,16 +315,16 @@ const VerifyFreshAddress = connectData(
     queries: {
       freshAddresses: FreshAddressesQuery,
     },
-    propsToQueryParams: props => ({
+    propsToQueryParams: (props) => ({
       accountId: props.account.id,
     }),
   },
 );
 
 export default connectData(
-  props => {
+  (props) => {
     const { match, accounts: accountsConnection, close } = props;
-    const accounts = accountsConnection.edges.map(e => e.node);
+    const accounts = accountsConnection.edges.map((e) => e.node);
     const selectedAccount = getAccountById(accounts, match.params.id);
     return (
       <GrowingCard>
@@ -347,5 +347,5 @@ export default connectData(
 
 function getAccountById(accounts: Account[], id: string): Account | null {
   if (!id) return null;
-  return accounts.find(a => a.id === Number(id)) || null;
+  return accounts.find((a) => a.id === Number(id)) || null;
 }

@@ -52,21 +52,21 @@ const customComponents = {
 
 class SelectWhitelist extends PureComponent<Props> {
   handleChange = (data: ?Array<Option>) => {
-    const d = !data ? [] : data.map(d => d.data);
+    const d = !data ? [] : data.map((d) => d.data);
     this.props.onChange(d);
   };
 
   render() {
     const { value, whitelists, t, ...props } = this.props;
 
-    const options = whitelists.map(w => ({
+    const options = whitelists.map((w) => ({
       label: w.name,
       value: `${w.id}`,
       data: w,
     }));
 
-    const resolvedValue = value.map(v =>
-      options.find(o => parseInt(o.value, 10) === v),
+    const resolvedValue = value.map((v) =>
+      options.find((o) => parseInt(o.value, 10) === v),
     );
 
     return (

@@ -23,7 +23,7 @@ type Props = {
   customTableDef?: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  onRowClick: Account => void,
+  onRowClick: (Account) => void,
 };
 
 function AccountsTable(props: Props) {

@@ -39,7 +39,7 @@ class TransactionsContainer extends PureComponent<Props> {
           Query={SearchTransactionsQuery}
           TableComponent={TransactionsTable}
           FilterComponent={TransactionsFilters}
-          extraProps={{ accounts: accounts.edges.map(e => e.node) }}
+          extraProps={{ accounts: accounts.edges.map((e) => e.node) }}
           history={history}
           onRowClick={this.handleTransactionClick}
         />

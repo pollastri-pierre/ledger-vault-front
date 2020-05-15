@@ -7,11 +7,11 @@ context("Onboarding e2e", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
+    cy.request(polyfillUrl).then((response) => {
       polyfill = response.body;
     });
     cy.visit(Cypress.env("api_server"), {
-      onBeforeLoad: win => {
+      onBeforeLoad: (win) => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
@@ -37,9 +37,7 @@ context("Onboarding e2e", () => {
     cy.wait("@next");
     cy.wait("@challenge");
     // First WPK
-    cy.get(".fragment")
-      .eq(0)
-      .click();
+    cy.get(".fragment").eq(0).click();
     cy.wait("@get-public-key");
     cy.wait("@get-attestation");
     cy.wait("@open-session");
@@ -50,9 +48,7 @@ context("Onboarding e2e", () => {
     cy.request("POST", DEVICE, {
       device_number: 2,
     }).then(() => {
-      cy.get(".fragment")
-        .eq(1)
-        .click();
+      cy.get(".fragment").eq(1).click();
       cy.wait("@get-public-key");
       cy.wait("@get-attestation");
       cy.wait("@open-session");
@@ -63,9 +59,7 @@ context("Onboarding e2e", () => {
       cy.request("POST", DEVICE, {
         device_number: 3,
       }).then(() => {
-        cy.get(".fragment")
-          .eq(2)
-          .click();
+        cy.get(".fragment").eq(2).click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
         cy.wait("@open-session");
@@ -73,13 +67,9 @@ context("Onboarding e2e", () => {
         cy.wait("@authenticate");
         cy.contains("Continue").click();
         cy.wait("@next");
-        cy.contains("Continue")
-          .debug()
-          .click();
+        cy.contains("Continue").debug().click();
         cy.wait("@next");
-        cy.contains("Continue")
-          .debug()
-          .click();
+        cy.contains("Continue").debug().click();
         cy.wait("@next");
       });
     });
@@ -91,9 +81,7 @@ context("Onboarding e2e", () => {
     switch_device(4);
     cy.contains("add administrator").click();
     cy.get("input[name=username]").type("user1");
-    cy.get("[data-test=dialog-button]")
-      .eq(2)
-      .click();
+    cy.get("[data-test=dialog-button]").eq(2).click();
     cy.wait("@get-public-key");
     cy.wait("@get-attestation");
     cy.wait("@challenge");
@@ -109,9 +97,7 @@ context("Onboarding e2e", () => {
     }).then(() => {
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user2");
-      cy.get("[data-test=dialog-button]")
-        .eq(2)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(2).click();
       cy.wait("@get-public-key");
       cy.wait("@get-attestation");
       cy.wait("@challenge");
@@ -127,22 +113,16 @@ context("Onboarding e2e", () => {
       }).then(() => {
         cy.contains("add administrator").click();
         cy.get("input[name=username]").type("user3");
-        cy.get("[data-test=dialog-button]")
-          .eq(2)
-          .click();
+        cy.get("[data-test=dialog-button]").eq(2).click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
         cy.wait("@challenge");
         cy.wait("@register");
         cy.wait("@register-data");
         cy.wait("@authenticate");
-        cy.get("[data-test=dialog-button]")
-          .eq(1)
-          .click();
+        cy.get("[data-test=dialog-button]").eq(1).click();
         cy.wait("@next");
-        cy.get("[data-test=dialog-button]")
-          .eq(1)
-          .click();
+        cy.get("[data-test=dialog-button]").eq(1).click();
         cy.wait("@next");
       });
     });
@@ -152,17 +132,11 @@ context("Onboarding e2e", () => {
     cy.server();
     route();
     cy.request("POST", DEVICE, { device_number: 7 }).then(() => {
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait("@next");
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait("@next");
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait("@next");
 
       // Shared Owner 1
@@ -198,9 +172,7 @@ context("Onboarding e2e", () => {
           cy.wait("@register-data");
           cy.wait("@authenticate");
 
-          cy.get("[data-test=dialog-button]")
-            .eq(1)
-            .click();
+          cy.get("[data-test=dialog-button]").eq(1).click();
           cy.wait("@next");
         });
       });
@@ -228,9 +200,7 @@ context("Onboarding e2e", () => {
     cy.wait("@authenticate");
 
     // finish
-    cy.get("[data-test=dialog-button]")
-      .eq(1)
-      .click();
+    cy.get("[data-test=dialog-button]").eq(1).click();
     cy.wait("@next");
   });
 
@@ -240,9 +210,7 @@ context("Onboarding e2e", () => {
     switch_device(7);
     cy.wait(1000);
     // Get Seed 1st Shared Owner
-    cy.get(".fragment")
-      .eq(0)
-      .click();
+    cy.get(".fragment").eq(0).click();
     cy.wait("@get-public-key");
     cy.wait("@open-session");
     cy.wait("@validate-vault-operation");
@@ -251,9 +219,7 @@ context("Onboarding e2e", () => {
 
     // Get Seed 2nd Shared Owner
     switch_device(8);
-    cy.get(".fragment")
-      .eq(1)
-      .click();
+    cy.get(".fragment").eq(1).click();
     cy.wait("@get-public-key");
     cy.wait("@open-session");
     cy.wait("@validate-vault-operation");
@@ -262,9 +228,7 @@ context("Onboarding e2e", () => {
 
     // Get Seed 3rd Shared Owner
     switch_device(9);
-    cy.get(".fragment")
-      .eq(2)
-      .click();
+    cy.get(".fragment").eq(2).click();
     cy.wait("@get-public-key");
     cy.wait("@open-session");
     cy.wait("@validate-vault-operation");
@@ -272,9 +236,7 @@ context("Onboarding e2e", () => {
     cy.wait("@authenticate");
     cy.wait(1000);
     // Complete Onboarding
-    cy.get("[data-test=dialog-button]")
-      .eq(1)
-      .click();
+    cy.get("[data-test=dialog-button]").eq(1).click();
     cy.wait("@next");
     cy.wait(2000);
 

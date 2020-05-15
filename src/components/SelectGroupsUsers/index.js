@@ -43,7 +43,7 @@ type Props = {
     members?: User[],
     groups?: Group[],
   },
-  onChange: SelectGroupUsersData => void,
+  onChange: (SelectGroupUsersData) => void,
 };
 
 const checkedIcon = <MdCheckBox size={ICON_SIZE} />;
@@ -52,9 +52,10 @@ export const groupIcon = <FaUsers size={ICON_SIZE} />;
 export const userIcon = <FaUser size={ICON_SIZE} />;
 const clearIcon = <MdClear size={ICON_SIZE} />;
 
-const CheckboxItem = props => (props.isSelected ? checkedIcon : uncheckedIcon);
+const CheckboxItem = (props) =>
+  props.isSelected ? checkedIcon : uncheckedIcon;
 const buildOptions = (items: Item[]): Option[] =>
-  items.map(item => ({
+  items.map((item) => ({
     label: item.type === "group" ? item.value.name : item.value.username,
     value: `${item.type}_${item.value.id}`,
     data: item,
@@ -102,7 +103,7 @@ const customComponents = {
 };
 
 const colourStyles = {
-  multiValueRemove: styles => ({
+  multiValueRemove: (styles) => ({
     ...styles,
     ":hover": {
       backgroundColor: colors.lightGrey,
@@ -114,7 +115,7 @@ const colourStyles = {
       backgroundColor: colors.mediumGrey,
     },
   }),
-  multiValueLabel: styles => ({
+  multiValueLabel: (styles) => ({
     ...styles,
     font: "inherit",
     color: "inherit",
@@ -146,19 +147,19 @@ class SelectInGroup extends PureComponent<Props> {
   render() {
     const { members, groups, value, dataTest, ...props } = this.props;
     const membersOptions = buildOptions(
-      members.map(m => ({ type: "member", value: m })),
+      members.map((m) => ({ type: "member", value: m })),
     );
     const groupOptions = buildOptions(
-      groups.map(g => ({ type: "group", value: g })),
+      groups.map((g) => ({ type: "group", value: g })),
     );
     const resolvedGroupsValue = value.groups
-      ? value.groups.map(g =>
-          groupOptions.find(gO => gO.data.value.id === g.id),
+      ? value.groups.map((g) =>
+          groupOptions.find((gO) => gO.data.value.id === g.id),
         )
       : [];
     const resolvedMembersValue = value.members
-      ? value.members.map(m =>
-          membersOptions.find(mO => mO.data.value.id === m.id),
+      ? value.members.map((m) =>
+          membersOptions.find((mO) => mO.data.value.id === m.id),
         )
       : [];
     const resolvedValue = [...resolvedGroupsValue, ...resolvedMembersValue];

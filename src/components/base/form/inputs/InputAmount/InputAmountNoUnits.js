@@ -30,7 +30,7 @@ type Props<Transaction> = {
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
   errors: Error[],
-  onChangeTransaction: Transaction => void,
+  onChangeTransaction: (Transaction) => void,
 };
 
 type State = {
@@ -38,7 +38,7 @@ type State = {
   displayValue: string,
 };
 
-const getCurrencyLikeUnit = decimals => ({
+const getCurrencyLikeUnit = (decimals) => ({
   code: "",
   symbol: "",
   magnitude: decimals,

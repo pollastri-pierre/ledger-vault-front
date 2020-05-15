@@ -97,7 +97,7 @@ const ValueComponent = (props: OptionProps) => (
 );
 
 const customValueStyle = {
-  singleValue: styles => ({
+  singleValue: (styles) => ({
     ...styles,
     color: "inherit",
     width: "100%",
@@ -110,7 +110,7 @@ const customComponents = {
   SingleValue: ValueComponent,
 };
 
-const buildOption = account => ({
+const buildOption = (account) => ({
   label: account.name,
   value: `${account.id}`,
   data: account,

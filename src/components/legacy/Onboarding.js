@@ -117,12 +117,12 @@ export const Step = ({ className, label, active }: StepProps) => (
 
 const StepContainer = styled.div`
   font-size: 13px;
-  color: ${p => (p.active ? colors.black : colors.steel)};
+  color: ${(p) => (p.active ? colors.black : colors.steel)};
   padding: 15px 0 15px 0;
   border-bottom: 1px solid ${colors.argile};
   &:last-child {
     border: 0;
-    ${p =>
+    ${(p) =>
       p.active
         ? `
       content: "";

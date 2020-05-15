@@ -74,7 +74,7 @@ const compactStyle = {
 
 const Container = styled.div`
   display: flex;
-  background: ${p => p.customBg || colors.form.bg};
+  background: ${(p) => p.customBg || colors.form.bg};
   border: 1px solid ${colors.legacyLightGrey1};
   border-radius: 4px;
   padding: 2px;

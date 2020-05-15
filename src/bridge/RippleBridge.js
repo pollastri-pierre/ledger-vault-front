@@ -103,9 +103,9 @@ const RippleBridge: WalletBridge<Transaction> = {
     estimatedFees: null,
   }),
 
-  getEstimatedFees: t => t.estimatedFees,
+  getEstimatedFees: (t) => t.estimatedFees,
 
-  getMaxAmount: _t => null,
+  getMaxAmount: (_t) => null,
 
   getTotalSpent: (a, t) => {
     const fees = t.estimatedFees || BigNumber(0);
@@ -123,7 +123,7 @@ const RippleBridge: WalletBridge<Transaction> = {
     if (!estimatedFees.isGreaterThan(0)) return false;
     if (
       evalHints(destinationTagHints, t.destinationTag).some(
-        h => h.status === "invalid",
+        (h) => h.status === "invalid",
       )
     )
       return false;

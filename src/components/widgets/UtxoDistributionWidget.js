@@ -33,7 +33,7 @@ export default connectWidget(UtxoDistributionWidget, {
   queries: {
     utxoDistribution: AccountUtxoDistributionQuery,
   },
-  propsToQueryParams: props => ({
+  propsToQueryParams: (props) => ({
     accountId: props.account.id,
   }),
 });

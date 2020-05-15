@@ -25,7 +25,7 @@ import UserContextProvider from "components/UserContextProvider";
 import { OrganizationContextProvider } from "components/OrganizationContext";
 
 const users = genUsers(20);
-const admin = users.find(u => u.role === "ADMIN");
+const admin = users.find((u) => u.role === "ADMIN");
 const groups = genGroups(3, { users, status: "ACTIVE" });
 const accounts = genAccounts(4);
 const whitelists = genWhitelists(10, { users });
@@ -82,7 +82,7 @@ const wrapWithRequest = ({ request_type, approved, entity }) => {
   return ent;
 };
 
-const getFakeNetwork = ({ request_type, approved }) => async url => {
+const getFakeNetwork = ({ request_type, approved }) => async (url) => {
   await delay(500);
   if (url === "/organization") {
     return {
@@ -157,7 +157,7 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
   }
   if (url.startsWith("/groups")) {
     const group = denormalize(
-      groups.map(g => g.id),
+      groups.map((g) => g.id),
       [schema.Group],
       {
         users: keyBy(users, "id"),
@@ -175,7 +175,7 @@ const Inner = ({ story, entity }) => {
   const onCheckboxClick = () => {
     setHasApproved(!hasApproved);
   };
-  const onRequest = val => {
+  const onRequest = (val) => {
     setPendingRequest(val);
   };
 
@@ -239,13 +239,13 @@ const Inner = ({ story, entity }) => {
     </RestlayProvider>
   );
 };
-export const EntityModalDecorator = entity => story => {
+export const EntityModalDecorator = (entity) => (story) => {
   return <Inner story={story} entity={entity} />;
 };
 
 function wrapConnection(data) {
   return {
-    edges: data.map(d => ({ node: d, cursor: d.id })),
+    edges: data.map((d) => ({ node: d, cursor: d.id })),
     pageInfo: { hasNextPage: false },
   };
 }

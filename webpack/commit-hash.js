@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   let commitHash = require("child_process")
     .execSync("git rev-parse --short HEAD")
     .toString();

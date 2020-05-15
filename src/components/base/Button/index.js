@@ -36,7 +36,7 @@ export type ButtonProps = {|
   tabIndex?: number,
 |};
 
-export const ButtonBase = styled.div.attrs(p => ({
+export const ButtonBase = styled.div.attrs((p) => ({
   px: getPaddingX(p),
   py: getPaddingY(p),
   color: "grey",
@@ -46,31 +46,31 @@ export const ButtonBase = styled.div.attrs(p => ({
   user-select: none;
   ${space};
   ${color};
-  font-size: ${p => getFontSize(p)}px;
+  font-size: ${(p) => getFontSize(p)}px;
   font-weight: bold;
   border: none;
   display: flex;
   justify-content: center;
   flex-shrink: 0;
   align-items: center;
-  border-radius: ${p => (p.circular ? "50%" : "2px")};
-  cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
-  opacity: ${p => (p.disabled ? "0.6" : "1")};
-  pointer-events: ${p => (p.disabled || p.isLoading ? "none" : "inherit")};
-  text-decoration: ${p => (p.link ? "underline" : "none")};
+  border-radius: ${(p) => (p.circular ? "50%" : "2px")};
+  cursor: ${(p) => (p.disabled ? "not-allowed" : "pointer")};
+  opacity: ${(p) => (p.disabled ? "0.6" : "1")};
+  pointer-events: ${(p) => (p.disabled || p.isLoading ? "none" : "inherit")};
+  text-decoration: ${(p) => (p.link ? "underline" : "none")};
   outline: none;
-  height: ${p => getButtonHeight(p)}px;
+  height: ${(p) => getButtonHeight(p)}px;
 
-  ${p => getStyles(p, "default")};
+  ${(p) => getStyles(p, "default")};
 
   &:hover {
-    ${p => getStyles(p, "hover")};
+    ${(p) => getStyles(p, "hover")};
   }
   &:focus {
-    ${p => (p.disabled || p.isLoading ? "" : getStyles(p, "focus"))};
+    ${(p) => (p.disabled || p.isLoading ? "" : getStyles(p, "focus"))};
   }
   &:active {
-    ${p => getStyles(p, "active")};
+    ${(p) => getStyles(p, "active")};
   }
 `;
 
@@ -95,14 +95,14 @@ function Button(props: ButtonProps, ref: any) {
     [],
   );
 
-  const handleClick = e => {
+  const handleClick = (e) => {
     e && stopPropagation && e.stopPropagation();
     if (!onClick) return;
     if (disabled) return;
     setIsLoading(true);
     Promise.resolve()
       .then(onClick)
-      .catch(e => e)
+      .catch((e) => e)
       .finally(() => {
         if (isUnmounted.current === false) {
           setIsLoading(false);
@@ -110,7 +110,7 @@ function Button(props: ButtonProps, ref: any) {
       });
   };
 
-  const handleKeyUp = e => {
+  const handleKeyUp = (e) => {
     if (e.which === ENTER_KEY) {
       handleClick();
     }
@@ -137,7 +137,7 @@ function Button(props: ButtonProps, ref: any) {
 export default React.forwardRef<ButtonProps, typeof Button>(Button);
 
 const Container = styled.div`
-  opacity: ${p => (p.isLoading ? 0 : 1)};
+  opacity: ${(p) => (p.isLoading ? 0 : 1)};
   display: flex;
   justify-content: center;
   align-items: center;

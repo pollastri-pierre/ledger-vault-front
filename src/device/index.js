@@ -47,7 +47,7 @@ registerTransportModule({
   open: (id: string) => {
     if (id !== "u2f") return;
 
-    return TransportU2F.create().then(t => {
+    return TransportU2F.create().then((t) => {
       t.setScrambleKey("v1+");
       // $FlowFixMe
       t.setUnwrap(true);

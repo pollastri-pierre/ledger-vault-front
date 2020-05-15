@@ -8,12 +8,12 @@ import {
   success_creation_account,
 } from "../../../functions/actions";
 
-describe("Test Case for Account", function() {
-  beforeEach(function() {
+describe("Test Case for Account", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -24,9 +24,7 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/accounts");
     cy.get("[data-test=add-button]").click();
     cy.wait(4500);
-    cy.get("#input_crypto")
-      .type("USDC", { force: true })
-      .type("{enter}");
+    cy.get("#input_crypto").type("USDC", { force: true }).type("{enter}");
     cy.contains("Next").click();
     cy.get("[data-test=account_childname]").type("Block.Chain");
     cy.get("[data-test=account_parentname]").type("CryptoC");

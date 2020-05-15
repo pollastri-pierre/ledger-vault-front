@@ -172,7 +172,7 @@ const steps = [
 ];
 
 const title = <Trans i18nKey="transactionCreation:title" />;
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   requestToReplay: state.requestReplay,
 });
 const mapDispatch = {
@@ -184,18 +184,18 @@ export default connect(
   mapDispatch,
 )(
   connectData(
-    props => {
+    (props) => {
       const { match, accounts, close, resetRequest, requestToReplay } = props;
       const cursor = 0;
       let payload = initialPayload;
 
       const filteredAccounts = useMemo(
-        () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
+        () => accounts.edges.map((el) => el.node).filter(isAccountSpendable),
         [accounts],
       );
       const acc =
         match.params && match.params.id
-          ? filteredAccounts.find(a => a.id === parseInt(match.params.id, 10))
+          ? filteredAccounts.find((a) => a.id === parseInt(match.params.id, 10))
           : filteredAccounts[0];
       const {
         bridge,
@@ -245,7 +245,7 @@ const purgePayload = (
   data: *,
   accounts: Account[],
 ): TransactionCreationPayload<any> => {
-  const account = accounts.find(a => a.id === data.account_id);
+  const account = accounts.find((a) => a.id === data.account_id);
   const currency = getCryptoCurrencyById(data.currency);
   if (!account) throw new Error("Account not spendable");
   if (!currency) throw new Error("no valid currency");

@@ -81,7 +81,7 @@ const DisplayFeesBanner = <T>(props: Props<T>) => {
   );
 };
 
-const Container = styled.div(p => {
+const Container = styled.div((p) => {
   const { isInteractive } = p;
 
   const hoverStyle = `

@@ -5,12 +5,12 @@ import {
   add_whitelist_address,
 } from "../../../functions/actions";
 
-describe("Approve whitelists", function() {
-  beforeEach(function() {
+describe("Approve whitelists", function () {
+  beforeEach(function () {
     login(6);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -50,8 +50,6 @@ describe("Approve whitelists", function() {
       "contain",
       "Whitelist with name List Apac already exists",
     );
-    cy.get("[data-test=close")
-      .eq(1)
-      .click();
+    cy.get("[data-test=close").eq(1).click();
   });
 });

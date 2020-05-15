@@ -327,7 +327,7 @@ export const addMember = (data: Admin) => async (
   const { registering } = getState().onboarding;
   const admins = registering.admins;
   const findIndex = admins.findIndex(
-    member => member.public_key === data.public_key,
+    (member) => member.public_key === data.public_key,
   );
   if (findIndex > -1) {
     dispatch(addMessage("Error", "Device already registered", "error"));
@@ -370,7 +370,7 @@ export const addSignedIn = (pub_key: string, signature: *) => async (
 ) => {
   const { signin } = getState().onboarding;
   const admins = signin.admins;
-  const index = admins.findIndex(pkey => pkey === pub_key.toUpperCase());
+  const index = admins.findIndex((pkey) => pkey === pub_key.toUpperCase());
 
   if (index > -1) {
     return dispatch(

@@ -17,7 +17,7 @@ import SelectAddress, { CREATED_ADDRESS_UNIQUE_LABEL } from "./SelectAddress";
 
 type Props<T> = {
   transaction: T,
-  onChangeTransaction: T => void,
+  onChangeTransaction: (T) => void,
   account: Account,
   whitelists: Whitelist[],
   bridge: WalletBridge<T>,
@@ -64,7 +64,7 @@ function AddressField(props: Props<{ recipient: string }>) {
   const wlValue = useWhitelistValue(wlOptions, recipient);
 
   const handleChangeWl = useCallback(
-    v => {
+    (v) => {
       if (!v) {
         handleSetRecipient("");
         setCustomAddr(null);
@@ -83,7 +83,7 @@ function AddressField(props: Props<{ recipient: string }>) {
   );
 
   const canAddCustomAddress = !accountHasOnlyWhitelists(account);
-  const hasAddressToSelect = wlOptions.some(o => o.options.length > 0);
+  const hasAddressToSelect = wlOptions.some((o) => o.options.length > 0);
 
   const errors = rStatus.error ? [rStatus.error] : undefined;
 
@@ -123,29 +123,30 @@ function useWhitelistOptions(account, whitelists, customAddr) {
     if (!governance_rules) return [];
     return (
       governance_rules
-        .map(g => g.rules)
+        .map((g) => g.rules)
         // $FlowFixMe flat exist on Array but Flow doesnt know yet
         .flat()
-        .filter(r => r.type === "WHITELIST")
-        .map(r => r.data)
+        .filter((r) => r.type === "WHITELIST")
+        .map((r) => r.data)
         // $FlowFixMe flat exist on Array but Flow doesnt know yet
         .flat()
-        .filter((w, i, arr) => arr.findIndex(el => el.id === w.id) === i)
-        .map(w => {
-          if (typeof w === "number") return whitelists.find(w2 => w2.id === w);
+        .filter((w, i, arr) => arr.findIndex((el) => el.id === w.id) === i)
+        .map((w) => {
+          if (typeof w === "number")
+            return whitelists.find((w2) => w2.id === w);
 
           // we don't use whitelist from account.gov_rule on purpose because we are not sure it will contain last_request
-          return whitelists.find(w2 => w2.id === w.id);
+          return whitelists.find((w2) => w2.id === w.id);
         })
         .filter(Boolean)
     );
   }, [account, whitelists]);
   const options = useMemo(() => {
     const options = [];
-    accountWls.forEach(w => {
+    accountWls.forEach((w) => {
       const data = w.addresses
-        .filter(w => w.currency === account.currency)
-        .map(address => ({
+        .filter((w) => w.currency === account.currency)
+        .map((address) => ({
           label: address.name,
           value: address.address,
           data: address,
@@ -184,10 +185,10 @@ function useWhitelistOptions(account, whitelists, customAddr) {
 function useWhitelistValue(options, recipient) {
   const allAddresses = useMemo(() => {
     // $FlowFixMe flat exist on Array but Flow doesnt know yet
-    return options.map(o => o.options).flat();
+    return options.map((o) => o.options).flat();
   }, [options]);
   if (!recipient === "") return null;
-  return allAddresses.find(item => item.value === recipient) || null;
+  return allAddresses.find((item) => item.value === recipient) || null;
 }
 
 function useRecipientCheck({
@@ -221,12 +222,12 @@ function useRecipientCheck({
 const isWhitelistDisabled = (w: Whitelist) =>
   w.status !== "ACTIVE" || hasPendingRequest(w);
 
-const accountHasOnlyWhitelists = account => {
+const accountHasOnlyWhitelists = (account) => {
   const { governance_rules } = account;
   if (!governance_rules) return false;
   return (
-    governance_rules.filter(governanceRule =>
-      governanceRule.rules.find(rule => rule.type === "WHITELIST"),
+    governance_rules.filter((governanceRule) =>
+      governanceRule.rules.find((rule) => rule.type === "WHITELIST"),
     ).length === governance_rules.length
   );
 };

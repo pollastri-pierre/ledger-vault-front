@@ -5,12 +5,12 @@ import {
   successfull_message,
 } from "../../../functions/actions";
 
-describe("Test Edit Admin Rule", function() {
-  beforeEach(function() {
+describe("Test Edit Admin Rule", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

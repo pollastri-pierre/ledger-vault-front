@@ -61,7 +61,7 @@ export function getModalClosePath(p: string, me: User) {
   let nestedMatch;
 
   // using find allow to stop parcourir the array when first match
-  modalsRoutes.find(regex => {
+  modalsRoutes.find((regex) => {
     regularMatch = p.match(regex);
     return regularMatch;
   });

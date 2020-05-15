@@ -35,7 +35,7 @@ const MAX_APPROVALS_STEPS = 4;
 
 type Props = {|
   rulesSet: RulesSetType,
-  onChange: RulesSetType => void,
+  onChange: (RulesSetType) => void,
   users: User[],
   groups: Group[],
   whitelists: Whitelist[],
@@ -69,7 +69,7 @@ const RulesSet = (props: Props) => {
   const onRemove = (type: RuleType) => () =>
     onChange({
       ...rulesSet,
-      rules: rulesSet.rules.filter(r => r.type !== type),
+      rules: rulesSet.rules.filter((r) => r.type !== type),
     });
 
   // We assume there is only 1 rule of each type, so we can just replace
@@ -77,7 +77,9 @@ const RulesSet = (props: Props) => {
   const replaceRule = (type: RuleType) => (newRule: Rule) =>
     onChange({
       ...rulesSet,
-      rules: rulesSet.rules.map(rule => (rule.type === type ? newRule : rule)),
+      rules: rulesSet.rules.map((rule) =>
+        rule.type === type ? newRule : rule,
+      ),
     });
 
   const onMultiAuthRuleChange = replaceRule("MULTI_AUTHORIZATIONS");

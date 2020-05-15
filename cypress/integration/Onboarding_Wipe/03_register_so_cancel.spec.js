@@ -3,7 +3,7 @@ context("Registration Shared Owners", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
+    cy.request(polyfillUrl).then((response) => {
       polyfill = response.body;
     });
   });
@@ -26,7 +26,7 @@ context("Registration Shared Owners", () => {
       device_number: 7,
     });
     cy.visit(Cypress.env("api_server"), {
-      onBeforeLoad: win => {
+      onBeforeLoad: (win) => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
@@ -36,17 +36,11 @@ context("Registration Shared Owners", () => {
       cy.get("[data-test=continue_button]").click();
       cy.wait(1000);
 
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait("@next");
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait("@next");
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait("@next");
 
       // Shared Owner 1
@@ -77,9 +71,7 @@ context("Registration Shared Owners", () => {
       cy.contains("Add shared-owner").click();
       cy.wait("@authenticate");
 
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait("@next");
     });
   });

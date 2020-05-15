@@ -49,7 +49,7 @@ function GroupDetails(props: Props) {
       onClose={close}
       revokeParams={revokeParams}
       editURL={`/groups/edit/${group.id}`}
-      additionalFields={{ operators: operators.edges.map(e => e.node) }}
+      additionalFields={{ operators: operators.edges.map((e) => e.node) }}
       refreshDataQuery={refreshDataQuery}
     >
       <GroupDetailsOverview
@@ -78,7 +78,7 @@ export default connectData(GroupDetails, {
     group: GroupQuery,
     operators: UsersQuery,
   },
-  propsToQueryParams: props => ({
+  propsToQueryParams: (props) => ({
     groupId: props.match.params.groupId,
     role: "OPERATOR",
   }),

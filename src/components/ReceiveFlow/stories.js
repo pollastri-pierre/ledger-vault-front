@@ -35,7 +35,7 @@ const WrapperInputDerivation = () => {
   const [value, setValue] = useState("2");
   return <DerivationInput value={value} onChange={setValue} prefix="44/4/3" />;
 };
-const fakeNetwork = async url => {
+const fakeNetwork = async (url) => {
   await delay(200);
   if (url.startsWith("/accounts?status=")) {
     return wrapConnection(accounts);
@@ -61,7 +61,7 @@ storiesOf("entities/Transaction", module)
 
 function wrapConnection(data) {
   return {
-    edges: data.map(d => ({ node: d, cursor: d.id })),
+    edges: data.map((d) => ({ node: d, cursor: d.id })),
     pageInfo: { hasNextPage: false },
   };
 }

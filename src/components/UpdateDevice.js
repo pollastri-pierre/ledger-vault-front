@@ -23,7 +23,7 @@ import Button from "components/base/Button";
 import Updater from "components/Updater";
 
 export const withDeviceInfo: Observable<*> = withDevicePolling("webusb")(
-  transport => from(getDeviceInfo(transport)),
+  (transport) => from(getDeviceInfo(transport)),
   () => {
     return false;
   },
@@ -32,20 +32,20 @@ export const transitions = FIRMWARE_TRANSITIONS_RAW.map(
   registry.parseRawTransition,
 );
 const apps = APPS_RAW.map(registry.parseRawApp);
-const uniqueAppVersions = uniq(apps.map(a => a.version));
-const appsOptions = uniqueAppVersions.map(v => ({
+const uniqueAppVersions = uniq(apps.map((a) => a.version));
+const appsOptions = uniqueAppVersions.map((v) => ({
   label: v,
   value: v,
   data: v,
 }));
 const uniqueFirmwareVersions = uniq([
-  ...transitions.map(t => t.from.version),
-  ...transitions.map(t => t.to.version),
+  ...transitions.map((t) => t.from.version),
+  ...transitions.map((t) => t.to.version),
 ]);
 uniqueFirmwareVersions.sort().reverse();
 uniqueAppVersions.sort().reverse();
 
-const firmwaresOptions = uniqueFirmwareVersions.map(v => ({
+const firmwaresOptions = uniqueFirmwareVersions.map((v) => ({
   label: v,
   value: v,
   data: v,
@@ -71,25 +71,25 @@ const UpdateDevice = ({ isDemoMode }: { isDemoMode?: boolean }) => {
     const currentFirmware = state.currentFirmware;
     if (!currentFirmware) return null;
     const option = firmwaresOptions.find(
-      o => o.value === currentFirmware.version,
+      (o) => o.value === currentFirmware.version,
     );
     return option;
   }, [state.currentFirmware]);
 
   const expectedVersionOption = useMemo(
-    () => appsOptions.find(o => o.value === state.expectedApp),
+    () => appsOptions.find((o) => o.value === state.expectedApp),
     [state.expectedApp],
   );
   const connectDevice = () => {
     setState({ ...state, error: null, loading: true });
     withDeviceInfo
       .pipe(
-        catchError(error => {
+        catchError((error) => {
           setState({ ...state, error: remapError(error), loading: false });
           return throwError(error);
         }),
       )
-      .subscribe(d => {
+      .subscribe((d) => {
         setState({ ...state, currentFirmware: d, loading: false });
       });
   };
@@ -97,10 +97,10 @@ const UpdateDevice = ({ isDemoMode }: { isDemoMode?: boolean }) => {
   const setAdvancedMode = () =>
     setState({ ...state, advancedMode: !state.advancedMode });
 
-  const handleChooseExpectedVersion = o =>
+  const handleChooseExpectedVersion = (o) =>
     setState({ ...state, expectedApp: o.value });
 
-  const handleChooseCurrentFirmware = o => {
+  const handleChooseCurrentFirmware = (o) => {
     setState({
       ...state,
       currentFirmware: { version: o.value },

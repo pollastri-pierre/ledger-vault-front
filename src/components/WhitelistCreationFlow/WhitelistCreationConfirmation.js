@@ -54,8 +54,8 @@ export const WhitelistDetails = (props: WhitelistDetailsProps) => {
       <LineRow label="addresses" vertical noOverflowHidden>
         <Box flow={20} pt={10}>
           {addresses
-            .filter(a => a.name !== "" && a.address !== "")
-            .map(addr => (
+            .filter((a) => a.name !== "" && a.address !== "")
+            .map((addr) => (
               <Address key={`${addr.name}-${addr.currency}`} address={addr} />
             ))}
         </Box>

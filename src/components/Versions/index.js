@@ -9,7 +9,7 @@ import { useVersions } from "components/VersionsContext";
 
 import productVersion from "../../version";
 
-const Versions = ({ onClose }: { onClose: void => void }) => {
+const Versions = ({ onClose }: { onClose: (void) => void }) => {
   const { versions } = useVersions();
   if (!versions) return null;
   return (
@@ -48,14 +48,16 @@ const Versions = ({ onClose }: { onClose: void => void }) => {
             </ComponentVersion>
           </VersionLine>
           <>
-            {Object.keys(versions.dependencies.hsm_driver.currencies).map(k => (
-              <VersionLine key={k}>
-                <Component>{k}</Component>
-                <ComponentVersion>
-                  {versions.dependencies.hsm_driver.currencies[k]}
-                </ComponentVersion>
-              </VersionLine>
-            ))}
+            {Object.keys(versions.dependencies.hsm_driver.currencies).map(
+              (k) => (
+                <VersionLine key={k}>
+                  <Component>{k}</Component>
+                  <ComponentVersion>
+                    {versions.dependencies.hsm_driver.currencies[k]}
+                  </ComponentVersion>
+                </VersionLine>
+              ),
+            )}
           </>
         </VersionContainer>
       </Container>

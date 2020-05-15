@@ -3,7 +3,7 @@ import type { Store } from "./dataStore";
 
 type Notification = { title: string, content: string };
 
-type Deserializer<T> = any => T;
+type Deserializer<T> = (any) => T;
 type DeserializerMap<T> = { [_: string]: Deserializer<T> };
 
 // A mutation maps to another verb on the API and means a modification of the data.

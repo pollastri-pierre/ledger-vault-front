@@ -21,7 +21,7 @@ function HintsWrapper(props: Props) {
   return (
     <HintsWrap>
       <HintsContainer>
-        {hints.map(hint => {
+        {hints.map((hint) => {
           const { label, key, status } = hint;
 
           const displayedLabel =
@@ -46,7 +46,7 @@ function HintsWrapper(props: Props) {
 
 export function evalHints(hints: ?(Hint[]), value: string): Hint[] {
   if (!hints) return [];
-  return hints.map(hint => ({
+  return hints.map((hint) => ({
     ...hint,
     status: value ? (hint.check(value) ? "valid" : "invalid") : "unchecked",
   }));
@@ -90,7 +90,7 @@ const Ball = styled.div`
   position: absolute;
   top: 7px;
   left: -8px;
-  background: ${p =>
+  background: ${(p) =>
     p.status === "unchecked"
       ? colors.textLight
       : p.status === "valid"

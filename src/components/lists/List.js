@@ -8,7 +8,7 @@ import VaultLink from "components/VaultLink";
 import colors, { darken } from "shared/colors";
 import Text from "components/base/Text";
 
-export const List = styled.div(p => {
+export const List = styled.div((p) => {
   const listDisplaySpecific =
     p.display === "grid"
       ? `
@@ -37,18 +37,19 @@ export const List = styled.div(p => {
   `;
 });
 
-const ListItemContainer = styled(({ tileWidth, ...p }) => <div {...p} />)(p => {
-  const listItemDisplaySpecific =
-    p.display === "grid"
-      ? `
+const ListItemContainer = styled(({ tileWidth, ...p }) => <div {...p} />)(
+  (p) => {
+    const listItemDisplaySpecific =
+      p.display === "grid"
+        ? `
           width: ${p.tileWidth ? p.tileWidth : 300}px;
           border: 1px solid ${colors.form.border};
           border-radius: 4px;
           margin: 5px;
         `
-      : ``;
+        : ``;
 
-  return `
+    return `
     ${listItemDisplaySpecific}
 
     // important to keep display: block, because can be forwarded as <a />
@@ -67,7 +68,8 @@ const ListItemContainer = styled(({ tileWidth, ...p }) => <div {...p} />)(p => {
     padding: ${p.compact ? "10px" : "20px"};
 
     `;
-});
+  },
+);
 
 // hacky to put `tileWidth` here, but it's the only way I found to prevent
 // styled-components from putting it in the DOM as an attribute (create a

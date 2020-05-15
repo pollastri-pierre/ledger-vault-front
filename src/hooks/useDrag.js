@@ -40,7 +40,7 @@ export default () => {
 
   useEffect(() => {
     if (!isMouseDown) return;
-    const mousemove = e => {
+    const mousemove = (e) => {
       setPos({
         x: e.pageX - clickPos.x + offsetPos.x,
         y: e.pageY - clickPos.y + offsetPos.y,

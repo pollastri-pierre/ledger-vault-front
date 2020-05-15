@@ -11,7 +11,7 @@ import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
 import ApprovalSlider from "./ApprovalSlider";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   onboarding: state.onboarding,
 });
 const mapDispatch = (dispatch: *) => ({

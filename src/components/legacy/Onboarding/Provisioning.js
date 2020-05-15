@@ -44,7 +44,7 @@ const Provisioning = ({
     onGetShardsChannel();
   }, [onGetShardsChannel]);
 
-  const onSuccess = data => {
+  const onSuccess = (data) => {
     setLoading(null);
     const {
       blob,
@@ -60,7 +60,7 @@ const Provisioning = ({
     onAddSeedShard(send);
   };
 
-  const onError = e => {
+  const onError = (e) => {
     setLoading(null);
     if (e.statusCode && e.statusCode === DEVICE_REJECT_ERROR_CODE) {
       setDeny(true);
@@ -139,13 +139,13 @@ const Provisioning = ({
   );
 };
 
-const mapProps = state => ({
+const mapProps = (state) => ({
   onboarding: state.onboarding,
 });
 
 const mapDispatch = (dispatch: *) => ({
   onToggleDeviceModal: () => dispatch(toggleDeviceModal()),
-  onAddSeedShard: data => dispatch(addMasterSeedKey(data)),
+  onAddSeedShard: (data) => dispatch(addMasterSeedKey(data)),
   onAddMessage: (title, msg, type) => dispatch(addMessage(title, msg, type)),
   onWipe: () => dispatch(wipe()),
   onGetShardsChannel: () => dispatch(openProvisionningChannel()),

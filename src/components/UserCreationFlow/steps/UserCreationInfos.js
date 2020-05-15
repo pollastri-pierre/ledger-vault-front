@@ -32,18 +32,18 @@ export const isUserIDValid = (v: string) =>
 const userIDHints = [
   {
     key: "nbCharts",
-    label: v => (
+    label: (v) => (
       <Trans
         i18nKey="inviteUser:form.hints.userID.nbCharts"
         values={{ uIDLength: USERID_LENGTH, nbLeft: USERID_LENGTH - v.length }}
       />
     ),
-    check: v => v.length === USERID_LENGTH,
+    check: (v) => v.length === USERID_LENGTH,
   },
   {
     key: "alphanum",
     label: <Trans i18nKey="inviteUser:form.hints.userID.alphanum" />,
-    check: v => v.split("").every(isUserIDCharValid),
+    check: (v) => v.split("").every(isUserIDCharValid),
   },
 ];
 
@@ -53,17 +53,11 @@ export const InputUserID = ({
   ...props
 }: {
   value: string,
-  onChange: string => void,
+  onChange: (string) => void,
 }) => {
   const { t } = useTranslation();
   const handleChange = (userID: string) =>
-    onChange(
-      userID
-        .toUpperCase()
-        .split("")
-        .filter(isUserIDCharValid)
-        .join(""),
-    );
+    onChange(userID.toUpperCase().split("").filter(isUserIDCharValid).join(""));
   return (
     <InputText
       data-test="userID"

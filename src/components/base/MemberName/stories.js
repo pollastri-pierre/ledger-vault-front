@@ -8,7 +8,7 @@ import MemberName from "components/base/MemberName";
 const users = genUsers(2);
 storiesOf("components", module).add("MemberName", () => (
   <>
-    {users.map(u => (
+    {users.map((u) => (
       <MemberName key={u.id} member={u} />
     ))}
   </>

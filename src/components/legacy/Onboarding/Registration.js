@@ -40,12 +40,12 @@ const MembersList = ({ members }: { members: Array<User> }) => (
   </MemeberListContainer>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   onboarding: state.onboarding,
 });
 const mapDispatch = (dispatch: *) => ({
-  onToggleModalProfile: member => dispatch(toggleMemberModal(member)),
-  onAddMember: data => dispatch(addMember(data)),
+  onToggleModalProfile: (member) => dispatch(toggleMemberModal(member)),
+  onAddMember: (data) => dispatch(addMember(data)),
   onWipe: () => dispatch(wipe()),
   onGetChallenge: () => dispatch(getRegistrationChallenge()),
   onAddMessage: (title, message, type) =>
@@ -63,7 +63,7 @@ type Props = {
   t: Translate,
 };
 class Registration extends Component<Props, *> {
-  addMember = data => {
+  addMember = (data) => {
     this.props.onAddMember(data);
     this.props.onToggleModalProfile();
   };

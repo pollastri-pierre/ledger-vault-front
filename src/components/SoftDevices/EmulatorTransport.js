@@ -13,7 +13,7 @@ export default {
           rejectExchange: (_e: *) => {},
           onDisconnect: () => {},
           close: () => socket.close(),
-          send: msg => {
+          send: (msg) => {
             const msgBuffer = Buffer.from(msg, "hex");
             const size = msgBuffer.length;
             const sizeBuffer = Buffer.allocUnsafe(4);
@@ -26,7 +26,7 @@ export default {
         socket.onopen = () => {
           resolve(exchangeMethods);
         };
-        socket.onerror = e => {
+        socket.onerror = (e) => {
           exchangeMethods.onDisconnect();
           reject(e);
         };
@@ -34,7 +34,7 @@ export default {
           exchangeMethods.onDisconnect();
           reject(new TransportError("OpenFailed", "OpenFailed"));
         };
-        socket.onmessage = async e => {
+        socket.onmessage = async (e) => {
           // $FlowFixMe yes yes I know
           const data = await e.data.arrayBuffer();
           const sizeBuf = Buffer.from(data.slice(0, 4));

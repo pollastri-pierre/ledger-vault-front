@@ -69,7 +69,7 @@ type Action =
   | { type: "SET_DEVICE", payload: EmulatorDevice | null }
   | { type: "CLEAR_SEEDS" };
 
-type Dispatch = Action => void;
+type Dispatch = (Action) => void;
 
 const reducer = (state, action) => {
   let seeds;

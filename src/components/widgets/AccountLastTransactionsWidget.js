@@ -39,7 +39,7 @@ function AccountLastTransactionsWidget(props: AccuntWidgetProps) {
         <TransactionsTable
           customTableDef={txAccountTableDefinition}
           accounts={[account]}
-          data={transactions.edges.map(e => e.node)}
+          data={transactions.edges.map((e) => e.node)}
           onRowClick={onRowClick}
         />
       </SoftCard>

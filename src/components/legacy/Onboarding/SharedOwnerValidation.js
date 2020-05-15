@@ -46,14 +46,14 @@ const SharedOwnerValidation = ({
   const [validating, setValidating] = useState(false);
   const [error, setError] = useState(null);
 
-  const onSuccess = data => {
+  const onSuccess = (data) => {
     setValidating(false);
     onAddAdminValidation(
       data.u2f_key.pubKey,
       data.validate_device.toString("base64"),
     );
   };
-  const onError = e => {
+  const onError = (e) => {
     setValidating(false);
     if (e.statusCode && e.statusCode === DEVICE_REJECT_ERROR_CODE) {
       setDeny(true);
@@ -168,7 +168,7 @@ const SharedOwnerValidation = ({
   );
 };
 
-const mapState = state => ({
+const mapState = (state) => ({
   onboarding: state.onboarding,
 });
 
@@ -191,9 +191,9 @@ const SigninButton = styled(Box).attrs({
   flow: 5,
   align: "center",
 })`
-  opacity: ${p => (p.disabled ? "0.5" : "1")};
-  pointer-events: ${p => (p.disabled ? "none" : "auto")};
-  cursor: ${p => (p.disabled ? "default" : "pointer")};
+  opacity: ${(p) => (p.disabled ? "0.5" : "1")};
+  pointer-events: ${(p) => (p.disabled ? "none" : "auto")};
+  cursor: ${(p) => (p.disabled ? "default" : "pointer")};
   font-size: 11px;
   text-transform: uppercase;
   color: ${colors.ocean};

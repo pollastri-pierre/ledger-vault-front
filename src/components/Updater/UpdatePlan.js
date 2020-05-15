@@ -79,13 +79,13 @@ const buildPlanStatus = (
   plan: VaultUpdatePlan,
   currentFirmware: FirmDevice,
 ): VaultUpdatePlanStatus =>
-  plan.map(step => ({
+  plan.map((step) => ({
     isRunning: false,
     isDone: false,
     substeps:
       step.type === "app"
         ? [genSubstep("app")]
-        : FIRMWARE_UPDATE_SUBSTEPS.map(type =>
+        : FIRMWARE_UPDATE_SUBSTEPS.map((type) =>
             genSubstep(type, currentFirmware.isOSU),
           ),
   }));
@@ -100,9 +100,9 @@ const reducer = (state, action) => {
     return {
       ...state,
       error: action.payload.error,
-      planStatus: state.planStatus.map(stepStatus => ({
+      planStatus: state.planStatus.map((stepStatus) => ({
         ...stepStatus,
-        substeps: stepStatus.substeps.map(sub => ({ ...sub, progress: 0 })),
+        substeps: stepStatus.substeps.map((sub) => ({ ...sub, progress: 0 })),
       })),
     };
   }
@@ -122,7 +122,7 @@ const reducer = (state, action) => {
     const subStepIndex =
       "substep" in data
         ? state.planStatus[stepIndex].substeps.findIndex(
-            s => s.type === data.substep,
+            (s) => s.type === data.substep,
           )
         : -1;
     return {
@@ -155,7 +155,7 @@ const reducer = (state, action) => {
     // update last step status to isDone
     return {
       ...state,
-      planStatus: planStatus.map(stepStatus => {
+      planStatus: planStatus.map((stepStatus) => {
         if (stepStatus !== planStatus[planStatus.length - 1]) return stepStatus;
         // return stepStatus;
         return { ...stepStatus, isRunning: false, isDone: true };
@@ -202,7 +202,7 @@ const UpdatePlan = (props: Props) => {
   useResetOnPlanChange(_plan, dispatch, props.currentFirmware);
 
   const handleStart = () =>
-    (_sub = $plan.subscribe(action => {
+    (_sub = $plan.subscribe((action) => {
       dispatch(action);
     }));
 
@@ -257,8 +257,8 @@ export const buildPlanObservable = (
 ): Observable<*> => {
   return concat(
     from(plan).pipe(
-      concatMap(step => {
-        const remapStep = map(e =>
+      concatMap((step) => {
+        const remapStep = map((e) =>
           e.error
             ? { type: "ERROR", payload: { step, error: e.error } }
             : { type: "UPDATE", payload: { step, data: e } },
@@ -278,7 +278,7 @@ export const buildPlanObservable = (
     ),
     of({ type: "FINISH" }),
   ).pipe(
-    catchError(error => {
+    catchError((error) => {
       return of({ type: "FINISH", error });
     }),
   );
@@ -294,7 +294,7 @@ const StartStep = ({
   isActive: boolean,
 |}) => {
   const handleClick = async () => {
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise((r) => setTimeout(r, 300));
     onStart();
   };
   const { t } = useTranslation();
@@ -403,7 +403,7 @@ const getStepKey = (step: VaultUpdatePlanStep) => {
 
 export default memo<Props>(UpdatePlan);
 
-const mapSubstep = substep => map(v => ({ substep, ...v }));
+const mapSubstep = (substep) => map((v) => ({ substep, ...v }));
 
 // emit the error so we can use it in react land
 // throw just after so the flow interrupts
@@ -411,11 +411,11 @@ const mapSubstep = substep => map(v => ({ substep, ...v }));
 const retryOnClick = (obs: Observable<*>) => {
   // $FlowFixMe I have no idea
   return obs.pipe(
-    catchError(error => {
+    catchError((error) => {
       const errorRemaped = remapError(error);
       return concat(of({ error: errorRemaped }), throwError(errorRemaped));
     }),
-    retryWhen(err => {
+    retryWhen((err) => {
       return err.pipe(
         concatMap(() => {
           return resumeSubject$.pipe(take(1));
@@ -433,7 +433,7 @@ const onDeviceError = () => {
 const waitForDeviceInfo = () => {
   return retryOnClick(
     withDevicePolling("webusb")(
-      transport => from(getDeviceInfo(transport)),
+      (transport) => from(getDeviceInfo(transport)),
       onDeviceError,
     ),
   );
@@ -443,7 +443,7 @@ const waitReboot = (substep, isDemoMode) =>
   isDemoMode
     ? // $FlowFixMe
       concat(of({ type: "start" }), resumeSubject$.pipe(take(1))).pipe(
-        filter(e => e.type === "start" || e.type === "click"),
+        filter((e) => e.type === "start" || e.type === "click"),
         mapSubstep(substep),
       )
     : concat(
@@ -451,7 +451,7 @@ const waitReboot = (substep, isDemoMode) =>
         resumeSubject$.pipe(take(1)),
         waitForDeviceInfo(),
       ).pipe(
-        filter(e => e.type === "start" || e.type === "click"),
+        filter((e) => e.type === "start" || e.type === "click"),
         mapSubstep(substep),
       );
 
@@ -480,7 +480,7 @@ const run = (
       concat(
         waitRebootBefore ? waitReboot(waitRebootBefore, isDemoMode) : of(null),
         fakeProgress().pipe(
-          catchError(e =>
+          catchError((e) =>
             e instanceof DisconnectedDevice ? empty() : throwError(e),
           ),
         ),
@@ -494,9 +494,9 @@ const run = (
     concat(
       waitRebootBefore ? waitReboot(waitRebootBefore, isDemoMode) : of(null),
       withDevicePolling("webusb")(
-        transport =>
+        (transport) =>
           concat(job(transport, targetId, extraParams)).pipe(
-            catchError(e =>
+            catchError((e) =>
               e instanceof DisconnectedDevice ? empty() : throwError(e),
             ),
           ),
@@ -564,7 +564,7 @@ const installFinal = (transition, isDemoMode) => {
 
 const fakeProgress = () =>
   concat(
-    ...[...Array(97).keys()].map(i =>
+    ...[...Array(97).keys()].map((i) =>
       // $FlowFixMe
       of({ progress: i / 100 }).pipe(delay(DEMO_DELAY)),
     ),

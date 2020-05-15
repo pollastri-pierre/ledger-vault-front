@@ -65,14 +65,14 @@ describe("Update registry", () => {
 
   describe("validate real world data", () => {
     it("contains valid firmware transitions", () => {
-      FIRMWARE_TRANSITIONS_RAW.forEach(rawTransition => {
+      FIRMWARE_TRANSITIONS_RAW.forEach((rawTransition) => {
         const fn = () => parseRawTransition(rawTransition);
         expect(fn).not.toThrow();
       });
     });
 
     it("contains valid apps", () => {
-      APPS_RAW.forEach(rawApp => {
+      APPS_RAW.forEach((rawApp) => {
         const fn = () => parseRawApp(rawApp);
         expect(fn).not.toThrow();
       });

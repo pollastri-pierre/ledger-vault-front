@@ -56,7 +56,7 @@ export default Alert;
 const Container = styled.div`
   display: flex;
   position: absolute;
-  transform: translateY(${p => (p.open ? "0" : "-110%")});
+  transform: translateY(${(p) => (p.open ? "0" : "-110%")});
   transition: 300m s cubic-bezier(0.65, 0.09, 0.35, 1.41) transform;
   cursor: pointer;
 `;
@@ -69,7 +69,7 @@ const Content = styled.div`
   display: flex;
   border-radius: 5px;
   color: ${colors.white};
-  background: ${p => (p.type === "error" ? colors.grenade : colors.ocean)};
+  background: ${(p) => (p.type === "error" ? colors.grenade : colors.ocean)};
   padding: 30px;
   padding-top: 40px;
   margin-top: -10px;

@@ -195,13 +195,13 @@ const InlineLabel = styled(Box).attrs({
   min-height: 38px;
   padding: 5px 10px;
 
-  border-bottom: ${p => (p.isOpened ? "1px solid white" : "none")};
-  border-bottom-left-radius: ${p => (p.isOpened ? 0 : "4px")};
-  border-bottom-right-radius: ${p => (p.isOpened ? 0 : "4px")};
-  z-index: ${p => (p.isOpened ? 30 : 0)};
+  border-bottom: ${(p) => (p.isOpened ? "1px solid white" : "none")};
+  border-bottom-left-radius: ${(p) => (p.isOpened ? 0 : "4px")};
+  border-bottom-right-radius: ${(p) => (p.isOpened ? 0 : "4px")};
+  z-index: ${(p) => (p.isOpened ? 30 : 0)};
   transition: 100ms linear background-color;
-  pointer-events: ${p => (p.interactive === false ? "none" : "auto")};
-  opacity: ${p => (p.interactive === false ? 0.7 : 1)};
+  pointer-events: ${(p) => (p.interactive === false ? "none" : "auto")};
+  opacity: ${(p) => (p.interactive === false ? 0.7 : 1)};
 
   &:hover {
     cursor: pointer;
@@ -228,12 +228,12 @@ const Menu = styled(Box).attrs({
   position: "absolute",
   p: 10,
 })`
-  opacity: ${p => (p.pos === "unset" ? 0 : 1)};
+  opacity: ${(p) => (p.pos === "unset" ? 0 : 1)};
   top: 100%;
   margin-top: -1px;
-  left: ${p => (p.pos === "left" ? "-1px" : "auto")};
-  right: ${p => (p.pos === "right" ? "-1px" : "auto")};
-  width: ${p => p.width}px;
+  left: ${(p) => (p.pos === "left" ? "-1px" : "auto")};
+  right: ${(p) => (p.pos === "right" ? "-1px" : "auto")};
+  width: ${(p) => p.width}px;
   background: ${colors.white};
   border: 1px solid ${colors.legacyLightGrey1};
   border-bottom-left-radius: 4px;

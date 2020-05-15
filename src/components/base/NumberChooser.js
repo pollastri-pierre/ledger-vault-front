@@ -8,7 +8,7 @@ import colors, { opacity, darken } from "shared/colors";
 
 type Props = {
   value: number,
-  onChange: number => void,
+  onChange: (number) => void,
   min: number,
   max: number,
   readOnly?: boolean,
@@ -62,9 +62,9 @@ const NumberChooserAction = styled.div`
   justify-content: center;
   flex-shrink: 0;
   width: 30px;
-  pointer-events: ${p => (p.isDisabled ? "none" : "auto")};
+  pointer-events: ${(p) => (p.isDisabled ? "none" : "auto")};
 
-  color: ${p =>
+  color: ${(p) =>
     p.isDisabled ? colors.legacyLightGrey7 : opacity(colors.ocean, 0.5)};
   &:hover {
     cursor: pointer;

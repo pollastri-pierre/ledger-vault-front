@@ -133,10 +133,10 @@ const possibleRequests = {
   },
 };
 
-const getStatusesOptions = entity => {
+const getStatusesOptions = (entity) => {
   const map = statusesByEntity[entity.value];
   const statuses = Object.keys(map);
-  return statuses.map(s => ({ label: s, value: s, data: s }));
+  return statuses.map((s) => ({ label: s, value: s, data: s }));
 };
 
 const getRequestTypeOptions = (entityOpt, statusOpt): Option[] => {
@@ -144,7 +144,7 @@ const getRequestTypeOptions = (entityOpt, statusOpt): Option[] => {
   if (!statuses) return [];
   const reqs = statuses[statusOpt.value];
   if (!reqs || !reqs.length) return [];
-  return reqs.map(r => ({
+  return reqs.map((r) => ({
     label: r ? <Trans i18nKey={`request:type.${r}`} /> : "(no request)",
     data: r || null,
     value: r || null,
@@ -165,7 +165,7 @@ const buildEntity = ({
   };
   if (reqTypeOpt && reqTypeOpt.value) {
     const approvals = hasApproved
-      ? genApprovals(1, { users: [me] }).map(a => ({
+      ? genApprovals(1, { users: [me] }).map((a) => ({
           ...a,
           type: "APPROVE",
         }))
@@ -179,9 +179,7 @@ const buildEntity = ({
       current_step: inCurrentStep ? 1 : 0,
       approvals_steps,
       approvals,
-      expired_at: moment()
-        .add(5, "days")
-        .toDate(),
+      expired_at: moment().add(5, "days").toDate(),
     };
   }
   return entity;
@@ -285,13 +283,13 @@ const Wrapper = () => {
     reqFail,
   } = state;
 
-  const onChangeEntity = entityOpt =>
+  const onChangeEntity = (entityOpt) =>
     dispatch({ type: "SET_ENTITY", payload: entityOpt });
 
-  const onChangeEntityStatus = statusOpt =>
+  const onChangeEntityStatus = (statusOpt) =>
     dispatch({ type: "SET_STATUS", payload: statusOpt });
 
-  const onChangeReqType = reqTypeOpt =>
+  const onChangeReqType = (reqTypeOpt) =>
     dispatch({ type: "SET_REQ_TYPE", payload: reqTypeOpt });
 
   const toggleApproved = () =>

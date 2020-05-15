@@ -58,7 +58,7 @@ export default function ExportToCSV(props: Props) {
 
   const onExport = async () => {
     const params = omit(queryParams, ["pageSize"]);
-    const labels = config.columns.map(col =>
+    const labels = config.columns.map((col) =>
       t(`exportCSV:columns.${entityType}:${col}`),
     );
     try {

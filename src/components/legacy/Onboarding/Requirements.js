@@ -17,7 +17,7 @@ const BlueDeviceOuter = styled.div`
   padding: 1px;
   width: 25px;
   margin-bottom: 5px;
-  border-color: ${p =>
+  border-color: ${(p) =>
     p.color === "orange"
       ? colors.blue_orange
       : p.color === "green"
@@ -29,7 +29,7 @@ const BlueDeviceInner = styled.div`
   border: 1px solid ${colors.legacyGrey};
   background: ${colors.legacyLightGrey4};
   height: 100%;
-  border-color: ${p =>
+  border-color: ${(p) =>
     p.color === "orange"
       ? colors.blue_orange
       : p.color === "green"

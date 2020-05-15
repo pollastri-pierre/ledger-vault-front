@@ -25,7 +25,7 @@ import { List, ListEmpty, ListItem } from "./List";
 type Props = {
   emptyState: React$Node,
   requests: GenericRequest[],
-  onRequestClick: GenericRequest => void,
+  onRequestClick: (GenericRequest) => void,
   dataTest?: string,
 };
 
@@ -52,7 +52,7 @@ export default function RequestsList(props: Props) {
 
 type RequestCardProps = {
   request: GenericRequest,
-  onClick: GenericRequest => void,
+  onClick: (GenericRequest) => void,
   dataTest: number,
 };
 

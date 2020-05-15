@@ -79,19 +79,19 @@ const customComponents = {
 };
 
 const customStyles = {
-  clearIndicator: styles => ({
+  clearIndicator: (styles) => ({
     ...styles,
     color: colors.legacyLightGrey7,
     padding: "5px 0",
   }),
-  input: styles => ({
+  input: (styles) => ({
     ...styles,
     fontSize: 13,
     margin: 0,
     marginLeft: 2,
     color: "inherit",
   }),
-  singleValue: styles => ({
+  singleValue: (styles) => ({
     ...styles,
     color: "inherit",
   }),
@@ -137,11 +137,11 @@ const customStyles = {
         : `${borderColor} !important`,
     };
   },
-  valueContainer: styles => ({
+  valueContainer: (styles) => ({
     ...styles,
     padding: "5px 8px",
   }),
-  menu: styles => ({
+  menu: (styles) => ({
     ...styles,
     border: `1px solid ${colors.form.focus}`,
     borderTopColor: colors.legacyLightGrey8,
@@ -156,7 +156,7 @@ const customStyles = {
     paddingBottom: 0,
     zIndex: 10,
   }),
-  menuList: styles => ({
+  menuList: (styles) => ({
     ...styles,
     borderTop: "none !important",
     paddingTop: 0,

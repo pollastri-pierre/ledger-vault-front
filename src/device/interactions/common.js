@@ -31,7 +31,7 @@ export const checkVersion: Interaction = {
   tooltip: <Text i18nKey="common:plug_device" />,
   action: ({ transport }) => {
     const promise = new Promise((resolve, reject) => {
-      getVersion()(transport).then(version => {
+      getVersion()(transport).then((version) => {
         console.log(`Blue app version is ${version.appVersion}`); // eslint-disable-line no-console
         console.log(`Config app version is ${window.config.APP_VERSION}`); // eslint-disable-line no-console
         if (version.appVersion !== window.config.APP_VERSION) {

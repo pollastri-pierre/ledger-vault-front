@@ -14,7 +14,7 @@ import type { RuleMultiAuth } from "./types";
 
 type Props = {
   rule: RuleMultiAuth,
-  onChange: RuleMultiAuth => void,
+  onChange: (RuleMultiAuth) => void,
   users: User[],
   groups: Group[],
 };
@@ -36,16 +36,16 @@ const MultiAuthStops = (props: Props) => {
     onChange({ ...rule, data: [creatorStep, ...newSteps] });
   };
 
-  const handleRemove = step => () =>
+  const handleRemove = (step) => () =>
     onChange({
       ...rule,
-      data: rule.data.filter(s => s !== step),
+      data: rule.data.filter((s) => s !== step),
     });
 
-  const handleEdit = oldStep => newStep =>
+  const handleEdit = (oldStep) => (newStep) =>
     onChange({
       ...rule,
-      data: rule.data.map(step => (step === oldStep ? newStep : step)),
+      data: rule.data.map((step) => (step === oldStep ? newStep : step)),
     });
 
   const onStartEdit = () => setEditInProgress(true);

@@ -29,7 +29,7 @@ export function getMatchingRulesSet(
   input: GetMatchingRulesSetInput,
 ): GetMatchingRulesSetOutput {
   const { transaction, governanceRules } = input;
-  const matchingRulesSet = governanceRules.find(rulesSet =>
+  const matchingRulesSet = governanceRules.find((rulesSet) =>
     isMatchingRulesSet({ rulesSet, transaction }),
   );
   return matchingRulesSet || null;
@@ -73,12 +73,12 @@ function isWhitelistMatching(
   whitelistRule,
   { transaction: { recipient, currency } },
 ) {
-  return whitelistRule.data.some(whitelist => {
+  return whitelistRule.data.some((whitelist) => {
     if (typeof whitelist === "number") {
       console.warn("Received id of whitelist instead of whitelist");
       return false;
     }
-    return whitelist.addresses.some(address => {
+    return whitelist.addresses.some((address) => {
       return address.address === recipient && address.currency === currency;
     });
   });

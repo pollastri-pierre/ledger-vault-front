@@ -26,7 +26,7 @@ type Props = {
 
 function QuorumWidget(props: Props) {
   const { location, history, requestsConnection } = props;
-  const requests = requestsConnection.edges.map(e => e.node);
+  const requests = requestsConnection.edges.map((e) => e.node);
   const { organization } = useOrganization();
   const org = organization;
   const quorum = org.quorum || 0;
@@ -81,9 +81,9 @@ function QuorumWidget(props: Props) {
   );
 }
 
-const findOne = (requests, type) => requests.find(r => r.type === type);
+const findOne = (requests, type) => requests.find((r) => r.type === type);
 
-const getRevokeAdminReq = requests => {
+const getRevokeAdminReq = (requests) => {
   const req = findOne(requests, "REVOKE_USER");
   if (!req) return null;
   return !!req.user && req.user.role === "ADMIN";

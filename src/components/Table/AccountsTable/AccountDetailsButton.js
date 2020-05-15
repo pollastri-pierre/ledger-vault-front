@@ -52,7 +52,7 @@ function AccountTableSubmenu(props: Props) {
     <Box horizontal>
       <OpenExternal url={`/accounts/view/${account.id}`} />
       <Menu>
-        <MenuButtonStyleIcon onClick={e => preventRowClick(e)}>
+        <MenuButtonStyleIcon onClick={(e) => preventRowClick(e)}>
           <FaEllipsisV />
         </MenuButtonStyleIcon>
         <MenuListStyle>

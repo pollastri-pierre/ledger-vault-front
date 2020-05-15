@@ -9,7 +9,7 @@ import WhitelistBodyCell from "./WhitelistBodyCell";
 
 type WhitelistRowProps = {
   whitelist: Whitelist,
-  onClick: Whitelist => void,
+  onClick: (Whitelist) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -22,7 +22,7 @@ function WhitelistRow(props: WhitelistRowProps) {
 
   return (
     <TableRow onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <WhitelistBodyCell
           whitelist={whitelist}
           item={item}

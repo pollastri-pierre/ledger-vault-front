@@ -65,7 +65,7 @@ const VaultLayoutMenuItem = styled.div`
   align-items: center;
 
   .VaultLayoutMenuItem--content {
-    display: ${p => (p.isMenuOpened ? "block" : "none")};
+    display: ${(p) => (p.isMenuOpened ? "block" : "none")};
   }
 
   @media (min-width: ${vaultLayoutConfig.BREAKPOINT}px) {
@@ -108,8 +108,8 @@ const VaultLayoutIconContainer = styled.div`
 
 const NotifWrapper = styled.div`
   position: absolute;
-  top: ${p => (p.isMenuOpened ? 10 : -5)}px;
-  right: ${p => (p.isMenuOpened ? 30 : 8)}px;
+  top: ${(p) => (p.isMenuOpened ? 10 : -5)}px;
+  right: ${(p) => (p.isMenuOpened ? 30 : 8)}px;
 
   @media (min-width: ${vaultLayoutConfig.BREAKPOINT}px) {
     top: 10px;

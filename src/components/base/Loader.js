@@ -23,8 +23,8 @@ const Loader = (props: Props) => (
 
 const StyledLoader = styled.svg`
   animation: rotate 2s linear infinite;
-  width: ${p => p.size}px;
-  height: ${p => p.size}px;
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
 
   & .path {
     animation: dash 1.5s ease-in-out infinite;

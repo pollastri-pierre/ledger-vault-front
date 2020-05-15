@@ -8,7 +8,7 @@ import FakeInputContainer from "components/base/FakeInputContainer";
 type Props = {
   value: string,
   prefix: string,
-  onChange: string => void,
+  onChange: (string) => void,
   errors: Error[],
 };
 const DerivationInput = ({ value, prefix, onChange, errors }: Props) => {

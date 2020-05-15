@@ -27,11 +27,11 @@ const MenuLink = styled.div`
   font-size: 11px;
   font-weight: 600;
   padding-left: 40px;
-  opacity: ${p => (p.selected ? 1 : 0.5)};
+  opacity: ${(p) => (p.selected ? 1 : 0.5)};
   display: flex;
   align-items: center;
 
-  ${p =>
+  ${(p) =>
     p.selected
       ? `
       &:before {

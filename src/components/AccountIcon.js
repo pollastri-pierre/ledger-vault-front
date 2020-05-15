@@ -45,14 +45,14 @@ function AccountIcon(props: Props) {
 }
 
 const Container = styled.div(
-  p => `
+  (p) => `
   width: ${p.size}px;
   height: ${p.size}px;
 `,
 );
 
 const Placeholder = styled.div(
-  p => `
+  (p) => `
   width: ${p.size}px;
   height: ${p.size}px;
   background: ${colors.lightGrey};

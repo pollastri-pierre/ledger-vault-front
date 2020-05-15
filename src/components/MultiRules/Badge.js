@@ -26,8 +26,8 @@ const Container = styled.div`
   border-radius: 4px;
   padding: 5px;
   white-space: nowrap;
-  color: ${p => (p.type === "primary" ? colors.bLive : "inherit")};
-  font-weight: ${p => (p.type === "primary" ? "bold" : "normal")};
+  color: ${(p) => (p.type === "primary" ? colors.bLive : "inherit")};
+  font-weight: ${(p) => (p.type === "primary" ? "bold" : "normal")};
 `;
 
 export default Badge;

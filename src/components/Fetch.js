@@ -9,8 +9,8 @@ import network from "network";
 
 type Props<T> = {
   url: string,
-  deserialize?: any => T,
-  children: T => React$Node,
+  deserialize?: (any) => T,
+  children: (T) => React$Node,
 };
 
 const spinner = (

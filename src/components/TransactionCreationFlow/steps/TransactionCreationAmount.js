@@ -56,16 +56,16 @@ const TransactionCreationAmount = (
   const isERC20 = account.account_type === "Erc20";
   const currency = getCryptoCurrencyById(account.currency);
   const onChangeTransaction = useCallback(
-    transaction => updatePayload({ transaction }),
+    (transaction) => updatePayload({ transaction }),
     [updatePayload],
   );
 
-  const onChangeAmount = value =>
+  const onChangeAmount = (value) =>
     onChangeTransaction(bridge.editTransactionAmount(transaction, value));
 
   const onResetAmount = () => onChangeAmount(BigNumber(0));
 
-  const onChangeRecipient = recipient =>
+  const onChangeRecipient = (recipient) =>
     onChangeTransaction(
       bridge.editTransactionRecipient(transaction, recipient),
     );
@@ -88,7 +88,7 @@ const TransactionCreationAmount = (
   const showMatchingRulesSet =
     transaction.amount.isGreaterThan(0) && transaction.recipient;
 
-  const whitelists = whitelistsConnection.edges.map(n => n.node);
+  const whitelists = whitelistsConnection.edges.map((n) => n.node);
 
   const inner = (
     <>

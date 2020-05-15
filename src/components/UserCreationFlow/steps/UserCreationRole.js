@@ -14,7 +14,7 @@ export default (props: UserCreationStepProps) => {
   const { payload, updatePayload, transitionTo } = props;
   const { role } = payload;
 
-  const chooseRoleAndNext = role => () => {
+  const chooseRoleAndNext = (role) => () => {
     updatePayload({ role }, () => {
       transitionTo("infos");
     });
@@ -73,9 +73,10 @@ export default (props: UserCreationStepProps) => {
 const Choice = styled.div`
   display: block;
   cursor: pointer;
-  background: ${p => (p.isActive ? opacity(colors.bLive, 0.05) : colors.white)};
+  background: ${(p) =>
+    p.isActive ? opacity(colors.bLive, 0.05) : colors.white};
   border: 2px solid
-    ${p => (p.isActive ? opacity(colors.bLive, 0.6) : colors.argile)};
+    ${(p) => (p.isActive ? opacity(colors.bLive, 0.6) : colors.argile)};
   width: 210px;
   height: 210px;
   padding: 20px;

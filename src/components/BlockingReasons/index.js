@@ -29,7 +29,7 @@ type Props = {
 };
 
 const BlockingReasons = ({ error, onClose, ...rest }: Props) => {
-  const onRowClick = reason => {
+  const onRowClick = (reason) => {
     const { history } = rest;
     onClose && onClose();
     const orgaName = location.pathname.split("/")[1];

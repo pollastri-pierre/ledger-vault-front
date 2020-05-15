@@ -70,7 +70,7 @@ export const generateKeyComponent = async (
 ): Promise<Buffer> => {
   const data = Buffer.concat([
     Buffer.from([path.length]),
-    ...path.map(derivation => {
+    ...path.map((derivation) => {
       const buf = Buffer.alloc(4);
       buf.writeUInt32BE(derivation, 0);
       return buf;
@@ -142,7 +142,7 @@ export const validateVaultOperation = async (
 ) => {
   const paths = Buffer.concat([
     Buffer.from([path.length]),
-    ...path.map(derivation => {
+    ...path.map((derivation) => {
       const buf = Buffer.alloc(4);
       buf.writeUInt32BE(derivation, 0);
       return buf;
@@ -190,7 +190,7 @@ export const openSession = async (
 ): Promise<*> => {
   const dataDerivation = Buffer.concat([
     Buffer.from([path.length]),
-    ...path.map(derivation => {
+    ...path.map((derivation) => {
       const buf = Buffer.alloc(4);
       buf.writeUInt32BE(derivation, 0);
       return buf;
@@ -296,7 +296,7 @@ export const getPublicKey = async (
 }> => {
   const data = Buffer.concat([
     Buffer.from([path.length]),
-    ...path.map(derivation => {
+    ...path.map((derivation) => {
       const buf = Buffer.alloc(4);
       buf.writeUInt32BE(derivation, 0);
       return buf;

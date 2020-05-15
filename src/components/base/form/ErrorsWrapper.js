@@ -13,7 +13,7 @@ const ErrorsWrapper = ({ bg, errors }: { bg?: string, errors?: Error[] }) =>
   errors && errors.length ? (
     <Absolute top="100%" right={0}>
       <StyledErrorsWrapper bg={bg}>
-        {errors.map(err => (
+        {errors.map((err) => (
           <Box key={err.message}>
             <TranslatedError error={err} field="description" />
           </Box>
@@ -34,7 +34,7 @@ const enter = keyframes`
 `;
 
 const StyledErrorsWrapper = styled.div`
-  background: ${p => p.bg || colors.form.error};
+  background: ${(p) => p.bg || colors.form.error};
   color: white;
   padding: 5px 10px;
   margin-top: 10px;

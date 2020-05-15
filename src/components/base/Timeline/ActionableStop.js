@@ -15,7 +15,7 @@ type Props<T, P> = {
   desc?: React$Node,
   EditComponent: EditableComponent<T, P>,
   extraProps?: P,
-  onSubmit: T => void,
+  onSubmit: (T) => void,
   onClick?: () => void,
   initialValue: T,
   isValid: (T, ?RuleMultiAuth) => boolean,
@@ -41,7 +41,7 @@ const ActionableStop = <T, P>({
 
   if (readOnly) return null;
 
-  const handleSubmit = v => {
+  const handleSubmit = (v) => {
     setActive(false);
     onSubmit(v);
   };
@@ -87,7 +87,7 @@ const ActionableStop = <T, P>({
 };
 
 const Inner = styled.div`
-  color: ${p => (p.isDisabled ? colors.mediumGrey : colors.bLive)};
+  color: ${(p) => (p.isDisabled ? colors.mediumGrey : colors.bLive)};
   font-weight: bold;
 `;
 

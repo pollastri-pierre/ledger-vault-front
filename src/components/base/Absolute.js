@@ -9,9 +9,9 @@ export default styled.div`
   right: ${position("right")};
   bottom: ${position("bottom")};
 
-  width: ${p => (p.width ? `${p.width}px` : "auto")};
+  width: ${(p) => (p.width ? `${p.width}px` : "auto")};
 
-  ${p =>
+  ${(p) =>
     p.center
       ? `
     display: flex;
@@ -22,7 +22,7 @@ export default styled.div`
 `;
 
 function position(pos) {
-  return p =>
+  return (p) =>
     p[pos] === true
       ? 0
       : p[pos] === 0

@@ -70,9 +70,9 @@ class Wrapper extends React.Component {
     };
   }
 
-  onClick = key => () => {
+  onClick = (key) => () => {
     this.setState(({ items }) => ({
-      items: items.map(item => {
+      items: items.map((item) => {
         if (item.key !== key) {
           if (item.isActive) {
             return { ...item, isActive: false };

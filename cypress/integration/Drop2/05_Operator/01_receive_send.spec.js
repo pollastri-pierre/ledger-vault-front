@@ -1,11 +1,11 @@
 import { login, logout, route, success_tx } from "../../../functions/actions";
 
-describe("Test on Operator ", function() {
-  beforeEach(function() {
+describe("Test on Operator ", function () {
+  beforeEach(function () {
     login(11);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -36,7 +36,7 @@ describe("Test on Operator ", function() {
       .type("Amanda Wong", { force: true })
       .type("{enter}");
 
-    cy.get("[data-test=Copy_value]").then($valueAddress => {
+    cy.get("[data-test=Copy_value]").then(($valueAddress) => {
       const ReceiveAddress = $valueAddress.text();
       cy.log(ReceiveAddress);
       cy.get("[data-test=close]").click();
@@ -46,9 +46,7 @@ describe("Test on Operator ", function() {
       cy.get("#input_account")
         .type("Amanda Wong", { force: true })
         .type("{enter}");
-      cy.get("#address")
-        .type(ReceiveAddress, { force: true })
-        .type("{enter}");
+      cy.get("#address").type(ReceiveAddress, { force: true }).type("{enter}");
       cy.get("[data-test=input_amount]")
         .type("0.0006", { force: true })
         .type("{enter}");

@@ -37,7 +37,7 @@ type BuildGraphDataProps = {
   transactions: Transaction[],
 };
 
-const sortTransactions = transactions => {
+const sortTransactions = (transactions) => {
   const res = [...transactions];
   res.sort((a, b) => (moment(a.created_on).isBefore(b.created_on) ? 1 : -1));
   return res;
@@ -49,9 +49,7 @@ export const buildGraphData = ({
 }: BuildGraphDataProps) => {
   const sortedTransactions = sortTransactions(transactions);
 
-  const rangeDateMin = moment()
-    .subtract(nbDays, "days")
-    .startOf("day");
+  const rangeDateMin = moment().subtract(nbDays, "days").startOf("day");
   const rangeDateMax = moment().startOf("day");
 
   let { balance } = account;
@@ -64,8 +62,10 @@ export const buildGraphData = ({
     },
 
     ...sortedTransactions
-      .filter(tx => moment(tx.created_on).isBetween(rangeDateMin, rangeDateMax))
-      .map(tx => {
+      .filter((tx) =>
+        moment(tx.created_on).isBetween(rangeDateMin, rangeDateMax),
+      )
+      .map((tx) => {
         const { type, amount, fees } = tx;
         switch (type) {
           case "SEND":

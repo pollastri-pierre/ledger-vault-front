@@ -54,13 +54,13 @@ const AddAddressForm = (props: Props) => {
     setEditedAddress,
   ]);
 
-  const startEditAddress = useCallback(addr => setEditedAddress(addr), [
+  const startEditAddress = useCallback((addr) => setEditedAddress(addr), [
     setEditedAddress,
   ]);
 
   const handleChangeAddress = useCallback(
     (source, edited) => {
-      const iteratee = address => (address === source ? edited : address);
+      const iteratee = (address) => (address === source ? edited : address);
       const patched = addresses.map(iteratee);
       onChange(patched);
       setEditedAddress(null);
@@ -69,7 +69,7 @@ const AddAddressForm = (props: Props) => {
   );
 
   const handleAddAddress = useCallback(
-    address => {
+    (address) => {
       setEditedAddress(null);
       onChange([...addresses, address]);
     },
@@ -77,8 +77,8 @@ const AddAddressForm = (props: Props) => {
   );
 
   const handleRemoveAddress = useCallback(
-    address => {
-      const patched = addresses.filter(addr => addr !== address);
+    (address) => {
+      const patched = addresses.filter((addr) => addr !== address);
       onChange(patched);
     },
     [onChange, addresses],
@@ -93,13 +93,13 @@ const AddAddressForm = (props: Props) => {
       <Box>
         <ColumnsHeader />
 
-        {addresses.map(addr =>
+        {addresses.map((addr) =>
           addr === editedAddress ? (
             <AddressForm
               key={addr.id}
               source={addr}
               addresses={addresses}
-              onSubmit={edited => handleChangeAddress(addr, edited)}
+              onSubmit={(edited) => handleChangeAddress(addr, edited)}
               onCancel={stopEditAddress}
               isEdit
             />
@@ -145,8 +145,8 @@ const AddressRow = React.memo(
     onStartEdit,
   }: {
     addr: Address,
-    onRemove: Address => void,
-    onStartEdit: Address => void,
+    onRemove: (Address) => void,
+    onStartEdit: (Address) => void,
   }) => {
     const currency = getCryptoCurrencyById(addr.currency);
     const { t } = useTranslation();
@@ -225,7 +225,7 @@ const AddressForm = connectData(
     source?: Address,
     onCancel: () => void,
     addresses: Address[],
-    onSubmit: Address => void,
+    onSubmit: (Address) => void,
     restlay: RestlayEnvironment,
     isEdit?: boolean,
   |}) => {
@@ -238,7 +238,7 @@ const AddressForm = connectData(
 
     const previousAddr = usePrevious(addr);
 
-    const setCurrency = currency => {
+    const setCurrency = (currency) => {
       setAddr({ ...addr, currency });
       setAddressError(undefined);
     };
@@ -248,7 +248,7 @@ const AddressForm = connectData(
       setAddressError(undefined);
     };
 
-    const setName = name => setAddr({ ...addr, name });
+    const setName = (name) => setAddr({ ...addr, name });
     const currency = addr.currency
       ? getCryptoCurrencyById(addr.currency)
       : null;
@@ -320,7 +320,7 @@ const AddressForm = connectData(
                 noToken
                 placeholder={t("whitelists:create.currency_placeholder")}
                 value={currency}
-                onChange={val => setCurrency(val ? val.value.id : "")}
+                onChange={(val) => setCurrency(val ? val.value.id : "")}
                 noOptionsMessage={() => "No currencies"}
               />
             </Box>
@@ -398,8 +398,8 @@ const genEmptyAddress = () => ({
 
 const checkNameCurrencyDuplicate = (current: Address, addresses: Address[]) =>
   addresses
-    .filter(a => (current.id ? a.id !== current.id : true))
-    .some(a => a.name === current.name && a.currency === current.currency)
+    .filter((a) => (current.id ? a.id !== current.id : true))
+    .some((a) => a.name === current.name && a.currency === current.currency)
     ? new AddressDuplicateNameCurrency()
     : null;
 
@@ -408,8 +408,10 @@ const checkCurrencyAddressDuplicate = (
   addresses: Address[],
 ) => {
   return addresses
-    .filter(a => (current.id ? a.id !== current.id : true))
-    .some(a => a.currency === current.currency && a.address === current.address)
+    .filter((a) => (current.id ? a.id !== current.id : true))
+    .some(
+      (a) => a.currency === current.currency && a.address === current.address,
+    )
     ? new AddressDuplicateCurrencyAddress()
     : null;
 };

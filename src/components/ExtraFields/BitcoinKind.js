@@ -40,7 +40,7 @@ const ExtraFieldsBitcoin = (props: EditProps<BitcoinTransaction>) => {
   const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
-  const handleChange = option => {
+  const handleChange = (option) => {
     onChangeTransaction({
       ...transaction,
       utxoPickingStrategy: option ? option.value : null,
@@ -49,7 +49,9 @@ const ExtraFieldsBitcoin = (props: EditProps<BitcoinTransaction>) => {
       error: null,
     });
   };
-  const value = options.find(o => o.value === transaction.utxoPickingStrategy);
+  const value = options.find(
+    (o) => o.value === transaction.utxoPickingStrategy,
+  );
 
   return (
     <Box flow={15}>

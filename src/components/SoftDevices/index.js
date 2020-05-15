@@ -26,12 +26,12 @@ const LOCAL_WEBLUE = window.localStorage.getItem("LOCAL_WEBLUE") === "1";
 const getWeblueURL = () =>
   LOCAL_WEBLUE ? "http://localhost:3000" : window.config.WEBLUE_URL;
 
-const getAPDUURL = device =>
+const getAPDUURL = (device) =>
   LOCAL_WEBLUE
     ? `ws://localhost:${device.apdu}/websockify`
     : `${window.config.SPECULOS_WEBLUE_URL}/${device.apdu}/websockify`;
 
-const getVNCURL = device =>
+const getVNCURL = (device) =>
   LOCAL_WEBLUE
     ? `ws://localhost:${device.vnc}/websockify`
     : `${window.config.SPECULOS_WEBLUE_URL}/${device.vnc}/websockify`;
@@ -63,12 +63,12 @@ const Emulator = () => {
   );
 
   const setDevices = useCallback(
-    devices => dispatch({ type: "SET_DEVICES", payload: devices }),
+    (devices) => dispatch({ type: "SET_DEVICES", payload: devices }),
     [dispatch],
   );
 
   const setDevice = useCallback(
-    device => dispatch({ type: "SET_DEVICE", payload: device }),
+    (device) => dispatch({ type: "SET_DEVICE", payload: device }),
     [dispatch],
   );
 
@@ -83,7 +83,7 @@ const Emulator = () => {
 
   // the current device receive vault apdus
   const setCurrentDevice = useCallback(
-    device => {
+    (device) => {
       setDevice(device);
       _currentDevice = device;
     },
@@ -130,7 +130,7 @@ const Emulator = () => {
 
       // focus the first one if needed
       if (devices.length) {
-        const predicat = d => _currentDevice && d.id === _currentDevice.id;
+        const predicat = (d) => _currentDevice && d.id === _currentDevice.id;
         const device = devices.find(predicat);
         setCurrentDevice(device || devices[0]);
       }
@@ -145,7 +145,7 @@ const Emulator = () => {
 
   useVNC(vncRef, deviceVNCURL);
 
-  const handleSpawnDevice = async seed => {
+  const handleSpawnDevice = async (seed) => {
     try {
       setError(null);
 
@@ -192,7 +192,7 @@ const useVNC = (ref, url) => {
   }, [ref, url]);
 };
 
-const createDevice = async seed =>
+const createDevice = async (seed) =>
   fetchJSON(`${getWeblueURL()}/devices`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

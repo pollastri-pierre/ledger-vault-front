@@ -2,7 +2,7 @@
 
 export type EditableComponent<T, P> = React$ComponentType<{
   value: T,
-  onChange: T => void,
+  onChange: (T) => void,
   extraProps?: P,
 }>;
 

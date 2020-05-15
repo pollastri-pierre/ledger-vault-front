@@ -25,7 +25,7 @@ type Props = {
 
 function EditAdminRules(props: Props) {
   const { close, requestsConnection } = props;
-  const requests = requestsConnection.edges.map(e => e.node);
+  const requests = requestsConnection.edges.map((e) => e.node);
   const { organization } = useOrganization();
   const [quorum, setQuorum] = useState(organization.quorum || 0);
   const { refresh } = useOrganization();

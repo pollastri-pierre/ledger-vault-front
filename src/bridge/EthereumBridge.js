@@ -56,7 +56,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
   }
 };
 
-const getEstimatedFees = t =>
+const getEstimatedFees = (t) =>
   t.gasPrice && t.gasLimit ? t.gasPrice.times(t.gasLimit) : null;
 
 const EthereumBridge: WalletBridge<Transaction> = {
@@ -112,7 +112,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
 
   getEstimatedFees,
 
-  getMaxAmount: _t => null,
+  getMaxAmount: (_t) => null,
 
   getTotalSpent: (a, t) => {
     if (a.account_type === "Erc20") {

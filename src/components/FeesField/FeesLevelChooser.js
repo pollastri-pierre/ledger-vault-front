@@ -19,12 +19,12 @@ const FEES_LEVEL_OPTIONS: FeesLevelOption[] = [
 
 type Props = {|
   value: FeesLevelPredefined,
-  onChange: FeesLevelPredefined => void,
+  onChange: (FeesLevelPredefined) => void,
 |};
 
 const FeesLevelChooser = ({ value, onChange }: Props) => (
   <Box horizontal flow={20}>
-    {FEES_LEVEL_OPTIONS.map(s => (
+    {FEES_LEVEL_OPTIONS.map((s) => (
       <Option
         key={s.value}
         isSelected={s.value === value}
@@ -40,7 +40,7 @@ type LevelOptionProps = {
   isSelected: boolean,
   label: string,
   value: FeesLevelPredefined,
-  onClick: FeesLevelPredefined => void,
+  onClick: (FeesLevelPredefined) => void,
 };
 
 const Option = ({ isSelected, label, value, onClick }: LevelOptionProps) => (
@@ -53,16 +53,16 @@ const Option = ({ isSelected, label, value, onClick }: LevelOptionProps) => (
 const OptionContainer = styled.div`
   flex: 1;
   border: 2px solid
-    ${p => (p.isSelected ? colors.bLive : colors.legacyLightGrey2)};
+    ${(p) => (p.isSelected ? colors.bLive : colors.legacyLightGrey2)};
   box-sizing: border-box;
   border-radius: 8px;
   height: 100px;
-  cursor: ${p => (p.isSelected ? "default" : "pointer")};
-  pointer-events: ${p => (p.isSelected ? "none" : "inherit")};
+  cursor: ${(p) => (p.isSelected ? "default" : "pointer")};
+  pointer-events: ${(p) => (p.isSelected ? "none" : "inherit")};
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: ${p => (p.isSelected ? colors.bLive : "inherit")};
+  color: ${(p) => (p.isSelected ? colors.bLive : "inherit")};
   font-weight: 600;
   align-items: center;
   > * + * {

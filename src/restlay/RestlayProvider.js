@@ -58,9 +58,9 @@ class RestlayProvider extends Component<{
   }
 }
 
-export const withRestlayContext = (Comp: React$ComponentType<*>) => p => (
+export const withRestlayContext = (Comp: React$ComponentType<*>) => (p) => (
   <RestlayContext.Consumer>
-    {restlayProvider => <Comp restlayProvider={restlayProvider} {...p} />}
+    {(restlayProvider) => <Comp restlayProvider={restlayProvider} {...p} />}
   </RestlayContext.Consumer>
 );
 

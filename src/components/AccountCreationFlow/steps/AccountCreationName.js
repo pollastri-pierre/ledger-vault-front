@@ -55,7 +55,7 @@ export default function AccountCreationOptions(
         ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
         ...uniqName(
           payload.name,
-          allAccounts.edges.map(e => e.node.name),
+          allAccounts.edges.map((e) => e.node.name),
         ),
       ];
 

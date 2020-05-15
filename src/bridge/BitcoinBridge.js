@@ -110,9 +110,9 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     estimatedMaxAmount: null,
   }),
 
-  getEstimatedFees: t => t.estimatedFees,
+  getEstimatedFees: (t) => t.estimatedFees,
 
-  getMaxAmount: t => t.estimatedMaxAmount,
+  getMaxAmount: (t) => t.estimatedMaxAmount,
 
   getTotalSpent: (a, t) => {
     const estimatedFees = t.estimatedFees || BigNumber(0);

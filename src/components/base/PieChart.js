@@ -34,11 +34,11 @@ function PieChart(props: Props) {
       .append("g")
       .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    const pie = d3.pie().value(d => d.value);
+    const pie = d3.pie().value((d) => d.value);
     const d3Data = {};
     const colors = {};
 
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
       d3Data[key] = data[key].value.toNumber();
       colors[key] = data[key].color;
     });
@@ -49,14 +49,8 @@ function PieChart(props: Props) {
         .data(data_ready)
         .enter()
         .append("path")
-        .attr(
-          "d",
-          d3
-            .arc()
-            .innerRadius(0)
-            .outerRadius(radius),
-        )
-        .attr("fill", d => colors[d.data.key]),
+        .attr("d", d3.arc().innerRadius(0).outerRadius(radius))
+        .attr("fill", (d) => colors[d.data.key]),
     );
 
     ensure({ key: "circleOverlay", NODES: NODES.current }, () =>

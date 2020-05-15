@@ -1,11 +1,11 @@
 import { login, logout, route, create_user } from "../../../functions/actions";
 
-describe("Add User as Operator", function() {
-  beforeEach(function() {
+describe("Add User as Operator", function () {
+  beforeEach(function () {
     login(6);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

@@ -1,11 +1,11 @@
 import { login, logout, route, approve_tx } from "../../../functions/actions";
 
-describe("Approve tx by different Operator ", function() {
-  beforeEach(function() {
+describe("Approve tx by different Operator ", function () {
+  beforeEach(function () {
     login(12);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

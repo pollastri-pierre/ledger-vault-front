@@ -19,7 +19,7 @@ import type { RuleMultiAuth, RuleMultiAuthStep } from "./types";
 
 type Props = {
   rule: RuleMultiAuth,
-  onChange: RuleMultiAuth => void,
+  onChange: (RuleMultiAuth) => void,
   users: User[],
   groups: Group[],
 };
@@ -50,7 +50,7 @@ const CreatorStop = (props: Props) => {
     groups,
   };
 
-  const handleSubmit = step => {
+  const handleSubmit = (step) => {
     const newRule = {
       ...rule,
       data: [...rule.data],
@@ -109,7 +109,7 @@ type ExtraProps = {
 type EditProps = {
   extraProps?: ExtraProps,
   value: ?RuleMultiAuthStep,
-  onChange: RuleMultiAuthStep => void,
+  onChange: (RuleMultiAuthStep) => void,
 };
 
 const EditCreator = (props: EditProps) => {
@@ -125,7 +125,7 @@ const EditCreator = (props: EditProps) => {
         stepIndex={0}
         groups={groups}
         users={users}
-        onChange={data => onChange({ ...data, quorum: 1 })} // enforce quorum to 1 for first step
+        onChange={(data) => onChange({ ...data, quorum: 1 })} // enforce quorum to 1 for first step
         autoFocus={extraProps.shouldAutofocus}
       />
       {step.quorum > 1 && (

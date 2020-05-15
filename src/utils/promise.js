@@ -1,7 +1,7 @@
 // @flow
 
 export const delay = (ms: number): Promise<any> =>
-  new Promise(success => setTimeout(success, ms));
+  new Promise((success) => setTimeout(success, ms));
 
 export async function minWait(promise: Promise<any>, ms: number) {
   const now = window.performance.now();

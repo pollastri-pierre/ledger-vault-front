@@ -5,12 +5,12 @@ import {
   add_whitelist_address,
 } from "../../../functions/actions";
 
-describe("Create whitelists", function() {
-  beforeEach(function() {
+describe("Create whitelists", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

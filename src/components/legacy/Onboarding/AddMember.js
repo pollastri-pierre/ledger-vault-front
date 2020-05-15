@@ -23,12 +23,12 @@ const AddMember = ({ finish, organization }: Props) => {
   const [error, setError] = useState(null);
   const [registering, setRegistering] = useState("");
 
-  const onSuccess = data => {
+  const onSuccess = (data) => {
     setRegistering(false);
     finish({ ...data.register_input, username });
   };
 
-  const onError = e => {
+  const onError = (e) => {
     setRegistering(false);
     setError(e);
   };

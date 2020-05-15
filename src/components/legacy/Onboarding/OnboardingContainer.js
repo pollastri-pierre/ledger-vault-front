@@ -32,13 +32,13 @@ import ConfirmationGlobal from "./ConfirmationGlobal";
 import AdministrationScheme from "./AdministrationScheme";
 import Menu from "./Menu";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   onboarding: state.onboarding,
 });
 
 const mapDispatchToProps = (dispatch: *) => ({
   onGetState: () => dispatch(getState()),
-  changeNbRequired: nb => dispatch(changeQuorum(nb)),
+  changeNbRequired: (nb) => dispatch(changeQuorum(nb)),
 });
 
 type Props = {
@@ -66,8 +66,8 @@ const Container = styled(Box).attrs({
 })`
   background: white;
   box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
-  opacity: ${p => (p.fatalError ? "0.3" : "1")};
-  pointerevents: ${p => (p.fatalError ? "none" : "auto")};
+  opacity: ${(p) => (p.fatalError ? "0.3" : "1")};
+  pointerevents: ${(p) => (p.fatalError ? "none" : "auto")};
 `;
 
 class OnboardingContainer extends Component<Props, State> {

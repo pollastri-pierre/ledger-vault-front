@@ -37,7 +37,8 @@ const SeedsManagerInner = (props: Props) => {
   const [seed, setSeed] = useState({ name: "", seed: "" });
   const dispatch = useSoftDevicesDispatch();
   const handleClose = () => dispatch({ type: "CLOSE_SEEDS_MANAGER" });
-  const handleChange = (key: string) => val => setSeed({ ...seed, [key]: val });
+  const handleChange = (key: string) => (val) =>
+    setSeed({ ...seed, [key]: val });
   const handleSubmit = () => {
     dispatch({ type: "REGISTER_SEED", payload: seed });
     onCreate(seed);

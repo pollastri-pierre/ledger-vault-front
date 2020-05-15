@@ -18,7 +18,7 @@ storiesOf("components/form", module).add("InputAmount", () => {
 
 function Wrapper() {
   const [value, setValue] = useState(BigNumber(5e8));
-  const onChange = value => setValue(value);
+  const onChange = (value) => setValue(value);
   return (
     <Box width={400}>
       <InputAmount currency={bitcoin} value={value} onChange={onChange} />

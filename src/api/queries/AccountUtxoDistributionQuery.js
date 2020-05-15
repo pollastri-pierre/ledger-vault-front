@@ -11,7 +11,7 @@ type Input = {
 
 type Response = UTXORange[];
 
-const uri = props => {
+const uri = (props) => {
   return `/accounts/${props.accountId}/utxos-distributions`;
 };
 

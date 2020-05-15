@@ -77,7 +77,7 @@ const styles = {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: ${p => (p.align !== "left" ? "row" : "row-reverse")};
+  flex-direction: ${(p) => (p.align !== "left" ? "row" : "row-reverse")};
   justify-content: flex-end;
 
   &:hover {
@@ -86,8 +86,8 @@ const Container = styled.div`
   }
 
   > * + * {
-    margin-left: ${p => (p.align === "right" ? "2px" : "0")};
-    margin-right: ${p => (p.align === "left" ? "2px" : "0")};
+    margin-left: ${(p) => (p.align === "right" ? "2px" : "0")};
+    margin-right: ${(p) => (p.align === "left" ? "2px" : "0")};
   }
 `;
 

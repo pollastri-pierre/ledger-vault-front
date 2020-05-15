@@ -9,7 +9,7 @@ export default styled.div`
     margin-top: 0;
   }
 
-  @media (max-width: ${p => p.breakpoint || 900}px) {
+  @media (max-width: ${(p) => p.breakpoint || 900}px) {
     flex-direction: column;
     align-items: stretch;
     > * + * {

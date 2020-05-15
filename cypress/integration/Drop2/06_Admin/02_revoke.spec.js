@@ -5,12 +5,12 @@ import {
   successfull_message,
 } from "../../../functions/actions";
 
-describe("Revoke by a Admin", function() {
-  beforeEach(function() {
+describe("Revoke by a Admin", function () {
+  beforeEach(function () {
     login(5);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

@@ -37,8 +37,8 @@ function LastTransactionsWidget(props: Props) {
       View all
     </VaultLink>
   );
-  const transactions = data.edges.map(el => el.node);
-  const allAccounts = accounts.edges.map(el => el.node);
+  const transactions = data.edges.map((el) => el.node);
+  const allAccounts = accounts.edges.map((el) => el.node);
 
   return (
     <Widget title="Last transactions" desc={desc}>
@@ -67,7 +67,7 @@ export default withRouter(
       queries: {
         data: SearchTransactions,
       },
-      propsToQueryParams: props => ({
+      propsToQueryParams: (props) => ({
         status: TransactionStatusMap.SUBMITTED,
         pageSize: props.number || defaultNumber,
       }),

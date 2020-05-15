@@ -13,7 +13,7 @@ export type Log = {
 export default ({ logs }: { logs: Log[] }) =>
   logs && logs.length ? (
     <Box p={10} style={styles.container}>
-      {logs.map(log => (
+      {logs.map((log) => (
         <div key={log.id}>
           <span style={{ color: colors.legacyGreen, userSelect: "none" }}>
             {`${moment(log.date).format("HH:mm:ss")} `}

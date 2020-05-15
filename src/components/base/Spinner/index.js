@@ -58,8 +58,8 @@ export function SpinnerCentered(props: Props) {
 }
 
 const SpinnerContainer = styled.svg`
-  height: ${p => p.size}px;
-  width: ${p => p.size}px;
+  height: ${(p) => p.size}px;
+  width: ${(p) => p.size}px;
   animation: rotate 2s linear infinite;
   position: relative;
 `;
@@ -69,7 +69,7 @@ const CircleStyle = styled.circle`
   stroke-dashoffset: 0;
   animation: dash 1.5s ease-in-out infinite;
   stroke-linecap: round;
-  stroke: ${p => p.color};
+  stroke: ${(p) => p.color};
 
   @keyframes rotate {
     100% {

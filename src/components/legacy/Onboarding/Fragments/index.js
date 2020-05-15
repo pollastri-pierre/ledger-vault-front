@@ -19,9 +19,9 @@ type Props = {
   label: string,
   desc: string,
   generated?: boolean,
-  onSuccess: Object => void,
+  onSuccess: (Object) => void,
   onError: (Error | GateError | { statusCode: number }) => void,
-  generate: number => void,
+  generate: (number) => void,
   additionalFields?: Object,
   interactions: Interaction[],
 };
@@ -75,8 +75,8 @@ const FragmentContainer = styled(Box).attrs({ align: "center" })`
   font-size: 11px;
   font-weight: 600;
   color: ${colors.ocean};
-  opacity: ${p => (p.disabled ? "0.3" : "1")};
-  pointer-events: ${p => (p.disabled ? "none" : "auto")};
+  opacity: ${(p) => (p.disabled ? "0.3" : "1")};
+  pointer-events: ${(p) => (p.disabled ? "none" : "auto")};
   cursor: pointer;
 `;
 

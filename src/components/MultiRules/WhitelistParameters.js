@@ -15,18 +15,18 @@ import type { RuleWhitelist } from "./types";
 type Props = {
   rule: RuleWhitelist,
   whitelists: Whitelist[],
-  onChange: RuleWhitelist => void,
+  onChange: (RuleWhitelist) => void,
 };
 
 const WhitelistParameters = (props: Props) => {
   const { onChange, rule, whitelists } = props;
-  const handleChange = data => {
-    onChange({ ...rule, data: data.map(d => d.id) });
+  const handleChange = (data) => {
+    onChange({ ...rule, data: data.map((d) => d.id) });
   };
   return (
     <div>
       <SelectWhitelist
-        value={rule.data.map(w => (typeof w === "number" ? w : w.id))}
+        value={rule.data.map((w) => (typeof w === "number" ? w : w.id))}
         onChange={handleChange}
         whitelists={whitelists}
         renderIfDisabled={renderIfDisabled}

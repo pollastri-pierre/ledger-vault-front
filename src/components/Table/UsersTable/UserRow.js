@@ -9,7 +9,7 @@ import UserBodyCell from "./UserBodyCell";
 
 type UserRowProps = {
   user: User,
-  onClick: User => void,
+  onClick: (User) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -22,7 +22,7 @@ function UserRow(props: UserRowProps) {
 
   return (
     <TableRow onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <UserBodyCell user={user} item={item} key={item.body.prop} />
       ))}
     </TableRow>

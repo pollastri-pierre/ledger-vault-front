@@ -35,13 +35,17 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
     }
 
     // $FlowFixMe dumbest parser ever
-    const tokens: ERC20TokenItem[] = items.filter(i => i.type === "erc20token");
+    const tokens: ERC20TokenItem[] = items.filter(
+      (i) => i.type === "erc20token",
+    );
     // $FlowFixMe dumbest parser ever
-    const currencies: CurrencyItem[] = items.filter(i => i.type === "currency");
+    const currencies: CurrencyItem[] = items.filter(
+      (i) => i.type === "currency",
+    );
 
     const q = [
-      ...currencies.map(c => c.value.id),
-      ...tokens.map(t => `ethereum:${t.value.contract_address}`),
+      ...currencies.map((c) => c.value.id),
+      ...tokens.map((t) => `ethereum:${t.value.contract_address}`),
     ];
 
     updateQueryParams("currency", q);
@@ -54,7 +58,7 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
 
     return (
       <Box horizontal flow={10}>
-        {currenciesAndToken.map(c => (
+        {currenciesAndToken.map((c) => (
           <Box horizontal align="center" flow={3} key={getItemId(c)}>
             {getItemIcon(c)}
             <Text noWrap>{c.name}</Text>
@@ -89,7 +93,7 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
 
 function resolveOptions(els: string[]) {
   return els
-    .map(el => {
+    .map((el) => {
       const isToken = /.+:0x.+/.test(el);
       if (isToken) {
         const contract = el.split(":")[1];

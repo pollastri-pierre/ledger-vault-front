@@ -37,7 +37,7 @@ export default function GrowingCard({ children }: { children: React$Node }) {
   }, [transforms, prevTransforms, shouldShow]);
 
   const onMeasure = useCallback(
-    dimensions => {
+    (dimensions) => {
       if (prevTransforms) return;
       const { width, height } = dimensions;
 

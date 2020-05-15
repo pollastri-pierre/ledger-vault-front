@@ -62,7 +62,7 @@ export const parseRawTransition = (
 ): VaultFirmwareTransition => {
   const [from, to] = rawTransition
     .split("=>")
-    .map(el => parseRawFirmware(el.trim()));
+    .map((el) => parseRawFirmware(el.trim()));
   return { from, to };
 };
 
@@ -93,7 +93,7 @@ export const getTransitionTo = (
   firmVersion: string,
   transitions: VaultFirmwareTransition[],
 ): VaultFirmwareTransition | null => {
-  const matching = transitions.filter(t => t.to.version === firmVersion);
+  const matching = transitions.filter((t) => t.to.version === firmVersion);
   if (!matching.length) return null;
   matching.sort((a, b) => (semver.gt(a.from.version, b.from.version) ? -1 : 1));
   return matching[0];
@@ -116,7 +116,7 @@ export const getUpdatePlan = ({
     `${currentRawFirmware} app_${expectedRawApp}`,
   );
   const currentFirmware = parseRawFirmware(currentRawFirmware);
-  const availableApps = apps.filter(app => {
+  const availableApps = apps.filter((app) => {
     if (app.version !== expectedApp.version) return false;
     const { firmware } = app;
     if (firmware.role !== currentFirmware.role) return false;
@@ -153,7 +153,7 @@ export const getUpdatePlan = ({
   }
 
   return [
-    ...transitionsToApply.map(transition => ({ type: "firm", transition })),
+    ...transitionsToApply.map((transition) => ({ type: "firm", transition })),
     appStep,
   ];
 };
@@ -165,8 +165,8 @@ const buildTransitionTree = (
   return {
     firmware: from,
     children: transitions
-      .filter(transition => transition.from.version === from.version)
-      .map(transition => buildTransitionTree(transition.to, transitions)),
+      .filter((transition) => transition.from.version === from.version)
+      .map((transition) => buildTransitionTree(transition.to, transitions)),
   };
 };
 
@@ -179,7 +179,7 @@ const getAllPaths = (
   if (node.children.length === 0 || node.firmware.version === target.version) {
     all.push([...path, node.firmware.version]);
   } else {
-    node.children.forEach(n =>
+    node.children.forEach((n) =>
       getAllPaths(n, target, [...path, node.firmware.version], all),
     );
   }
@@ -196,8 +196,8 @@ const findTransitions = (
 ): VaultFirmwareTransition[] => {
   const tree = buildTransitionTree(from, transitions);
   const paths = getAllPaths(tree, to);
-  const validPaths = paths.filter(p => p.includes(to.version));
-  const shortestPath = minBy(validPaths, p => p.length);
+  const validPaths = paths.filter((p) => p.includes(to.version));
+  const shortestPath = minBy(validPaths, (p) => p.length);
   return shortestPath.reduce((acc, cur, i) => {
     const next = shortestPath[i + 1];
     if (isOSU && from.version === cur) {

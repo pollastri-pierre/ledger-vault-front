@@ -21,8 +21,8 @@ const noOptionsMessage = () => "No accounts";
 
 function FilterFieldUsersInAccount(props: Props) {
   const { accountsConnection, queryKey, title, ...p } = props;
-  const accounts = accountsConnection.edges.map(u => u.node);
-  const options = accounts.map(u => ({ label: u.name, value: u.id }));
+  const accounts = accountsConnection.edges.map((u) => u.node);
+  const options = accounts.map((u) => ({ label: u.name, value: u.id }));
   return (
     <FieldSelect
       title={title || "Account"}

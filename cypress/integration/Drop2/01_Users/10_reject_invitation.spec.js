@@ -1,11 +1,11 @@
 import { login, logout, route } from "../../../functions/actions";
 
-describe("reject invitation", function() {
-  beforeEach(function() {
+describe("reject invitation", function () {
+  beforeEach(function () {
     login(5);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

@@ -9,7 +9,7 @@ export function NetworkError(obj: *) {
 }
 NetworkError.prototype = Object.create(Error.prototype);
 
-export default function<T>(
+export default function <T>(
   uri: string,
   method: string,
   body: ?(Object | Array<Object>),
@@ -27,7 +27,7 @@ export default function<T>(
   }
 
   if (!fetchF) return Promise.reject(new Error("Uninitialized fetchF"));
-  return fetchF(uri, options, fetchParams).then(response => {
+  return fetchF(uri, options, fetchParams).then((response) => {
     if (response.status < 200 || response.status >= 300) {
       if (response.status === 504) {
         return Promise.reject(new NetworkTimeoutError());
@@ -41,11 +41,11 @@ export default function<T>(
         response
           .json()
           .then(
-            json => new NetworkError({ ...baseErrorObject, json }),
+            (json) => new NetworkError({ ...baseErrorObject, json }),
             () => new NetworkError(baseErrorObject),
           )
           // $FlowFixMe
-          .then(e => Promise.reject(remapError(e)))
+          .then((e) => Promise.reject(remapError(e)))
       );
     }
     // $FlowFixMe
@@ -54,7 +54,7 @@ export default function<T>(
 }
 
 export const delay = (ms: number): Promise<void> =>
-  new Promise(f => setTimeout(f, ms));
+  new Promise((f) => setTimeout(f, ms));
 
 const defaults = {
   maxRetry: 4,
@@ -78,7 +78,7 @@ export function retry<A>(
       return result;
     }
     // In case of failure, wait the interval, retry the action
-    return result.catch(e => {
+    return result.catch((e) => {
       console.warn("retry failed", e.message);
       return delay(interval).then(() =>
         rec(remainingTry - 1, interval * intervalMultiplicator),
@@ -89,11 +89,11 @@ export function retry<A>(
 
 type CancellablePollingOpts = {
   pollingInterval?: number,
-  shouldThrow?: DeviceError => boolean,
+  shouldThrow?: (DeviceError) => boolean,
 };
 
 export function retryOnCondition(
-  job: any => Promise<any>,
+  job: (any) => Promise<any>,
   { pollingInterval = 500, shouldThrow }: CancellablePollingOpts = {},
 ): Promise<any> {
   const promise = new Promise((resolve, reject) => {

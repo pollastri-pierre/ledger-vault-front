@@ -61,7 +61,7 @@ class CircleProgress extends Component<Props> {
     const { nb, total, label } = this.props;
     return (
       <Container>
-        <Svg ref={c => (this.svg = c)} />
+        <Svg ref={(c) => (this.svg = c)} />
         <strong>
           {" "}
           {nb}/{total}{" "}

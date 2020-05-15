@@ -55,24 +55,24 @@ function getIconByType(request) {
 const extraByRequest = [
   [
     ["CREATE_GROUP", "EDIT_GROUP", "REVOKE_GROUP"],
-    request => (request.group ? request.group.name : null),
+    (request) => (request.group ? request.group.name : null),
   ],
   [
     ["REVOKE_USER", "CREATE_ADMIN", "CREATE_OPERATOR"],
-    request => (request.user ? request.user.username : null),
+    (request) => (request.user ? request.user.username : null),
   ],
   [
     ["CREATE_ACCOUNT", "EDIT_ACCOUNT", "REVOKE_ACCOUNT", "MIGRATE_ACCOUNT"],
-    request => (request.account ? request.account.name : null),
+    (request) => (request.account ? request.account.name : null),
   ],
   [
     ["CREATE_WHITELIST", "EDIT_WHITELIST", "REVOKE_WHITELIST"],
-    request => (request.whitelist ? request.whitelist.name : null),
+    (request) => (request.whitelist ? request.whitelist.name : null),
   ],
 ];
 
 function getRequestExtra(request) {
-  const matchingGroup = extraByRequest.find(e => e[0].includes(request.type));
+  const matchingGroup = extraByRequest.find((e) => e[0].includes(request.type));
   if (!matchingGroup) return null;
   return matchingGroup[1](request);
 }

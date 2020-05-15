@@ -33,10 +33,10 @@ type MoveHandler = ({ oldIndex: number, newIndex: number }) => void;
 type Props = {|
   rulesSets: RulesSetType[],
   activeIndex: number,
-  onChangeIndex: number => void,
+  onChangeIndex: (number) => void,
   canAdd: boolean,
   onAdd: () => void,
-  onRemove: number => void,
+  onRemove: (number) => void,
   onMove: MoveHandler,
   readOnly?: boolean,
 |};
@@ -55,7 +55,7 @@ const MultiRulesSideBar = (props: Props) => {
   const { t } = useTranslation();
   const [removingIndex, setRemovingIndex] = useState<number | null>(null);
 
-  const handleRemove = i => () => setRemovingIndex(i);
+  const handleRemove = (i) => () => setRemovingIndex(i);
   const handleRejectRemoval = () => setRemovingIndex(null);
   const handleConfirmRemoval = () => {
     if (removingIndex === null) return;
@@ -159,7 +159,7 @@ const RulesSetTab = SortableElement(
     onMove,
     readOnly,
   }: TabProps) => {
-    const handleRemove = e => {
+    const handleRemove = (e) => {
       e.stopPropagation();
       onRemove && onRemove();
     };
@@ -202,8 +202,8 @@ const RulesSetTab = SortableElement(
 const RuleTitle = styled(Text).attrs({
   fontWeight: "bold",
 })`
-  border-bottom: ${p => (p.error || p.warning ? "2px dotted" : "none")}
-  border-color: ${p => (p.error ? colors.grenade : colors.warning)};
+  border-bottom: ${(p) => (p.error || p.warning ? "2px dotted" : "none")}
+  border-color: ${(p) => (p.error ? colors.grenade : colors.warning)};
 `;
 
 const Triangle = styled.div`
@@ -227,7 +227,7 @@ const Triangle = styled.div`
     border-style: solid;
     border-width: 30px 0 30px 15px;
     border-color: transparent transparent transparent
-      ${p => (p.isActive ? "white" : colors.form.bg)};
+      ${(p) => (p.isActive ? "white" : colors.form.bg)};
   }
 `;
 
@@ -253,7 +253,7 @@ const RulesSetTabContainer = styled.div`
   border-top-left-radius: ${({ isFirst }) => (isFirst ? 4 : 0)}px;
   border-top-right-radius: ${({ isLast }) => (isLast ? 4 : 0)}px;
 
-  ${p =>
+  ${(p) =>
     !p.isActive
       ? `
   &:hover {
@@ -285,13 +285,13 @@ const Action = styled.div.attrs({ tabIndex: 0 })`
   align-items: center;
   justify-content: center;
   padding: 10px;
-  cursor: ${p => p.cursor || "pointer"};
+  cursor: ${(p) => p.cursor || "pointer"};
   outline: none;
-  margin-left: ${p => (p.pos === "right" ? 15 : 0)}px;
-  margin-right: ${p => (p.pos === "left" ? 5 : 0)}px;
+  margin-left: ${(p) => (p.pos === "right" ? 15 : 0)}px;
+  margin-right: ${(p) => (p.pos === "left" ? 5 : 0)}px;
   &:hover {
     opacity: 0.8;
-    color: ${p => (p.type === "danger" ? colors.grenade : "inherit")};
+    color: ${(p) => (p.type === "danger" ? colors.grenade : "inherit")};
   }
   &:active {
     opacity: 1;
@@ -299,10 +299,10 @@ const Action = styled.div.attrs({ tabIndex: 0 })`
   }
 
   transform: translateX(
-    ${p => (p.isVisible ? 0 : p.pos === "left" ? -5 : 5)}px
+    ${(p) => (p.isVisible ? 0 : p.pos === "left" ? -5 : 5)}px
   );
-  opacity: ${p => (p.isVisible ? 0.5 : 0)};
-  pointer-events: ${p => (p.isVisible ? "auto" : "none")};
+  opacity: ${(p) => (p.isVisible ? 0.5 : 0)};
+  pointer-events: ${(p) => (p.isVisible ? "auto" : "none")};
   transition: 100ms ease-out;
   transition-property: transform opacity;
 `;

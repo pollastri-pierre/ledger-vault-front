@@ -33,7 +33,7 @@ const WhitelistEditRequest = (props: Props) => {
   const removed: AddressRow[] = [];
 
   if (edit_data.addresses) {
-    edit_data.addresses.forEach(a => {
+    edit_data.addresses.forEach((a) => {
       if (!findAddressInList(a, whitelist.addresses)) {
         added.push({ address: a });
       } else {
@@ -41,7 +41,7 @@ const WhitelistEditRequest = (props: Props) => {
       }
     });
 
-    whitelist.addresses.forEach(a => {
+    whitelist.addresses.forEach((a) => {
       if (!findAddressInList(a, edit_data.addresses)) {
         removed.push({ address: a });
       } else {
@@ -52,7 +52,7 @@ const WhitelistEditRequest = (props: Props) => {
   const unchangedWithoutDups = unchanged.filter(
     (w, i, arr) =>
       arr.findIndex(
-        el =>
+        (el) =>
           el.address.name === w.address.name &&
           el.address.currency === w.address.currency &&
           el.address.address === w.address.address,
@@ -100,7 +100,7 @@ const WhitelistEditRequest = (props: Props) => {
             <Box flow={5}>
               {added.length > 0 && (
                 <Overlay type="added">
-                  {added.map(a => (
+                  {added.map((a) => (
                     <Box
                       flow={10}
                       horizontal
@@ -115,7 +115,7 @@ const WhitelistEditRequest = (props: Props) => {
               )}
               {removed.length > 0 && (
                 <Overlay type="removed">
-                  {removed.map(a => (
+                  {removed.map((a) => (
                     <Box
                       flow={10}
                       horizontal
@@ -132,7 +132,7 @@ const WhitelistEditRequest = (props: Props) => {
                 <Overlay>
                   {unchangedWithoutDups
                     .slice(0, showMore ? unchangedWithoutDups.length : NB_ITEM)
-                    .map(a => (
+                    .map((a) => (
                       <Box
                         flow={10}
                         horizontal
@@ -164,7 +164,7 @@ const Overlay = styled(Box).attrs({ flow: 10 })`
   padding: 20px;
   flex: 1;
   border-radius: 4px;
-  background: ${p =>
+  background: ${(p) =>
     p.type === "added"
       ? `${opacity(colors.green, 0.1)}`
       : p.type === "removed"
@@ -177,7 +177,7 @@ export default WhitelistEditRequest;
 // we can't rely on ID so we have to compare the fields
 function findAddressInList(address: Address, addresses: Address[]) {
   return addresses.some(
-    a =>
+    (a) =>
       address.name === a.name &&
       address.address === a.address &&
       address.currency === a.currency,

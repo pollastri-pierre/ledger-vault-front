@@ -37,7 +37,7 @@ export function getPages(nbPages: number, page: number, maxDisplayed: number) {
   if (maxDisplayed % 2 === 0) {
     throw new Error("Max displayed pages should be even");
   }
-  const full: number[] = [...Array(nbPages).keys()].map<number>(i => i + 1);
+  const full: number[] = [...Array(nbPages).keys()].map<number>((i) => i + 1);
   if (nbPages <= maxDisplayed) return full;
   const index = page - 1;
   const center = Math.floor(maxDisplayed / 2);
@@ -61,7 +61,7 @@ class Paginator extends PureComponent<Props> {
         <ItemContainer disabled={page === 1} onClick={() => onChange(page - 1)}>
           <FaChevronLeft />
         </ItemContainer>
-        {pages.map(i => (
+        {pages.map((i) => (
           <ItemContainer
             key={i}
             selected={i === page}

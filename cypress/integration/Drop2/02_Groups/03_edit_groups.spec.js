@@ -6,12 +6,12 @@ import {
   successfull_msg_gp,
 } from "../../../functions/actions";
 
-describe("Test Case for Groups", function() {
-  beforeEach(function() {
+describe("Test Case for Groups", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

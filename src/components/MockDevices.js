@@ -131,7 +131,7 @@ class MockDevices extends PureComponent {
   };
 
   changeAutoLogin = () => {
-    this.setState(state => ({ autoLogin: !state.autoLogin }));
+    this.setState((state) => ({ autoLogin: !state.autoLogin }));
   };
 
   async componentDidMount() {
@@ -164,7 +164,7 @@ class MockDevices extends PureComponent {
     });
   }
 
-  switchDevice = async id => {
+  switchDevice = async (id) => {
     try {
       await fetch(`${DEVICE_API_URL}/switch-device`, {
         method: "POST",
@@ -183,7 +183,7 @@ class MockDevices extends PureComponent {
   };
 
   collapseToggle = () => {
-    this.setState(state => ({ collapseMock: !state.collapseMock }));
+    this.setState((state) => ({ collapseMock: !state.collapseMock }));
   };
 
   rejectNextActionToggle = async () => {
@@ -195,16 +195,16 @@ class MockDevices extends PureComponent {
         "Account",
         "Transaction",
         "User",
-      ].map(entity =>
+      ].map((entity) =>
         this.updateNextApproval(entity, this.state.rejectNextAction),
       ),
     );
 
-    this.setState(state => ({ rejectNextAction: !state.rejectNextAction }));
+    this.setState((state) => ({ rejectNextAction: !state.rejectNextAction }));
   };
 
   onboardingToggle = () => {
-    this.setState(state => ({ showOnboarding: !state.showOnboarding }));
+    this.setState((state) => ({ showOnboarding: !state.showOnboarding }));
   };
 
   render() {
@@ -265,7 +265,7 @@ class MockDevices extends PureComponent {
                 )
                 .map(([g, color, devices]) => (
                   <DeviceGroup name={g} key={g}>
-                    {devices.map(d => (
+                    {devices.map((d) => (
                       <Device
                         key={d}
                         color={color}
@@ -325,12 +325,12 @@ function Device({ id, color, isActive, onClick, deviceId }) {
   );
 }
 
-const stopPropagate = e => {
+const stopPropagate = (e) => {
   e.stopPropagation();
   e.preventDefault();
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logout()),
   login: () => dispatch(login()),
 });

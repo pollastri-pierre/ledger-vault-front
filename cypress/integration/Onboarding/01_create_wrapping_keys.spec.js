@@ -7,7 +7,7 @@ context("Create Wrapping Key", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
+    cy.request(polyfillUrl).then((response) => {
       polyfill = response.body;
     });
   });
@@ -15,7 +15,7 @@ context("Create Wrapping Key", () => {
     cy.server();
     route();
     cy.visit(Cypress.env("api_server"), {
-      onBeforeLoad: win => {
+      onBeforeLoad: (win) => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
@@ -38,9 +38,7 @@ context("Create Wrapping Key", () => {
         cy.wait("@next");
         cy.wait("@challenge");
         // First WPK
-        cy.get(".fragment")
-          .eq(0)
-          .click();
+        cy.get(".fragment").eq(0).click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
         cy.wait("@open-session");
@@ -48,9 +46,7 @@ context("Create Wrapping Key", () => {
         cy.wait("@authenticate");
 
         // Using the same device, should display a error
-        cy.get(".fragment")
-          .eq(1)
-          .click();
+        cy.get(".fragment").eq(1).click();
 
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
@@ -67,9 +63,7 @@ context("Create Wrapping Key", () => {
         cy.request("POST", DEVICE, {
           device_number: 2,
         }).then(() => {
-          cy.get(".fragment")
-            .eq(1)
-            .click();
+          cy.get(".fragment").eq(1).click();
 
           cy.wait("@get-public-key");
           cy.wait("@get-attestation");
@@ -82,9 +76,7 @@ context("Create Wrapping Key", () => {
           cy.request("POST", DEVICE, {
             device_number: 3,
           }).then(() => {
-            cy.get(".fragment")
-              .eq(2)
-              .click();
+            cy.get(".fragment").eq(2).click();
             cy.wait("@get-public-key");
             cy.wait("@get-attestation");
             cy.wait("@open-session");
@@ -92,13 +84,9 @@ context("Create Wrapping Key", () => {
             cy.wait("@authenticate");
             cy.contains("Continue").click();
             cy.wait("@next");
-            cy.contains("Continue")
-              .debug()
-              .click();
+            cy.contains("Continue").debug().click();
             cy.wait("@next");
-            cy.contains("Continue")
-              .debug()
-              .click();
+            cy.contains("Continue").debug().click();
             cy.wait("@next");
           });
         });

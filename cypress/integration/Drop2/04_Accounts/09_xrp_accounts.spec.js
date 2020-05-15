@@ -9,12 +9,12 @@ import {
   successfull_message2,
 } from "../../../functions/actions";
 
-describe("Test Case for Account", function() {
-  beforeEach(function() {
+describe("Test Case for Account", function () {
+  beforeEach(function () {
     login(6);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

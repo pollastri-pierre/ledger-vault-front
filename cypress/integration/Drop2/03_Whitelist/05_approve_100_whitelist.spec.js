@@ -1,11 +1,11 @@
 import { login, logout, route } from "../../../functions/actions";
 
-describe("Approve whitelists", function() {
-  beforeEach(function() {
+describe("Approve whitelists", function () {
+  beforeEach(function () {
     login(6);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

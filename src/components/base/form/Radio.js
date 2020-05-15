@@ -23,8 +23,8 @@ export default ({ checked, size = ICON_SIZE }: RadioProps) => {
 };
 
 const RadioButtonContainer = styled.div`
-  height: ${p => p.size}px;
-  width: ${p => p.size}px;
+  height: ${(p) => p.size}px;
+  width: ${(p) => p.size}px;
   display: flex;
   align-items: center;
   justify-content: center;

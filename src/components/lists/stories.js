@@ -60,7 +60,7 @@ storiesOf("entities/Account", module)
   });
 
 function genAllRequests(status = "PENDING_APPROVAL") {
-  return RequestActivityTypeList.map(type => {
+  return RequestActivityTypeList.map((type) => {
     const r = Object.assign(genRequest(type, { status }), {
       current_step: 0,
       created_by: { username: "Dany Brillant" },

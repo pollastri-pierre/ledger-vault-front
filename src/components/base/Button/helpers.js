@@ -116,50 +116,50 @@ export function getStyles(props: ButtonProps, state: string) {
 
 const buttonStyles: { [_: string]: Object } = {
   filled: {
-    default: p => `
+    default: (p) => `
       background: ${
         p.disabled ? `${colors.cream} !important` : getBgByVariant(p)
       };
       color: ${p.disabled ? colors.mediumGrey : getColorByVariant(p)}
     `,
-    active: p => `
+    active: (p) => `
       background: ${darken(getBgByVariant(p), 0.1)};
     `,
-    hover: p => `
+    hover: (p) => `
       background: ${darken(getBgByVariant(p), 0.05)};
     `,
-    focus: p => `
+    focus: (p) => `
       box-shadow: 0 0 0 1px ${darken(getBgByVariant(p), 0.2)} inset,
       0 0 0 1px ${opacity(getBgByVariant(p), 0.3)},
       0 0 0 2px ${opacity(getBgByVariant(p), 0.3)}`,
   },
 
   link: {
-    default: p => `
+    default: (p) => `
       color: ${p.disabled ? colors.steel : getBgByVariant(p)};
     `,
-    hover: p => `
+    hover: (p) => `
       color: ${darken(getBgByVariant(p), 0.1)};
       background: ${opacity(getBgByVariant(p), 0.05)};
      `,
-    active: p => `
+    active: (p) => `
       color: ${darken(getBgByVariant(p), 0.1)};
       background: ${opacity(getBgByVariant(p), 0.1)};
      `,
   },
   outline: {
-    default: p => `
+    default: (p) => `
       background: transparent;
       border: 2px solid ${getBgByVariant(p)};
       color: ${getColorByVariant(p)};
     `,
-    hover: p => `
+    hover: (p) => `
       background: ${opacity(getBgByVariant(p), 0.1)};
     `,
-    focus: p => `
+    focus: (p) => `
       box-shadow: 0 0 0 3px ${opacity(getBgByVariant(p), 0.3)};
     `,
-    active: p => `
+    active: (p) => `
       background: ${opacity(getBgByVariant(p), 0.15)};
       color: ${darken(getColorByVariant(p), 0.1)};
       border-color: ${darken(getBgByVariant(p), 0.1)};

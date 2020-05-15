@@ -74,7 +74,7 @@ export default (props: AccountCreationStepProps) => {
                 readOnly
                 rulesSets={payload.rulesSets}
                 currencyOrToken={currencyOrToken}
-                whitelists={whitelists.edges.map(e => e.node)}
+                whitelists={whitelists.edges.map((e) => e.node)}
               />
             }
           >

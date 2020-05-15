@@ -17,7 +17,7 @@ const whitelists = genWhitelists(10, { users });
 const accounts = genAccounts(20, { users }, { status: "ACTIVE", whitelists });
 const filteredAccounts = accounts.filter(isAccountSpendable);
 
-const fakeNetwork = async url => {
+const fakeNetwork = async (url) => {
   await delay(200);
   if (url === "/whitelists?pageSize=-1") {
     return wrapConnection(whitelists);
@@ -35,7 +35,7 @@ const fakeNetwork = async url => {
   }
   if (url.match(/^\/accounts\/[^/]*\/transactions\/fees/)) {
     const [, accountId] = /^\/accounts\/([^/]*)\/transactions\/fees/.exec(url);
-    const account = accounts.find(a => a.id === Number(accountId));
+    const account = accounts.find((a) => a.id === Number(accountId));
     if (account.account_type === "Ethereum") {
       const fees = {
         gas_price: BigNumber(5000000000),
@@ -64,7 +64,7 @@ storiesOf("entities/Transaction", module).add("Send", () => (
 
 function wrapConnection(data) {
   return {
-    edges: data.map(d => ({ node: d, cursor: d.id })),
+    edges: data.map((d) => ({ node: d, cursor: d.id })),
     pageInfo: { hasNextPage: false },
   };
 }

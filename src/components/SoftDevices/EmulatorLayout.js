@@ -30,7 +30,7 @@ import type { Seed } from "./SoftDevicesContext";
 type Props = {
   vncRef: any,
   onClearSession: () => any,
-  onSpawnDevice: Seed => any,
+  onSpawnDevice: (Seed) => any,
 };
 
 const EmulatorLayout = (props: Props) => {
@@ -255,7 +255,7 @@ const Action = styled(({ isPadded, ...p }) => <div {...p} />)`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: ${p => (p.isPadded ? "0 20px" : "unset")};
+  padding: ${(p) => (p.isPadded ? "0 20px" : "unset")};
   user-select: none;
   font-weight: bold;
 
@@ -278,14 +278,14 @@ const DeviceSwitcher = (props: $Shape<Props>) => {
   const dispatch = useSoftDevicesDispatch();
   const [isSpawning, setSpawning] = useState(false);
 
-  const setDevice = d => dispatch({ type: "SET_DEVICE", payload: d });
+  const setDevice = (d) => dispatch({ type: "SET_DEVICE", payload: d });
 
   const handleOpenSeedsManager = () => dispatch({ type: "OPEN_SEEDS_MANAGER" });
   const handleClearSeeds = () => dispatch({ type: "CLEAR_SEEDS" });
   const handleOpenSeedsGenerator = () =>
     dispatch({ type: "OPEN_SEEDS_GENERATOR" });
 
-  const handleSpawn = async d => {
+  const handleSpawn = async (d) => {
     setSpawning(true);
     try {
       await onSpawnDevice(d);
@@ -331,8 +331,8 @@ const DeviceSwitcher = (props: $Shape<Props>) => {
                 </span>
               </Box>
             </ActionMenuItem>
-            {seeds.map(s => {
-              const seedDevice = devices.find(d => d.name === s.name);
+            {seeds.map((s) => {
+              const seedDevice = devices.find((d) => d.name === s.name);
               const isActive = !!seedDevice;
               const onSelect = () =>
                 seedDevice ? setDevice(seedDevice) : handleSpawn(s);
@@ -364,7 +364,7 @@ const Pastille = styled.div`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: ${p => (p.isActive ? "#8FE2B0" : "#ddd")};
+  background: ${(p) => (p.isActive ? "#8FE2B0" : "#ddd")};
 `;
 
 const MenuToggle = ({

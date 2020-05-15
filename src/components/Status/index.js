@@ -62,7 +62,7 @@ type Props = {
   size?: "big" | "normal",
 };
 
-export const translateStatus = (status: string, t: string => string) => {
+export const translateStatus = (status: string, t: (string) => string) => {
   const translation = t(`entityStatus:${status}`);
   if (translation !== `entityStatus:${status}`) {
     // It is translated

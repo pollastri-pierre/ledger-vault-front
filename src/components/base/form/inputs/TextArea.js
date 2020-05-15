@@ -18,7 +18,7 @@ type TextAreaProps = InputProps<string> & {
   onFocus?: () => void,
   onBlur?: () => void,
 };
-const isAscii = c => c.charCodeAt(0) <= 127;
+const isAscii = (c) => c.charCodeAt(0) <= 127;
 
 export default function TextArea(props: TextAreaProps) {
   const {
@@ -38,7 +38,7 @@ export default function TextArea(props: TextAreaProps) {
   const enrichedHints = evalHints(hints, value);
   const hasError =
     (!!errors && !!errors.length) ||
-    (enrichedHints && enrichedHints.some(h => h.status === "invalid"));
+    (enrichedHints && enrichedHints.some((h) => h.status === "invalid"));
 
   const hasWarning = !hasError && !!warnings && !!warnings.length;
 
@@ -56,10 +56,7 @@ export default function TextArea(props: TextAreaProps) {
     if (onChange) {
       let value = e.target.value;
       if (onlyAscii) {
-        value = value
-          .split("")
-          .filter(isAscii)
-          .join("");
+        value = value.split("").filter(isAscii).join("");
       }
       onChange(value);
     }
@@ -98,7 +95,7 @@ const StyledTextarea = styled.textarea`
   font-size: 13px;
   padding: 10px;
   border: 1px solid
-    ${p =>
+    ${(p) =>
       p.hasError
         ? colors.form.error
         : p.hasWarning
@@ -106,13 +103,13 @@ const StyledTextarea = styled.textarea`
         : colors.form.border};
   &:focus {
     outline: none;
-    border-color: ${p =>
+    border-color: ${(p) =>
       p.hasError
         ? colors.form.error
         : p.hasWarning
         ? colors.form.warning
         : colors.form.focus};
-    box-shadow: ${p =>
+    box-shadow: ${(p) =>
       p.hasError
         ? colors.form.shadow.error
         : p.hasWarning

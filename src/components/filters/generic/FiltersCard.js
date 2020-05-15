@@ -23,7 +23,7 @@ type Props = {
   nbResults?: number,
   queryParams: ObjectParameters,
   children: React$Node,
-  onChange: ObjectParameters => void,
+  onChange: (ObjectParameters) => void,
   paginator: ?React$Node,
   withNoAction?: boolean,
   exportEntityType?: ExportEntityType,
@@ -83,7 +83,7 @@ class FiltersCard extends PureComponent<Props> {
 
     const filters = Children.map(
       children,
-      c => c && cloneElement(c, childProps),
+      (c) => c && cloneElement(c, childProps),
     );
     const hasFilters = hasProps(queryParams);
     const showNbResults = typeof nbResults === "number";
@@ -155,7 +155,7 @@ const Filters = styled(Box).attrs({
   align: "flex-start",
   flexWrap: "wrap",
 })`
-  padding-right: ${p => (p.withNoAction ? "" : "150px")};
+  padding-right: ${(p) => (p.withNoAction ? "" : "150px")};
   > * {
     margin-right: 5px;
     margin-bottom: 5px;

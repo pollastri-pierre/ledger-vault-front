@@ -15,7 +15,7 @@ import TableScroll from "../TableScroll";
 
 type Props = {
   data: Whitelist[],
-  onRowClick: Whitelist => void,
+  onRowClick: (Whitelist) => void,
   customTableDef?: TableDefinition,
   queryParams?: ObjectParameters,
   onSortChange?: (string, ?string) => void,

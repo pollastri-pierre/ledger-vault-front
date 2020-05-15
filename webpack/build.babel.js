@@ -22,7 +22,7 @@ export default merge(webpackConfig, {
   output: {
     publicPath: "/",
     chunkFilename: "assets/chunk-[name]-[chunkhash].js",
-    filename: asset => {
+    filename: (asset) => {
       const { id } = asset.chunk;
       const [folder, name] = id.split("_");
       return `${folder}/${name}-[chunkhash].js`;

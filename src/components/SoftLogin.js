@@ -24,7 +24,7 @@ const SoftLogin = ({ children }: { children: React$Node }) => {
   if (isSoftLogged) return children;
 
   const handleClickConnect = () => setConnecting(true);
-  const handleError = err => setError(err);
+  const handleError = (err) => setError(err);
   const handleSuccess = () => setSoftLogged(true);
   const handleReset = () => {
     setSoftLogged(false);

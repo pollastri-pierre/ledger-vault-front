@@ -22,12 +22,12 @@ type Props = {
 const Container = styled(Box).attrs({})`
   border-radius: 4px;
   color: ${colors.legacyDarkGrey3};
-  align-items: ${p => (p.alignCenter ? "center" : "default")};
-  justify-content: ${p => (p.alignCenter ? "center" : "default")};
+  align-items: ${(p) => (p.alignCenter ? "center" : "default")};
+  justify-content: ${(p) => (p.alignCenter ? "center" : "default")};
   & a {
     text-decoration: underline;
   }
-  color: ${p =>
+  color: ${(p) =>
     p.type === "info"
       ? colors.bLive
       : p.type === "warning"
@@ -37,7 +37,7 @@ const Container = styled(Box).attrs({})`
       : p.type === "success"
       ? colors.green
       : "black"};
-  background-color: ${p =>
+  background-color: ${(p) =>
     p.type === "info"
       ? opacity(colors.bLive, 0.05)
       : p.type === "warning"
@@ -54,7 +54,7 @@ const FooterContainer = styled(Box).attrs({
   p: 5,
 })`
   background: rgba(0, 0, 0, 0.1);
-  background-color: ${p =>
+  background-color: ${(p) =>
     p.type === "info"
       ? opacity(colors.bLive, 0.1)
       : p.type === "warning"
@@ -71,7 +71,7 @@ const IconContainer = styled(Box).attrs({
   justify: "center",
 })`
   line-height: 0;
-  color: ${p =>
+  color: ${(p) =>
     p.type === "info"
       ? opacity(darken(colors.bLive, 0.3), 0.3)
       : p.type === "warning"

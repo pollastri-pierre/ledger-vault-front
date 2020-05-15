@@ -12,7 +12,7 @@ import type { ERC20Token } from "data/types";
 type Props = {
   token: ERC20Token,
   value: BigNumber,
-  onChange: BigNumber => void,
+  onChange: (BigNumber) => void,
 };
 
 function InputTokenAmount(props: Props) {
@@ -25,7 +25,7 @@ function InputTokenAmount(props: Props) {
   );
 
   const onChangeText = useCallback(
-    amount => {
+    (amount) => {
       const r = sanitizeValueString(unit, amount);
       const value = BigNumber(r.value);
       onChange(value);

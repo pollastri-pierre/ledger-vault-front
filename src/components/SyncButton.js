@@ -28,7 +28,7 @@ const SyncButton = (props: Props) => {
     document.location.reload();
 
     // keep loading state 5s so it still spin during page refresh
-    return new Promise(r => setTimeout(r, 5e3));
+    return new Promise((r) => setTimeout(r, 5e3));
   };
 
   return (

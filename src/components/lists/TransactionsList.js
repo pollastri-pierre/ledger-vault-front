@@ -20,7 +20,7 @@ type Props = {
   transactions: Transaction[],
   accounts: Account[],
   showStatus?: boolean,
-  onTransactionClick: Transaction => void,
+  onTransactionClick: (Transaction) => void,
   dataTest?: string,
 };
 
@@ -41,7 +41,7 @@ export default function TransactionsList(props: Props) {
   return (
     <List data-test={dataTest}>
       {transactions.map((transaction, i) => {
-        const account = accounts.find(a => a.id === transaction.account_id);
+        const account = accounts.find((a) => a.id === transaction.account_id);
         if (!account) return null;
         return (
           <TransactionCard
@@ -62,7 +62,7 @@ type TransactionCardProps = {
   transaction: Transaction,
   account: Account,
   showStatus?: boolean,
-  onClick: Transaction => void,
+  onClick: (Transaction) => void,
   dataTest: number,
 };
 

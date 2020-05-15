@@ -58,12 +58,12 @@ export type VaultHistory = VaultHistoryItem[];
 export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
   // Gate is either sending history wrapped in an object, either an array
   const realHistory = gateHistory.history || gateHistory;
-  return realHistory.map(gateStepsGroup => {
+  return realHistory.map((gateStepsGroup) => {
     if (!gateStepsGroup.length) return null;
     return {
       type: resolveItemType(gateStepsGroup[0]),
       requestID: resolveRequestID(gateStepsGroup),
-      steps: gateStepsGroup.map(gateStep => {
+      steps: gateStepsGroup.map((gateStep) => {
         const step: $Exact<VaultHistoryStep> = {
           type: resolveStepType(gateStep),
           createdBy: gateStep.created_by,
@@ -83,8 +83,8 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
                 return {
                   quorum: approvalStep.quorum,
                   approvals: gateStep.approvals
-                    .filter(approval => approval.step === index)
-                    .map(approval => ({
+                    .filter((approval) => approval.step === index)
+                    .map((approval) => ({
                       type: approval.type,
                       createdOn: approval.created_on,
                       createdBy: approval.created_by,
@@ -92,7 +92,7 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
                 };
               })
               .filter(
-                approvalsStep =>
+                (approvalsStep) =>
                   !approvalsStep || approvalsStep.approvals.length > 0,
               ),
           });
@@ -105,7 +105,9 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
 }
 
 function resolveRequestID(group) {
-  const itemWithApprovals = group.find(i => i.approvals && i.approvals.length);
+  const itemWithApprovals = group.find(
+    (i) => i.approvals && i.approvals.length,
+  );
   if (!itemWithApprovals) return null;
   const approval = itemWithApprovals.approvals[0];
   return approval.request_id;

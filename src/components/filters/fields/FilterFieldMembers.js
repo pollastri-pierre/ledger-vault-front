@@ -17,8 +17,8 @@ type Props = FieldProps & {
 
 function FilterFieldMembers(props: Props) {
   const { users, ...p } = props;
-  const members = users.edges.map(u => u.node);
-  const options = members.map(u => ({
+  const members = users.edges.map((u) => u.node);
+  const options = members.map((u) => ({
     label: u.username,
     value: u.id,
   }));

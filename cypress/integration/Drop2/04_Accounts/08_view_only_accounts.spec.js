@@ -8,12 +8,12 @@ import {
   success_edit_account,
 } from "../../../functions/actions";
 
-describe("Provide transaction rules for View Only account", function() {
-  beforeEach(function() {
+describe("Provide transaction rules for View Only account", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

@@ -23,7 +23,7 @@ type Props = FieldProps & {
 function FilterFieldDestinationTag(props: Props) {
   const { t } = useTranslation();
   const { accountsConnection, queryParams } = props;
-  const accounts = useMemo(() => accountsConnection.edges.map(u => u.node), [
+  const accounts = useMemo(() => accountsConnection.edges.map((u) => u.node), [
     accountsConnection,
   ]);
 
@@ -63,13 +63,13 @@ function FilterFieldDestinationTag(props: Props) {
   );
 }
 
-const isRipple = account => account.account_type === "Ripple";
+const isRipple = (account) => account.account_type === "Ripple";
 
 const getSelectedAccounts = (accounts, queryParams) => {
-  const isSelected = account => {
+  const isSelected = (account) => {
     if (Array.isArray(queryParams.account)) {
       return queryParams.account.some(
-        id => id.toString() === account.id.toString(),
+        (id) => id.toString() === account.id.toString(),
       );
     }
     return queryParams.account.toString() === account.id.toString();
@@ -77,7 +77,7 @@ const getSelectedAccounts = (accounts, queryParams) => {
   return accounts.filter(isSelected);
 };
 
-const getSelectedCurrencies = queryParams => {
+const getSelectedCurrencies = (queryParams) => {
   if (!queryParams.currency) return [];
   if (Array.isArray(queryParams.currency)) return queryParams.currency;
   return [queryParams.currency];

@@ -33,7 +33,7 @@ function getStatusByEntity(statuses) {
             <Trans i18nKey="general:storybook.statusTableHead.translation" />
           </TableHead>
         </tr>
-        {Object.keys(statuses).map(status => {
+        {Object.keys(statuses).map((status) => {
           return (
             <tr>
               <TableData>{status}</TableData>

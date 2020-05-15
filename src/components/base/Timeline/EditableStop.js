@@ -22,7 +22,7 @@ import type { EditableComponent, DisplayableComponent } from "./types";
 type Props<T, P> = {
   label: React$Node,
   value: T,
-  onSubmit: T => void,
+  onSubmit: (T) => void,
   onRemove: () => void,
   onStartEdit?: () => void,
   onCancelEdit?: () => void,
@@ -51,7 +51,7 @@ const EditableStop = <T, P: Object>({
 }: Props<T, P>) => {
   const [isEdit, setEdit] = useState(false);
   const readOnly = useReadOnly();
-  const handleSubmit = v => {
+  const handleSubmit = (v) => {
     setEdit(false);
     onSubmit(v);
   };
@@ -63,7 +63,7 @@ const EditableStop = <T, P: Object>({
     onStartEdit && onStartEdit();
     setEdit(true);
   };
-  const handleRemove = e => {
+  const handleRemove = (e) => {
     e.stopPropagation();
     onRemove();
   };
@@ -111,7 +111,7 @@ export const EditForm = <T, P: Object>({
 }: {
   initialValue: T,
   onCancel: () => void,
-  onSubmit: T => void,
+  onSubmit: (T) => void,
   label: React$Node,
   EditComponent: EditableComponent<T, P>,
   extraProps?: P,
@@ -189,13 +189,13 @@ const Container = styled(Box).attrs({
   margin: -10px;
   padding: 10px;
   border-radius: 4px;
-  border: ${p =>
+  border: ${(p) =>
     p.isValid ? "1px dashed transparent" : `1px dashed ${colors.form.error}`};
   ${Actions} {
     visibility: hidden;
     pointer-events: none;
   }
-  ${p =>
+  ${(p) =>
     !p.readOnly
       ? `
   &:hover {

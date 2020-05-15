@@ -3,7 +3,7 @@ context("Create the Master Seed", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
+    cy.request(polyfillUrl).then((response) => {
       polyfill = response.body;
     });
   });
@@ -26,7 +26,7 @@ context("Create the Master Seed", () => {
       device_number: 7,
     });
     cy.visit(Cypress.env("api_server"), {
-      onBeforeLoad: win => {
+      onBeforeLoad: (win) => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
@@ -65,9 +65,7 @@ context("Create the Master Seed", () => {
       cy.request("POST", Cypress.env("api_switch_device"), {
         device_number: 4,
       });
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait(1000);
       cy.get("input[type=text]").type(orga_name);
       cy.get("[data-test=continue_button]").click();

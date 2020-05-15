@@ -22,7 +22,7 @@ const users = genUsers(20);
 const groups = genGroups(3, { users, status: "ACTIVE" });
 const accounts = genAccounts(4);
 
-const fakeNetwork = async url => {
+const fakeNetwork = async (url) => {
   await delay(1e3);
   if (url.startsWith("/people")) {
     return wrapConnection(users);
@@ -35,7 +35,7 @@ const fakeNetwork = async url => {
   }
   if (url.startsWith("/groups")) {
     const group = denormalize(
-      groups.map(g => g.id),
+      groups.map((g) => g.id),
       [schema.Group],
       {
         users: keyBy(users, "id"),
@@ -44,7 +44,7 @@ const fakeNetwork = async url => {
     )[0];
     const g = {
       ...group,
-      last_request: requests.find(r => r.type === "CREATE_GROUP"),
+      last_request: requests.find((r) => r.type === "CREATE_GROUP"),
     };
     g.status = "ACTIVE";
     g.last_request.status = "PENDING";
@@ -78,7 +78,7 @@ storiesOf("entities/Group", module)
 
 function wrapConnection(data) {
   return {
-    edges: data.map(d => ({ node: d, cursor: d.id })),
+    edges: data.map((d) => ({ node: d, cursor: d.id })),
     pageInfo: { hasNextPage: false },
   };
 }

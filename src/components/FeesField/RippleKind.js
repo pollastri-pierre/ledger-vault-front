@@ -26,7 +26,7 @@ type Props = {|
 
 // let's hard extract the gwei unit because it's used to display gas price
 const rippleCurrency = getCryptoCurrencyById("ripple");
-const dropUnit = rippleCurrency.units.find(u => u.code === "drop");
+const dropUnit = rippleCurrency.units.find((u) => u.code === "drop");
 
 // this will never happen, it's just to make Flow happy
 if (!dropUnit) {
@@ -53,7 +53,7 @@ const EditFees = ({
   onChangeTransaction,
 }: EditProps<RippleTransaction>) => {
   const { fees } = transaction;
-  const handleChange = fees => {
+  const handleChange = (fees) => {
     onChangeTransaction({
       ...transaction,
       fees: { ...transaction.fees, fees_level: "custom", fees },
@@ -76,7 +76,7 @@ const EditFees = ({
   );
 };
 
-const useRippleFeePayload = transaction =>
+const useRippleFeePayload = (transaction) =>
   useMemo((): EstimateXRPFeesPayload => {
     const fees = transaction.fees;
 
@@ -92,11 +92,11 @@ const useRippleFeePayload = transaction =>
     return { fees_level: fees.fees_level, ...common };
   }, [transaction.amount, transaction.recipient, transaction.fees]);
 
-const patchFromSuccess = estimatedFees => ({
+const patchFromSuccess = (estimatedFees) => ({
   estimatedFees: estimatedFees.fees,
   error: null,
 });
 
-const patchFromError = error => ({ error, estimatedFees: null });
+const patchFromError = (error) => ({ error, estimatedFees: null });
 
 export default connectData(FeesRippleKind);

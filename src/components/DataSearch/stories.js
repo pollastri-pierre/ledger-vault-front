@@ -58,7 +58,7 @@ const TransactionsSearch = ({ ...props }) => (
   />
 );
 
-const GroupsSearch = props => (
+const GroupsSearch = (props) => (
   <DataSearch
     Query={SearchGroupsQuery}
     TableComponent={GroupsTable}
@@ -67,7 +67,7 @@ const GroupsSearch = props => (
   />
 );
 
-export const AccountsSearch = props => (
+export const AccountsSearch = (props) => (
   <DataSearch
     Query={SearchAccountsQuery}
     TableComponent={AccountsTable}
@@ -76,7 +76,7 @@ export const AccountsSearch = props => (
   />
 );
 
-export const UsersSearch = props => (
+export const UsersSearch = (props) => (
   <DataSearch
     Query={SearchUsersQuery}
     TableComponent={UsersTable}
@@ -85,7 +85,7 @@ export const UsersSearch = props => (
   />
 );
 
-export const RequestsSearch = props => (
+export const RequestsSearch = (props) => (
   <DataSearch
     Query={SearchRequestsQuery}
     TableComponent={RequestsTable}
@@ -132,11 +132,11 @@ storiesOf("entities/Request", module).add("Requests search", () => (
 
 // --------------------------------- story helpers
 
-export const mockNetwork = async url => {
+export const mockNetwork = async (url) => {
   const queryParams = qs.parse(url.substr(url.indexOf("?")));
   let edges;
   if (url.startsWith("/transactions?")) {
-    edges = transactions.filter(transaction => {
+    edges = transactions.filter((transaction) => {
       if (
         queryParams.currency &&
         queryParams.currency !== transaction.currency_name
@@ -151,7 +151,7 @@ export const mockNetwork = async url => {
     });
   }
   if (url.startsWith("/groups")) {
-    edges = groups.filter(g => {
+    edges = groups.filter((g) => {
       if (
         queryParams.name &&
         g.name.toLowerCase().indexOf(queryParams.name.toLowerCase()) === -1
@@ -161,7 +161,7 @@ export const mockNetwork = async url => {
     });
   }
   if (url.startsWith("/accounts")) {
-    const filteredAccounts = accounts.filter(a => {
+    const filteredAccounts = accounts.filter((a) => {
       if (
         queryParams.name &&
         a.name.toLowerCase().indexOf(queryParams.name.toLowerCase()) === -1
@@ -176,7 +176,7 @@ export const mockNetwork = async url => {
     edges = filteredAccounts.slice(start, end);
 
     return {
-      edges: edges.map(transaction => ({
+      edges: edges.map((transaction) => ({
         node: transaction,
         cursor: transaction.id,
       })),
@@ -198,7 +198,7 @@ export const mockNetwork = async url => {
 
   await delay(500);
   return {
-    edges: edges.map(transaction => ({
+    edges: edges.map((transaction) => ({
       node: transaction,
       cursor: transaction.id,
     })),
@@ -218,7 +218,7 @@ function wrapComponent(ComponentToDecorate, prefix) {
       queryParams: {},
     };
 
-    handleChangeQueryParams = queryParams => this.setState({ queryParams });
+    handleChangeQueryParams = (queryParams) => this.setState({ queryParams });
 
     render() {
       const { queryParams } = this.state;

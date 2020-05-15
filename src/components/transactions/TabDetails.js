@@ -47,7 +47,7 @@ class TransactionList<T: *> extends Component<{
           </strong>
         </LineRow>
         <Box flow={10} align="flex-start">
-          {entries.map(e => (
+          {entries.map((e) => (
             <div key={e.address}>
               <Copy text={e.address} />
               {entries.length > 1 && (

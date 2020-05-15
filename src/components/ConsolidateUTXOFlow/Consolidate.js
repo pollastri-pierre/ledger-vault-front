@@ -39,7 +39,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
   const { transaction } = payload;
   const { t } = useTranslation();
   const [displayNote, setDisplayNote] = useState(false);
-  const onUTXOChange = val => {
+  const onUTXOChange = (val) => {
     const totalAmount = calculateTotalAmount(accountUTXOs, val);
 
     const patch = {
@@ -51,11 +51,11 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
     props.updatePayload(patch);
   };
 
-  const onFeeChange = transaction => {
+  const onFeeChange = (transaction) => {
     props.updatePayload({ transaction });
   };
 
-  const onCommentContentChange = content => {
+  const onCommentContentChange = (content) => {
     const note = {
       ...transaction.note,
       content,
@@ -66,7 +66,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
     props.updatePayload(patch);
   };
 
-  const onCommentTitleChange = title => {
+  const onCommentTitleChange = (title) => {
     const note = {
       ...transaction.note,
       title,
@@ -164,7 +164,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
   );
 };
 
-const collectAmountError = transaction => {
+const collectAmountError = (transaction) => {
   if (!transaction.error) return undefined;
   if (transaction.error instanceof AmountTooHigh) {
     return [new TooManyUTXOs()];

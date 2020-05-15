@@ -70,12 +70,10 @@ const BalanceGraph = (props: Props) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip
-          labelFormatter={date =>
-            moment(date)
-              .format("MM/DD HH:mm:ss")
-              .toString()
+          labelFormatter={(date) =>
+            moment(date).format("MM/DD HH:mm:ss").toString()
           }
-          formatter={balance => [
+          formatter={(balance) => [
             currencyUnitValueFormat(
               getAccountCurrencyUnit(account),
               BigNumber(balance),
@@ -87,7 +85,7 @@ const BalanceGraph = (props: Props) => {
           axisLine={false}
           tickLine={false}
           tick={{ fill: colors.textLight }}
-          tickFormatter={value => {
+          tickFormatter={(value) => {
             if (isERC20) {
               const token = getERC20TokenByContractAddress(
                 account.contract_address,
@@ -112,12 +110,10 @@ const BalanceGraph = (props: Props) => {
           domain={[data[data.length - 1].date, data[0].date]}
           type="number"
           name="Time"
-          tickFormatter={date =>
+          tickFormatter={(date) =>
             moment(data[data.length - 1].date).isSame(date)
               ? ""
-              : moment(date)
-                  .format("MM/DD")
-                  .toString()
+              : moment(date).format("MM/DD").toString()
           }
         />
         <Area

@@ -12,7 +12,7 @@ type BarChartsProps = {
   granularity: number,
   height: number,
   colors?: { main?: string, hover?: string },
-  tooltipFormatter?: string => string,
+  tooltipFormatter?: (string) => string,
 };
 
 const BarCharts = ({
@@ -46,7 +46,7 @@ const BarCharts = ({
     colors && colors.hover ? { cursor: { fill: colors.hover } } : {};
   const mainColor = colors && colors.main ? { fill: colors.main } : {};
 
-  const defaultFormatter = value => value;
+  const defaultFormatter = (value) => value;
   return (
     <div ref={containerRef}>
       <BarChart width={width} height={height} data={groupedData}>

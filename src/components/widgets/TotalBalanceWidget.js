@@ -21,18 +21,18 @@ const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
 const mapStateToProps = (state, props) => {
   const { accountsConnection } = props;
-  const accounts = accountsConnection.edges.map(e => e.node);
+  const accounts = accountsConnection.edges.map((e) => e.node);
 
   const totalBalance = reduceAccountsValue(
     state,
     accounts,
-    account => account.balance,
+    (account) => account.balance,
   );
 
   const totalPendingTransaction = reduceAccountsValue(
     state,
     accounts,
-    account => account.balance.minus(account.available_balance),
+    (account) => account.balance.minus(account.available_balance),
   );
 
   return {

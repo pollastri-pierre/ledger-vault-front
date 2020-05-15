@@ -32,7 +32,7 @@ const TransactionCreationAccount = (
   const { payload, updatePayload, accounts } = props;
   const { t } = useTranslation();
   const handleChange = useCallback(
-    acc => {
+    (acc) => {
       if (acc) {
         const {
           transaction,
@@ -50,7 +50,7 @@ const TransactionCreationAccount = (
   );
 
   const filteredAccounts = useMemo(
-    () => accounts.edges.map(el => el.node).filter(isAccountSpendable),
+    () => accounts.edges.map((el) => el.node).filter(isAccountSpendable),
     [accounts],
   );
 

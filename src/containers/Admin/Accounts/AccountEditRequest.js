@@ -35,9 +35,9 @@ function AccountEditRequest(props: Props) {
   const editData = last_request.edit_data || null;
   const hasNameChanged = editData && account.name !== editData.name;
 
-  const allUsers = users.edges.map(e => e.node);
-  const allGroups = groups.edges.map(e => e.node);
-  const allWhitelists = whitelists.edges.map(e => e.node);
+  const allUsers = users.edges.map((e) => e.node);
+  const allGroups = groups.edges.map((e) => e.node);
+  const allWhitelists = whitelists.edges.map((e) => e.node);
 
   const newRules = isAccountMigration
     ? governance_rules

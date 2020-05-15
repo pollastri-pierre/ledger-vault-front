@@ -21,7 +21,7 @@ type Option = {
 };
 
 type Props = {
-  onChange: Option => void,
+  onChange: (Option) => void,
   value: ?Option,
   options: GroupedOption[],
   canAddCustom: boolean,
@@ -55,7 +55,7 @@ const SelectAddress = (props: Props) => {
   const showError = isFocused && !isOpened;
 
   // used to hide the custom option if we type exactly a maching address
-  const isValidNewOption = inputValue =>
+  const isValidNewOption = (inputValue) =>
     !!inputValue && !isValueInOptions(inputValue, options);
 
   const isCurrentCustom = value && value.label === CREATED_ADDRESS_UNIQUE_LABEL;
@@ -98,7 +98,7 @@ const SelectAddress = (props: Props) => {
 const NoOptionsMessage = () => "Unknown address";
 
 const customValueStyle = {
-  singleValue: styles => ({
+  singleValue: (styles) => ({
     ...styles,
     color: "inherit",
     width: "100%",
@@ -113,7 +113,7 @@ const addressStyle = {
   fontFamily: "monospace",
 };
 
-const GroupLabel = data => {
+const GroupLabel = (data) => {
   const { label, isDisabled, whitelist } = data;
   return (
     <Box horizontal justify="space-between">
@@ -189,8 +189,8 @@ const customComponents = {
 };
 
 function isValueInOptions(value: string, options: GroupedOption[]) {
-  return options.some(group =>
-    group.options.some(option => option.data.address === value),
+  return options.some((group) =>
+    group.options.some((option) => option.data.address === value),
   );
 }
 

@@ -5,7 +5,7 @@ context("Create Wrapping Key", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
+    cy.request(polyfillUrl).then((response) => {
       polyfill = response.body;
     });
   });
@@ -13,7 +13,7 @@ context("Create Wrapping Key", () => {
     cy.server();
     route();
     cy.visit(Cypress.env("api_server"), {
-      onBeforeLoad: win => {
+      onBeforeLoad: (win) => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
@@ -36,9 +36,7 @@ context("Create Wrapping Key", () => {
       cy.contains("Continue").click();
       cy.wait("@next");
 
-      cy.get(".fragment")
-        .eq(0)
-        .click();
+      cy.get(".fragment").eq(0).click();
       cy.wait("@get-public-key");
       cy.wait("@get-attestation");
       cy.wait("@open-session");
@@ -48,9 +46,7 @@ context("Create Wrapping Key", () => {
       cy.request("POST", Cypress.env("api_switch_device"), {
         device_number: 2,
       }).then(() => {
-        cy.get(".fragment")
-          .eq(1)
-          .click();
+        cy.get(".fragment").eq(1).click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
         cy.wait("@open-session");
@@ -75,9 +71,7 @@ context("Create Wrapping Key", () => {
           */
 
           // Do the last WPK
-          cy.get(".fragment")
-            .eq(2)
-            .click();
+          cy.get(".fragment").eq(2).click();
           cy.wait("@get-public-key");
           cy.wait("@get-attestation");
           cy.wait("@open-session");
@@ -85,13 +79,9 @@ context("Create Wrapping Key", () => {
           cy.wait("@authenticate");
           cy.contains("Continue").click();
           cy.wait("@next");
-          cy.contains("Continue")
-            .debug()
-            .click();
+          cy.contains("Continue").debug().click();
           cy.wait("@next");
-          cy.contains("Continue")
-            .debug()
-            .click();
+          cy.contains("Continue").debug().click();
           cy.wait("@next");
         });
       });

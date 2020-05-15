@@ -19,7 +19,7 @@ import {
 import { buildPlanObservable, resumeSubject$ } from "./UpdatePlan";
 
 describe("Updater > usePlan", () => {
-  it("should install an app", done => {
+  it("should install an app", (done) => {
     const app = parseRawApp("2.2.7-ee app_3.0.9");
     const plan = getUpdatePlan({
       expectedApp: "3.0.9",
@@ -30,7 +30,7 @@ describe("Updater > usePlan", () => {
 
     const $plan = buildPlanObservable(plan, { version: "2.2.7-ee" });
 
-    _setupInstallAppMock(o => {
+    _setupInstallAppMock((o) => {
       o.next({ progress: 0.1 });
       o.next({ progress: 0.5 });
       o.next({ progress: 0.9 });
@@ -73,7 +73,7 @@ describe("Updater > usePlan", () => {
     testEvents($plan, expected, done);
   });
 
-  it("should install an app and handle error & retry", done => {
+  it("should install an app and handle error & retry", (done) => {
     const app = parseRawApp("2.2.7-ee app_3.0.9");
     const plan = getUpdatePlan({
       expectedApp: "3.0.9",
@@ -84,7 +84,7 @@ describe("Updater > usePlan", () => {
 
     const $plan = buildPlanObservable(plan, { version: "2.2.7-ee" });
 
-    _setupInstallAppMock(o => {
+    _setupInstallAppMock((o) => {
       o.next({ progress: 0.1 });
       o.next({ progress: 0.5 });
       o.error("Oops");
@@ -111,7 +111,7 @@ describe("Updater > usePlan", () => {
       },
       { type: "ERROR", payload: { step: { type: "app", app }, error: "Oops" } },
       () => {
-        _setupInstallAppMock(o => {
+        _setupInstallAppMock((o) => {
           o.next({ progress: 0.1 });
           o.next({ progress: 0.5 });
           o.complete();
@@ -146,7 +146,7 @@ describe("Updater > usePlan", () => {
     testEvents($plan, expected, done);
   });
 
-  it("should not install OSU if device is already in OSU", done => {
+  it("should not install OSU if device is already in OSU", (done) => {
     const app = parseRawApp("2.2.7-ee app_3.0.9");
     const transition = parseRawTransition("2.2.6-ee => 2.2.7-ee");
     const plan = getUpdatePlan({
@@ -161,14 +161,14 @@ describe("Updater > usePlan", () => {
       isOSU: true,
     });
 
-    _setupInstallFinalFirmMock(o => {
+    _setupInstallFinalFirmMock((o) => {
       o.next({ progress: 0.1 });
       o.next({ progress: 0.899999 });
       o.next({ progress: 0.9 });
       o.complete();
     });
 
-    _setupInstallAppMock(o => {
+    _setupInstallAppMock((o) => {
       o.next({ progress: 0.1 });
       o.next({ progress: 0.5 });
       o.next({ progress: 0.9 });
@@ -254,7 +254,7 @@ describe("Updater > usePlan", () => {
     testEvents($plan, expected, done);
   });
 
-  it("should install a firmware then an app", done => {
+  it("should install a firmware then an app", (done) => {
     const app = parseRawApp("2.2.7-ee app_3.0.9");
     const transition = parseRawTransition("2.2.6-ee => 2.2.7-ee");
     const plan = getUpdatePlan({
@@ -266,20 +266,20 @@ describe("Updater > usePlan", () => {
 
     const $plan = buildPlanObservable(plan, { version: "2.2.6-ee" });
 
-    _setupInstallOsuFirmMock(o => {
+    _setupInstallOsuFirmMock((o) => {
       o.next({ progress: 0.1 });
       o.next({ progress: 0.9 });
       o.complete();
     });
 
-    _setupInstallFinalFirmMock(o => {
+    _setupInstallFinalFirmMock((o) => {
       o.next({ progress: 0.1 });
       o.next({ progress: 0.899999 });
       o.next({ progress: 0.9 });
       o.complete();
     });
 
-    _setupInstallAppMock(o => {
+    _setupInstallAppMock((o) => {
       o.next({ progress: 0.1 });
       o.next({ progress: 0.5 });
       o.next({ progress: 0.9 });
@@ -401,7 +401,7 @@ describe("Updater > usePlan", () => {
     testEvents($plan, expected, done);
   });
 
-  it("should correctly handle deny firmware update by user", done => {
+  it("should correctly handle deny firmware update by user", (done) => {
     const app = parseRawApp("2.2.7-ee app_3.0.9");
     const transition = parseRawTransition("2.2.6-ee => 2.2.7-ee");
     const plan = getUpdatePlan({
@@ -413,11 +413,11 @@ describe("Updater > usePlan", () => {
 
     const $plan = buildPlanObservable(plan, { version: "2.2.6-ee" });
 
-    _setupInstallOsuFirmMock(o => {
+    _setupInstallOsuFirmMock((o) => {
       o.error(new UserRefusedFirmwareUpdate());
     });
-    _setupInstallFinalFirmMock(o => o.complete());
-    _setupInstallAppMock(o => o.complete());
+    _setupInstallFinalFirmMock((o) => o.complete());
+    _setupInstallAppMock((o) => o.complete());
 
     const expected = [
       {
@@ -435,7 +435,7 @@ describe("Updater > usePlan", () => {
         },
       },
       () => {
-        _setupInstallOsuFirmMock(o => {
+        _setupInstallOsuFirmMock((o) => {
           o.next({ progress: 0.9 });
           o.complete();
         });
@@ -518,7 +518,7 @@ describe("Updater > usePlan", () => {
 const testEvents = ($plan, expected, done) => {
   let i = 0;
   $plan.subscribe({
-    next: val => {
+    next: (val) => {
       const cur = expected[i];
       expect(val).toEqual(cur);
       while (expected[i + 1] && typeof expected[i + 1] === "function") {

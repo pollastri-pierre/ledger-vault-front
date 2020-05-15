@@ -14,86 +14,66 @@ const transactions = [
     type: "SEND",
     amount: BigNumber(5000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(29, "days")
-      .toString(),
+    created_on: moment().subtract(29, "days").toString(),
   },
   {
     type: "SEND",
     amount: BigNumber(6000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(28, "days")
-      .toString(),
+    created_on: moment().subtract(28, "days").toString(),
   },
   {
     type: "SEND",
     amount: BigNumber(7000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(27, "days")
-      .toString(),
+    created_on: moment().subtract(27, "days").toString(),
   },
   {
     type: "SEND",
     amount: BigNumber(8000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(20, "days")
-      .toString(),
+    created_on: moment().subtract(20, "days").toString(),
   },
 
   {
     type: "SEND",
     amount: BigNumber(5000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(18, "days")
-      .toString(),
+    created_on: moment().subtract(18, "days").toString(),
   },
 
   {
     type: "SEND",
     amount: BigNumber(5000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(16, "days")
-      .toString(),
+    created_on: moment().subtract(16, "days").toString(),
   },
 
   {
     type: "RECEIVE",
     amount: BigNumber(5000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(6, "days")
-      .toString(),
+    created_on: moment().subtract(6, "days").toString(),
   },
 
   {
     type: "RECEIVE",
     amount: BigNumber(5000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(5, "days")
-      .toString(),
+    created_on: moment().subtract(5, "days").toString(),
   },
 
   {
     type: "SEND",
     amount: BigNumber(15000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(4, "days")
-      .toString(),
+    created_on: moment().subtract(4, "days").toString(),
   },
   {
     type: "SEND",
     amount: BigNumber(15000000),
     fees: BigNumber(0),
-    created_on: moment()
-      .subtract(3, "days")
-      .toString(),
+    created_on: moment().subtract(3, "days").toString(),
   },
 ];
 

@@ -26,7 +26,7 @@ export class TableHeader extends PureComponent<TableHeaderProps> {
     return (
       <thead>
         <TableRow>
-          {tableDefinition.map(item => (
+          {tableDefinition.map((item) => (
             <HeaderCellComponent
               key={item.body.prop}
               item={item}
@@ -101,9 +101,9 @@ const HeaderCell = styled.td`
   background-color: ${colors.form.bg};
   border-top: none !important;
   border-bottom-color: ${colors.legacyLightGrey1};
-  width: ${p => (p.size === "small" ? "50px" : "auto")};
-  padding: ${p => (p.size === "small" ? "10px" : "4px 56px 4px 24px")};
-  text-align: ${p => p.align || "left"};
+  width: ${(p) => (p.size === "small" ? "50px" : "auto")};
+  padding: ${(p) => (p.size === "small" ? "10px" : "4px 56px 4px 24px")};
+  text-align: ${(p) => p.align || "left"};
 `;
 
 export const Table = styled.table`
@@ -120,7 +120,7 @@ export const Table = styled.table`
 
 export const TableRow = styled.tr`
   height: 48px;
-  ${p =>
+  ${(p) =>
     p.onClick
       ? `
     cursor: pointer;
@@ -136,9 +136,9 @@ export const TableRow = styled.tr`
 `;
 
 export const TableCell = styled.td`
-  padding: ${p => (p.size === "small" ? "10px" : "4px 56px 4px 24px")};
-  text-align: ${p => p.align || "left"};
-  width: ${p => (p.size === "small" ? "50px" : "auto")};
+  padding: ${(p) => (p.size === "small" ? "10px" : "4px 56px 4px 24px")};
+  text-align: ${(p) => p.align || "left"};
+  width: ${(p) => (p.size === "small" ? "50px" : "auto")};
 `;
 
 export const OpenExternal = ({ url }: { url: string }) => (
@@ -147,7 +147,7 @@ export const OpenExternal = ({ url }: { url: string }) => (
       withRole
       target="_blank"
       to={url}
-      onClick={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
       title="Open in a new tab"
     >
       <OpenExternalInner>

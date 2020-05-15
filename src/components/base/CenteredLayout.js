@@ -12,7 +12,7 @@ const ScrollingBlock = styled.div`
   left: 0;
   bottom: 0;
   background-color: ${colors.cream};
-  justify-content: ${p => (p.noVerticalAlign ? "flex-start" : "center")};
+  justify-content: ${(p) => (p.noVerticalAlign ? "flex-start" : "center")};
   display: flex;
   flex-direction: column;
   align-items: center;

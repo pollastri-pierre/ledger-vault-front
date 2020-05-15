@@ -38,7 +38,7 @@ const steps = [
     id: "consolidate",
     name: "Consolidate",
     Step: Consolidate,
-    requirements: payload => payload.hasValidatedAddress,
+    requirements: (payload) => payload.hasValidatedAddress,
     Cta: ValidateUTXOConsolidation,
   },
   {
@@ -117,7 +117,7 @@ export default connectData(
     },
     RenderLoading: GrowingSpinner,
     RenderError: CardError,
-    propsToQueryParams: props => ({
+    propsToQueryParams: (props) => ({
       pageSize: -1,
       accountId: props.match.params.accountId,
       from: 0,

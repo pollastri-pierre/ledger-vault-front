@@ -18,7 +18,7 @@ const ApprovalSlider = ({
   min?: number,
   max?: number,
   total: number,
-  onChange: number => void,
+  onChange: (number) => void,
 }) => {
   const { t } = useTranslation();
   return (
@@ -105,7 +105,7 @@ const Bars = styled.div`
 const Bar = styled.div`
   height: 3px;
   width: 60px;
-  background: ${p => (p.selected ? colors.ocean : colors.mouse)};
+  background: ${(p) => (p.selected ? colors.ocean : colors.mouse)};
   display: inline-block;
   margin-right: 5px;
 `;

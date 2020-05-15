@@ -5,12 +5,12 @@ import {
   successfull_message2,
 } from "../../../functions/actions";
 
-describe("Test Case for Approve the creation of Groups", function() {
-  beforeEach(function() {
+describe("Test Case for Approve the creation of Groups", function () {
+  beforeEach(function () {
     login(5);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

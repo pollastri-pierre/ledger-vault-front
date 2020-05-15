@@ -14,7 +14,7 @@ import TableScroll from "../TableScroll";
 
 type Props = {
   data: BlockingReasonType[],
-  onRowClick: BlockingReasonType => void,
+  onRowClick: (BlockingReasonType) => void,
   customTableDef?: TableDefinition,
 };
 

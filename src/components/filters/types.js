@@ -2,7 +2,7 @@
 
 import type { ObjectParameters, ObjectParameter } from "query-string";
 
-export type QueryUpdater = ObjectParameters => ObjectParameters;
+export type QueryUpdater = (ObjectParameters) => ObjectParameters;
 
 export type FieldProps = {
   queryParams: ObjectParameters,
@@ -14,5 +14,5 @@ export type FieldProps = {
 
 export type FieldsGroupProps = {
   queryParams: ObjectParameters,
-  onChange: ObjectParameters => void,
+  onChange: (ObjectParameters) => void,
 };

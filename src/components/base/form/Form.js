@@ -8,7 +8,7 @@ type Props = {
 };
 export default function Form(props: Props) {
   const { children, onSubmit } = props;
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit();
   };

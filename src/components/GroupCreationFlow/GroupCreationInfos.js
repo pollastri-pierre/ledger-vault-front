@@ -19,7 +19,7 @@ export default function GroupCreationInfos(props: GroupCreationStepProps) {
   const { t } = useTranslation();
   const { payload, updatePayload, operators, onEnter } = props;
 
-  const listOperators = operators.edges.map(e => e.node);
+  const listOperators = operators.edges.map((e) => e.node);
   const handleChangeName = (name: string) => updatePayload({ name });
   const handleChangeDesc = (description: string) =>
     updatePayload({ description });

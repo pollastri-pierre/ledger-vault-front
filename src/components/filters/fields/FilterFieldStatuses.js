@@ -20,7 +20,7 @@ export default function FilterFieldStatuses(props: Props) {
 
   const options = useMemo(
     () =>
-      statuses.map(s => ({
+      statuses.map((s) => ({
         value: s,
         label: translateStatus(targetType ? remapStatus(s, targetType) : s, t),
       })),

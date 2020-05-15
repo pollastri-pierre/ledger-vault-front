@@ -25,7 +25,7 @@ class GroupDetailsOverview extends PureComponent<Props> {
   render() {
     const { group, operators } = this.props;
     // TODO need an endpoint not paginated for this
-    const listOperators = operators.edges.map(e => e.node);
+    const listOperators = operators.edges.map((e) => e.node);
     return (
       <Box>
         <GroupDetailsDetails group={group} />

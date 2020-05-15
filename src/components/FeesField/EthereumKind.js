@@ -23,7 +23,7 @@ import GenericFeesField from "./GenericFeesField";
 
 // let's hard extract the gwei unit because it's used to display gas price
 const ethereumCurrency = getCryptoCurrencyById("ethereum");
-const gweiUnit = ethereumCurrency.units.find(u => u.code === "Gwei");
+const gweiUnit = ethereumCurrency.units.find((u) => u.code === "Gwei");
 
 // this will never happen, it's just to make Flow happy
 if (!gweiUnit) {
@@ -79,7 +79,7 @@ const EditFees = ({
 }: EditProps<EthereumTransaction>) => {
   const { fees } = transaction;
 
-  const handleChangeGasPrice = gasPrice =>
+  const handleChangeGasPrice = (gasPrice) =>
     onChangeTransaction({
       ...transaction,
       fees: { ...fees, gas_price: gasPrice },
@@ -137,7 +137,7 @@ const DisabledInput = () => (
   </FakeInputContainer>
 );
 
-const useEthereumFeePayload = transaction =>
+const useEthereumFeePayload = (transaction) =>
   useMemo((): EstimateETHFeesPayload => {
     const fees = transaction.fees;
 

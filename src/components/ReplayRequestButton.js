@@ -56,7 +56,7 @@ export const getUrlFromRequest = (
 };
 
 type Props = {
-  setRequest: RequestReplay => void,
+  setRequest: (RequestReplay) => void,
   request: RequestReplay,
   disabledReason: ?string,
 };

@@ -85,7 +85,7 @@ class UserDetailsOverview extends PureComponent<Props> {
               onChange={this.updateUserID}
               InputComponent={InputUserID}
               inputProps={{ width: 300 }}
-              getSaveDisabled={v => !isUserIDValid(v)}
+              getSaveDisabled={(v) => !isUserIDValid(v)}
             />
           ) : (
             user.user_id && user.user_id.toUpperCase()

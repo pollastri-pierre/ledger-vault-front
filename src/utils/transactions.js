@@ -5,7 +5,7 @@ import { isMemberOfFirstApprovalStep } from "utils/users";
 
 export const hasPending = (account: Account, transactions: Transaction[]) =>
   transactions.filter(
-    transaction =>
+    (transaction) =>
       transaction.status === "PENDING_APPROVAL" &&
       transaction.account_id === account.id,
   ).length > 0;
@@ -25,7 +25,7 @@ export const isAccountNotSpendableWithReason = (account: Account): string[] => {
   ];
 
   // $FlowFixMe: I know if I remove `false` I will only get strings in the array
-  return reasons.filter(r => !!r);
+  return reasons.filter((r) => !!r);
 };
 
 export const isAccountSpendable = (account: Account) => {
@@ -33,11 +33,13 @@ export const isAccountSpendable = (account: Account) => {
 };
 
 export const isCreateTransactionEnabled = (accounts: Account[]) => {
-  const filter = accounts.filter(account => isAccountSpendable(account));
+  const filter = accounts.filter((account) => isAccountSpendable(account));
   return filter.length > 0;
 };
 
 export const getPendingsTransactions = (
   transactions: Transaction[],
 ): Transaction[] =>
-  transactions.filter(transaction => transaction.status === "PENDING_APPROVAL");
+  transactions.filter(
+    (transaction) => transaction.status === "PENDING_APPROVAL",
+  );

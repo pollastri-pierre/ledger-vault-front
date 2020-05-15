@@ -10,7 +10,7 @@ import UtxoDistributionBodyCell from "./UtxoDistributionBodyCell";
 type UtxoDistrubtionRowProps = {
   utxoRange: UTXORange,
   account: Account,
-  onClick?: UTXORange => void,
+  onClick?: (UTXORange) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -24,7 +24,7 @@ function UtxoDistributionRow(props: UtxoDistrubtionRowProps) {
 
   return (
     <TableRow key={utxoRange.range} onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <UtxoDistributionBodyCell
           account={account}
           utxoRange={utxoRange}

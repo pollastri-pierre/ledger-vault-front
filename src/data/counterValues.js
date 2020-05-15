@@ -30,8 +30,8 @@ const pairsSelector = createSelector(accountsSelector, (accounts: Account[]) =>
     .concat(
       allCurrencies
         .filter(
-          currency =>
-            accounts.findIndex(account => {
+          (currency) =>
+            accounts.findIndex((account) => {
               if (
                 account.currency === "ethereum_ropsten" &&
                 currency.id === "ethereum"
@@ -42,16 +42,16 @@ const pairsSelector = createSelector(accountsSelector, (accounts: Account[]) =>
             currency.name !== "bitcoin_testnet" &&
             currency.name !== "bitcoin",
         )
-        .map(currency => ({
-          from: allCurrencies.find(curr => curr.id === currency.id),
+        .map((currency) => ({
+          from: allCurrencies.find((curr) => curr.id === currency.id),
           to: intermediaryCurrency,
         })),
     )
     .concat(
       uniqBy(
         accounts
-          .filter(a => a.account_type === "Erc20")
-          .map(a => {
+          .filter((a) => a.account_type === "Erc20")
+          .map((a) => {
             const token = getERC20TokenByContractAddress(a.contract_address);
             if (!token) return null;
             if (token.disable_countervalue) return null;
@@ -70,7 +70,7 @@ const pairsSelector = createSelector(accountsSelector, (accounts: Account[]) =>
 implementCountervalues({
   log: () => {},
   getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",
-  storeSelector: state => state.countervalues,
+  storeSelector: (state) => state.countervalues,
   pairsSelector,
   setExchangePairsAction,
 });

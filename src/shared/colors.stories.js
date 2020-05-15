@@ -11,7 +11,7 @@ import Card from "components/base/Card";
 import colors from "shared/colors";
 
 function getColorTile(cols, name) {
-  return Object.keys(cols).map(c => {
+  return Object.keys(cols).map((c) => {
     if (typeof cols[c] !== "string") {
       return getColorTile(cols[c], c);
     }

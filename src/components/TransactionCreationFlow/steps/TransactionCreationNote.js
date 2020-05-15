@@ -18,7 +18,7 @@ export default (props: TransactionCreationStepProps<any>) => {
   invariant(bridge, "No bridge");
   invariant(transaction, "No transaction");
 
-  const editNote = notePatch => {
+  const editNote = (notePatch) => {
     const prevNote = bridge.getTransactionNote(transaction);
     const note = { ...prevNote, ...notePatch };
     updatePayload({
@@ -26,8 +26,8 @@ export default (props: TransactionCreationStepProps<any>) => {
     });
   };
 
-  const handleChangeTitle = title => editNote({ title });
-  const handleChangeContent = content => editNote({ content });
+  const handleChangeTitle = (title) => editNote({ title });
+  const handleChangeContent = (content) => editNote({ content });
   const inner = (
     <Box flow={20}>
       <Box>

@@ -9,7 +9,7 @@ import GroupBodyCell from "./GroupBodyCell";
 
 type GroupRowProps = {
   group: Group,
-  onClick: Group => void,
+  onClick: (Group) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -21,7 +21,7 @@ function GroupRow(props: GroupRowProps) {
 
   return (
     <TableRow key={group.id} onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <GroupBodyCell group={group} item={item} key={item.body.prop} />
       ))}
     </TableRow>

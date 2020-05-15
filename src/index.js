@@ -20,7 +20,7 @@ const locale = "en";
 const store = create({ locale });
 const $root = document.getElementById("root");
 
-const render = Component => {
+const render = (Component) => {
   $root &&
     ReactDOM.render(
       <AppContainer>
@@ -39,12 +39,12 @@ const render = Component => {
 };
 
 if (window.config.ERC20_LIST === "dev") {
-  import("data/erc20-list.dev.json").then(module => {
+  import("data/erc20-list.dev.json").then((module) => {
     storeTokenList(module.default);
     render(OrganizationAppRouter);
   });
 } else {
-  import("data/erc20-list.json").then(module => {
+  import("data/erc20-list.json").then((module) => {
     storeTokenList(module.default);
     render(OrganizationAppRouter);
   });
@@ -59,7 +59,7 @@ if (module.hot) {
 
 function storeTokenList(list) {
   window.erc20 = sortBy(
-    list.filter(t => t.hsm_signature || t.hsm_account_parameters),
+    list.filter((t) => t.hsm_signature || t.hsm_account_parameters),
     "name",
   );
 }

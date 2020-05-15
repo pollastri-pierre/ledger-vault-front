@@ -106,7 +106,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
     const { parentAccount } = payload;
     if (!parentAccount || !parentAccount.id) return null;
     const accountElement = allAccounts.edges.find(
-      el => parentAccount.id && el.node.id === parentAccount.id,
+      (el) => parentAccount.id && el.node.id === parentAccount.id,
     );
     const account = accountElement ? accountElement.node : null;
     if (!account) return null;
@@ -132,7 +132,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
           ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
           ...uniqName(
             payload.name,
-            allAccounts.edges.map(e => e.node.name),
+            allAccounts.edges.map((e) => e.node.name),
           ),
         ];
 
@@ -164,7 +164,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
                 ...maxLengthNonAsciiHints(ACCOUNT_NAME_LENGTH),
                 ...uniqName(
                   payload.name,
-                  allAccounts.edges.map(e => e.node.name),
+                  allAccounts.edges.map((e) => e.node.name),
                 ),
               ]}
               onChange={this.handleChangeParentAccountName}

@@ -31,7 +31,7 @@ class DialogButton extends Component<*, *> {
     this.setState({ pending: true });
     Promise.resolve()
       .then(this.props.onTouchTap)
-      .catch(e => e)
+      .catch((e) => e)
       .then(() => {
         if (this._unmounted) return;
         this.setState({ pending: false });
@@ -68,7 +68,7 @@ const DialogButtonContainer = styled.button`
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  color: ${p =>
+  color: ${(p) =>
     p.abort ? colors.grenade : p.highlight ? colors.ocean : colors.lead};
   padding: 0;
   margin: 0;
@@ -76,9 +76,9 @@ const DialogButtonContainer = styled.button`
   line-height: 1em;
   padding-bottom: 40px;
   transition: opacity 500ms ease;
-  opacity: ${p => (p.disabled ? 0.3 : 1)};
-  cursor: ${p => (p.disabled ? "default" : "pointer")};
-  float: ${p => (p.right ? "right" : "left")};
+  opacity: ${(p) => (p.disabled ? 0.3 : 1)};
+  cursor: ${(p) => (p.disabled ? "default" : "pointer")};
+  float: ${(p) => (p.right ? "right" : "left")};
   outline: none;
   & a {
     text-decoration: none;
@@ -87,10 +87,10 @@ const DialogButtonContainer = styled.button`
   &:hover:after {
     content: "";
     display: block;
-    background-color: ${p =>
+    background-color: ${(p) =>
       p.abort ? colors.grenade : p.highlight ? colors.ocean : colors.lead};
     width: 100%;
-    height: ${p => (p.disabled ? 0 : "5px")};
+    height: ${(p) => (p.disabled ? 0 : "5px")};
     margin-top: 35px;
     position: absolute;
   }

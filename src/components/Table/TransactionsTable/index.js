@@ -15,7 +15,7 @@ import { Table, TableHeader } from "../TableBase";
 
 type Props = {
   data: Transaction[],
-  onRowClick: Transaction => void,
+  onRowClick: (Transaction) => void,
   accounts: Account[],
   customTableDef?: TableDefinition,
   onSortChange?: (string, ?string) => void,
@@ -28,7 +28,7 @@ function TransactionsTable(props: Props) {
 
   const Tx = (transaction: Transaction) => {
     const account = accounts.find(
-      account => account.id === transaction.account_id,
+      (account) => account.id === transaction.account_id,
     );
 
     if (!account) {

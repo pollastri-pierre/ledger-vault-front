@@ -47,7 +47,7 @@ export default function AccountsList(props: Props) {
 
   return (
     <List display={display} compact={compact}>
-      {accounts.map(account => (
+      {accounts.map((account) => (
         <ListItem
           display={display}
           tileWidth={tileWidth}
@@ -100,5 +100,5 @@ export default function AccountsList(props: Props) {
   );
 }
 const Row = styled(Box).attrs({ horizontal: true, align: "center", flow: 5 })`
-  font-size: ${p => p.size}px;
+  font-size: ${(p) => p.size}px;
 `;

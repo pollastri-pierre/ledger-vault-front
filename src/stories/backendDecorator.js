@@ -16,7 +16,7 @@ type Mock = {
 
 function wrapConnection(nodes: Array<any>) {
   return {
-    edges: nodes.map(node => ({ node })),
+    edges: nodes.map((node) => ({ node })),
     pageInfo: { hasNextPage: false },
   };
 }
@@ -41,7 +41,7 @@ const me = {
 
 export default function backendDecorator(mocks: Mock[]) {
   return (story: () => any) => {
-    const mockNetwork = async url => {
+    const mockNetwork = async (url) => {
       await delay(500);
 
       const queryParams = qs.parse(url.substr(url.indexOf("?")));

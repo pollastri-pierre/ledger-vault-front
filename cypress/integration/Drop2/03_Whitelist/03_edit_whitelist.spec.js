@@ -5,12 +5,12 @@ import {
   successfull_msg_wl,
 } from "../../../functions/actions";
 
-describe("Edit whitelists", function() {
-  beforeEach(function() {
+describe("Edit whitelists", function () {
+  beforeEach(function () {
     login(6);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -20,9 +20,7 @@ describe("Edit whitelists", function() {
     cy.get("[data-test=menuItem-whitelists]").click();
     cy.contains("List Apac").click();
     cy.get("[data-test=edit-button]").click({ force: true });
-    cy.get("[data-test=whitelist_name]")
-      .clear()
-      .type("List North ASIA");
+    cy.get("[data-test=whitelist_name]").clear().type("List North ASIA");
     cy.contains("Next").click({ force: true });
     cy.contains("Next").click({ force: true });
     cy.get("[data-test=approve_button]").click();
@@ -54,12 +52,8 @@ describe("Edit whitelists", function() {
     cy.contains("List testnet").click();
     cy.get("[data-test=edit-button]").click({ force: true });
     cy.contains("Next").click({ force: true });
-    cy.get("[data-test=delete_edit]")
-      .eq(2)
-      .click();
-    cy.get("[data-test=delete_edit]")
-      .eq(1)
-      .click();
+    cy.get("[data-test=delete_edit]").eq(2).click();
+    cy.get("[data-test=delete_edit]").eq(1).click();
     cy.contains("Next").click({ force: true });
     cy.get("[data-test=approve_button]").click();
     cy.wait(500);

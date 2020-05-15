@@ -14,7 +14,7 @@ test.only("connection query works with initial query", async () => {
   const World = connectData(
     ({ world }) =>
       `hasNextPage=${world.pageInfo.hasNextPage} ${world.edges
-        .map(e => `${e.cursor}:${e.node.id}`)
+        .map((e) => `${e.cursor}:${e.node.id}`)
         .join("|")}`,
     {
       queries: {
@@ -44,7 +44,7 @@ test("connection query pagination can be pulled once", async () => {
       (rlay = restlay),
       renders++,
       `hasNextPage=${world.pageInfo.hasNextPage} ${world.edges
-        .map(e => `${e.cursor}:${e.node.id}`)
+        .map((e) => `${e.cursor}:${e.node.id}`)
         .join("|")}`
     ),
     {
@@ -137,7 +137,7 @@ test("connection query pages size can be reduced and result of a slice without e
       (rlay = restlay),
       renders++,
       `hasNextPage=${world.pageInfo.hasNextPage} ${world.edges
-        .map(e => `${e.cursor}:${e.node.id}`)
+        .map((e) => `${e.cursor}:${e.node.id}`)
         .join("|")}`
     ),
     {

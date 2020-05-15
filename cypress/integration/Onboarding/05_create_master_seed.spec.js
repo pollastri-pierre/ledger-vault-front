@@ -7,7 +7,7 @@ context("Create the Master Seed", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
+    cy.request(polyfillUrl).then((response) => {
       polyfill = response.body;
     });
   });
@@ -19,7 +19,7 @@ context("Create the Master Seed", () => {
       device_number: 7,
     }).then(() => {
       cy.visit(Cypress.env("api_server"), {
-        onBeforeLoad: win => {
+        onBeforeLoad: (win) => {
           win.fetch = null;
           win.eval(polyfill);
           win.fetch = win.unfetch;
@@ -30,9 +30,7 @@ context("Create the Master Seed", () => {
         cy.wait(1000);
 
         // Get Seed 1st Shared Owner
-        cy.get(".fragment")
-          .eq(0)
-          .click();
+        cy.get(".fragment").eq(0).click();
         cy.wait("@get-public-key");
         cy.wait("@open-session");
         cy.wait("@validate-vault-operation");
@@ -43,9 +41,7 @@ context("Create the Master Seed", () => {
         cy.request("POST", DEVICE, {
           device_number: 1,
         }).then(() => {
-          cy.get(".fragment")
-            .eq(1)
-            .click();
+          cy.get(".fragment").eq(1).click();
           cy.get("[data-test=error-message-desc]").contains(
             "Make sure you're using the right device.",
           );
@@ -56,9 +52,7 @@ context("Create the Master Seed", () => {
           cy.request("POST", DEVICE, {
             device_number: 8,
           }).then(() => {
-            cy.get(".fragment")
-              .eq(1)
-              .click();
+            cy.get(".fragment").eq(1).click();
             cy.wait("@get-public-key");
             cy.wait("@open-session");
             cy.wait("@validate-vault-operation");
@@ -66,9 +60,7 @@ context("Create the Master Seed", () => {
             cy.wait("@authenticate");
 
             // Try to see with the same device
-            cy.get(".fragment")
-              .eq(2)
-              .click();
+            cy.get(".fragment").eq(2).click();
             cy.get("[data-test=error-message-desc]").contains(
               "This device has already been used to generate the master seed, please connect another one.",
             );
@@ -78,9 +70,7 @@ context("Create the Master Seed", () => {
             cy.request("POST", DEVICE, {
               device_number: 9,
             }).then(() => {
-              cy.get(".fragment")
-                .eq(2)
-                .click();
+              cy.get(".fragment").eq(2).click();
               cy.wait("@get-public-key");
               cy.wait("@open-session");
               cy.wait("@validate-vault-operation");

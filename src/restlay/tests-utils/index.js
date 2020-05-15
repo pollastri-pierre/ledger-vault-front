@@ -8,7 +8,7 @@ import { reducer } from "../dataStore";
 import type { NetworkF } from "../RestlayProvider";
 
 export const delay = (ms: number): Promise<any> =>
-  new Promise(success => setTimeout(success, ms));
+  new Promise((success) => setTimeout(success, ms));
 
 export class NullComponent extends Component<{}> {
   render() {
@@ -17,7 +17,7 @@ export class NullComponent extends Component<{}> {
 }
 
 export function flushPromises(): Promise<any> {
-  return new Promise(resolve => setImmediate(resolve));
+  return new Promise((resolve) => setImmediate(resolve));
 }
 
 export const newStore = () =>
@@ -88,7 +88,7 @@ export const networkFromMock = (mock: {
     },
     tick: () => {
       const nb = tickDefers.length;
-      tickDefers.forEach(tickD => {
+      tickDefers.forEach((tickD) => {
         tickD.resolve();
         tickD = defer();
       });

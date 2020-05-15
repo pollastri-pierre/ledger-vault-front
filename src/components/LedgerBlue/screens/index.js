@@ -22,9 +22,9 @@ type UpdateScreenProps = {
 };
 
 const EmptyTextField = styled.div`
-  height: ${p => (p.size === "normal" ? 6 : 3)}px;
-  background: ${p => p.color || colors.pearl};
-  width: ${p => p.width}px;
+  height: ${(p) => (p.size === "normal" ? 6 : 3)}px;
+  background: ${(p) => p.color || colors.pearl};
+  width: ${(p) => p.width}px;
   margin: 2px;
 `;
 const UpdateScreen = ({
@@ -64,7 +64,7 @@ const UpdateScreen = ({
 // UpdateScreen Styled
 const Container = styled(Box)`
   background: ${colors.white};
-  height: ${p => p.height}%;
+  height: ${(p) => p.height}%;
   border-radius: 3px;
 `;
 
@@ -74,12 +74,12 @@ const IconContainer = styled.div`
 const Circle = styled.div`
   padding: 5px;
   border-radius: 50%;
-  border: ${p => (p.size === "normal" ? 4 : 2)}px solid ${colors.lead};
+  border: ${(p) => (p.size === "normal" ? 4 : 2)}px solid ${colors.lead};
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${p => (p.size === "normal" ? 35 : 25)}px;
-  height: ${p => (p.size === "normal" ? 35 : 25)}px;
+  width: ${(p) => (p.size === "normal" ? 35 : 25)}px;
+  height: ${(p) => (p.size === "normal" ? 35 : 25)}px;
 `;
 const Title = styled.div`
   font-weight: bold;
@@ -116,14 +116,14 @@ const ActionButtons = ({ displayFullText, size }: ActionButtonsProps) => (
 
 const ActionButtonsContainer = styled(Box)`
   width: 100%;
-  padding-top: ${p => (p.size === "normal" ? 10 : 15)}px;
+  padding-top: ${(p) => (p.size === "normal" ? 10 : 15)}px;
 `;
 
 const Button = styled.div`
-  height: ${p => (p.size === "normal" ? 20 : 10)}px;
-  width: ${p => (p.size === "normal" ? 100 : 30)}px;
+  height: ${(p) => (p.size === "normal" ? 20 : 10)}px;
+  width: ${(p) => (p.size === "normal" ? 100 : 30)}px;
   color: ${colors.white};
-  background: ${p => p.background};
+  background: ${(p) => p.background};
   border-radius: 10px;
   text-align: center;
   font-size: 0.7m;
@@ -169,7 +169,7 @@ const DashboardContent = styled.div`
 `;
 
 const Header = styled.div`
-  height: ${p => (p.size === "normal" ? 50 : 20)}px;
+  height: ${(p) => (p.size === "normal" ? 50 : 20)}px;
   background: ${colors.black};
   color: ${colors.white};
   width: 100%;
@@ -177,7 +177,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
   div {
-    font-size: ${p => (p.size === "normal" ? 1 : 0.5)}em;
+    font-size: ${(p) => (p.size === "normal" ? 1 : 0.5)}em;
     font-weight: bold;
   }
 `;
@@ -190,7 +190,7 @@ const AppIconContainer = styled.div`
 `;
 
 const AppIcon = styled.div(
-  p => `
+  (p) => `
   margin: ${p.size === "normal" ? 20 : 10}px;
   border-radius: 5px;
   width: ${p.size === "normal" ? 45 : 20}px;
@@ -291,8 +291,8 @@ const UpdateFirmWareScreen = ({
 };
 
 const UpdateFirmWareDetailsContainer = styled.div`
-  padding: 0 ${p => (p.size === "normal" ? 20 : 10)}px;
-  height: ${p => (p.size === "normal" ? 270 : 40)}px;
+  padding: 0 ${(p) => (p.size === "normal" ? 20 : 10)}px;
+  height: ${(p) => (p.size === "normal" ? 270 : 40)}px;
   div {
     padding-top: 0px;
     padding-bottom: 0px;

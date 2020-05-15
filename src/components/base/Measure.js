@@ -12,7 +12,7 @@ export default function Measure({
   onMeasure,
 }: {
   children: React$Node,
-  onMeasure: Dimensions => void,
+  onMeasure: (Dimensions) => void,
 }) {
   const node = useRef(null);
 

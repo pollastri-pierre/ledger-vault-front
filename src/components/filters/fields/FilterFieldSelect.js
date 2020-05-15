@@ -57,7 +57,7 @@ export default function FilterFieldSelect(props: Props) {
   const resolveOptions = useCallback(
     (arr: $ReadOnlyArray<ObjectParameter>): Option[] => {
       return arr
-        .map(s => {
+        .map((s) => {
           // handle both "simple" and "with sections" forms
           for (const o of options) {
             if (!("value" in o) && "options" in o) {
@@ -87,7 +87,7 @@ export default function FilterFieldSelect(props: Props) {
     if (RenderInWrap) {
       return (
         <Box horizontal flexWrap="wrap">
-          {values.map(opt => (
+          {values.map((opt) => (
             <Box key={opt.value} m={2}>
               <RenderInWrap data={opt} />
             </Box>
@@ -95,7 +95,7 @@ export default function FilterFieldSelect(props: Props) {
         </Box>
       );
     }
-    return <Box ellipsis>{values.map(s => s.label).join(", ")}</Box>;
+    return <Box ellipsis>{values.map((s) => s.label).join(", ")}</Box>;
   }, [values, RenderInWrap]);
 
   const components = useMemo(() => {
@@ -120,7 +120,7 @@ export default function FilterFieldSelect(props: Props) {
       } else if (Array.isArray(opt)) {
         updateQueryParams(
           queryKey,
-          opt.map(o => o.value),
+          opt.map((o) => o.value),
         );
       }
     },

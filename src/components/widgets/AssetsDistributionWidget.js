@@ -38,7 +38,7 @@ const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 const eth = getCryptoCurrencyById("ethereum");
 
 const mapStateToProps = (state, props) => {
-  const accounts = props.accountsConnection.edges.map(el => el.node);
+  const accounts = props.accountsConnection.edges.map((el) => el.node);
   let total = BigNumber(0);
   const countervalues = accounts.reduce((result, account) => {
     const from = resolveFrom(account);
@@ -81,7 +81,7 @@ const mapStateToProps = (state, props) => {
 function AssetsDistributionWidget(props: Props) {
   const { countervalues, total, nbMax, accountsConnection } = props;
 
-  const array = Object.keys(countervalues).map(key => {
+  const array = Object.keys(countervalues).map((key) => {
     return {
       label: key,
       value: countervalues[key].value,
@@ -118,7 +118,7 @@ function AssetsDistributionWidget(props: Props) {
 
   const renderLegends = () => {
     const items = [];
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
       const percentage = (100 * data[key].value) / total;
       items.push(
         <Box horizontal flow={10} align="center" key={key}>
@@ -133,12 +133,12 @@ function AssetsDistributionWidget(props: Props) {
   };
 
   const accountsWithBalance = accountsConnection.edges
-    .map(e => e.node)
-    .some(a => a.balance.isGreaterThan(0));
+    .map((e) => e.node)
+    .some((a) => a.balance.isGreaterThan(0));
 
   const isErc20Present = accountsConnection.edges
-    .map(e => e.node)
-    .find(a => a.account_type === "Erc20");
+    .map((e) => e.node)
+    .find((a) => a.account_type === "Erc20");
 
   return (
     <Widget title="Assets distribution">
@@ -193,7 +193,7 @@ function resolveFrom(account: Account) {
 }
 
 const Square = styled.div`
-  background-color: ${p => p.color};
+  background-color: ${(p) => p.color};
   border-radius: 4px;
   width: 20px;
   height: 20px;

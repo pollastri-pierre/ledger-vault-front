@@ -26,7 +26,7 @@ import type {
 export const isRuleOfType = (rule: Rule, type: RuleType) => rule.type === type;
 
 export const hasRuleOfType = (set: RulesSet, type: RuleType) =>
-  set.rules.some(rule => isRuleOfType(rule, type));
+  set.rules.some((rule) => isRuleOfType(rule, type));
 
 export const hasThresholdRule = (set: RulesSet) =>
   hasRuleOfType(set, "THRESHOLD");
@@ -36,7 +36,7 @@ export const hasWhitelistRule = (set: RulesSet) =>
 
 const getRuleOfType = <T>(set: RulesSet, type: RuleType): ?T => {
   // $FlowFixMe
-  const r: ?T = set.rules.find(rule => isRuleOfType(rule, type));
+  const r: ?T = set.rules.find((rule) => isRuleOfType(rule, type));
   return r || null;
 };
 
@@ -113,7 +113,7 @@ export function getRulesSetErrors(set: RulesSet): Error[] {
       errors.push(new Error("No step defined in MULTI_AUTHORIZATIONS rule"));
     }
     if (
-      multiAuthRule.data.some(step => step && step.group.members.length === 0)
+      multiAuthRule.data.some((step) => step && step.group.members.length === 0)
     ) {
       errors.push(new Error("Some approval steps are invalid"));
     }
@@ -143,16 +143,16 @@ export function getRulesSetHash(set: RulesSet) {
       : "NO_THRESHOLD",
     whitelistRule
       ? sortBy(
-          whitelistRule.data.map(w => (typeof w === "number" ? w : w.id)),
+          whitelistRule.data.map((w) => (typeof w === "number" ? w : w.id)),
         ).join("-")
       : "NO_WHITELIST",
     multiAuthRule
       ? multiAuthRule.data
-          .map(step => {
+          .map((step) => {
             if (!step) return "anon";
             const isInternal = step.group.is_internal === true;
             if (isInternal) {
-              const members = sortBy(step.group.members.map(m => m.id));
+              const members = sortBy(step.group.members.map((m) => m.id));
               return `${step.quorum}|[${members.join(",")}]`;
             }
             return `${step.quorum}|${step.group.id}`;
@@ -167,22 +167,22 @@ export function getDuplicateRulesSet(
   sets: RulesSet[],
 ): RulesSet | null {
   const hash = getRulesSetHash(set);
-  return sets.find(s => s !== set && hash === getRulesSetHash(s)) || null;
+  return sets.find((s) => s !== set && hash === getRulesSetHash(s)) || null;
 }
 
 export function serializeRulesSetsForPOST(sets: RulesSet[]) {
-  return sets.filter(isValidRulesSet).map<any>(set => ({
+  return sets.filter(isValidRulesSet).map<any>((set) => ({
     name: set.name,
-    rules: set.rules.map(rule => {
+    rules: set.rules.map((rule) => {
       if (rule.type === "MULTI_AUTHORIZATIONS") {
         return {
           type: rule.type,
-          data: rule.data.map(step =>
+          data: rule.data.map((step) =>
             step
               ? {
                   quorum: step.quorum,
                   ...(step.group.is_internal
-                    ? { users: step.group.members.map(u => u.id) }
+                    ? { users: step.group.members.map((u) => u.id) }
                     : { group_id: step.group.id }),
                 }
               : null,
@@ -192,7 +192,7 @@ export function serializeRulesSetsForPOST(sets: RulesSet[]) {
       if (rule.type === "THRESHOLD") {
         return {
           type: rule.type,
-          data: rule.data.map(threshold => ({
+          data: rule.data.map((threshold) => ({
             currency_type: "CRYPTO",
             min: threshold.min.toFixed(),
             max: threshold.max ? threshold.max.toFixed() : null,
@@ -202,7 +202,7 @@ export function serializeRulesSetsForPOST(sets: RulesSet[]) {
       if (rule.type === "WHITELIST") {
         return {
           type: rule.type,
-          data: rule.data.map(w => {
+          data: rule.data.map((w) => {
             if (typeof w === "number") return w;
             return w.id;
           }),
@@ -224,15 +224,15 @@ export function convertEditDataIntoRules(
   users: User[],
   groups: Group[],
 ): GovernanceRules {
-  return data.map(ruleSet => {
+  return data.map((ruleSet) => {
     return {
       name: ruleSet.name,
-      rules: ruleSet.rules.map(rule => {
+      rules: ruleSet.rules.map((rule) => {
         return {
           type: rule.type,
           data:
             rule.type === "MULTI_AUTHORIZATIONS"
-              ? rule.data.map(d => {
+              ? rule.data.map((d) => {
                   return {
                     quorum: d.quorum,
                     group: extractGroupFromRule(d, users, groups),
@@ -262,7 +262,7 @@ export function extractGroupFromRule(
 ): $Shape<Group> {
   if (data.users && Array.isArray(data.users)) {
     const members = data.users
-      .map(id => users.find(u => u.id === id))
+      .map((id) => users.find((u) => u.id === id))
       .filter(Boolean);
     return {
       is_internal: true,
@@ -270,7 +270,7 @@ export function extractGroupFromRule(
     };
   }
   if (!data.users && data.group_id && typeof data.group_id === "number") {
-    const group = groups.find(g => g.id === data.group_id);
+    const group = groups.find((g) => g.id === data.group_id);
     if (!group) {
       throw new Error(`cannot find group with id: ${data.group_id}`);
     }

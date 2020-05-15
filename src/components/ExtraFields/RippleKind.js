@@ -8,7 +8,7 @@ import type { Transaction as RippleTransaction } from "bridge/RippleBridge";
 import Box from "components/base/Box";
 import { InputText, Label } from "components/base/form";
 
-const isNumber = c => {
+const isNumber = (c) => {
   const code = c.charCodeAt(0);
   return code >= 48 && code <= 57;
 };
@@ -35,7 +35,7 @@ const ExtraFieldsRipple = (props: EditProps<RippleTransaction>) => {
   const { transaction, onChangeTransaction } = props;
   const { t } = useTranslation();
 
-  const handleChangeDestinationTag = destinationTag => {
+  const handleChangeDestinationTag = (destinationTag) => {
     onChangeTransaction({ ...transaction, destinationTag });
   };
 

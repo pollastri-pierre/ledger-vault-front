@@ -20,7 +20,7 @@ type Props = {
 
 const ParentAccount = (props: Props) => {
   const { id, accounts } = props;
-  const account = accounts.edges.map(el => el.node).find(a => a.id === id);
+  const account = accounts.edges.map((el) => el.node).find((a) => a.id === id);
   if (!account) return null;
 
   return (

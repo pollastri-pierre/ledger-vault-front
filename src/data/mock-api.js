@@ -12,7 +12,7 @@ const mockSync = (uri, method) => {
   if (method === "GET") {
     switch (uri) {
       case "/utxos-mocks?pageSize=-1": {
-        const edges = mockEntities.utxosArray.map(key => ({
+        const edges = mockEntities.utxosArray.map((key) => ({
           node: denormalize(key, schema.Utxo, mockEntities),
           cursor: key.address,
         }));
@@ -47,27 +47,27 @@ const mockSync = (uri, method) => {
           Object.keys(mockEntities.users),
           [schema.User],
           mockEntities,
-        ).filter(m => m.role === "admin");
+        ).filter((m) => m.role === "admin");
       }
       case "/people-mocks/operator": {
         return denormalize(
           Object.keys(mockEntities.users),
           [schema.User],
           mockEntities,
-        ).filter(m => m.role === "operator");
+        ).filter((m) => m.role === "operator");
       }
       default:
     }
 
     if (/users-mock.*/.test(uri)) {
-      const edges = mockEntities.usersArray.map(key => ({
+      const edges = mockEntities.usersArray.map((key) => ({
         node: denormalize(key, schema.User, mockEntities),
         cursor: key,
       }));
       return { edges, pageInfo: { hasNextPage: false } };
     }
     if (/whitelists-mock.*/.test(uri)) {
-      const edges = mockEntities.whitelistsArray.map(key => ({
+      const edges = mockEntities.whitelistsArray.map((key) => ({
         node: denormalize(key, schema.Whitelist, mockEntities),
         cursor: key,
       }));
@@ -75,7 +75,7 @@ const mockSync = (uri, method) => {
     }
 
     if (/groups-mock.*/.test(uri)) {
-      const edges = mockEntities.groupsArray.map(key => ({
+      const edges = mockEntities.groupsArray.map((key) => ({
         node: denormalize(key, schema.Group, mockEntities),
         cursor: key,
       }));
@@ -83,7 +83,7 @@ const mockSync = (uri, method) => {
     }
 
     if (/accounts-mock.*/.test(uri)) {
-      const edges = mockEntities.accountsArray.map(key => ({
+      const edges = mockEntities.accountsArray.map((key) => ({
         node: denormalize(key, schema.Account, mockEntities),
         cursor: key,
       }));
@@ -144,7 +144,7 @@ export default (uri, init) => {
           json: () => Promise.resolve(mockRes),
         };
       })
-      .catch(e => {
+      .catch((e) => {
         console.warn(`mock: ${method} ${uri} FAILED`, e);
         throw e;
       });

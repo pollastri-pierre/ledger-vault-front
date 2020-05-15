@@ -10,7 +10,7 @@ import { getMultiAuthRule } from "components/MultiRules/helpers";
 export const isMemberOfFirstApprovalStep = (account: Account) => {
   return (
     account.governance_rules &&
-    account.governance_rules.some(rulesSet => {
+    account.governance_rules.some((rulesSet) => {
       const multiAuthRule = getMultiAuthRule(rulesSet);
       if (!multiAuthRule) return false;
       const { data: rules } = multiAuthRule;

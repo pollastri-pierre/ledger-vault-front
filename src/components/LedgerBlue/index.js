@@ -45,7 +45,7 @@ export default ({ size, children }: LedgerBlueProps) => (
 );
 
 const LedgerBlue = styled.div(
-  p => `
+  (p) => `
   background-image: url(${blue});
   background-repeat: no-repeat;
   background-size: ${p.width}px ${p.height}px;
@@ -54,7 +54,7 @@ const LedgerBlue = styled.div(
 `,
 );
 const ChildrenContainer = styled.div`
-  padding: ${p =>
+  padding: ${(p) =>
     p.size === "normal" ? "80px 80px 75px 75px" : "28px 38px 28px 35px"};
   height: 100%;
 `;

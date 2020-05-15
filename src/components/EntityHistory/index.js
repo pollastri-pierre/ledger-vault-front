@@ -58,16 +58,16 @@ const createItemByEntity = {
   whitelist: null,
 };
 const itemIconsByType = {
-  CREATE: entityType => {
+  CREATE: (entityType) => {
     return createItemByEntity[entityType] || <FaPlus color={colors.text} />;
   },
-  EDIT: _entityType => {
+  EDIT: (_entityType) => {
     return <MdEdit color={colors.text} />;
   },
-  DELETE: _entityType => {
+  DELETE: (_entityType) => {
     return <MdDelete color={colors.text} />;
   },
-  MIGRATE_ACCOUNT: _entityType => {
+  MIGRATE_ACCOUNT: (_entityType) => {
     return <FaSyncAlt color={colors.text} />;
   },
 };
@@ -102,7 +102,7 @@ const ApprovalIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${p => (p.abort ? colors.grenade : colors.ocean)};
+  background-color: ${(p) => (p.abort ? colors.grenade : colors.ocean)};
   color: white;
 `;
 
@@ -383,7 +383,7 @@ const HistoryStepContainer = styled.div`
     left: -30px;
     top: 0px;
     bottom: -20px;
-    background: ${p => (p.isLast ? "transparent" : colors.form.border)};
+    background: ${(p) => (p.isLast ? "transparent" : colors.form.border)};
   }
 `;
 
@@ -397,8 +397,8 @@ const HistoryItemBody = styled(Box).attrs({
   p: 20,
   flow: 20,
 })`
-  cursor: ${p => (p.canBeCollapsed ? "pointer" : "default")};
-  border-color: ${p => (p.isPending ? colors.ocean : "")};
+  cursor: ${(p) => (p.canBeCollapsed ? "pointer" : "default")};
+  border-color: ${(p) => (p.isPending ? colors.ocean : "")};
   background: ${colors.form.bg};
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -451,7 +451,7 @@ export function FetchEntityHistory({
 }) {
   return (
     <Fetch url={url} deserialize={deserializeHistory}>
-      {history => (
+      {(history) => (
         <EntityHistory
           preventReplay={preventReplay}
           history={history}

@@ -15,7 +15,7 @@ type Props = {
   rule: RuleMultiAuth,
   step: RuleMultiAuthStep,
   stepIndex: number,
-  onChange: RuleMultiAuthStep => void,
+  onChange: (RuleMultiAuthStep) => void,
   users: User[],
   groups: Group[],
 };
@@ -103,10 +103,10 @@ function filterAvailableOptions(
     if (!s) return;
     const isCreatorStep = i === 0;
     if (s.group.is_internal) {
-      s.group.members.forEach(user => {
+      s.group.members.forEach((user) => {
         if (
           step.group.is_internal &&
-          step.group.members.find(u => u.id === user.id)
+          step.group.members.find((u) => u.id === user.id)
         )
           return;
         usedUserIDS[user.id] = true;
@@ -121,8 +121,8 @@ function filterAvailableOptions(
     }
   });
   return [
-    groups.filter(g => !(g.id.toString() in usedGroupIDS)),
-    users.filter(g => !(g.id.toString() in usedUserIDS)),
+    groups.filter((g) => !(g.id.toString() in usedGroupIDS)),
+    users.filter((g) => !(g.id.toString() in usedUserIDS)),
   ];
 }
 
@@ -144,11 +144,11 @@ function resolveSelectValue(
   users: User[],
 ) {
   const groupInGroups =
-    step.group.id && groups.find(g => g.id === step.group.id);
+    step.group.id && groups.find((g) => g.id === step.group.id);
   return {
     groups: step.group.is_internal ? [] : groupInGroups ? [groupInGroups] : [],
     members: step.group.is_internal
-      ? users.filter(u => step.group.members.find(m => m.id === u.id))
+      ? users.filter((u) => step.group.members.find((m) => m.id === u.id))
       : [],
   };
 }

@@ -122,14 +122,14 @@ function genAccount(
 ): Account {
   const currency = genCurrency();
   const accountType = currency.family === "bitcoin" ? "Bitcoin" : "Ethereum";
-  const operators = users.filter(m => m.role === "operator");
-  const administrators = users.filter(m => m.role === "ADMIN");
+  const operators = users.filter((m) => m.role === "operator");
+  const administrators = users.filter((m) => m.role === "ADMIN");
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
   const approvals = genApprovals(nbApprovalsToGenerate, {
     users: administrators,
   });
-  const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
-  const status = approvals.find(a => a.type === "ABORT")
+  const nbApprovals = approvals.filter((a) => a.type === "APPROVE").length;
+  const status = approvals.find((a) => a.type === "ABORT")
     ? "REVOKED"
     : nbApprovals >= 2
     ? "ACTIVE"
@@ -280,7 +280,7 @@ function genUtxo() {
   };
 }
 
-export const genUtxos = nb => {
+export const genUtxos = (nb) => {
   const utxos = [];
   for (let i = 0; i < nb; i++) {
     utxos.push(genUtxo());
@@ -307,13 +307,13 @@ const genTransaction = ({
     }),
   );
   const feesAmount = BigNumber(faker.random.number({ min: 1000, max: 100000 }));
-  const operators = users.filter(m => m.role === "OPERATOR");
+  const operators = users.filter((m) => m.role === "OPERATOR");
 
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
   const approvals = genApprovals(nbApprovalsToGenerate, { users: operators });
-  const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
+  const nbApprovals = approvals.filter((a) => a.type === "APPROVE").length;
 
-  const status = approvals.find(a => a.type === "ABORT")
+  const status = approvals.find((a) => a.type === "ABORT")
     ? "ABORTED"
     : nbApprovals >= 2
     ? "APPROVED"
@@ -369,12 +369,12 @@ function genGroup({
   users: User[],
   status: GroupStatus,
 }): Group {
-  const operators = users.filter(m => m.role === "OPERATOR");
+  const operators = users.filter((m) => m.role === "OPERATOR");
   const nbUsers = faker.random.number({
     min: 1,
     max: Math.min(operators.length, 10),
   });
-  const admins = users.filter(m => m.role === "ADMIN");
+  const admins = users.filter((m) => m.role === "ADMIN");
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
   const approvals = genApprovals(nbApprovalsToGenerate, {
     users: admins,
@@ -411,7 +411,7 @@ function genWithNoDups<T>(
       if (!entity[uniqKey])
         throw new Error(`No key ${uniqKey} found in entity`);
       // $FlowFixMe
-      if (entities.find(e => e[uniqKey] === entity[uniqKey])) {
+      if (entities.find((e) => e[uniqKey] === entity[uniqKey])) {
         i--;
       } else {
         entities.push(entity);
@@ -468,7 +468,7 @@ export function genWhitelists(nb: number, { users }: { users: User[] }) {
 }
 
 export function genWhitelist({ users }: { users: User[] }) {
-  const admins = users.filter(m => m.role === "admin");
+  const admins = users.filter((m) => m.role === "admin");
   const status = faker.random.arrayElement(["ACTIVE", "PENDING"]);
   const randomly = faker.random.number({ min: 1, max: 10 });
   let last_request = null;

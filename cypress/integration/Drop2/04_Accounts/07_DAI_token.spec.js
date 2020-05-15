@@ -9,12 +9,12 @@ import {
   error_message,
 } from "../../../functions/actions";
 
-describe("Test Case for Account", function() {
-  beforeEach(function() {
+describe("Test Case for Account", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 
@@ -26,12 +26,8 @@ describe("Test Case for Account", function() {
 
     cy.get("[data-test=add-button]").click();
     cy.wait(6500);
-    cy.get("#input_crypto")
-      .type("DAI", { force: true })
-      .type("{enter}");
-    cy.get("[data-test=select-arrow]")
-      .eq(1)
-      .click();
+    cy.get("#input_crypto").type("DAI", { force: true }).type("{enter}");
+    cy.get("[data-test=select-arrow]").eq(1).click();
     cy.get("#react-select-3-option-1").type("Syscoin7");
     cy.contains("Next").click();
     cy.get("[data-test=account_childname]").type("Chain2B");
@@ -70,9 +66,7 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/accounts");
     cy.get("[data-test=add-button]").click();
     cy.wait(4500);
-    cy.get("#input_crypto")
-      .type("DAI", { force: true })
-      .type("{enter}");
+    cy.get("#input_crypto").type("DAI", { force: true }).type("{enter}");
     cy.contains("Next").click();
     cy.get("[data-test=account_childname]").type("Chain2B");
     cy.contains("Next").click();

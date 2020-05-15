@@ -5,12 +5,12 @@ import {
   successfull_message2,
 } from "../../../functions/actions";
 
-describe("Approve User as Operator with the first admin", function() {
-  beforeEach(function() {
+describe("Approve User as Operator with the first admin", function () {
+  beforeEach(function () {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logout();
   });
 

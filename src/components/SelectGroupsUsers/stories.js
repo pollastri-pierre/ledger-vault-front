@@ -15,8 +15,8 @@ class Wrapper extends Component<> {
     selected: { groups: [], members: [] },
   };
 
-  onChange = val => {
-    this.setState(_ => ({ selected: val }));
+  onChange = (val) => {
+    this.setState((_) => ({ selected: val }));
   };
 
   render() {

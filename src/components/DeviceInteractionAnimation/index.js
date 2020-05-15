@@ -37,9 +37,9 @@ const Container = styled(Box).attrs({
 })`
   height: 60px;
   border-radius: 5px;
-  opacity: ${p => (p.error ? "0.5" : "1")};
+  opacity: ${(p) => (p.error ? "0.5" : "1")};
   position: relative;
-  background: ${p => (p.light ? colors.white : colors.legacyLightGrey5)};
+  background: ${(p) => (p.light ? colors.white : colors.legacyLightGrey5)};
   border: 1px solid ${colors.form.border};
   color: ${colors.legacyDarkGrey3};
 `;
@@ -86,7 +86,7 @@ const DeviceIcon = ({ needsUserInput }: { needsUserInput: ?boolean }) => (
 const Dash = styled(Box)`
   width: 10px;
   height: 2px;
-  background: ${p => (p.done ? colors.green : colors.legacyLightGrey6)};
+  background: ${(p) => (p.done ? colors.green : colors.legacyLightGrey6)};
 `;
 
 const bounce = keyframes`

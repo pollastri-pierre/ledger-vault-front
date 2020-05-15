@@ -34,7 +34,7 @@ const Welcome = ({ t }: { t: Translate }) => (
     <Footer
       isBack={false}
       nextState
-      render={onNext => (
+      render={(onNext) => (
         <>
           <div />
           <DialogButton highlight onTouchTap={onNext}>

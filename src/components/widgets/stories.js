@@ -24,19 +24,19 @@ const utxos = genUtxos(100);
 const mocks = [
   {
     url: new RegExp("/accounts.*"),
-    res: wrap => wrap(accounts),
+    res: (wrap) => wrap(accounts),
   },
   {
     url: new RegExp("/requests.*"),
-    res: wrap => wrap([]),
+    res: (wrap) => wrap([]),
   },
   {
     url: "/activity/me",
-    res: wrap => wrap([]),
+    res: (wrap) => wrap([]),
   },
   {
     url: "/utxos-mocks?pageSize=-1",
-    res: wrap => wrap(utxos),
+    res: (wrap) => wrap(utxos),
   },
 ];
 

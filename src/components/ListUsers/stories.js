@@ -8,16 +8,16 @@ import { genUsers } from "data/mock-entities";
 const users = genUsers(20);
 const members = users.slice(0, 5);
 
-const removed = members.map(m => ({
+const removed = members.map((m) => ({
   user: m,
   history: "removed",
 }));
-const added = users.slice(7, 9).map(m => ({
+const added = users.slice(7, 9).map((m) => ({
   user: m,
   history: "added",
 }));
 
-const unchanged = users.slice(10, 12).map(m => ({
+const unchanged = users.slice(10, 12).map((m) => ({
   user: m,
   history: "unchanged",
 }));

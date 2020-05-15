@@ -31,7 +31,7 @@ test("a simple query works", async () => {
       const { animals } = this.props;
       return (
         <div>
-          {animals.map(a => (
+          {animals.map((a) => (
             <div key={a.id}>
               {a.name}: {a.age}
             </div>

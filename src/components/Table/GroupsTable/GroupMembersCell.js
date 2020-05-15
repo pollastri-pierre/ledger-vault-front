@@ -17,7 +17,7 @@ export default function GroupMembersCell(props: GroupMembersCellProps) {
   const remainingMembers = members.length - memberSubset.length;
   const { t } = useTranslation();
 
-  let content = memberSubset.map(u => u.username).join(", ");
+  let content = memberSubset.map((u) => u.username).join(", ");
 
   if (remainingMembers) {
     content += t("group:groupTable.remainingMembers", {

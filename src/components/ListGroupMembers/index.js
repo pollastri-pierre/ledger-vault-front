@@ -19,27 +19,27 @@ class ListGroupMembers extends PureComponent<Props> {
     let usersWithHistory;
     if (editUsers) {
       const removed = users
-        .filter(o => editUsers.indexOf(o.id) === -1)
-        .map(user => ({
+        .filter((o) => editUsers.indexOf(o.id) === -1)
+        .map((user) => ({
           user,
           history: "removed",
         }));
 
       const added = editUsers
-        .filter(uId => !users.find(u => u.id === uId))
-        .map(id => allUsers.find(u => u.id === id))
+        .filter((uId) => !users.find((u) => u.id === uId))
+        .map((id) => allUsers.find((u) => u.id === id))
         .filter(Boolean)
-        .map(user => ({ user, history: "added" }));
+        .map((user) => ({ user, history: "added" }));
 
       // $FlowFixMe : flow does not get that a refers to Ids and b to Users
       const unchanged = intersectionWith(editUsers, users, (a, b) => a === b.id)
-        .map(id => allUsers.find(u => u.id === id))
+        .map((id) => allUsers.find((u) => u.id === id))
         .filter(Boolean)
-        .map(user => ({ user, history: "unchanged" }));
+        .map((user) => ({ user, history: "unchanged" }));
 
       usersWithHistory = [...removed, ...added, ...unchanged];
     } else {
-      usersWithHistory = users.map(user => ({ user, history: "unchanged" }));
+      usersWithHistory = users.map((user) => ({ user, history: "unchanged" }));
     }
 
     return <ListUsers usersWithHistory={usersWithHistory} />;

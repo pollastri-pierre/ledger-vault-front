@@ -23,7 +23,7 @@ function TransactionsGraph(props: Props) {
         <BalanceGraph
           height={400}
           transactions={
-            transactions.edges ? transactions.edges.map(el => el.node) : []
+            transactions.edges ? transactions.edges.map((el) => el.node) : []
           }
           account={account}
           nbDays={30}

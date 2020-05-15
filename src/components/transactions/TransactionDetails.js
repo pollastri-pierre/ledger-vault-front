@@ -88,7 +88,7 @@ function TransactionDetailsComponent(props: Props) {
 }
 
 export default connectData(
-  props => (
+  (props) => (
     <TransactionDetails accountId={props.transaction.account_id} {...props} />
   ),
   {
@@ -97,7 +97,7 @@ export default connectData(
     queries: {
       transaction: TransactionQuery,
     },
-    propsToQueryParams: props => ({
+    propsToQueryParams: (props) => ({
       transactionId: props.match.params.transactionId,
     }),
   },
@@ -109,7 +109,7 @@ const TransactionDetails = connectData(TransactionDetailsComponent, {
   queries: {
     account: AccountQuery,
   },
-  propsToQueryParams: props => ({
+  propsToQueryParams: (props) => ({
     accountId: props.accountId,
   }),
 });

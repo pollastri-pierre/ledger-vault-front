@@ -41,11 +41,11 @@ const TransactionTypeInnerIcon = ({ type, size }: OpTypeInnerProps) =>
   ) : null;
 
 const Circle = styled.div`
-  width: ${p => p.size}px;
-  height: ${p => p.size}px;
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
   border-radius: 50%;
-  color: ${p => (p.type === "RECEIVE" ? p.theme.colors.green : "inherit")};
-  background: ${p =>
+  color: ${(p) => (p.type === "RECEIVE" ? p.theme.colors.green : "inherit")};
+  background: ${(p) =>
     p.type === "RECEIVE"
       ? p.theme.colors.translucentGreen
       : p.theme.colors.translucentGrey};

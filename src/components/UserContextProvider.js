@@ -6,7 +6,7 @@ export const UserContext: React$Context<?User> = React.createContext(null);
 
 export const withMe = (Comp: React$ComponentType<*>) => (props: Object) => (
   <UserContext.Consumer>
-    {me => <Comp {...props} me={me} />}
+    {(me) => <Comp {...props} me={me} />}
   </UserContext.Consumer>
 );
 

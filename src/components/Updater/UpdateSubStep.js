@@ -47,7 +47,7 @@ export const UpdateSubStepContainer = ({
   t,
 }: {
   substep: SubStep,
-  onClick: void => void,
+  onClick: (void) => void,
   loading: boolean,
   error?: ?Error,
   t: Function,

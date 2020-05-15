@@ -12,7 +12,7 @@ import backendDecorator from "stories/backendDecorator";
 
 const accounts = genAccounts(1);
 
-const edges = mockEntities.utxosArray.map(key => ({
+const edges = mockEntities.utxosArray.map((key) => ({
   node: denormalize(key, schema.Utxo, mockEntities),
   cursor: key.address,
 }));

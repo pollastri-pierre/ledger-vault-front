@@ -17,7 +17,7 @@ type Props = {
   rule: RuleMultiAuth,
   step: RuleMultiAuthStep,
   stepIndex: number,
-  onChange: RuleMultiAuthStep => void,
+  onChange: (RuleMultiAuthStep) => void,
   users: User[],
   groups: Group[],
 };
@@ -25,7 +25,7 @@ type Props = {
 const ApprovalStepParameters = (props: Props) => {
   const { rule, step, stepIndex, onChange, users, groups } = props;
 
-  const handleChangeQuorum = quorum => onChange({ ...step, quorum });
+  const handleChangeQuorum = (quorum) => onChange({ ...step, quorum });
   const maxQuorum = getMaxQuorum(step, rule);
 
   return (

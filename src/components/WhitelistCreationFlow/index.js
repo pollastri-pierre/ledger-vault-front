@@ -155,7 +155,7 @@ const steps = [
 ];
 
 const WhitelistCreation = connectData(
-  props => {
+  (props) => {
     const { t } = useTranslation();
     return (
       <GrowingCard>
@@ -180,7 +180,7 @@ const WhitelistCreation = connectData(
   },
 );
 const WhitelistEdit = connectData(
-  props => {
+  (props) => {
     const { t } = useTranslation();
     return (
       <GrowingCard>
@@ -206,7 +206,7 @@ const WhitelistEdit = connectData(
     queries: {
       whitelist: WhitelistQuery,
     },
-    propsToQueryParams: props => ({
+    propsToQueryParams: (props) => ({
       whitelistId: props.whitelistId,
     }),
   },
@@ -221,7 +221,7 @@ const Wrapper = ({
   match: Match,
   close: Function,
   requestToReplay: EditWhitelistReplay | CreateWhitelistReplay,
-  resetRequest: void => void,
+  resetRequest: (void) => void,
 }) => {
   const closeAndEmptyStore = () => {
     resetRequest();
@@ -244,7 +244,7 @@ const Wrapper = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   requestToReplay: state.requestReplay,
 });
 const mapDispatch = {
@@ -325,7 +325,7 @@ function serializePayload(
 
   // gate doesn't want our fake id :p
   const edit_data: Object = {
-    addresses: payload.addresses.map(a => omit(a, ["id"])),
+    addresses: payload.addresses.map((a) => omit(a, ["id"])),
   };
 
   // the gate doesn't allow to send the name if it didn't change

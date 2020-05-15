@@ -8,7 +8,7 @@ import Box from "components/base/Box";
 
 import { genAddresses } from "data/mock-entities";
 
-const fakeNetwork = async url => {
+const fakeNetwork = async (url) => {
   await delay(200);
   if (url.startsWith("/validation")) {
     const [, address] = /.*\/(.*)$/.exec(url);

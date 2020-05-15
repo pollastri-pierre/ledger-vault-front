@@ -65,7 +65,7 @@ function getItemLabel(item: Item) {
 }
 
 const buildOptions = (items: Item[]): Option[] =>
-  items.map(item => ({
+  items.map((item) => ({
     label: item.value.name,
     value: `${item.type}_${item.value.name}`,
     data: item,
@@ -74,13 +74,13 @@ const buildOptions = (items: Item[]): Option[] =>
 // FINALLY we want testnet everywhere
 const INCLUDE_DEV = true;
 
-const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
+const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map((c) => ({
   type: "currency",
   value: c,
 }));
 
 const erc20TokensItems = () =>
-  listERC20Tokens().map(t => ({
+  listERC20Tokens().map((t) => ({
     type: "erc20token",
     value: t,
   }));
@@ -103,7 +103,7 @@ const fuseCurrencies = new Fuse(currenciesOptions, fuseOptions);
 const fuseTokens = () => new Fuse(erc20TokensOptions(), fuseOptions);
 
 const fetchOptions = (inputValue: string, options?: { noToken?: boolean }) =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     window.requestAnimationFrame(() => {
       if (!inputValue) {
         if (options && options.noToken) {
@@ -144,7 +144,7 @@ const getValueOption = (value: CurrencyOrToken): Option | null => {
 const getMultipleValuesOptions = (values: *): Option[] => {
   if (!values) return [];
   const options = [];
-  values.forEach(v => {
+  values.forEach((v) => {
     const option = getValueOption(v);
     if (option) {
       options.push(option);
@@ -205,12 +205,12 @@ const MenuList = (props: MenuListComponentProps) => {
   const { options, children, maxHeight, getValue } = props;
   const [value] = getValue();
   const initialOffset = value
-    ? options.findIndex(o => o.label === value.label) * height
+    ? options.findIndex((o) => o.label === value.label) * height
     : 0; // FIXME should we avoid to match on label? (erc20 don't have id)
 
   // el famoso Juan trick see: https://github.com/JedWatson/react-select/issues/3128#issuecomment-433834170
   if (children && children.forEach) {
-    children.forEach(key => {
+    children.forEach((key) => {
       delete key.props.innerProps.onMouseMove;
       delete key.props.innerProps.onMouseOver;
     });
@@ -254,7 +254,7 @@ class Multiple extends PureComponent<Props<MultipleValue, MultipleHandler>> {
   handleChange = (options: Option[]) => {
     const { onChange } = this.props;
     if (options && options.length) {
-      onChange(options.map(o => o.data));
+      onChange(options.map((o) => o.data));
     } else {
       onChange([]);
     }
@@ -275,7 +275,7 @@ class Multiple extends PureComponent<Props<MultipleValue, MultipleHandler>> {
         defaultOptions
         isMulti
         isClearable
-        loadOptions={str => fetchOptions(str, { noToken })}
+        loadOptions={(str) => fetchOptions(str, { noToken })}
         components={customComponents}
         {...props}
         onChange={this.handleChange}
@@ -304,7 +304,7 @@ class SelectCurrency extends PureComponent<Props<SingleValue, SingleHandler>> {
         placeholder={t("newAccount:currency.placeholder")}
         defaultOptions
         isClearable
-        loadOptions={str => fetchOptions(str, { noToken })}
+        loadOptions={(str) => fetchOptions(str, { noToken })}
         components={customComponents}
         {...props}
         onChange={this.handleChange}

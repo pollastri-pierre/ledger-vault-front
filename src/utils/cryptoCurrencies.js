@@ -60,14 +60,14 @@ export const getCurrencyLikeUnit = (token: ?ERC20Token) => ({
   name: "",
 });
 
-export const isNotSupportedCoin: CryptoCurrency => boolean = memoize(
+export const isNotSupportedCoin: (CryptoCurrency) => boolean = memoize(
   (cur: CryptoCurrency) => notSupportedCoin.indexOf(cur.id) > -1,
 );
 
-export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
+export const listCryptoCurrencies: (boolean) => CryptoCurrency[] = memoize(
   (withDevCrypto?: boolean) => {
     const list = listCC(withDevCrypto)
-      .filter(c => supported.includes(c.id))
+      .filter((c) => supported.includes(c.id))
       .sort((a, b) => a.name.localeCompare(b.name));
     return list;
   },

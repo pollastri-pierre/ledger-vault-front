@@ -65,7 +65,7 @@ export function deserializeAccount(account: Account): Account {
 
 export function convertGovernanceRules(governance_rules: any) {
   // convert thresholds to BigNumber
-  governance_rules.forEach(rulesSet => {
+  governance_rules.forEach((rulesSet) => {
     const thresholdRule = getThresholdRule(rulesSet);
     if (thresholdRule) {
       const [threshold] = thresholdRule.data;

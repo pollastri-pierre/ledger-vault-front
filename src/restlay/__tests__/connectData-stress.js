@@ -30,7 +30,7 @@ test("500 concurrent components only trigger one query and don't break", async (
     propsToQueryParams: ({ animalId }) => ({ animalId }),
   });
   let restlay;
-  const Foo = connectData(props => ((restlay = props.restlay), null));
+  const Foo = connectData((props) => ((restlay = props.restlay), null));
   const inst = renderer.create(
     render([
       <Foo key="foo" />,

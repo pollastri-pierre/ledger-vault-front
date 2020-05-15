@@ -39,7 +39,7 @@ type Props = {
   accountsToMigrate: Connection<Account>,
 };
 
-const isAccountHSMAppUpdated = a => a.status === "HSM_COIN_UPDATED";
+const isAccountHSMAppUpdated = (a) => a.status === "HSM_COIN_UPDATED";
 
 const CheckMigration = (props: Props) => {
   const { allUsers, allGroups, allWhitelists, accountsToMigrate } = props;
@@ -51,10 +51,10 @@ const CheckMigration = (props: Props) => {
   const [cursor, setCursor] = useState(0);
 
   // TODO we may have a transform at higher level
-  const accounts = accountsToMigrate.edges.map(n => n.node);
-  const users = allUsers.edges.map(n => n.node);
-  const groups = allGroups.edges.map(n => n.node);
-  const whitelists = allWhitelists.edges.map(n => n.node);
+  const accounts = accountsToMigrate.edges.map((n) => n.node);
+  const users = allUsers.edges.map((n) => n.node);
+  const groups = allGroups.edges.map((n) => n.node);
+  const whitelists = allWhitelists.edges.map((n) => n.node);
 
   // view props
   const count = accounts.length;
@@ -141,7 +141,8 @@ const AccountToMigrate = ({
 }) => {
   const isMigrated = account.status === "MIGRATED";
   const [payload, setPayload] = useState(accountToPayload(account));
-  const onRulesSetsChange = rulesSets => setPayload({ ...payload, rulesSets });
+  const onRulesSetsChange = (rulesSets) =>
+    setPayload({ ...payload, rulesSets });
   const isValid = areRulesSetsValid(payload.rulesSets);
   const isEditMode = true;
   const data = isValid ? serializePayload(payload, isEditMode) : null;

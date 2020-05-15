@@ -17,16 +17,16 @@ export const boxShadow = `0px 11px 15px -7px ${colors.legacyTranslucentGrey7},
     0px 24px 38px 3px ${colors.legacyTranslucentGrey7}, 0px 9px 46px 8px ${colors.legacyTranslucentGrey7}`;
 
 export const ModalDialogInner = styled(Box)`
-  background: ${p => (p.transparent ? "transparent" : colors.white)};
+  background: ${(p) => (p.transparent ? "transparent" : colors.white)};
   position: relative;
   margin-bottom: 80px;
   margin-top: 80px;
   border-radius: 4px;
   flex-shrink: 0;
-  box-shadow: ${p => (p.transparent ? "none" : boxShadow)};
+  box-shadow: ${(p) => (p.transparent ? "none" : boxShadow)};
 `;
 
-export const ModalFooter = styled(Box).attrs(p => ({
+export const ModalFooter = styled(Box).attrs((p) => ({
   position: "absolute",
   horizontal: true,
   justify: p.justify || "flex-end",
@@ -42,7 +42,7 @@ const ModalBodyRaw = styled(Box).attrs({
   p: 40,
   pb: 100,
 })`
-  height: ${p => ("height" in p ? px(p.height) : "auto")};
+  height: ${(p) => ("height" in p ? px(p.height) : "auto")};
 `;
 
 export const ModalBody = ({
@@ -187,7 +187,7 @@ export const RichModalTab = styled(({ isActive, dark, ...props }) => (
   <Link data-role="modal-tab" {...props} />
 ))`
   position: relative;
-  background: ${p =>
+  background: ${(p) =>
     p.isActive
       ? colors.white
       : p.dark
@@ -197,11 +197,11 @@ export const RichModalTab = styled(({ isActive, dark, ...props }) => (
   border-top-right-radius: 4px;
   padding: 10px;
   text-decoration: none;
-  pointer-events: ${p => (p.isActive ? "none" : "auto")};
+  pointer-events: ${(p) => (p.isActive ? "none" : "auto")};
 
   &:hover {
     cursor: pointer;
-    background: ${p =>
+    background: ${(p) =>
       p.isActive
         ? colors.white
         : p.dark

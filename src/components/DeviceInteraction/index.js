@@ -37,7 +37,7 @@ export type Interaction = {
   device?: boolean,
   responseKey: string,
   tooltip?: React$Node,
-  action: Object => Promise<*>,
+  action: (Object) => Promise<*>,
 };
 
 export type ApproveFlowConfigOptions = {
@@ -52,7 +52,7 @@ type Props = {
   noCheckVersion?: boolean,
   additionalFields: Object,
   restlay: RestlayEnvironment,
-  onSuccess: Object => void,
+  onSuccess: (Object) => void,
   onError: (DeviceInteractionError, Object) => void,
   light?: boolean,
   dispatch: Dispatch,
@@ -65,7 +65,7 @@ type State = {
 };
 
 // always logs apdu for now
-listen(log => {
+listen((log) => {
   if (log.type === "apdu") {
     console.log(`${log.type}: ${log.message ? log.message : ""}`); // eslint-disable-line no-console
   }
@@ -90,7 +90,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
     additionalFields: {},
   };
 
-  shouldRetry = e => {
+  shouldRetry = (e) => {
     if (e instanceof OutOfDateApp) return false;
     if (e instanceof NoChannelForDevice) return false;
     if (e instanceof RequestFinished) return false;
@@ -126,14 +126,14 @@ class DeviceInteraction extends PureComponent<Props, State> {
         });
         if (interactionsWithCheckVersion[i].device) {
           const ensureAppVault = withDevicePolling(getPreferredTransport())(
-            transport =>
+            (transport) =>
               from(
                 interactionsWithCheckVersion[i].action({
                   ...responses,
                   transport,
                 }),
               ),
-            e =>
+            (e) =>
               !this._unmounted &&
               this.shouldRetry(e) &&
               genericCanRetryOnError(e),

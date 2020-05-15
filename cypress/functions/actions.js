@@ -1,7 +1,7 @@
 // Default way to login. It clears the cache
 
 export function login(id) {
-  cy.window().then(window =>
+  cy.window().then((window) =>
     window.localStorage.setItem("TRANSPORT", "software"),
   );
   cy.visit(Cypress.env("api_server"));
@@ -116,15 +116,9 @@ export function create_group(groupName, description, user1, user2, user3) {
   cy.get("[data-test=add-button]").click();
   cy.wait(2000);
   cy.get("[data-test=group_name]").type(groupName);
-  cy.get("#input_groups_users")
-    .type(user1, { force: true })
-    .type("{enter}");
-  cy.get("#input_groups_users")
-    .type(user2, { force: true })
-    .type("{enter}");
-  cy.get("#input_groups_users")
-    .type(user3, { force: true })
-    .type("{enter}");
+  cy.get("#input_groups_users").type(user1, { force: true }).type("{enter}");
+  cy.get("#input_groups_users").type(user2, { force: true }).type("{enter}");
+  cy.get("#input_groups_users").type(user3, { force: true }).type("{enter}");
   cy.get("[data-test=group_description]").type(description);
 
   cy.contains("Next").click();
@@ -225,12 +219,8 @@ export function success_tx() {
 export function add_account_name_btc(currency, name, derivation_mode) {
   cy.get("[data-test=add-button]").click();
   cy.wait(4500);
-  cy.get("#input_crypto")
-    .type(currency, { force: true })
-    .type("{enter}");
-  cy.get("[data-test=select-arrow]")
-    .eq(1)
-    .type(derivation_mode);
+  cy.get("#input_crypto").type(currency, { force: true }).type("{enter}");
+  cy.get("[data-test=select-arrow]").eq(1).type(derivation_mode);
   cy.contains("Next").click();
   cy.get("[data-test=account_name]").type(name);
   cy.contains("Next").click();
@@ -238,28 +228,20 @@ export function add_account_name_btc(currency, name, derivation_mode) {
 export function add_account_name(currency, name) {
   cy.get("[data-test=add-button]").click();
   cy.wait(4500);
-  cy.get("#input_crypto")
-    .type(currency, { force: true })
-    .type("{enter}");
+  cy.get("#input_crypto").type(currency, { force: true }).type("{enter}");
   cy.get("[data-test=account_name]").type(name);
   cy.contains("Next").click();
 }
 
 export function select_creator_group(group) {
-  cy.get("[data-test=select_tx_rule]")
-    .eq(0)
-    .click();
-  cy.get("#input_groups_users")
-    .type(group, { force: true })
-    .type("{enter}");
+  cy.get("[data-test=select_tx_rule]").eq(0).click();
+  cy.get("#input_groups_users").type(group, { force: true }).type("{enter}");
   cy.get("[data-test=select-arrow]").click();
   cy.get("[data-test=approve_button]").click();
 }
 
 export function select_creator_operators(operator1, operator2, operator3) {
-  cy.get("[data-test=select_tx_rule]")
-    .eq(0)
-    .click();
+  cy.get("[data-test=select_tx_rule]").eq(0).click();
   cy.get("#input_groups_users")
     .type(operator1, { force: true })
     .type("{enter}");
@@ -274,9 +256,7 @@ export function select_creator_operators(operator1, operator2, operator3) {
 }
 
 export function add_amount_range(min, max) {
-  cy.get("[data-test=select_tx_rule]")
-    .eq(0)
-    .click();
+  cy.get("[data-test=select_tx_rule]").eq(0).click();
   cy.get("[data-test=input_amount]")
     .eq(0)
     .type(min, { force: true })
@@ -289,44 +269,28 @@ export function add_amount_range(min, max) {
 }
 
 export function no_limit() {
-  cy.get("[data-test=select_tx_rule]")
-    .eq(0)
-    .click();
+  cy.get("[data-test=select_tx_rule]").eq(0).click();
   cy.get('[type="checkbox"]').check();
   cy.get("[data-test=approve_button]").click();
 }
 
 export function add_whitelist(id, list) {
-  cy.get("[data-test=select_tx_rule]")
-    .eq(id)
-    .click();
-  cy.get("#input_whitelist")
-    .type(list, { force: true })
-    .type("{enter}");
+  cy.get("[data-test=select_tx_rule]").eq(id).click();
+  cy.get("#input_whitelist").type(list, { force: true }).type("{enter}");
   cy.get("[data-test=select-arrow]").click();
   cy.get("[data-test=approve_button]").click();
 }
 export function add_multi_whitelist(id, list1, list2) {
-  cy.get("[data-test=select_tx_rule]")
-    .eq(id)
-    .click();
-  cy.get("#input_whitelist")
-    .type(list1, { force: true })
-    .type("{enter}");
-  cy.get("#input_whitelist")
-    .type(list2, { force: true })
-    .type("{enter}");
+  cy.get("[data-test=select_tx_rule]").eq(id).click();
+  cy.get("#input_whitelist").type(list1, { force: true }).type("{enter}");
+  cy.get("#input_whitelist").type(list2, { force: true }).type("{enter}");
   cy.get("[data-test=select-arrow]").click();
   cy.get("[data-test=approve_button]").click();
 }
 
 export function add_approval_step_group(id, group) {
-  cy.get("[data-test=select_tx_rule]")
-    .eq(id)
-    .click();
-  cy.get("#input_groups_users")
-    .type(group, { force: true })
-    .type("{enter}");
+  cy.get("[data-test=select_tx_rule]").eq(id).click();
+  cy.get("#input_groups_users").type(group, { force: true }).type("{enter}");
   cy.get("[data-test=rightANgle]").click({ force: true });
   cy.get("[data-test=approve_button]").click();
 }
@@ -336,9 +300,7 @@ export function add_approval_step_operators(
   operator2,
   operator3,
 ) {
-  cy.get("[data-test=select_tx_rule]")
-    .eq(id)
-    .click();
+  cy.get("[data-test=select_tx_rule]").eq(id).click();
   cy.get("#input_groups_users")
     .type(operator1, { force: true })
     .type("{enter}");
@@ -356,9 +318,7 @@ export function provide_viewonly_rule(name, groups, user1) {
   cy.wait(5500);
   cy.get("[data-test=account_name]").should("have.value", name);
   cy.contains("Next").click();
-  cy.get("#input_groups_users")
-    .type(groups, { force: true })
-    .type("{enter}");
+  cy.get("#input_groups_users").type(groups, { force: true }).type("{enter}");
   cy.get("[data-test=rightANgle]").click();
   cy.contains("Add approval").click();
   cy.get("input#input_groups_users")
@@ -392,9 +352,7 @@ export function revoke_users(name) {
 }
 
 export function add_whitelist_address(currency, name, address) {
-  cy.get("#input_crypto")
-    .type(currency, { force: true })
-    .type("{enter}");
+  cy.get("#input_crypto").type(currency, { force: true }).type("{enter}");
   cy.get("[data-test=name_address]").type(name);
   cy.get("[data-test=address]").type(address);
   cy.get("[data-test=ok_button]").click();

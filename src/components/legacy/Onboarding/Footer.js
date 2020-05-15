@@ -5,11 +5,11 @@ import { connect } from "react-redux";
 import { nextState, previousState } from "redux/modules/onboarding";
 
 const mapDispatchToProps = (dispatch: *) => ({
-  onNextState: data => dispatch(nextState(data)),
-  onPreviousState: data => dispatch(previousState(data)),
+  onNextState: (data) => dispatch(nextState(data)),
+  onPreviousState: (data) => dispatch(previousState(data)),
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   step: state.onboarding.currentStep,
 });
 

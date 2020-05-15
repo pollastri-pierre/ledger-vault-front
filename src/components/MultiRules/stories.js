@@ -15,7 +15,7 @@ import { convertGovernanceRules } from "api/transformations/Account";
 
 const BITCOIN = getCryptoCurrencyById("bitcoin");
 
-const users = genUsers(15).map(u => ({ ...u, role: "OPERATOR" }));
+const users = genUsers(15).map((u) => ({ ...u, role: "OPERATOR" }));
 const groups = genGroups(3, { users });
 const whitelists = genWhitelists(10, { users });
 

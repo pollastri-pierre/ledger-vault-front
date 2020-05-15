@@ -38,26 +38,26 @@ export type TextProps = {|
 const TextBase = styled.div`
   ${space};
   ${color};
-  display: ${p => (p.inline ? "inline-block" : "block")};
+  display: ${(p) => (p.inline ? "inline-block" : "block")};
   font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
-  font-size: ${p => getFontSize(p)}px;
-  font-weight: ${p => getFontWeight(p)} !important;
-  font-style: ${p => (p.italic ? "italic" : "inherit")};
-  line-height: ${p => ("lineHeight" in p ? p.lineHeight : "1.75")};
-  text-transform: ${p => (p.uppercase ? "uppercase" : "")};
-  white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
-  user-select: ${p => (p.noSelect ? "none" : "inherit")};
-  text-align: ${p => (p.textAlign ? p.textAlign : "inherit")};
-  overflow-wrap: ${p => (p.overflowWrap ? p.overflowWrap : "inherit")};
-  flex-grow: ${p => (p.grow ? 1 : 0)};
-  ${p =>
+  font-size: ${(p) => getFontSize(p)}px;
+  font-weight: ${(p) => getFontWeight(p)} !important;
+  font-style: ${(p) => (p.italic ? "italic" : "inherit")};
+  line-height: ${(p) => ("lineHeight" in p ? p.lineHeight : "1.75")};
+  text-transform: ${(p) => (p.uppercase ? "uppercase" : "")};
+  white-space: ${(p) => (p.noWrap ? "nowrap" : "normal")};
+  user-select: ${(p) => (p.noSelect ? "none" : "inherit")};
+  text-align: ${(p) => (p.textAlign ? p.textAlign : "inherit")};
+  overflow-wrap: ${(p) => (p.overflowWrap ? p.overflowWrap : "inherit")};
+  flex-grow: ${(p) => (p.grow ? 1 : 0)};
+  ${(p) =>
     p.selectable
       ? `
     user-select: text;
     cursor: text;
   `
       : ``}
-  ${p =>
+  ${(p) =>
     p.ellipsis
       ? `
     text-overflow: ellipsis;

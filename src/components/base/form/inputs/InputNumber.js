@@ -32,7 +32,7 @@ const InputNumber = (props: Props) => {
   ]);
 
   const handleChange = useCallback(
-    str => {
+    (str) => {
       const r = sanitizeValueString(ZERO_MAGNITUDE_UNIT, str);
       const bigNumberValue = BigNumber(r.value);
       const newValue = bigNumberValue.gt(Number.MAX_SAFE_INTEGER)

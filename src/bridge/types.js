@@ -7,7 +7,7 @@ import type { FeesLevel } from "bridge/fees.types";
 export type EditProps<Transaction> = {|
   account: Account,
   transaction: Transaction,
-  onChangeTransaction: Transaction => void,
+  onChangeTransaction: (Transaction) => void,
   bridge: WalletBridge<Transaction>,
 |};
 

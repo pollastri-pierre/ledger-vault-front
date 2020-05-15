@@ -54,7 +54,7 @@ export default connectData(WhitelistDetails, {
   queries: {
     whitelist: WhitelistQuery,
   },
-  propsToQueryParams: props => ({
+  propsToQueryParams: (props) => ({
     whitelistId: props.match.params.whitelistId,
   }),
 });

@@ -41,7 +41,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
   };
 
   onToggleRegisteringModal = () => {
-    this.setState(state => ({ registering: !state.registering }));
+    this.setState((state) => ({ registering: !state.registering }));
   };
 
   onError = (e: Error | GateError | typeof NetworkError) => {
@@ -51,7 +51,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
     this.props.onGetState();
   };
 
-  add = data => {
+  add = (data) => {
     this.onToggleRegisteringModal();
     this.props.onAddSharedOwner(data.register_input);
   };
@@ -158,12 +158,12 @@ class SharedOwnerRegistration extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   onboarding: state.onboarding,
 });
 
 const mapDispatchToProps = (dispatch: *) => ({
-  onAddSharedOwner: data => dispatch(addSharedOwner(data)),
+  onAddSharedOwner: (data) => dispatch(addSharedOwner(data)),
   onGetState: () => dispatch(getState()),
 });
 export default connect(

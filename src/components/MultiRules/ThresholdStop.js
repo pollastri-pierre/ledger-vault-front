@@ -32,8 +32,8 @@ const emptyRule = {
 
 type Props = {
   rule: ?RuleThreshold,
-  onAdd: RuleThreshold => void,
-  onEdit: RuleThreshold => void,
+  onAdd: (RuleThreshold) => void,
+  onEdit: (RuleThreshold) => void,
   onRemove: () => void,
   currencyOrToken: CurrencyOrToken,
 };
@@ -161,7 +161,7 @@ const EditThreshold = ({
   extraProps,
 }: {
   value: RuleThreshold,
-  onChange: RuleThreshold => void,
+  onChange: (RuleThreshold) => void,
   extraProps?: ExtraProps,
 }) => {
   if (!extraProps) return null;

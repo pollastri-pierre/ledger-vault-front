@@ -9,7 +9,7 @@ import Select from "components/base/Select";
 type Props = {
   derivationModes: DerivationMode[],
   value: ?DerivationMode,
-  onChange: DerivationMode => any,
+  onChange: (DerivationMode) => any,
 };
 
 const SelectDerivationMode = (props: Props) => {
@@ -18,7 +18,7 @@ const SelectDerivationMode = (props: Props) => {
 
   const options = useMemo(
     () =>
-      derivationModes.map(mode => ({
+      derivationModes.map((mode) => ({
         label: t(`derivationModes:${mode === "" ? "standard" : mode}`),
         value: mode,
         data: mode,
@@ -26,12 +26,12 @@ const SelectDerivationMode = (props: Props) => {
     [derivationModes, t],
   );
 
-  const val = useMemo(() => options.find(o => o.value === value) || null, [
+  const val = useMemo(() => options.find((o) => o.value === value) || null, [
     options,
     value,
   ]);
 
-  const handleChange = useCallback(o => onChange(o.value), [onChange]);
+  const handleChange = useCallback((o) => onChange(o.value), [onChange]);
 
   return (
     <Select options={options} value={val} onChange={handleChange} {...p} />

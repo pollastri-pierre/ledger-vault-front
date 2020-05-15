@@ -11,7 +11,7 @@ export const createDeviceSocket = (
   transport: *,
   url: string,
 ): Observable<string> =>
-  Observable.create(o => {
+  Observable.create((o) => {
     let ws;
     let lastMessage: ?string;
 
@@ -32,7 +32,7 @@ export const createDeviceSocket = (
     ws.onerror = () => {
       o.error();
     };
-    ws.onmessage = event => {
+    ws.onmessage = (event) => {
       switch (event.type) {
         case "message": {
           stackMessage(event.data);
@@ -52,7 +52,7 @@ export const createDeviceSocket = (
     };
 
     const handlers = {
-      exchange: async input => {
+      exchange: async (input) => {
         const { data, nonce } = input;
         const r: Buffer = await transport.exchange(Buffer.from(data, "hex"));
         const status = r.slice(r.length - 2);
@@ -65,7 +65,7 @@ export const createDeviceSocket = (
         );
       },
 
-      bulk: async input => {
+      bulk: async (input) => {
         const { data, nonce } = input;
 
         // Execute all apdus and collect last status
@@ -91,18 +91,18 @@ export const createDeviceSocket = (
         );
       },
 
-      success: msg => {
+      success: (msg) => {
         lastMessage = msg.data || msg.result;
         ws.close();
       },
 
-      error: msg => {
+      error: (msg) => {
         console.error("ERROR", { data: msg.data });
         o.error();
       },
     };
 
-    const stackMessage = async rawMsg => {
+    const stackMessage = async (rawMsg) => {
       try {
         if (typeof rawMsg === "string") {
           const msg = JSON.parse(rawMsg);

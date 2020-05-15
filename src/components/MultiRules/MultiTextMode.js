@@ -76,15 +76,15 @@ function ResolveRuleSet(props: ResolveRulesProps) {
   const unit = currency ? currency.units[0] : getCurrencyLikeUnit(token);
 
   function resolveUsers(userList: Array<number | User>) {
-    const usersFound = users.filter(user => {
-      return userList.find(u => {
+    const usersFound = users.filter((user) => {
+      return userList.find((u) => {
         if (typeof u === "number") {
           return user.id === u;
         }
         return user.id === u.id;
       });
     });
-    return usersFound.map(u => (
+    return usersFound.map((u) => (
       <StyledLi key={u.id}>
         <Box horizontal flow={5} align="center">
           <FaUser size={12} />
@@ -95,7 +95,7 @@ function ResolveRuleSet(props: ResolveRulesProps) {
   }
 
   const resolveGroup = (groupId: number) => {
-    const groupFound = groups.find(g => g.id === groupId);
+    const groupFound = groups.find((g) => g.id === groupId);
     return (
       <StyledLi key={groupId}>
         <Box horizontal flow={5} align="center">
@@ -154,7 +154,7 @@ function ResolveRuleSet(props: ResolveRulesProps) {
   const resolveWhitelists = (item: number | Whitelist) => {
     let whitelist;
     if (typeof item === "number") {
-      whitelist = whitelists.find(w => w.id === item);
+      whitelist = whitelists.find((w) => w.id === item);
     } else {
       whitelist = item;
     }
@@ -219,7 +219,7 @@ function ResolveRuleSet(props: ResolveRulesProps) {
                     <Text inline i18nKey="approvalsRules:textMode.whitelists" />
                   </Box>
                   <StyledUl>
-                    {whitelistRule.data.map(item => resolveWhitelists(item))}
+                    {whitelistRule.data.map((item) => resolveWhitelists(item))}
                   </StyledUl>
                 </StyledLi>
               </StyledUl>

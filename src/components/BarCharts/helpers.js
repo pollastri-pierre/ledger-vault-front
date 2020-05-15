@@ -17,7 +17,7 @@ export function groupData(
     return [];
   }
 
-  const allDataValues = data.map(d => d.value);
+  const allDataValues = data.map((d) => d.value);
   const minValue = BigNumber.minimum(...allDataValues);
   const maxValue = BigNumber.maximum(...allDataValues);
   const step = maxValue.minus(minValue).dividedBy(granularity);
@@ -29,7 +29,7 @@ export function groupData(
       .toFixed()}`,
   }));
 
-  data.forEach(item => {
+  data.forEach((item) => {
     const target = BigNumber.maximum(
       0,
       item.value

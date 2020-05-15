@@ -23,7 +23,7 @@ const groups = genGroups(3, { users });
 const accounts = genAccounts(10, { users }, { groups });
 const whitelists = genWhitelists(10, { users });
 
-const fakeNetwork = async url => {
+const fakeNetwork = async (url) => {
   await delay(500);
   if (
     url ===
@@ -40,7 +40,7 @@ const fakeNetwork = async url => {
   if (url.startsWith("/groups")) {
     return wrapConnection(
       denormalize(
-        groups.map(g => g.id),
+        groups.map((g) => g.id),
         [schema.Group],
         {
           users: keyBy(users, "id"),
@@ -91,7 +91,7 @@ storiesOf("entities/Account", module).add("Account edit", () => (
 
 function wrapConnection(data) {
   return {
-    edges: data.map(d => ({ node: d, cursor: d.id })),
+    edges: data.map((d) => ({ node: d, cursor: d.id })),
     pageInfo: { hasNextPage: false },
   };
 }

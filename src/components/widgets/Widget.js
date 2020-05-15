@@ -72,8 +72,8 @@ export function WidgetLoading({
 }
 
 const WidgetLoadingContainer = styled.div`
-  height: ${p => (p.height ? `${p.height}px` : "auto")};
-  width: ${p => (p.width ? `${p.width}px` : "auto")};
+  height: ${(p) => (p.height ? `${p.height}px` : "auto")};
+  width: ${(p) => (p.width ? `${p.width}px` : "auto")};
   background: ${darken(colors.form.bg, 0.02)};
   border: 1px dashed ${colors.form.border};
   border-radius: 4px;
@@ -104,8 +104,8 @@ const SettingsButton = styled.div.attrs({
 
 const WidgetContainer = styled.div`
   position: relative;
-  height: ${p => (p.height ? `${p.height}px` : "auto")};
-  width: ${p => (p.width ? `${p.width}px` : "auto")};
+  height: ${(p) => (p.height ? `${p.height}px` : "auto")};
+  width: ${(p) => (p.width ? `${p.width}px` : "auto")};
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -122,7 +122,7 @@ const WidgetContainer = styled.div`
     margin-top: 10px;
   }
 
-  ${p => (p.isInteractive ? widgetContainerHover : "")};
+  ${(p) => (p.isInteractive ? widgetContainerHover : "")};
 `;
 
 const widgetContainerHover = `

@@ -23,7 +23,7 @@ type State = {
 type RadioRowProps = {
   isChecked: boolean,
   value: string,
-  onClick: string => void,
+  onClick: (string) => void,
   label: React$Element<*>,
 };
 

@@ -25,7 +25,7 @@ export default function TransportChooser() {
   const [transport, setTransport] = useState(getPreferredTransport());
   const dispatch = useSoftDevicesDispatch();
 
-  const choose = transportType => () => {
+  const choose = (transportType) => () => {
     setPreferredTransport(transportType);
     setTransport(transportType);
     if (transportType === "weblue") {

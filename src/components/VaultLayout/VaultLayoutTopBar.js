@@ -59,7 +59,7 @@ const VaultLayoutTopBar = styled.div`
   position: relative;
   align-items: center;
   padding: 0 20px 0 0;
-  padding-left: ${p =>
+  padding-left: ${(p) =>
     (p.isMenuOpened
       ? vaultLayoutConfig.MENU_WIDTH
       : vaultLayoutConfig.COLLAPSED_MENU_WIDTH) + 20}px;
@@ -87,8 +87,8 @@ const TopBarActionComponent = styled.div`
   display: flex;
   align-items: center;
 
-  padding-left: ${p => (p.link ? "0" : "10px")};
-  padding-right: ${p => (p.link ? "0" : "10px")};
+  padding-left: ${(p) => (p.link ? "0" : "10px")};
+  padding-right: ${(p) => (p.link ? "0" : "10px")};
 
   &:hover {
     color: ${colors.textLight};
@@ -103,8 +103,8 @@ const TopBarActionComponent = styled.div`
     height: 100%;
     display: flex;
     align-items: center;
-    padding-left: ${p => (p.link ? "10px" : "0")};
-    padding-right: ${p => (p.link ? "10px" : "0")};
+    padding-left: ${(p) => (p.link ? "10px" : "0")};
+    padding-right: ${(p) => (p.link ? "10px" : "0")};
   }
 `;
 

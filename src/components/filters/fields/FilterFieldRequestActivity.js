@@ -76,10 +76,10 @@ type Section = {
 };
 
 function buildOptions(arr: RawSection[], t): Section[] {
-  return arr.map(section => {
+  return arr.map((section) => {
     return {
       label: section.label,
-      options: section.options.map(s => ({
+      options: section.options.map((s) => ({
         value: s,
         label: t(`request:type.${s}`),
       })),

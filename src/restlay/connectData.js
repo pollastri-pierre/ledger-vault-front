@@ -31,7 +31,7 @@ export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
   fetchQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
   forceFetch: () => Promise<void>,
-  setVariables: Object => Promise<void>,
+  setVariables: (Object) => Promise<void>,
   getVariables: () => Object,
   /* IDEA
   isReloadingData: (data: Object) => boolean,
@@ -145,9 +145,9 @@ export default function connectData<
 >(Decorated: In<Props, A>, opts?: Opts<Props, A>): Out<Props> {
   type APIProps = $ObjMap<A, ExtractQueryResult>;
 
-  const displayName = `connectData(${Decorated.displayName ||
-    Decorated.name ||
-    ""})`;
+  const displayName = `connectData(${
+    Decorated.displayName || Decorated.name || ""
+  })`;
 
   // options that are not overridable by restlayProvider
   const {
@@ -217,14 +217,14 @@ export default function connectData<
       mutations: Mutation<any, any>[],
       callback: () => void,
     ) => {
-      mutations.forEach(m => this.subscribeMutation(m, callback));
+      mutations.forEach((m) => this.subscribeMutation(m, callback));
     };
 
     unsubscribeMutations = (
       mutations: Mutation<any, any>[],
       callback: () => void,
     ) => {
-      mutations.forEach(m => this.unsubscribeMutation(m, callback));
+      mutations.forEach((m) => this.unsubscribeMutation(m, callback));
     };
 
     subscribeMutation = (
@@ -267,7 +267,7 @@ export default function connectData<
       );
       _listeners.forEach((callbacks, mutation) => {
         if (queryOrMutation instanceof mutation) {
-          callbacks.forEach(c => c());
+          callbacks.forEach((c) => c());
         }
       });
 
@@ -287,7 +287,7 @@ export default function connectData<
 
     updateQueryInstances(apiParams: Object, fetchParams: Object) {
       const instances: $ObjMap<A, ExtractQuery> = {};
-      queriesKeys.forEach(key => {
+      queriesKeys.forEach((key) => {
         const Q = queries[key];
         // TODO : we might want to be more lazy with a "shouldQueryUpdate" or
         // something that would check if we really want to create a new instance.
@@ -324,7 +324,7 @@ export default function connectData<
       invariant(queriesInstances, "queriesInstances must be defined");
       // $FlowFixMe filter() don't seem to be flowtyped correctly
       const promises: Array<Promise<*>> = queriesKeys
-        .map(key => {
+        .map((key) => {
           const query = queriesInstances[key];
           const pendingQuery = restlayProvider.getPendingQuery(query);
           if (pendingQuery) return null; // If data is already pending we ignore calling fetchQuery again.
@@ -358,7 +358,7 @@ export default function connectData<
 
           return null;
         })
-        .filter(p => p);
+        .filter((p) => p);
 
       return promises;
     }
@@ -404,7 +404,7 @@ export default function connectData<
               pending: false,
             });
           },
-          apiError => {
+          (apiError) => {
             if (this._unmounted || syncId !== this.syncAPI_id) return;
             return this.setState({ apiError, pending: false });
           },

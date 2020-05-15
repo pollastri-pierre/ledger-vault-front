@@ -21,8 +21,8 @@ const emptyRule = {
 type Props = {
   onRemove: () => void,
   whitelists: Whitelist[],
-  onAdd: RuleWhitelist => void,
-  onEdit: RuleWhitelist => void,
+  onAdd: (RuleWhitelist) => void,
+  onEdit: (RuleWhitelist) => void,
   rule: ?RuleWhitelist,
 };
 
@@ -94,12 +94,12 @@ const DisplayWhitelist = (props: {
       {" - Allowed recipients:"}
     </div>
     <div style={{ lineHeight: 2.5 }}>
-      {props.value.data.map(v => {
+      {props.value.data.map((v) => {
         if (!props.extraProps) return;
         const { whitelists } = props.extraProps;
         let whitelist;
         if (typeof v === "number") {
-          whitelist = whitelists.find(w => w.id === v);
+          whitelist = whitelists.find((w) => w.id === v);
         } else {
           whitelist = v;
         }
@@ -124,7 +124,7 @@ const EditWhitelist = ({
   extraProps,
 }: {
   value: RuleWhitelist,
-  onChange: RuleWhitelist => void,
+  onChange: (RuleWhitelist) => void,
   extraProps?: {
     whitelists: Whitelist[],
   },

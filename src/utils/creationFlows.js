@@ -44,8 +44,8 @@ const hasListChanged = <T: Generic, S: $Keys<$Diff<T, CommonFields>>>(
 ) => {
   if (payload[field].length !== initialPayload[field].length) return true;
   return (
-    initialPayload[field].filter(item =>
-      payload[field].find(m => m.id === item.id),
+    initialPayload[field].filter((item) =>
+      payload[field].find((m) => m.id === item.id),
     ).length !== initialPayload[field].length
   );
 };
@@ -77,9 +77,9 @@ const hasListOfAddressChanged = (
 ) => {
   if (payload.addresses.length !== initialPayload.addresses.length) return true;
   return (
-    initialPayload.addresses.filter(item =>
+    initialPayload.addresses.filter((item) =>
       payload.addresses.find(
-        m =>
+        (m) =>
           m.name === item.name &&
           m.currency === item.currency &&
           m.address === item.address,

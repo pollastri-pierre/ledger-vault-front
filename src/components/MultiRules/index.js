@@ -56,10 +56,10 @@ const MultiRules = (props: Props) => {
       />
     );
   }
-  const handleChangeRulesSet = i => ruleSet =>
+  const handleChangeRulesSet = (i) => (ruleSet) =>
     onChange(rulesSets.map((s, j) => (i === j ? ruleSet : s)));
 
-  const handleRemove = i => {
+  const handleRemove = (i) => {
     const newSets = renameSets(rulesSets.filter((_, j) => j !== i));
     const newIndex =
       i === activeIndex
@@ -151,7 +151,7 @@ const RulesSetContainer = styled(Box).attrs({})`
   flex-grow: 1;
   border-radius: 4px;
   border-top-left-radius: 0;
-  border-top-right-radius: ${p => (p.isFull ? 0 : 4)}px;
+  border-top-right-radius: ${(p) => (p.isFull ? 0 : 4)}px;
   border: 1px solid ${colors.form.border};
   padding: 16px;
   background: white;
@@ -167,7 +167,7 @@ function renameSets(sets) {
 function findNewActiveIndex(arr, activeIndex, oldIndex, newIndex) {
   const before = arr.map((e, i) => i === activeIndex);
   const after = arrayMove(before, oldIndex, newIndex);
-  const i = after.findIndex(e => e);
+  const i = after.findIndex((e) => e);
   return i;
 }
 

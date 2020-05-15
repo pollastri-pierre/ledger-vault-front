@@ -24,7 +24,7 @@ type Props = {
   onChange: Function,
   InputComponent?: React$ComponentType<*>,
   inputProps?: Object,
-  getSaveDisabled?: string => boolean,
+  getSaveDisabled?: (string) => boolean,
 };
 type RequestStatus = "idle" | "fetching" | "error" | "success";
 

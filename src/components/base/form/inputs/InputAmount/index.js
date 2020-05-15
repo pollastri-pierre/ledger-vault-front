@@ -15,7 +15,7 @@ import type { Option } from "components/base/Select";
 
 type Props = {
   currency: CryptoCurrency,
-  onChange: BigNumber => void,
+  onChange: (BigNumber) => void,
   value: BigNumber,
   hideUnit?: boolean,
   unitLeft?: boolean,
@@ -64,7 +64,7 @@ class InputAmount extends PureComponent<Props, State> {
     const val = formatCurrencyUnit(unit, value);
     this.state = {
       unit,
-      options: currency.units.map(u => ({
+      options: currency.units.map((u) => ({
         label: u.code,
         value: u.code,
         data: u,
@@ -79,7 +79,7 @@ class InputAmount extends PureComponent<Props, State> {
 
     return this.setState({
       unit,
-      options: currency.units.map(u => ({
+      options: currency.units.map((u) => ({
         label: u.code,
         value: u.code,
         data: u,
@@ -161,7 +161,7 @@ class InputAmount extends PureComponent<Props, State> {
       ...props
     } = this.props;
     const { displayValue, unit, options } = this.state;
-    const option = options.find(opt => opt.data === unit);
+    const option = options.find((opt) => opt.data === unit);
     return (
       <Box
         width={width || 370}

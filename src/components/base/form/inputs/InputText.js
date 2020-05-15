@@ -28,7 +28,7 @@ type State = {
   isFocused: boolean,
 };
 
-const isAscii = c => c.charCodeAt(0) <= 127;
+const isAscii = (c) => c.charCodeAt(0) <= 127;
 
 class InputText extends PureComponent<Props, State> {
   state = {
@@ -53,10 +53,7 @@ class InputText extends PureComponent<Props, State> {
         value = value.substr(0, maxLength);
       }
       if (onlyAscii) {
-        value = value
-          .split("")
-          .filter(isAscii)
-          .join("");
+        value = value.split("").filter(isAscii).join("");
       }
       this.props.onChange(value);
     }
@@ -78,7 +75,7 @@ class InputText extends PureComponent<Props, State> {
     const enrichedHints = evalHints(hints, value);
     const hasError =
       (!!errors && !!errors.length) ||
-      (enrichedHints && enrichedHints.some(h => h.status === "invalid"));
+      (enrichedHints && enrichedHints.some((h) => h.status === "invalid"));
 
     const hasWarning = !hasError && !!warnings && !!warnings.length;
 
@@ -132,18 +129,18 @@ const IconWrapper = ({ Icon, isFocused }: IconWrapperProps) => (
 
 const StyledInput = styled.input`
   display: block;
-  width: ${p => (p.width ? `${p.width}px` : "100%")};
+  width: ${(p) => (p.width ? `${p.width}px` : "100%")};
   height: 40px;
   border-radius: 4px;
-  text-align: ${p => p.align || "left"};
+  text-align: ${(p) => p.align || "left"};
   border: 1px solid
-    ${p =>
+    ${(p) =>
       p.hasError
         ? colors.form.error
         : p.hasWarning
         ? colors.form.warning
         : colors.form.border};
-  padding-left: ${p => p.pl + 10}px;
+  padding-left: ${(p) => p.pl + 10}px;
   padding-right: 10px;
 
   svg {
@@ -152,13 +149,13 @@ const StyledInput = styled.input`
 
   &:focus {
     outline: none;
-    border-color: ${p =>
+    border-color: ${(p) =>
       p.hasError
         ? colors.form.error
         : p.hasWarning
         ? colors.form.warning
         : colors.form.focus};
-    box-shadow: ${p =>
+    box-shadow: ${(p) =>
       p.hasError
         ? colors.form.shadow.error
         : p.hasWarning

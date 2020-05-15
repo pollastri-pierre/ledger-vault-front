@@ -9,7 +9,7 @@ import AccountBodyCell from "./AccountBodyCell";
 
 type AccountRowProps = {
   account: Account,
-  onClick: Account => void,
+  onClick: (Account) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -22,7 +22,7 @@ function AccountRow(props: AccountRowProps) {
 
   return (
     <TableRow key={account.id} onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <AccountBodyCell account={account} item={item} key={item.body.prop} />
       ))}
     </TableRow>

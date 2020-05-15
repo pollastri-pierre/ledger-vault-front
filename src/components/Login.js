@@ -36,7 +36,7 @@ async function fetchWorkspaces(pubKey) {
 }
 
 // used by devtools to automatically login
-const mapAutoLogin = state => ({
+const mapAutoLogin = (state) => ({
   autoLogin: state.auth && state.auth.autoLogin === true,
 });
 
@@ -78,13 +78,13 @@ const Login = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   const { workspaces, error } = state;
 
-  const loginToWorkspace = workspace => history.push(`/${workspace}/login`);
+  const loginToWorkspace = (workspace) => history.push(`/${workspace}/login`);
 
   const handleError = (err: Error) => {
     dispatch({ type: "ERROR", payload: err });
   };
 
-  const handleStartLogin = async deviceID => {
+  const handleStartLogin = async (deviceID) => {
     try {
       const workspaces = await fetchWorkspaces(deviceID);
       if (!workspaces.length) {
@@ -99,7 +99,7 @@ const Login = () => {
     }
   };
 
-  const handleSelectWorkspace = workspace => loginToWorkspace(workspace);
+  const handleSelectWorkspace = (workspace) => loginToWorkspace(workspace);
   const handleReset = () => dispatch({ type: "RESET" });
 
   return (
@@ -136,7 +136,7 @@ export const LoginDevice = () => {
   } = useRouteMatch();
   if (!workspace) return null;
   const handleReset = () => history.push("/");
-  const handleError = err => setError(err);
+  const handleError = (err) => setError(err);
   const handleSuccess = async () => {
     const redirect = `/${workspace}`;
     if (process.env.NODE_ENV === "production") {
@@ -182,7 +182,7 @@ const DisplayError = ({ error, onReset }: DisplayErrorProps) => (
 type LoginInProps = {
   workspace: string,
   onSuccess: () => any,
-  onError: Error => any,
+  onError: (Error) => any,
 };
 
 const LoginIn = ({ workspace, onSuccess, onError }: LoginInProps) => (
@@ -251,7 +251,7 @@ const WorkspaceName = styled.div`
 
 type WorkspaceChooserProps = {
   workspaces: string[],
-  onSelect: string => void,
+  onSelect: (string) => void,
 };
 
 const WorkspaceChooser = ({ workspaces, onSelect }: WorkspaceChooserProps) => {
@@ -261,7 +261,7 @@ const WorkspaceChooser = ({ workspaces, onSelect }: WorkspaceChooserProps) => {
         Select a workspace to connect to:
       </Box>
       <Box flow={10}>
-        {workspaces.map(workspace => (
+        {workspaces.map((workspace) => (
           <Workspace
             key={workspace}
             workspace={workspace}
@@ -290,8 +290,8 @@ export const LoginContainer = ({ children }: { children: React$Node }) => (
 );
 
 type WelcomeProps = {|
-  onDeviceID: string => any,
-  onError: Error => any,
+  onDeviceID: (string) => any,
+  onError: (Error) => any,
 |};
 
 type ConnectedWelcomeProps = WelcomeProps & { autoLogin: boolean };

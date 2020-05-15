@@ -26,7 +26,7 @@ type Props = {|
   hideHandler: boolean,
   disableActions: boolean,
   onRemove: () => void,
-  onEdit: RuleMultiAuthStep => void,
+  onEdit: (RuleMultiAuthStep) => void,
   onStartEdit: () => void,
   onStopEdit: () => void,
   users: User[],
@@ -37,7 +37,7 @@ type Props = {|
   index: number, // eslint-disable-line react/no-unused-prop-types
 |};
 
-const UserIcon = p => (
+const UserIcon = (p) => (
   <FaUserCheck {...p} style={{ transform: "translateX(1px)" }} />
 );
 
@@ -54,7 +54,7 @@ const MultiAuthStop = ({
   onStopEdit,
   isLast,
 }: Props) => {
-  const handleSubmit = step => {
+  const handleSubmit = (step) => {
     if (!step) return;
     onStopEdit();
     onEdit(step);
@@ -132,7 +132,7 @@ const DisplayApprovalStep = ({
 export const StepMembers = ({ step }: { step: RuleMultiAuthStep }) => (
   <>
     {step.group.is_internal ? (
-      step.group.members.map(user => (
+      step.group.members.map((user) => (
         <Badge key={user.id} Icon={FaUser} style={{ marginRight: 5 }}>
           {user.username}
         </Badge>
@@ -158,9 +158,9 @@ const GripContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: ${p => (p.isVisible ? "auto" : "none")};
-  opacity: ${p => (p.isVisible ? 0.5 : 0)};
-  transform: translateX(${p => (p.isVisible ? 0 : 20)}px);
+  pointer-events: ${(p) => (p.isVisible ? "auto" : "none")};
+  opacity: ${(p) => (p.isVisible ? 0.5 : 0)};
+  transform: translateX(${(p) => (p.isVisible ? 0 : 20)}px);
   &:hover {
     opacity: 0.8;
   }

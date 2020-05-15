@@ -8,7 +8,7 @@ import RestlayProvider from "restlay/RestlayProvider";
 import Modal from "components/base/Modal";
 import UserCreationFlow from "components/UserCreationFlow";
 
-const fakeNetwork = async url => {
+const fakeNetwork = async (url) => {
   await delay(1e3);
   if (url === "/requests") {
     return { url_id: "c4ab6059-45ab-485b-b1a1-665be5224358", id: 123 };

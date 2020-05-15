@@ -30,7 +30,7 @@ const ACCOUNTS_LIST_CONFIG: $Shape<AccountsListConfig> = {
 function AccountsWidget(props: Props) {
   const { accountsConnection, history, location } = props;
   const me = useMe();
-  const accounts = accountsConnection.edges.map(n => n.node);
+  const accounts = accountsConnection.edges.map((n) => n.node);
   const onAdd = () => history.push(`${location.pathname}/accounts/new`);
   const addButton = (
     <Button type="filled" onClick={onAdd}>

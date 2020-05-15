@@ -9,7 +9,7 @@ import RequestBodyCell from "./RequestBodyCell";
 
 type RequestRowProps = {
   request: GenericRequest,
-  onClick: GenericRequest => void,
+  onClick: (GenericRequest) => void,
   tableDefinition: TableDefinition,
 };
 
@@ -22,7 +22,7 @@ function RequestRow(props: RequestRowProps) {
 
   return (
     <TableRow key={request.id} onClick={onClick ? handleClick : undefined}>
-      {tableDefinition.map(item => (
+      {tableDefinition.map((item) => (
         <RequestBodyCell request={request} item={item} key={item.body.prop} />
       ))}
     </TableRow>

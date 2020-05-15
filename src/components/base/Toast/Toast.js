@@ -46,8 +46,8 @@ const StyledHeader = styled.div`
   font-weight: bold;
   font-size: 11px;
   text-transform: uppercase;
-  color: ${p => p.fg};
-  background: ${p => p.bg};
+  color: ${(p) => p.fg};
+  background: ${(p) => p.bg};
 `;
 
 const StyledBody = styled.div`

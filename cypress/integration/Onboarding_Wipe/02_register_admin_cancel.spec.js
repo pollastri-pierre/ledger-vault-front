@@ -3,7 +3,7 @@ context("Register the Administrators", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
+    cy.request(polyfillUrl).then((response) => {
       polyfill = response.body;
     });
   });
@@ -26,7 +26,7 @@ context("Register the Administrators", () => {
       device_number: 4,
     });
     cy.visit(Cypress.env("api_server"), {
-      onBeforeLoad: win => {
+      onBeforeLoad: (win) => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
@@ -39,9 +39,7 @@ context("Register the Administrators", () => {
       // Register Admin 1
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user1");
-      cy.get("[data-test=dialog-button]")
-        .eq(2)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(2).click();
       cy.wait("@authenticate");
 
       cy.request("POST", Cypress.env("api_switch_device"), {
@@ -63,9 +61,7 @@ context("Register the Administrators", () => {
       });
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user2");
-      cy.get("[data-test=dialog-button]")
-        .eq(2)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(2).click();
       cy.wait("@authenticate");
 
       cy.request("POST", Cypress.env("api_switch_device"), {
@@ -73,14 +69,10 @@ context("Register the Administrators", () => {
       });
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user3");
-      cy.get("[data-test=dialog-button]")
-        .eq(2)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(2).click();
       cy.wait("@authenticate");
 
-      cy.get("[data-test=dialog-button]")
-        .eq(1)
-        .click();
+      cy.get("[data-test=dialog-button]").eq(1).click();
       cy.wait("@next");
       cy.contains("Continue").click();
       cy.wait("@next");

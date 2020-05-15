@@ -80,12 +80,12 @@ function setupRules(accounts) {
 
 function extractWhitelists(accounts) {
   const whitelists = [];
-  accounts.forEach(account => {
-    account.governance_rules.forEach(set => {
-      set.rules.forEach(rule => {
+  accounts.forEach((account) => {
+    account.governance_rules.forEach((set) => {
+      set.rules.forEach((rule) => {
         if (rule.type !== "WHITELIST") return;
-        rule.data.forEach(wl => {
-          const found = whitelists.find(w => w.id === wl.id);
+        rule.data.forEach((wl) => {
+          const found = whitelists.find((w) => w.id === wl.id);
           if (found) return;
           whitelists.push(wl);
         });

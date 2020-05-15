@@ -75,11 +75,11 @@ const SubMenuItem = styled(({ borderColor, ...p }) => <NavLink {...p} />)`
     content: "";
     width: 100%;
     height: 3px;
-    background: ${p => p.borderColor};
+    background: ${(p) => p.borderColor};
   }
 `;
 
-const removeSuffix = pathname => {
+const removeSuffix = (pathname) => {
   const arr = pathname.split("/");
   return arr.slice(0, arr.length - 1).join("/");
 };
@@ -92,7 +92,7 @@ const HACKY_UTXO_MODAL_IDENTIFIER = "utxo";
 // - the currency family
 const TopBarAccountMenu = withRouter(
   connectData(
-    props => {
+    (props) => {
       const { location, account } = props;
       const { t } = useTranslation();
       const currency = getCryptoCurrencyById(account.currency);
@@ -125,7 +125,7 @@ const TopBarAccountMenu = withRouter(
       queries: {
         account: AccountQuery,
       },
-      propsToQueryParams: props => ({
+      propsToQueryParams: (props) => ({
         accountId: props.match.params.id,
       }),
     },
@@ -171,8 +171,8 @@ const App = withMe((props: Props & { me: User }) => {
   }, [update]);
   const menuItems = getMenuItems({
     role: me.role,
-    accounts: accounts.edges.map(e => e.node),
-    allPendingTransactions: allPendingTransactions.edges.map(e => e.node),
+    accounts: accounts.edges.map((e) => e.node),
+    allPendingTransactions: allPendingTransactions.edges.map((e) => e.node),
     match,
     location,
   });
