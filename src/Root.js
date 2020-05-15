@@ -12,6 +12,8 @@ import RestlayProvider from "restlay/RestlayProvider";
 import { SoftDevicesProvider } from "components/SoftDevices/SoftDevicesContext";
 import network from "network";
 import i18n from "./i18n";
+
+import "./device/registerTransports";
 import "./insertFontsTags";
 
 const Root = ({ children, store }: { children: React$Node, store: string }) => (
