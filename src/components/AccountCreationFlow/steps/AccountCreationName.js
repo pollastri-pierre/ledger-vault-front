@@ -4,8 +4,6 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 
 import Disabled from "components/Disabled";
-import InfoBox from "components/base/InfoBox";
-import Text from "components/base/Text";
 import Box from "components/base/Box";
 import { maxLengthNonAsciiHints, uniqName } from "components/base/hints";
 import { InputText, Label, Form } from "components/base/form";
@@ -77,9 +75,6 @@ export default function AccountCreationOptions(
 
     inner = (
       <Box flow={20}>
-        <InfoBox type="info" withIcon>
-          <Text i18nKey="accountCreation:steps.name.warning" />
-        </InfoBox>
         <Box>
           <Label>{t("newAccount:options.name")}</Label>
           <InputText
