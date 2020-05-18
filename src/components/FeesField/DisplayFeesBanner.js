@@ -51,10 +51,19 @@ const DisplayFeesBanner = <T>(props: Props<T>) => {
             <Box horizontal align="center" flow={8}>
               <span>
                 {"~ "}
-                <CounterValue fromAccount={account} value={estimatedFees} />
+                <CounterValue
+                  {...(account.account_type === "Erc20"
+                    ? { from: account.currency }
+                    : { fromAccount: account })}
+                  value={estimatedFees}
+                />
               </span>
               <strong>
-                <CurrencyAccountValue account={account} value={estimatedFees} />
+                <CurrencyAccountValue
+                  account={account}
+                  value={estimatedFees}
+                  disableERC20
+                />
               </strong>
               {isCollapsible && (
                 <FaChevronDown
