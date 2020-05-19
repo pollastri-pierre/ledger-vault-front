@@ -44,6 +44,6 @@ export const APPS_RAW = [
   "2.2.7-eeld app_3.0.10-dev",
   "2.2.7-eed  app_3.0.10-3.0.2-91b7fa5b",
   "2.2.7-eeld app_3.0.10-3.0.2-91b7fa5b",
-  "2.2.7-eed  app_3.0.10-dev#scripts-3.0.4-dave+0442c1e8",
-  "2.2.7-eeld app_3.0.10-dev#scripts-3.0.4-dave+0442c1e8",
+  "2.2.7-eed  app_3.0.10-3.0.4-0442c1e8",
+  "2.2.7-eeld app_3.0.10-3.0.4-0442c1e8",
 ];
