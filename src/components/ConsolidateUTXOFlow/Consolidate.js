@@ -3,18 +3,20 @@
 import React, { useState } from "react";
 import { BigNumber } from "bignumber.js";
 import { useTranslation } from "react-i18next";
-import { getBridgeForCurrency } from "bridge";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import Box from "components/base/Box";
 
+import { getBridgeForCurrency } from "bridge";
+import Box from "components/base/Box";
 import Text from "components/base/Text";
 import AccountName from "components/AccountName";
 import FakeInputContainer from "components/base/FakeInputContainer";
 import CounterValue from "components/CounterValue";
 import { AmountTooHigh, TooManyUTXOs } from "utils/errors";
 import { InputNumber, InputText, Label, TextArea } from "components/base/form";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+
 import type { Connection } from "restlay/ConnectionQuery";
 import type { UTXO } from "data/types";
 import type { ConsolidateUTXOStepProps } from "./types";
@@ -86,7 +88,7 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
           <AccountName account={account} />
         </FakeInputContainer>
       </Box>
-      <Box horizontal align="center" flow={20}>
+      <Box horizontal align="flex-start" flow={20}>
         <Box flex="1">
           <Label>Consolidated UTXOs</Label>
           <InputNumber
@@ -102,12 +104,17 @@ const Consolidate = (props: ConsolidateUTXOStepProps) => {
         <Box flex="1">
           <Label>Amount</Label>
           <FakeInputContainer>
+            <CurrencyAccountValue
+              account={account}
+              value={payload.transaction.amount}
+            />
+          </FakeInputContainer>
+          <Box mt={4} alignSelf="flex-end">
             <CounterValue
-              smallerInnerMargin
               value={payload.transaction.amount}
               from={account.currency}
             />
-          </FakeInputContainer>
+          </Box>
         </Box>
       </Box>
       {FeesField && (
