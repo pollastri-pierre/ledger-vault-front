@@ -71,19 +71,30 @@ export const onlyDescriptionChangedWhitelist = (
   );
 };
 
+export const getNumberOfAddressesChanged = (
+  initialPayload: WhitelistCreationPayload,
+  payload: WhitelistCreationPayload,
+) => {
+  const count = Math.abs(
+    payload.addresses.length - initialPayload.addresses.length,
+  );
+
+  const edited = payload.addresses.filter((item) =>
+    initialPayload.addresses.find(
+      (m) =>
+        m.id === item.id &&
+        (m.name !== item.name ||
+          m.currency !== item.currency ||
+          m.address !== item.address),
+    ),
+  ).length;
+
+  return count + edited;
+};
+
 const hasListOfAddressChanged = (
   payload: WhitelistCreationPayload,
   initialPayload: WhitelistCreationPayload,
 ) => {
-  if (payload.addresses.length !== initialPayload.addresses.length) return true;
-  return (
-    initialPayload.addresses.filter((item) =>
-      payload.addresses.find(
-        (m) =>
-          m.name === item.name &&
-          m.currency === item.currency &&
-          m.address === item.address,
-      ),
-    ).length !== initialPayload.addresses.length
-  );
+  return getNumberOfAddressesChanged(initialPayload, payload) > 0;
 };

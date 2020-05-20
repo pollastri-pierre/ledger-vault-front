@@ -36,6 +36,8 @@ import WhitelistCreationInfos from "./WhitelistCreationInfos";
 import WhitelistCreationAddresses from "./WhitelistCreationAddresses";
 import WhitelistCreationConfirmation from "./WhitelistCreationConfirmation";
 
+export const MAX_EDIT = 5;
+
 export const initialAddress = {
   id: 1,
   name: "",

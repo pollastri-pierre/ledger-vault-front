@@ -26,6 +26,8 @@
     "max_nb_addresses": "You can't create more than {{count}} addresses in the whitelist"
   },
   "update": {
+    "more_than_max": "You cannot make more than {{max}} modifications to your whitelist",
+    "reset_changes": "Reset all changes",
     "finishTitle": "Update Whitelist request successfully created!",
     "finishDesc": "Your request to update this whitelist has been submitted for approval.",
     "submit": "Edit whitelist"

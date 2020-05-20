@@ -28,7 +28,7 @@ import Button from "components/base/Button";
 import { maxLengthNonAsciiHints } from "components/base/hints";
 import usePrevious from "hooks/usePrevious";
 
-const NB_MAX_ADDRESSES = 100;
+const NB_MAX_ADDRESSES = 25;
 
 const LAYOUT = {
   currency: { noShrink: true, style: { width: 220 } },
