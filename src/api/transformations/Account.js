@@ -38,7 +38,7 @@ export function deserializeAccount(account: Account): Account {
   //
   // Hope we can remove this some day.
   //
-  if (account.status === "PENDING") {
+  if (account.status === "PENDING" || account.status === "PENDING_MIGRATED") {
     // $FlowFixMe (we don't want to pollute Account type with next_governance_rules)
     if (account.governance_rules === null && account.next_governance_rules) {
       account.governance_rules = account.next_governance_rules;
