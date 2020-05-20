@@ -316,6 +316,7 @@ type TransactionCommon = {
   entityType: "TRANSACTION",
   created_by: User,
   currency_family: string,
+  currency: string,
   confirmations: number,
   min_confirmations: number,
   tx_hash: ?string,

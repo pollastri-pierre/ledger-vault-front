@@ -17,6 +17,7 @@ class TransactionStatus extends Component<*> {
         <ConfirmationStatus
           nbConfirmations={transaction.confirmations}
           threshold={transaction.min_confirmations}
+          hideConfirmationNumber={transaction.currency === "ripple"}
         />
       );
     }
