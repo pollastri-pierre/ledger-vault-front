@@ -265,9 +265,15 @@ export type TransactionType = "SEND" | "RECEIVE";
 
 export const TransactionStatusMap = {
   SUBMITTED: "SUBMITTED",
-  ABORTED: "ABORTED",
+  APPROVED: "APPROVED",
+  CONFIRMED: "CONFIRMED",
   PENDING_APPROVAL: "PENDING_APPROVAL",
+  PENDING_CREATE_IN_HSM: "PENDING_CREATE_IN_HSM",
+  SIGNED: "SIGNED",
+  ABORTED: "ABORTED",
   FAILED: "FAILED",
+  DROPPED: "DROPPED",
+  FAILED_TO_BROADCAST: "FAILED_TO_BROADCAST",
 };
 export type TransactionStatus = $Keys<typeof TransactionStatusMap>;
 

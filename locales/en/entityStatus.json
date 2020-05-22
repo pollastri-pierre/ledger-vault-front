@@ -6,6 +6,7 @@
   "EXPIRED": "Expired",
   "BLOCKED": "Failed",
   "FAILED": "Failed",
+  "FAILED_TO_BROADCAST": "Failed to broadcast",
   "APPROVED": "Approved",
   "SUBMITTED": "Submitted",
   "PENDING": "Pending",
@@ -18,7 +19,11 @@
   "PENDING_UPDATE": "Pending update",
   "PENDING_MIGRATED": "Pending update",
   "PENDING_VIEW_ONLY": "Pending view-only",
+  "SIGNED": "Signed",
   "ACCESS_SUSPENDED": "Access suspended",
   "MIGRATED": "Account update required",
-  "HSM_COIN_UPDATED": "Coin update required"
+  "HSM_COIN_UPDATED": "Coin update required",
+  "PENDING_CREATE_IN_HSM": "Pending create in HSM",
+  "CONFIRMED": "Confirmed",
+  "DROPPED": "Dropped"
 }
