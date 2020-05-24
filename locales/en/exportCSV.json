@@ -16,6 +16,7 @@
       "gasPrice": "Gas price",
       "gasLimit": "Gas limit",
       "totalAmount": "Total amount",
+      "totalAmountUnit": "Total amount unit",
       "hash": "Transaction hash",
       "sender": "Sender",
       "recipient": "Recipient",

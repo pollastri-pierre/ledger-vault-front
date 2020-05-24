@@ -32,6 +32,7 @@ const configByEntityType = {
       "gasPrice",
       "gasLimit",
       "totalAmount",
+      "totalAmountUnit",
       "hash",
       "sender",
       "recipient",
