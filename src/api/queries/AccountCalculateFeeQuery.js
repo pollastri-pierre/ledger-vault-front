@@ -1,6 +1,7 @@
 // @flow
 import { BigNumber } from "bignumber.js";
 import Mutation from "restlay/Mutation";
+import forOwn from "lodash/forOwn";
 
 type Input<P> = {|
   accountId: number,
@@ -35,6 +36,13 @@ export default class AccountCalculateFeeQuery<P> extends Mutation<
     if (!body.fees_per_byte) {
       body.fees_per_byte = "0";
     }
+
+    // convert any BigNumber to fixed string equivalent
+    forOwn(body, (val, key) => {
+      if (BigNumber.isBigNumber(val)) {
+        body[key] = val.toFixed();
+      }
+    });
 
     return body;
   }

@@ -6,6 +6,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { FaMoneyCheck } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+import forOwn from "lodash/forOwn";
+import { BigNumber } from "bignumber.js";
 
 import type { RestlayEnvironment } from "restlay/connectData";
 import connectData from "restlay/connectData";
@@ -272,7 +274,7 @@ export function serializePayload(payload: serializePayloadProps) {
 
   const tx: Object = {
     recipient: transaction.recipient,
-    amount: transaction.amount.toFixed(),
+    amount: transaction.amount,
     note: transaction.note,
   };
 
@@ -323,6 +325,13 @@ export function serializePayload(payload: serializePayloadProps) {
       fees_level: xrpTx.fees.fees_level.toUpperCase(),
     });
   }
+
+  // convert any BigNumber to fixed string equivalent
+  forOwn(tx, (val, key) => {
+    if (BigNumber.isBigNumber(val)) {
+      tx[key] = val.toFixed();
+    }
+  });
 
   const request = {
     account_id: account.id,
