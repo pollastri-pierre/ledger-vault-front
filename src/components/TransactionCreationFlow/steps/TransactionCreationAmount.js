@@ -182,7 +182,7 @@ const TransactionCreationAmount = (
                 <strong>{matchingRulesSet.name}</strong>
               </span>
             ) : (
-              "No rules matched for this amount & recipient"
+              "Rules defined in the account don't allow you to send this amount and/or to send funds to this recipient."
             )}
           </InfoBox>
         )}
