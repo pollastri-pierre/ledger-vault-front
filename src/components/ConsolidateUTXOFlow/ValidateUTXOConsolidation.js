@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import invariant from "invariant";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import styled from "styled-components";
-import { Trans } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 import Box from "components/base/Box";
 import { getMatchingRulesSet } from "utils/multiRules";
@@ -18,6 +18,7 @@ const ValidateUTXOConsolidation = (props: ConsolidateUTXOStepProps) => {
   const { goNext, account, bridge, payload } = props;
   const { transaction } = payload;
   const [hasError, setHasError] = useState(false);
+  const { t } = useTranslation();
 
   const onDeviceInteractionError = () => {
     setHasError(true);
@@ -58,7 +59,7 @@ const ValidateUTXOConsolidation = (props: ConsolidateUTXOStepProps) => {
       {hasError ? (
         <InfoBox type="error" alignCenter>
           <div>
-            <Trans i18nKey="receive:addressRejected_line1" />
+            {t("receive:addressRejected_line1")}
             <br />
             <Trans
               i18nKey="receive:addressRejected_line2"
@@ -68,7 +69,7 @@ const ValidateUTXOConsolidation = (props: ConsolidateUTXOStepProps) => {
         </InfoBox>
       ) : showMatchingRulesSet && !matchingRulesSet ? (
         <InfoBox type="error" alignCenter>
-          {"No rules matched for this amount & recipient"}
+          {t("transactionCreation:noRuleMatched")}
         </InfoBox>
       ) : null}
       <ApproveRequestButton
@@ -81,7 +82,7 @@ const ValidateUTXOConsolidation = (props: ConsolidateUTXOStepProps) => {
           targetType: "CREATE_TRANSACTION",
           data: transactionPayload,
         }}
-        buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
+        buttonLabel={t("transactionCreation:cta")}
       />
     </Container>
   );

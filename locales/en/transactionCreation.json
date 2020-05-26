@@ -44,6 +44,7 @@
       "totalERC20Info": "Excluding confirmation fees"
     }
   },
+  "noRuleMatched": "Rules defined in the account don't allow you to send this amount and/or to send funds to this recipient.",
   "strategy": {
     "MERGE_OUTPUTS": "Merge outputs",
     "OPTIMIZE_SIZE": "Optimize size",
