@@ -23,6 +23,7 @@ const supported: CryptoCurrencyIds[] = [
   "digibyte",
   "komodo",
   "pivx",
+  "qtum",
   "ripple",
   "vertcoin",
   "viacoin",
